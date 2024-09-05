@@ -1,6 +1,4 @@
-import Fastify from 'fastify';
-
-const fastify = Fastify({ logger: true });
+import fastify from "../app";
 
 const PORT = process.env.PORT || 3001;
 
