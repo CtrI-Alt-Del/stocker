@@ -1,13 +1,20 @@
-const fastify = require('fastify')({ logger: true });
+import Fastify from 'fastify';
+
+const fastify = Fastify({ logger: true });
+
+const PORT = process.env.PORT || 3001;
 
 fastify.get('/', async (request: any, reply: any) => {
-    return { hello: 'world' };
+    return { hello: 'Hello banana' };
 });
 
 const start = async () => {
     try {
-        await fastify.listen(3001);
-        fastify.log.info(`Server listening on http://localhost:3001`);
+        await fastify.listen({
+            port: parseInt(PORT as string),
+            host: '0.0.0.0'
+        });
+        fastify.log.info(`Server: http://localhost:${PORT}`);
     } catch (err) {
         fastify.log.error(err);
         process.exit(1);
