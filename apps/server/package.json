@@ -2,15 +2,19 @@
   "name": "server",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "18"
+  },
   "scripts": {
     "dev": "ts-node-dev index.ts",
-    "build": "echo 'No build required for server'",
-    "start": "node index.ts"
+    "build": "tsup src",
+    "start": "node dist/server.js"
   },
   "dependencies": {
     "fastify": "^4.28.1",
     "react": "18.3.1",
-    "ts-node-dev": "^2.0.0"
+    "ts-node-dev": "^2.0.0",
+    "tsup": "^8.2.4"
   },
   "devDependencies": {
     "@stocker/typescript-config": "*",
