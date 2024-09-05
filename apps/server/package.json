@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "ts-node-dev index.ts",
     "build": "tsup src",
-    "start": "node dist/server.js"
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "fastify": "^4.28.1",

@@ -1,5 +1,8 @@
 {
   "extends": "@stocker/typescript-config/base.json",
-  "compilerOptions": {
-}
+    "compilerOptions": {
+      "outDir": "./dist",
+      "rootDir": "./src"
+    }
+  
 }
