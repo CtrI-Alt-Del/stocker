@@ -1,37 +1,12 @@
 export default function Home() {
   return (
-    <div style={{ 
-      display: "flex", 
-      flexDirection: "column", 
-      justifyContent: "center", 
-      alignItems: "center", 
-      height: "100vh", 
-      backgroundColor: "#f5f5f5",
-      fontFamily: "Arial, sans-serif" 
-    }}>
-      <h1 style={{ fontSize: "4rem", color: "#333" }}>Stocker</h1>
-      <div style={{ marginTop: "20px" }}>
-        <button style={{
-          padding: "10px 20px",
-          fontSize: "1rem",
-          backgroundColor: "transparent",
-          color: "#000",
-          border: "1px solid #393939",
-          borderRadius: "5px",
-          cursor: "pointer",
-          marginRight: "10px"
-        }}>
+    <div className="flex flex-col justify-center items-center h-screen bg-gray-100 font-sans">
+      <h1 className="text-6xl text-gray-800">Stocker</h1>
+      <div className="mt-5">
+        <button className="px-5 py-2.5 text-base bg-transparent text-black border border-gray-500 rounded cursor-pointer mr-2.5 hover:bg-gray-200 transition-colors">
           Login
         </button>
-        <button style={{
-          padding: "10px 20px",
-          fontSize: "1rem",
-          backgroundColor: "#f05d31",
-          border: "1px solid #393939",
-          color: "#fff",
-          borderRadius: "5px",
-          cursor: "pointer"
-        }}>
+        <button className="px-5 py-2.5 text-base bg-[#f05d31] text-white rounded cursor-pointer hover:bg-[#e04d21] transition-colors">
           Register
         </button>
       </div>
