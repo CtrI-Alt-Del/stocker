@@ -1,11 +1,6 @@
 {
-  "extends": "@repo/typescript-config/nextjs.json",
+  "extends": "@stocker/typescript-config/nextjs.json",
   "compilerOptions": {
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
     "lib": [
       "dom",
       "dom.iterable",
@@ -13,14 +8,18 @@
     ],
     "allowJs": true,
     "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
-    "next.config.mjs",
+    ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
+    "**/*.tsx"
   ],
   "exclude": [
     "node_modules"
