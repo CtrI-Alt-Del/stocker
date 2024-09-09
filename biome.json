@@ -1,0 +1,85 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.5.1/schema.json",
+  "organizeImports": {
+    "enabled": false
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "correctness": {
+        "useExhaustiveDependencies": "warn",
+        "noInnerDeclarations": "warn",
+        "noUnnecessaryContinue": "warn",
+        "noConstructorReturn": "warn"
+      },
+      "suspicious": {
+        "noImplicitAnyLet": "warn",
+        "noConfusingVoidType": "warn",
+        "noMisleadingCharacterClass": "off",
+        "noEmptyInterface": "warn",
+        "noExplicitAny": "off",
+        "noArrayIndexKey": "warn",
+        "noDoubleEquals": "warn",
+        "noConsoleLog": "off",
+        "noAssignInExpressions": "off",
+        "noRedeclare": "warn"
+      },
+      "style": {
+        "noParameterAssign": "warn",
+        "noNonNullAssertion": "warn",
+        "noArguments": "warn",
+        "noUnusedTemplateLiteral": "warn",
+        "useDefaultParameterLast": "warn",
+        "useConst": "warn",
+        "useEnumInitializers": "warn",
+        "useExportType": "off",
+        "useTemplate": "warn",
+        "useSelfClosingElements": "warn",
+        "useNumberNamespace": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off",
+        "noDangerouslySetInnerHtmlWithChildren": "warn"
+      },
+      "performance": {
+        "noDelete": "warn",
+        "noAccumulatingSpread": "warn"
+      },
+      "complexity": {
+        "noForEach": "off",
+        "noBannedTypes": "warn",
+        "useLiteralKeys": "warn",
+        "useSimplifiedLogicExpression": "off",
+        "useOptionalChain": "warn",
+        "noStaticOnlyClass": "off"
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "warn",
+        "useMediaCaption": "warn",
+        "noHeaderScope": "warn",
+        "useAltText": "warn",
+        "useButtonType": "warn",
+        "noAutofocus": "off"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 90,
+    "ignore": [
+      "**/*/generated-new.ts",
+      "**/*/generated-v2.ts"
+    ]
+  },
+  "javascript": {
+    "formatter": {
+      "enabled": true,
+      "jsxQuoteStyle": "single",
+      "semicolons": "asNeeded",
+      "quoteStyle": "single"
+    }
+  }
+}
