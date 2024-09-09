@@ -1,0 +1,31 @@
+{
+  "name": "@stocker/core",
+  "devDependencies": {
+    "@stocker/typescript-config": "*"
+  },
+  "exports": {
+    "./entities": "./src/domain/entities/index.ts",
+    "./structs": "./src/domain/structs/index.ts",
+    "./interfaces": "./src/interfaces/index.ts",
+    "./dtos": "./src/dtos/index.ts",
+    "./types": "./src/types/index.ts",
+    "./constants": "./src/constants/index.ts",
+    "./responses": "./src/responses/index.ts",
+    "./use-cases": "./src/use-cases/index.ts",
+    "./libs": "./src/libs/index.ts",
+    "./errors": "./src/errors/index.ts"
+  },
+  "imports": {
+    "#domain/entities": "./src/domain/entities/index.ts",
+    "#dtos": "./src/dtos/index.ts",
+    "#types": "./src/types/index.ts",
+    "#constants": "./src/constants/index.ts",
+    "#responses": "./src/responses/index.ts",
+    "#libs": "./src/libs/index.ts",
+    "#errors": "./src/errors/index.ts",
+    "#interfaces/handlers": "./src/interfaces/handlers/index.ts",
+    "#interfaces/repositories": "./src/interfaces/repositories/index.ts",
+    "#interfaces/providers": "./src/interfaces/providers/index.ts",
+    "#interfaces/services": "./src/interfaces/services/index.ts"
+  }
+}
