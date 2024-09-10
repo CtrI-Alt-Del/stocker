@@ -8,6 +8,7 @@
     "start": "node index.ts"
   },
   "dependencies": {
+    "@stocker/core": "*",
     "@prisma/client": "^5.19.1",
     "fastify": "^4.28.1"
   },
