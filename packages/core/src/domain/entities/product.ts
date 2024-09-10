@@ -16,6 +16,7 @@ type ProductProps = {
   uom: string
   code: string
   minimumStock: number
+  updatedProps: Partial<ProductDto> | null
   batches: Batch[]
 }
 
@@ -37,9 +38,22 @@ export class Product extends Entity<ProductProps> {
         code: dto.code,
         minimumStock: dto.minimumStock,
         batches: dto.batches.map(Batch.create),
+        updatedProps: null
       },
       dto.id,
     )
+  }
+
+  update(partialDto: Partial<ProductDto>) {
+    for ([prop, value] of Object.entries(partialDto)) {
+      if (this[prop] !== value) {
+        this.props.updatedProps[prop] = value
+      }
+    } 
+  }
+
+  get updatedProps() {
+    return this.props.updatedProps
   }
 
   get stock(): number {

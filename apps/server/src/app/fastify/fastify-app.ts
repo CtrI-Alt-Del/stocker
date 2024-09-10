@@ -17,7 +17,7 @@ export class FastifyApp implements IServerApp {
     this.app
       .listen({ port: ENV.port })
       .then(() => {
-        console.log(`📟 Server running on port: ${ENV.port}`)
+        console.log(`📟 Server running on port: http://localhost:${ENV.port}`)
       })
       .catch((error) => {
         console.error(`❌ Error on start server: ${error}`)
@@ -25,7 +25,7 @@ export class FastifyApp implements IServerApp {
       })
   }
 
-  stopServer() {}
+  stopServer() { }
 
   private registerRoutes() {
     this.app.register(ProductsRoutes, { prefix: '/products' })
