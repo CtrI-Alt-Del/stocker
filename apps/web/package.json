@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@stocker/core": "*",
     "@nextui-org/react": "^2.4.6",
     "autoprefixer": "^10.4.20",
     "framer-motion": "^11.5.4",
@@ -19,6 +20,7 @@
     "tailwindcss": "^3.4.10"
   },
   "devDependencies": {
+    "@stocker/typescript-config": "*",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
