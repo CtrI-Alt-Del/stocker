@@ -66,6 +66,23 @@ export const NextApiClient = (): IApiClient => {
       })
     },
 
+    async delete(url: string) {
+      const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
+        method: 'DELETE',
+        headers,
+      })
+      const data = await response.json()
+
+      if (!response.ok) {
+        return handleApiError(data, response.status)
+      }
+
+      return new ApiResponse({
+        body: data,
+        statusCode: response.status,
+      })
+    },
+
     setBaseUrl(url: string) {
       baseUrl = url
     },
