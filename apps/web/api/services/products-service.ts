@@ -4,7 +4,7 @@ import type { IApiClient, IProductsService } from '@stocker/core/interfaces'
 export const ProductsService = (apiClient: IApiClient): IProductsService => {
   return {
     async registerProduct(product: Product) {
-      return await apiClient.get('/', product.dto)
+      return await apiClient.post('/', product.dto)
     },
   }
 }
