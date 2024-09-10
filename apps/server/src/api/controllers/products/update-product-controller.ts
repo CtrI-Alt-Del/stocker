@@ -1,5 +1,5 @@
-import { ProductDto } from '@stocker/core/dtos'
-import { IHttp } from '@stocker/core/interfaces'
+import type { ProductDto } from '@stocker/core/dtos'
+import type { IHttp } from '@stocker/core/interfaces'
 import { UpdateProductUseCase } from '@stocker/core/use-cases'
 
 type RouteParams = {
@@ -14,6 +14,5 @@ export class UpdateProductController {
     await useCase.execute({ productId, productDto })
 
     return http.send(null)
-
   }
 }
