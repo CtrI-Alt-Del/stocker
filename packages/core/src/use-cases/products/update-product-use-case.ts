@@ -1,6 +1,6 @@
-import { ProductDto } from "#dtos"
-import { Product } from "#domain/entities"
-import { IProductsRepository } from "../../interfaces/repositories/products-repository"
+import type { ProductDto } from '#dtos'
+import type { IProductsRepository } from '#interfaces/repositories'
+import { NotFoundError } from '#errors'
 
 type Request = {
   productDto: Partial<ProductDto>
@@ -12,13 +12,13 @@ export class UpdateProductUseCase {
   constructor(productsRepository: IProductsRepository) {
     this.productsRepository = productsRepository
   }
-  
-  async execute({productId, productDto}: Request) {
+
+  async execute({ productId, productDto }: Request) {
     const product = await this.productsRepository.findById(productId)
     if (!product) {
-      throw new Error('Produto não encontrado')
+      throw new NotFoundError('Produto não encontrado')
     }
-    product.update(productDto)
-    await this.productsRepository.update(product)
+    const updatedProduct = product.update(productDto)
+    await this.productsRepository.update(updatedProduct)
   }
 }

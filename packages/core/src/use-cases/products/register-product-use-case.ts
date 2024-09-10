@@ -15,9 +15,6 @@ export class RegisterProductUseCase {
 
   async execute({ productDto }: Request) {
     const product = Product.create(productDto)
-
-    const addedProduct = await this.productsRepository.add(product)
-
-    return addedProduct
+    await this.productsRepository.add(product)
   }
 }
