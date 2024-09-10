@@ -5,12 +5,14 @@ import { ServerProvider } from './server-provider'
 
 type RootLayoutProps = { children: ReactNode }
 
-export async function RootLayout({ children }: RootLayoutProps) {
+export const RootLayout = async ({ children }: RootLayoutProps) => {
   return (
-    <body className={`min-h-screen w-full bg-slate-100`}>
-      <ClientProvider>
-        <ServerProvider>{children}</ServerProvider>
-      </ClientProvider>
-    </body>
+    <html lang='pt-BR'>
+      <body className={`min-h-screen w-full bg-slate-100`}>
+        <ClientProvider>
+          <ServerProvider>{children}</ServerProvider>
+        </ClientProvider>
+      </body>
+    </html>
   )
 }
