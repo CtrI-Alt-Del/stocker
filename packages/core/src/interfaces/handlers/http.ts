@@ -1,7 +1,7 @@
-export interface IHttp<Body = void, RouteParams = void, QueryParams = void> {
-  body: Body
-  routeParams: RouteParams
-  queryParams: QueryParams
+export interface IHttp {
+  getBody<Body>(): Body
+  getRouteParams<RouteParams>(): RouteParams
+  getQueryParams<QueryParams>(): QueryParams
   send(response: unknown, statusCode?: number): unknown
   redirect(route: string): unknown
 }
