@@ -5,3 +5,104 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+
+model Product {
+  id            String    @id @default(uuid())
+  name          String
+  description   String
+  image         String
+  cost_price    BigInt
+  selling_price BigInt
+  brand         String
+  height        BigInt
+  length        BigInt
+  weight        BigInt
+  width         BigInt
+  uom           String
+  code          String
+  minimum_stock BigInt
+  category_id   String?
+  company_id    String
+
+  Category      Category? @relation(fields: [category_id], references: [id])
+  Company       Company   @relation(fields: [company_id], references: [id])
+  batches       Batch[]
+  inventoryMovements InventoryMovement[]
+}
+
+model Batch {
+  id            String   @id @default(uuid())
+  code          String
+  expiration_date DateTime?
+  quantity      BigInt
+  product_id    String
+
+  Product       Product  @relation(fields: [product_id], references: [id])
+}
+
+model InventoryMovement {
+  id            String   @id @default(uuid())
+  type          String   
+  quantity      BigInt
+  product_id    String    
+  user_id       String    
+  movemented_at DateTime
+
+  Product       Product  @relation(fields: [product_id], references: [id])
+  User          User     @relation(fields: [user_id], references: [id])
+}
+
+model User {
+  id            String   @id @default(uuid())
+  email         String
+  role          String
+  name          String
+  company_id    String?
+
+  Company       Company? @relation(fields: [company_id], references: [id])
+  inventoryMovements InventoryMovement[]
+}
+
+model Company {
+  id            String   @id @default(uuid())
+  name          String
+
+  users         User[]
+  products      Product[]
+  locations     Location[]
+  suppliers     Supplier[]
+  categories    Category[]
+}
+
+model Category {
+  id            String   @id @default(uuid())
+  name          String
+  parent_category_id String?
+  company_id    String
+
+  parentCategory Category? @relation("CategoryParent", fields: [parent_category_id], references: [id])
+  subCategories  Category[] @relation("CategoryParent")
+  products       Product[]
+  company        Company   @relation(fields: [company_id], references: [id])
+}
+
+model Supplier {
+  id            String   @id @default(uuid())
+  name          String
+  email         String
+  company_id    String
+
+  Company       Company  @relation(fields: [company_id], references: [id])
+}
+
+model Location {
+  id            String   @id @default(uuid())
+  name          String
+  parent_location_id String?
+  company_id    String
+
+  ParentLocation Location? @relation("LocationParent", fields: [parent_location_id], references: [id])
+  subLocations   Location[] @relation("LocationParent")
+  company        Company    @relation(fields: [company_id], references: [id])
+}
