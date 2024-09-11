@@ -1,6 +1,6 @@
-import type { ProductDto } from '#dtos'
-import type { IProductsRepository } from '#interfaces/repositories'
-import { NotFoundError } from '#errors'
+import type { ProductDto } from '../../dtos'
+import type { IProductsRepository } from '../../interfaces'
+import { NotFoundError } from '../../errors'
 
 type Request = {
   productDto: Partial<ProductDto>
