@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="" alt="Stocker" width="500" height="200" />
+  <img src="documentation/images/stockerlogo.jpeg" alt="Stocker" width="500" height="200" />
 </div>
 
 ---
@@ -35,16 +35,45 @@ Stocker é uma aplicação que visa facilitar o gerenciamento de estoque, oferec
     </td>
     <td align="center" width="96">
       <a target="_blank" href="https://tailwindcss.com/">
-        <img src="documentation/images/tailwindcss.jpg" width="48" height="48" alt="TypeScript" />
+        <img src="documentation/images/Tailwind CSS.svg" width="48" height="48" alt="TailwindCSS" />
       </a>
       <span>TailwindCSS</span>
-    </td>
     </td>
     <td align="center" width="96">
       <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">
         <img src="documentation/images/javascript.svg" width="48" height="48" alt="JavaScript" />
       </a>
       <span>JavaScript</span>
+    </td>
+    <td align="center" width="96">
+      <a href="https://www.typescriptlang.org/docs/">
+        <img src="documentation/images/TypeScript.svg" width="48" height="48" alt="TypeScript" />
+      </a>
+      <span>TypeScript</span>
+    </td>
+    <td align="center" width="96">
+      <a href="https://react.dev">
+        <img src="documentation/images/React.svg" width="48" height="48" alt="React" />
+      </a>
+      <span>React</span>
+    </td>
+    <td align="center" width="96">
+      <a href="https://nodejs.org/docs/latest/api/">
+        <img src="documentation/images/Node.js.svg" width="48" height="48" alt="NodeJS" />
+      </a>
+      <span>NodeJS</span>
+    </td>
+    <td align="center" width="96">
+      <a href="https://nextjs.org/docs">
+        <img src="documentation/images/Next.js.svg" width="48" height="48" alt="NextJS" />
+      </a>
+      <span>NextJS</span>
+    </td>
+    <td align="center" width="96">
+      <a href="https://fastify.dev/docs/latest/">
+        <img src="documentation/images/Fastify.svg" width="48" height="48" alt="Fastify" />
+      </a>
+      <span>Fastify</span>
     </td>
   </tr>
 </table>

@@ -1,4 +1,4 @@
-import type { Product } from '#domain/entities'
+import type { Product } from '../../domain/entities'
 
 export interface IProductsRepository {
   findById(productId: string): Promise<Product>
