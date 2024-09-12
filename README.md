@@ -17,7 +17,7 @@ Stocker é uma aplicação que visa facilitar o gerenciamento de estoque, oferec
   <tr>
     <td align="center" width="96">
       <a target="_blank" href="https://www.figma.com/">
-        <img src="documentation/images/figma.svg" width="48" height="48" alt="Figma" />
+        <img src="documentation/images/Figma.svg" width="48" height="48" alt="Figma" />
       </a>
       <span>Figma</span>
     </td>
@@ -29,7 +29,7 @@ Stocker é uma aplicação que visa facilitar o gerenciamento de estoque, oferec
     </td>
     <td align="center" width="96">
       <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">
-        <img src="documentation/images/javascript.svg" width="48" height="48" alt="JavaScript" />
+        <img src="documentation/images/JavaScript.svg" width="48" height="48" alt="JavaScript" />
       </a>
       <span>JavaScript</span>
     </td>
