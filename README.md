@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="documentation/images/stockerlogo.jpeg" alt="Stocker" width="500" height="200" />
+  <img src="documentation/images/stockerlogo.jpeg" alt="Stocker" width="500" height="330" />
 </div>
 
 ---
@@ -15,18 +15,6 @@ Stocker é uma aplicação que visa facilitar o gerenciamento de estoque, oferec
 <div align="center">
   <table>
   <tr>
-    <td align="center" width="96">
-      <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/HTML">
-        <img src="documentation/images/html5.svg" width="48" height="48" alt="HTML" />
-      </a>
-      <span>HTML</span>
-    </td>
-    <td align="center" width="96">
-      <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/CSS">
-        <img src="documentation/images/css3.svg" width="48" height="48" alt="CSS" />
-      </a>
-      <span>CSS</span>
-    </td>
     <td align="center" width="96">
       <a target="_blank" href="https://www.figma.com/">
         <img src="documentation/images/figma.svg" width="48" height="48" alt="Figma" />
