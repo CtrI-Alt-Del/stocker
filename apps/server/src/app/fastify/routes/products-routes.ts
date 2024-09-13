@@ -5,6 +5,7 @@ import { RegisterProductController } from '@/api/controllers/products'
 import { ListProductController } from '@/api/controllers/products'
 
 import { FastifyHttp } from '../fastify-http'
+import { DeleteProductController } from '@/api/controllers/products/delete-product-controller'
 
 export const ProductsRoutes = async (app: FastifyInstance) => {
   const registerProductController = new RegisterProductController()
@@ -22,9 +23,11 @@ export const ProductsRoutes = async (app: FastifyInstance) => {
     return listProductController.handle(http)
   })
 
+  const deleteProductController = new DeleteProductController()
+
   router.delete('/:productId', async (request, response) => {
     const http = new FastifyHttp(request, response)
-    return registerProductController.handle(http)
+    return deleteProductController.handle(http)
   })
 
 }
