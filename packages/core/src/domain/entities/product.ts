@@ -1,3 +1,4 @@
+import { ConflictError } from '#errors'
 import type { ProductDto } from '../../dtos'
 import { Entity } from '../abstracts'
 import { Batch } from './batch'
@@ -38,7 +39,7 @@ export class Product extends Entity<ProductProps> {
         code: dto.code,
         minimumStock: dto.minimumStock,
         batches: dto.batches.map(Batch.create),
-        batchesWithoutStockIds: []
+        batchesWithoutStockIds: [],
       },
       dto.id,
     )
@@ -48,20 +49,39 @@ export class Product extends Entity<ProductProps> {
     return Product.create({ ...this.dto, ...partialDto })
   }
 
-  reduceStock(stock: number) {
+  reduceStock(itemsCount: number): Batch[] {
+    let stock = itemsCount
     if (stock > this.currentStock) {
-      
+      throw new ConflictError('Estoque insuficiente')
     }
 
-    for (const stock of this.props.batches)
+    const updatedBatches: Batch[] = []
+
+    for (const batch of this.props.batches) {
+      const batchItemsCount = batch.itemsCount
+      batch.reduceItemsCount(stock)
+      stock -= batchItemsCount
+      updatedBatches.push(batch)
+      if (!stock) break
+    }
+
+    return updatedBatches
   }
 
   get currentStock(): number {
-    return this.props.batches.reduce((stock, batch) => stock + batch.itemsQuantity, 0)
+    return this.props.batches.reduce((stock, batch) => stock + batch.itemsCount, 0)
   }
 
   get batches(): Batch[] {
     return this.props.batches
+  }
+
+  get updatedBatches(): Batch[] {
+    return this.props.batches.filter((batch) => batch.hasUpdatedStock)
+  }
+
+  get batchesWithoutStock(): Batch[] {
+    return this.props.batches.filter((batch) => !batch.hasItems)
   }
 
   get dto(): ProductDto {

@@ -1,5 +1,4 @@
 import type { BatchDto } from './batch-dto'
-import type { InventoryMovementDto } from './inventory-movement-dto'
 
 export type ProductDto = {
   id?: string
