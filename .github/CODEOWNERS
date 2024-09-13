@@ -1,0 +1,8 @@
+# Default reviewers/codeowners for all code changes
+* @0thigs @JohnPetros
+
+# reviewers/codeowners for backend
+src/apps/web @JohnPetros
+
+# reviewers/codeowners for frontend
+src/apps/server @0thigs
