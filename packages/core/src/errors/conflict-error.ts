@@ -1,7 +1,7 @@
 import { AppError } from './app-error'
 
-export class AlreadyExistsError extends AppError {
+export class ConflictError extends AppError {
   constructor(message?: string) {
-    super('Already Exists Error', message)
+    super('Conflict Error', message)
   }
 }
