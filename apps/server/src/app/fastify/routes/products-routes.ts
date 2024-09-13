@@ -8,12 +8,12 @@ export const ProductsRoutes = async (app: FastifyInstance) => {
   const registerProductController = new RegisterProductController()
   const router = app.withTypeProvider<ZodTypeProvider>()
 
-  router.get('/', async (request, response) => {
-    const http = new FastifyHttp(request, response)
+  router.get('/', async (request, reply) => {
+    const http = new FastifyHttp(request, reply)
     return registerProductController.handle(http)
   })
-  router.delete('/:productId', async (request, response) => {
-    const http = new FastifyHttp(request, response)
+  router.delete('/:productId', async (request, reply) => {
+    const http = new FastifyHttp(request, reply)
     return registerProductController.handle(http)
   })
 }

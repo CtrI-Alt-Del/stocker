@@ -1,7 +1,6 @@
 import type { ProductDto } from '../../dtos'
 import { Entity } from '../abstracts'
 import { Batch } from './batch'
-import { InventoryMovement } from './inventory-movement'
 
 type ProductProps = {
   name: string
@@ -18,7 +17,7 @@ type ProductProps = {
   code: string
   minimumStock: number
   batches: Batch[]
-  inventoryMovements: InventoryMovement[]
+  batchesWithoutStockIds: string[]
 }
 
 export class Product extends Entity<ProductProps> {
@@ -39,7 +38,7 @@ export class Product extends Entity<ProductProps> {
         code: dto.code,
         minimumStock: dto.minimumStock,
         batches: dto.batches.map(Batch.create),
-        inventoryMovements: dto.inventoryMovements.map(InventoryMovement.create),
+        batchesWithoutStockIds: []
       },
       dto.id,
     )
@@ -47,6 +46,14 @@ export class Product extends Entity<ProductProps> {
 
   update(partialDto: Partial<ProductDto>): Product {
     return Product.create({ ...this.dto, ...partialDto })
+  }
+
+  reduceStock(stock: number) {
+    if (stock > this.currentStock) {
+      
+    }
+
+    for (const stock of this.props.batches)
   }
 
   get currentStock(): number {
@@ -73,9 +80,6 @@ export class Product extends Entity<ProductProps> {
       uom: this.props.uom,
       code: this.props.code,
       minimumStock: this.props.minimumStock,
-      inventoryMovements: this.props.inventoryMovements.map(
-        (inventoryMovement) => inventoryMovement.dto,
-      ),
       batches: this.props.batches.map((batch) => batch.dto),
     }
   }

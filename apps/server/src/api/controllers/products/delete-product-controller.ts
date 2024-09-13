@@ -7,9 +7,15 @@ type RouteParams = {
   productId: string
 }
 
+type Body = {
+  name: string
+  price: number
+}
+
 export class DeleteProductController {
   async handle(http: IHttp) {
     const { productId } = http.getRouteParams<RouteParams>()
+
     const useCase = new DeleteProductUseCase(productsRepository)
     await useCase.execute({
       productId,

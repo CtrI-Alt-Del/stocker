@@ -1,4 +1,4 @@
-import type { Product } from '@stocker/core/entities'
+import { Product } from '@stocker/core/entities'
 import type { IProductsRepository } from '@stocker/core/interfaces'
 
 export class PrismaProductsRepository implements IProductsRepository {
@@ -6,7 +6,6 @@ export class PrismaProductsRepository implements IProductsRepository {
     throw new Error('Method not implemented')
   }
   async findById(productId: string): Promise<Product> {
-    throw new Error('Method not implemented.')
   }
   async findMany(page: number): Promise<Product[]> {
     throw new Error('Method not implemented.')

@@ -17,5 +17,4 @@ export type ProductDto = {
   code: string
   minimumStock: number
   batches: BatchDto[]
-  inventoryMovements: InventoryMovementDto[]
 }
