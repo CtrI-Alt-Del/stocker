@@ -1,6 +1,6 @@
 import { productsRepository } from '@/database/prisma/repositories'
-import type { IHttp } from '@stocker/core/src/interfaces'
-import { GetProductUseCase } from '@stocker/core/src/use-cases'
+import type { IHttp } from '@stocker/core/interfaces'
+import { GetProductUseCase } from '@stocker/core/use-cases'
 
 type RouteParams = {
     productId: string

@@ -1,6 +1,5 @@
 import type { IHttp } from '@stocker/core/interfaces'
 import { DeleteProductUseCase } from '@stocker/core/use-cases'
-
 import { productsRepository } from '@/database/prisma/repositories'
 
 type RouteParams = {
