@@ -15,11 +15,6 @@ export const ProductsRoutes = async (app: FastifyInstance) => {
 
   router.get('/', async (request, response) => {
     const http = new FastifyHttp(request, response)
-    return registerProductController.handle(http)
-  })
-
-  router.get('/', async (request, response) => {
-    const http = new FastifyHttp(request, response)
     return listProductController.handle(http)
   })
 
@@ -29,5 +24,4 @@ export const ProductsRoutes = async (app: FastifyInstance) => {
     const http = new FastifyHttp(request, response)
     return deleteProductController.handle(http)
   })
-
 }

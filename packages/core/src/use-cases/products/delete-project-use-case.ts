@@ -10,6 +10,7 @@ export class DeleteProductUseCase {
     constructor(productsRepository: IProductsRepository) {
         this.productsRepository = productsRepository
     }
+    
     async execute({ productId }: Request) {
         await this.productsRepository.delete(productId)
     }

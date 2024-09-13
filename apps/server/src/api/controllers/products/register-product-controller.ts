@@ -1,7 +1,7 @@
-import type { IHttp } from '@stocker/core/src/interfaces'
-import type { ProductDto } from '@stocker/core/src/dtos'
-import { RegisterProductUseCase } from '@stocker/core/src/use-cases'
-import { HTTP_STATUS_CODE } from '@stocker/core/src/constants'
+import type { IHttp } from '@stocker/core/interfaces'
+import type { ProductDto } from '@stocker/core/dtos'
+import { RegisterProductUseCase } from '@stocker/core/use-cases'
+import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 
 import { productsRepository } from '@/database/prisma/repositories'
 

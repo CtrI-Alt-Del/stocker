@@ -4,7 +4,7 @@ import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 import type { IHttp } from '@stocker/core/interfaces'
 
 export class FastifyHttp
-  implements IHttp
+  implements IHtttp
 {
   constructor(
     private readonly request: FastifyRequest,

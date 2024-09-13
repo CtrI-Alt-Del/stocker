@@ -6,5 +6,5 @@ export interface IProductsRepository {
   count(): Promise<number>
   add(product: Product): Promise<void>
   update(product: Product): Promise<void>
-  delete(idProduct: string): Promise<void>
+  delete(productId: string): Promise<void>
 }
