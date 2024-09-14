@@ -1,16 +1,11 @@
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
-//THE DATABASE SCHEMA WILL BE HERE👇
-
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
+
+//THE DATABASE SCHEMA WILL BE HERE👇
