@@ -4,7 +4,7 @@ import type { IServerApp } from '@stocker/core/interfaces'
 import { ENV } from '../../constants'
 import { ProductsRoutes } from './routes/products-routes'
 import {
-  AlreadyExistsError,
+  // AlreadyExistsError,
   AppError,
   AuthError,
   NotFoundError,
@@ -34,7 +34,7 @@ export class FastifyApp implements IServerApp {
       })
   }
 
-  stopServer() {}
+  stopServer() { }
 
   private setErrorHandler() {
     this.app.setErrorHandler((error, _, reply) => {
@@ -55,8 +55,8 @@ export class FastifyApp implements IServerApp {
         if (error instanceof NotFoundError)
           return reply.status(HTTP_STATUS_CODE.notFound).send(response)
 
-        if (error instanceof AlreadyExistsError)
-          return reply.status(HTTP_STATUS_CODE.conflict).send(response)
+        // if (error instanceof AlreadyExistsError)
+        //   return reply.status(HTTP_STATUS_CODE.conflict).send(response)
 
         if (error instanceof ValidationError)
           return reply.status(HTTP_STATUS_CODE.badRequest).send(response)
