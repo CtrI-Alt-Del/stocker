@@ -17,5 +17,8 @@
     "@types/node": "^20",
     "prisma": "^5.19.1",
     "typescript": "^5"
+  },
+  "prisma": {
+    "schema": "./src/database/prisma/schema.prisma"
   }
 }
