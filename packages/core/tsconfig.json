@@ -1,0 +1,3 @@
+{
+  "extends": "@stocker/typescript-config/base"
+}
