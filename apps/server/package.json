@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "tsx watch --env-file .env src",
     "build": "echo 'No build required for server'",
-    "start": "node index.ts"
+    "start": "node index.ts",
+    "db:seed": "prisma db seed"
   },
   "dependencies": {
     "@prisma/client": "^5.19.1",
@@ -20,6 +21,7 @@
     "typescript": "^5"
   },
   "prisma": {
-    "schema": "./src/database/prisma/schema.prisma"
+    "schema": "src/database/prisma/schema.prisma",
+    "seed": "tsx src/database/prisma/seed.ts"
   }
 }
