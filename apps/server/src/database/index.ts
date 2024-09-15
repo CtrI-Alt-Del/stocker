@@ -1,3 +1,3 @@
-import { PrismaProductsRepository } from './products-repository'
+import { PrismaProductsRepository } from './prisma/repositories'
 
 export const productsRepository = new PrismaProductsRepository()
