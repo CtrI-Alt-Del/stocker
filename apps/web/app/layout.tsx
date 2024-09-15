@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Providers } from './providers'
-import '../ui/styles/global.css'
+import '../ui/styles/globals.css'
 
 export const metadata: Metadata = {
   title: 'Stocker',
@@ -9,8 +9,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
-  return <RootLayout>{children}</RootLayout>
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <Providers>
+          {children}
+        </Providers>
+      </body>
+    </html>
+  )
 }

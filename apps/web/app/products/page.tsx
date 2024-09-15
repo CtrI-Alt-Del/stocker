@@ -9,3 +9,5 @@ type PageProps = {
 const Page = ({ params }: PageProps) => {
   return <ProductsPage />
 }
+
+export default Page
