@@ -5,15 +5,17 @@ export type ProductDto = {
   name: string
   description: string
   image: string
+  brand: string
   costPrice: number
   sellingPrice: number
-  brand: number
-  heigth: number
+  height: number
   length: number
   weight: number
   width: number
   uom: string
   code: string
   minimumStock: number
+  companyId: string
+  categoryId?: string | null
   batches: BatchDto[]
 }

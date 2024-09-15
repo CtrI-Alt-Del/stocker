@@ -1,16 +1,17 @@
 import Fastify, { type FastifyInstance } from 'fastify'
 
 import type { IServerApp } from '@stocker/core/interfaces'
-import { ENV } from '../../constants'
-import { ProductsRoutes } from './routes/products-routes'
 import {
-  // AlreadyExistsError,
   AppError,
   AuthError,
+  ConflictError,
   NotFoundError,
   ValidationError,
 } from '@stocker/core/errors'
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
+
+import { ENV } from '@/constants'
+import { ProductsRoutes } from './routes/products-routes'
 
 export class FastifyApp implements IServerApp {
   private readonly app: FastifyInstance
@@ -34,7 +35,7 @@ export class FastifyApp implements IServerApp {
       })
   }
 
-  stopServer() { }
+  stopServer() {}
 
   private setErrorHandler() {
     this.app.setErrorHandler((error, _, reply) => {
@@ -55,8 +56,8 @@ export class FastifyApp implements IServerApp {
         if (error instanceof NotFoundError)
           return reply.status(HTTP_STATUS_CODE.notFound).send(response)
 
-        // if (error instanceof AlreadyExistsError)
-        //   return reply.status(HTTP_STATUS_CODE.conflict).send(response)
+        if (error instanceof ConflictError)
+          return reply.status(HTTP_STATUS_CODE.conflict).send(response)
 
         if (error instanceof ValidationError)
           return reply.status(HTTP_STATUS_CODE.badRequest).send(response)

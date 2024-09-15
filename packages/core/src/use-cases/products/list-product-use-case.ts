@@ -1,5 +1,5 @@
 import type { IProductsRepository } from '../../interfaces'
-import { NotFoundError } from '../../errors'
+import { PaginationResponse } from '#responses'
 
 type Request = {
   page: number
@@ -13,10 +13,12 @@ export class ListProductsUseCase {
 
   async execute({ page }: Request) {
     const products = await this.productsRepository.findMany(page)
-    if (!products) {
-      throw new NotFoundError('Produtos não encontrados')
-    }
 
-    return products
+    const productsCount = await this.productsRepository.count()
+
+    return new PaginationResponse({
+      items: products.map((product) => product.dto),
+      itemsCount: productsCount,
+    })
   }
 }

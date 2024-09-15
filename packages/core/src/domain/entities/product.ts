@@ -9,16 +9,18 @@ type ProductProps = {
   image: string
   costPrice: number
   sellingPrice: number
-  brand: number
-  heigth: number
+  brand: string
+  height: number
   length: number
   weight: number
   width: number
   uom: string
   code: string
+  categoryId?: string | null
+  companyId: string
   minimumStock: number
-  batches: Batch[]
   batchesWithoutStockIds: string[]
+  batches: Batch[]
 }
 
 export class Product extends Entity<ProductProps> {
@@ -31,10 +33,12 @@ export class Product extends Entity<ProductProps> {
         costPrice: dto.costPrice,
         sellingPrice: dto.sellingPrice,
         brand: dto.brand,
-        heigth: dto.heigth,
+        height: dto.height,
         length: dto.length,
         weight: dto.weight,
         width: dto.width,
+        categoryId: dto.categoryId,
+        companyId: dto.companyId,
         uom: dto.uom,
         code: dto.code,
         minimumStock: dto.minimumStock,
@@ -93,13 +97,15 @@ export class Product extends Entity<ProductProps> {
       costPrice: this.props.costPrice,
       sellingPrice: this.props.sellingPrice,
       brand: this.props.brand,
-      heigth: this.props.heigth,
+      height: this.props.height,
       length: this.props.length,
       weight: this.props.weight,
       width: this.props.width,
       uom: this.props.uom,
       code: this.props.code,
       minimumStock: this.props.minimumStock,
+      categoryId: this.props.categoryId,
+      companyId: this.props.companyId,
       batches: this.props.batches.map((batch) => batch.dto),
     }
   }

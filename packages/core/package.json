@@ -13,7 +13,8 @@
     "./responses": "./src/responses/index.ts",
     "./use-cases": "./src/use-cases/index.ts",
     "./libs": "./src/libs/index.ts",
-    "./errors": "./src/errors/index.ts"
+    "./errors": "./src/errors/index.ts",
+    "./fakers": "./__tests__/fakers/index.ts"
   },
   "imports": {
     "#domain/entities": "./src/domain/entities/index.ts",

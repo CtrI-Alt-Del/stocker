@@ -1,14 +1,14 @@
 type PaginationResponseProps<Item> = {
   items: Item[]
-  totalItems: number
+  itemsCount: number
 }
 
 export class PaginationResponse<Item> {
   readonly items: Item[]
-  readonly totalItems: number
+  readonly itemsCount: number
 
-  constructor({ items, totalItems }: PaginationResponseProps<Item>) {
+  constructor({ items, itemsCount }: PaginationResponseProps<Item>) {
     this.items = items
-    this.totalItems = totalItems
+    this.itemsCount = itemsCount
   }
 }

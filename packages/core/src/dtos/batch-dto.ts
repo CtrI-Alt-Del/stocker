@@ -3,4 +3,5 @@ export type BatchDto = {
   code: string
   expirationDate: Date
   itemsCount: number
+  productId: string
 }

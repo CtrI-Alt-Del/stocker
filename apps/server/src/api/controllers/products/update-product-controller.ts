@@ -15,6 +15,6 @@ export class UpdateProductController {
     const productDto = http.getBody<Partial<ProductDto>>()
     await useCase.execute({ productId, productDto })
 
-    return http.send(null)
+    return http.send({ productId })
   }
 }

@@ -5,5 +5,5 @@ export type InventoryMovementDto = {
   responsibleId: string
   productId: string
   companyId: string
-  movementedAt: Date
+  registeredAt: Date
 }

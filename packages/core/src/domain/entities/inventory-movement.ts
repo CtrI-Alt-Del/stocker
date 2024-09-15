@@ -7,10 +7,10 @@ type MovementType = 'inbound' | 'outbound'
 type MovementProps = {
   movementType: MovementType
   itemsQuantity: number
-  movementedAt: Date
   responsibleId: string
   productId: string
   companyId: string
+  registeredAt: Date
 }
 
 export class InventoryMovement extends Entity<MovementProps> {
@@ -21,14 +21,17 @@ export class InventoryMovement extends Entity<MovementProps> {
       throw new ValidationError(`${movementType} não é um tipo de movimento válido`)
     }
 
-    return new InventoryMovement({
-      movementType,
-      itemsQuantity: dto.itemsQuantity,
-      companyId: dto.companyId,
-      responsibleId: dto.responsibleId,
-      productId: dto.productId,
-      movementedAt: new Date(),
-    })
+    return new InventoryMovement(
+      {
+        movementType,
+        itemsQuantity: dto.itemsQuantity,
+        companyId: dto.companyId,
+        responsibleId: dto.responsibleId,
+        productId: dto.productId,
+        registeredAt: new Date(),
+      },
+      dto.id,
+    )
   }
 
   static isMovementType(movementType: string): movementType is MovementType {
@@ -43,7 +46,7 @@ export class InventoryMovement extends Entity<MovementProps> {
       companyId: this.props.companyId,
       responsibleId: this.props.responsibleId,
       productId: this.props.productId,
-      movementedAt: this.props.movementedAt,
+      registeredAt: this.props.registeredAt,
     }
   }
 }

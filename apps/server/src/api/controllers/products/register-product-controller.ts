@@ -9,8 +9,8 @@ export class RegisterProductController {
   async handle(http: IHttp) {
     const productDto = http.getBody<ProductDto>()
     const useCase = new RegisterProductUseCase(productsRepository)
-    await useCase.execute({ productDto })
+    const productId = await useCase.execute({ productDto })
 
-    return http.send(null, HTTP_STATUS_CODE.created)
+    return http.send({ productId }, HTTP_STATUS_CODE.created)
   }
 }

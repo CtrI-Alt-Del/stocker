@@ -5,17 +5,22 @@ type BatchProps = {
   code: string
   expirationDate: Date
   itemsCount: number
+  productId: string
   hasUpdatedStock: boolean
 }
 
 export class Batch extends Entity<BatchProps> {
   static create(dto: BatchDto) {
-    return new Batch({
-      code: dto.code,
-      expirationDate: dto.expirationDate,
-      itemsCount: dto.itemsCount,
-      hasUpdatedStock: false,
-    })
+    return new Batch(
+      {
+        code: dto.code,
+        expirationDate: dto.expirationDate,
+        itemsCount: dto.itemsCount,
+        productId: dto.productId,
+        hasUpdatedStock: false,
+      },
+      dto.id,
+    )
   }
 
   reduceItemsCount(itemsCount: number): void {
@@ -49,6 +54,7 @@ export class Batch extends Entity<BatchProps> {
       code: this.props.code,
       expirationDate: this.props.expirationDate,
       itemsCount: this.itemsCount,
+      productId: this.props.productId,
     }
   }
 }
