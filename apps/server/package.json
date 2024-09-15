@@ -8,14 +8,15 @@
     "start": "node index.ts"
   },
   "dependencies": {
-    "@stocker/core": "*",
     "@prisma/client": "^5.19.1",
+    "@stocker/core": "*",
     "fastify": "^4.28.1"
   },
   "devDependencies": {
     "@stocker/typescript-config": "*",
     "@types/node": "^20",
     "prisma": "^5.19.1",
+    "tsx": "^4.19.1",
     "typescript": "^5"
   },
   "prisma": {
