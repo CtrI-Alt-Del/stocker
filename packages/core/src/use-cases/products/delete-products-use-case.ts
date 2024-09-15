@@ -1,17 +1,17 @@
 import type { IProductsRepository } from '#interfaces/repositories'
 
 type Request = {
-  productId: string
+  productsIds: string[]
 }
 
-export class DeleteProductUseCase {
+export class DeleteProductsUseCase {
   private readonly productsRepository: IProductsRepository
 
   constructor(productsRepository: IProductsRepository) {
     this.productsRepository = productsRepository
   }
 
-  async execute({ productId }: Request) {
-    await this.productsRepository.delete(productId)
+  async execute({ productsIds }: Request) {
+    await this.productsRepository.deleteMany(productsIds)
   }
 }

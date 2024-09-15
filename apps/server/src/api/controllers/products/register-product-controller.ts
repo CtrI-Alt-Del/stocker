@@ -3,7 +3,7 @@ import type { ProductDto } from '@stocker/core/dtos'
 import { RegisterProductUseCase } from '@stocker/core/use-cases'
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 
-import { productsRepository } from '@/database/prisma/repositories'
+import { productsRepository } from '@/database'
 
 export class RegisterProductController {
   async handle(http: IHttp) {
