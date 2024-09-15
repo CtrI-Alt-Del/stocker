@@ -1,4 +1,4 @@
-import { IProductsRepository } from '../../interfaces'
+import type { IProductsRepository } from '../../interfaces'
 import { NotFoundError } from '../../errors'
 
 type Request = {
@@ -10,7 +10,7 @@ export class ListProductsUseCase {
   constructor(productsRepository: IProductsRepository) {
     this.productsRepository = productsRepository
   }
-  
+
   async execute({ page }: Request) {
     const products = await this.productsRepository.findMany(page)
     if (!products) {
