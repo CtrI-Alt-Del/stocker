@@ -2,7 +2,7 @@
   "name": "stocker",
   "private": true,
   "scripts": {
-    "build": "turbo build",
+    "build": "turbo build --filter=@stocker/web",
     "dev": "turbo dev"
   },
   "devDependencies": {
