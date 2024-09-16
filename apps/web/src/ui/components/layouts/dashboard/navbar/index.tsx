@@ -17,11 +17,9 @@ import { useNavigation } from '@/ui/hooks'
 import { ROUTES } from '@/constants'
 import { Logo } from '@/ui/components/commons/logo'
 import { NavbarUser } from './navbar-user'
-import { useNavbar } from './use-navbar'
 
 export const Navbar = () => {
   const { currentRoute } = useNavigation()
-  const { isMenuOpen } = useNavbar()
 
   return (
     <NavbarRoot
