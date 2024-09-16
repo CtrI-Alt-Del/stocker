@@ -30,10 +30,6 @@ export const Navbar = () => {
         wrapper: 'block h-full p-0',
       }}
     >
-      <NavbarMenuToggle
-        aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
-        className='sm:hidden'
-      />
       <NavbarBrand className='p-0'>
         <Logo />
       </NavbarBrand>

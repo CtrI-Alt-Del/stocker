@@ -14,3 +14,5 @@ export type IconName =
   | 'stock'
   | 'notification'
   | 'ellipses'
+  | 'menu-hamburguer'
+  | 'close'

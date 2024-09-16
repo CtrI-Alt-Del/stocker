@@ -14,7 +14,9 @@ import {
   Container,
   ScanBarcode,
   Bell,
+  Menu,
   EllipsisVertical,
+  X,
   type LucideProps,
 } from 'lucide-react'
 
@@ -27,8 +29,10 @@ export const ICONS: Record<
   'arrow-down': ChevronDown,
   'arrow-up': ChevronUp,
   'arrow-up-down': ArrowUpDown,
+  'menu-hamburguer': Menu,
   dashboard: ChartBarStacked,
   ellipses: EllipsisVertical,
+  close: X,
   notification: Bell,
   edit: SquarePen,
   record: Box,

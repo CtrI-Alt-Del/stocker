@@ -1,5 +1,5 @@
-import { Icon } from '@/ui/components/commons/icon'
-import { Avatar, Button } from '@nextui-org/react'
+import { IconButton } from '@/ui/components/commons/icon-button'
+import { Avatar } from '@nextui-org/react'
 
 export const NavbarUser = () => {
   return (
@@ -10,17 +10,13 @@ export const NavbarUser = () => {
         name='Jason Hughes'
         src='https://i.pravatar.cc/150?u=a042581f4e28026704d'
       />
-      <div className='flex flex-col gap-1'>
-        <strong className='text-xs'>Hector Bonilha</strong>
-        <small className='text-xs'>hecto@gmail.com</small>
+      <div className='flex flex-col gap-1 w-24'>
+        <strong className='text-xs truncate'>Hector Bonilha</strong>
+        <small className='text-xs truncate'>hecto@gmail.com</small>
       </div>
       <div className='flex flex-col h-12'>
-        <Button isIconOnly className='bg-transparent text-zinc-700' size='sm'>
-          <Icon name='notification' size={16} />
-        </Button>
-        <Button isIconOnly className='bg-transparent text-zinc-700' size='sm'>
-          <Icon name='ellipses' size={16} />
-        </Button>
+        <IconButton name='notification' size={16} />
+        <IconButton name='ellipses' size={16} />
       </div>
     </div>
   )
