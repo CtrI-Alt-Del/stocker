@@ -12,3 +12,5 @@ export type IconName =
   | 'employee'
   | 'supplier'
   | 'stock'
+  | 'notification'
+  | 'ellipses'

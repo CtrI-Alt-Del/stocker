@@ -13,6 +13,8 @@ import {
   MapPin,
   Container,
   ScanBarcode,
+  Bell,
+  EllipsisVertical,
   type LucideProps,
 } from 'lucide-react'
 
@@ -26,6 +28,8 @@ export const ICONS: Record<
   'arrow-up': ChevronUp,
   'arrow-up-down': ArrowUpDown,
   dashboard: ChartBarStacked,
+  ellipses: EllipsisVertical,
+  notification: Bell,
   edit: SquarePen,
   record: Box,
   inventory: Warehouse,
