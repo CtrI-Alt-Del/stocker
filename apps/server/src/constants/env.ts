@@ -10,6 +10,10 @@ export const envSchema = z.object({
 const validation = envSchema.safeParse({
   port: process.env.PORT,
   mode: process.env.MODE,
+  databaseUrl: process.env.DATABASE_URL,
+  directUrl: process.env.DIRECT_URL,
+  supabaseUrl: process.env.SUPABASE_URL,
+  supabaseKey: process.env.SUPABASE_KEY,
 })
 
 if (!validation.success) {
