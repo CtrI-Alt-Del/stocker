@@ -8,7 +8,7 @@ type RouteParams = {
   page: string
 }
 
-export class ListProductController {
+export class ListProductsController {
   async handle(http: IHttp) {
     const { page } = http.getQueryParams<RouteParams>()
     const pageNumber = parseInt(page || '1', 10)

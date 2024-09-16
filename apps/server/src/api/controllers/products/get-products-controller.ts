@@ -7,7 +7,7 @@ type RouteParams = {
   productId: string
 }
 
-export class GetProductController {
+export class GetProductsController {
   async handle(http: IHttp) {
     const { productId } = http.getRouteParams<RouteParams>()
     const useCase = new GetProductUseCase(productsRepository)
