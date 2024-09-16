@@ -1,3 +1,5 @@
 export { RegisterProductController } from './register-product-controller'
-import { DeleteProductsController } from './delete-products-controller'
-export { ListProductController } from './list-product-controller'
+export { DeleteProductsController } from './delete-products-controller'
+export { ListProductsController } from './list-products-controller'
+export { UpdateProductController } from './update-product-controller'
+export { GetProductsController } from './get-products-controller'
