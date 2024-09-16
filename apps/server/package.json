@@ -6,6 +6,9 @@
     "dev": "tsx watch --env-file .env src",
     "build": "echo 'No build required for server'",
     "start": "node index.ts",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
     "db:seed": "prisma db seed"
   },
   "dependencies": {
