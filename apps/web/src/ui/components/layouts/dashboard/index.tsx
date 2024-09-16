@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+
 import { Navbar } from './navbar'
 
 type DashboardLayoutProps = {
@@ -8,10 +9,10 @@ type DashboardLayoutProps = {
 export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <div className='grid grid-cols-[12rem_1fr]'>
-      <aside className='block h-screen border-r border-zinc-200'>
+      <aside className='h-screen px-3 py-6 border-r border-zinc-200'>
         <Navbar />
       </aside>
-      <main>{children}</main>
+      <main className='py-6 pl-6'>{children}</main>
     </div>
   )
 }

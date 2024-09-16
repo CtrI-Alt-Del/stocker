@@ -16,11 +16,11 @@ export const NavbarLink = ({ icon, href, isActive, children: title }: NavLinkPro
     <Link
       href={href}
       className={twMerge(
-        'flex items-center gap-2 text-zinc-800 rounded-md p-6 font-medium',
-        isActive ? 'bg-zinc-800 text-zinc-50' : 'bg-transparent text-zinc-600',
+        'flex items-center gap-2 text-zinc-200/50 rounded-md p-2 text-base font-medium',
+        isActive ? 'bg-zinc-200/50 text-zinc-900' : 'bg-transparent text-zinc-500',
       )}
     >
-      <Icon name={icon} />
+      <Icon name={icon} size={16} />
       {title}
     </Link>
   )

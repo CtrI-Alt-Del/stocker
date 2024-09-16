@@ -1,53 +1,156 @@
-import { Expandable } from '@/ui/components/commons/expandable'
+'use client'
+
 import { NavbarLink } from './navbar-link'
 import {
+  AccordionItem,
+  Accordion,
   Navbar as NavbarRoot,
   NavbarBrand,
+  NavbarMenu,
   NavbarContent,
   NavbarItem,
+  NavbarMenuToggle,
 } from '@nextui-org/react'
 
+import { Icon } from '@/ui/components/commons/icon'
+import { useNavigation } from '@/ui/hooks'
+import { ROUTES } from '@/constants'
+import { Logo } from '@/ui/components/commons/logo'
+import { NavbarUser } from './navbar-user'
+import { useNavbar } from './use-navbar'
+
 export const Navbar = () => {
+  const { currentRoute } = useNavigation()
+  const { isMenuOpen } = useNavbar()
+
   return (
-    <NavbarRoot>
-      <NavbarBrand>Stocker</NavbarBrand>
-      <NavbarContent>
-        <NavbarItem>
-          <NavbarLink href='/' icon='dashboard' isActive={false}>
-            Dashbord
+    <NavbarRoot
+      classNames={{
+        base: 'relative block h-full bg-transparent',
+        wrapper: 'block h-full p-0',
+      }}
+    >
+      <NavbarMenuToggle
+        aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
+        className='sm:hidden'
+      />
+      <NavbarBrand className='p-0'>
+        <Logo />
+      </NavbarBrand>
+      <NavbarContent className='flex-col gap-0 mt-6 p-0 w-full'>
+        <NavbarItem className='w-full'>
+          <NavbarLink
+            href={ROUTES.dashboard}
+            icon='dashboard'
+            isActive={currentRoute === ROUTES.dashboard}
+          >
+            Dashboard
           </NavbarLink>
         </NavbarItem>
-        <NavbarItem>
-          <Expandable.Root>
-            <Expandable.Item id='1' title='Accordion 1'>
-              <NavbarContent>
-                <NavbarItem>
-                  <NavbarLink href='/' icon='stock' isActive={false}>
+        <NavbarItem className='w-full mt-3'>
+          {/* @ts-ignore */}
+          <Accordion showDivider={false} className='p-0 space-y-3'>
+            <AccordionItem
+              key='1'
+              startContent={<Icon name='inventory' size={16} />}
+              title='Inventário'
+              aria-label='Inventário'
+              classNames={{
+                base: 'font-medium text-zinc-500 w-full data-[open=true]:text-zinc-900',
+                title:
+                  'font-normal text-medium text-zinc-500 font-medium data-[open=true]:text-zinc-900',
+                indicator: 'text-medium text-zinc-500 data-[open=true]:text-zinc-900',
+                trigger: 'rounded-md p-2 data-[open=true]:bg-zinc-200/50',
+              }}
+            >
+              <NavbarContent className='flex-col gap-0 border-l border-zinc-300 pl-2'>
+                <NavbarItem className='w-full'>
+                  <NavbarLink
+                    href={ROUTES.inventory.stocks}
+                    icon='stock'
+                    isActive={currentRoute === '/inventory/stocks'}
+                  >
                     Estoques
                   </NavbarLink>
                 </NavbarItem>
-                <NavbarItem>
-                  <NavbarLink href='/' icon='arrow-up-down' isActive={false}>
+                <NavbarItem className='w-full'>
+                  <NavbarLink
+                    href={ROUTES.inventory.movements}
+                    icon='arrow-up-down'
+                    isActive={currentRoute === '/inventory/movements'}
+                  >
                     Lançamentos
                   </NavbarLink>
                 </NavbarItem>
               </NavbarContent>
-            </Expandable.Item>
-            <Expandable.Item id='2' title='Accordion 2'>
-              <NavbarContent>
-                <NavbarItem>
-                  <NavbarLink href='/' icon='stock' isActive={false}>
-                    Estoques
+            </AccordionItem>
+            <AccordionItem
+              key='2'
+              startContent={<Icon name='record' size={20} />}
+              title='Cadastros'
+              fullWidth
+              aria-label='Cadastros'
+              classNames={{
+                base: 'font-medium text-zinc-500 data-[open=true]:text-zinc-900',
+                title:
+                  'font-normal text-medium text-zinc-500 font-medium data-[open=true]:text-zinc-900',
+                indicator: 'text-medium text-zinc-500 data-[open=true]:text-zinc-900',
+                trigger: 'rounded-md p-2 data-[open=true]:bg-zinc-200/50',
+              }}
+            >
+              <NavbarContent className='flex-col gap-1 border-l border-zinc-300 pl-2'>
+                <NavbarItem className='w-full'>
+                  <NavbarLink
+                    href={ROUTES.records.products}
+                    icon='product'
+                    isActive={currentRoute === ROUTES.records.products}
+                  >
+                    Produtos
                   </NavbarLink>
                 </NavbarItem>
-                <NavbarItem>
-                  <NavbarLink href='/' icon='arrow-up-down' isActive={false}>
-                    Lançamentos
+                <NavbarItem className='w-full'>
+                  <NavbarLink
+                    href={ROUTES.records.employees}
+                    icon='employee'
+                    isActive={currentRoute === ROUTES.records.employees}
+                  >
+                    Funcionários
+                  </NavbarLink>
+                </NavbarItem>
+                <NavbarItem className='w-full'>
+                  <NavbarLink
+                    href={ROUTES.records.suppliers}
+                    icon='supplier'
+                    isActive={currentRoute === ROUTES.records.suppliers}
+                  >
+                    Fornecedores
+                  </NavbarLink>
+                </NavbarItem>
+                <NavbarItem className='w-full'>
+                  <NavbarLink
+                    href={ROUTES.records.categories}
+                    icon='category'
+                    isActive={currentRoute === ROUTES.records.categories}
+                  >
+                    Categorias
+                  </NavbarLink>
+                </NavbarItem>
+                <NavbarItem className='w-full'>
+                  <NavbarLink
+                    href={ROUTES.records.locations}
+                    icon='location'
+                    isActive={currentRoute === ROUTES.records.locations}
+                  >
+                    Setores
                   </NavbarLink>
                 </NavbarItem>
               </NavbarContent>
-            </Expandable.Item>
-          </Expandable.Root>
+            </AccordionItem>
+          </Accordion>
+        </NavbarItem>
+
+        <NavbarItem className='absolute bottom-0 w-full'>
+          <NavbarUser />
         </NavbarItem>
       </NavbarContent>
     </NavbarRoot>
