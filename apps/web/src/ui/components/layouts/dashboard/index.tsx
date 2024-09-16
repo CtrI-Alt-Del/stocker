@@ -14,7 +14,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <div className='grid grid-cols-[12.5rem_1fr]'>
       <div className='p-3 lg:hidden'>
-        <Drawer trigger={<IconButton name='menu-hamburguer' />}>
+        <Drawer trigger={<IconButton name='menu-hamburguer' />} direction='left'>
           <Navbar />
         </Drawer>
       </div>

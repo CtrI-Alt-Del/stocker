@@ -12,15 +12,20 @@ type DrawerProps = {
   children: ReactNode
   trigger: ReactNode
   width?: number
-  direction?: string
+  direction?: 'top' | 'left' | 'right' | 'bottom'
 }
 
-export const Drawer = ({ children, trigger, width = 220 }: DrawerProps) => {
+export const Drawer = ({
+  children,
+  trigger,
+  width = 220,
+  direction = 'right',
+}: DrawerProps) => {
   const { isOpen, open, close } = useDrawer()
 
   return (
     <>
-      <RmDrawer open={isOpen} onClose={close} size={width} direction='left'>
+      <RmDrawer open={isOpen} onClose={close} size={width} direction={direction}>
         <div className='p-6 pb-12 h-full'>
           <div className='ml-auto w-max '>
             <IconButton name='close' onClick={close} />
