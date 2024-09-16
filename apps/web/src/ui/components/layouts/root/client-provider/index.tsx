@@ -1,7 +1,6 @@
 'use client'
 
 import type { ReactNode } from 'react'
-// @ts-ignore
 import { NextUIProvider } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
 

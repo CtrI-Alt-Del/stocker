@@ -8,7 +8,7 @@ type RootLayoutProps = { children: ReactNode }
 export const RootLayout = async ({ children }: RootLayoutProps) => {
   return (
     <html lang='pt-BR'>
-      <body className={`min-h-screen w-full bg-slate-100`}>
+      <body className='min-h-screen w-full bg-zinc-50'>
         <ClientProvider>
           <ServerProvider>{children}</ServerProvider>
         </ClientProvider>

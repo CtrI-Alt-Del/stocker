@@ -1,48 +1,55 @@
 import { Expandable } from '@/ui/components/commons/expandable'
-import { NavLink } from './nav-link'
+import { NavbarLink } from './navbar-link'
+import {
+  Navbar as NavbarRoot,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+} from '@nextui-org/react'
 
 export const Navbar = () => {
   return (
-    <nav>
-      <ul>
-        <li>
-          <NavLink href='/' icon='dashboard' isActive={false}>
+    <NavbarRoot>
+      <NavbarBrand>Stocker</NavbarBrand>
+      <NavbarContent>
+        <NavbarItem>
+          <NavbarLink href='/' icon='dashboard' isActive={false}>
             Dashbord
-          </NavLink>
-        </li>
-        <li>
+          </NavbarLink>
+        </NavbarItem>
+        <NavbarItem>
           <Expandable.Root>
             <Expandable.Item id='1' title='Accordion 1'>
-              <ul>
-                <li>
-                  <NavLink href='/' icon='stock' isActive={false}>
+              <NavbarContent>
+                <NavbarItem>
+                  <NavbarLink href='/' icon='stock' isActive={false}>
                     Estoques
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink href='/' icon='arrow-up-down' isActive={false}>
+                  </NavbarLink>
+                </NavbarItem>
+                <NavbarItem>
+                  <NavbarLink href='/' icon='arrow-up-down' isActive={false}>
                     Lançamentos
-                  </NavLink>
-                </li>
-              </ul>
+                  </NavbarLink>
+                </NavbarItem>
+              </NavbarContent>
             </Expandable.Item>
-            <Expandable.Item id='1' title='Accordion 1'>
-              <ul>
-                <li>
-                  <NavLink href='/' icon='stock' isActive={false}>
+            <Expandable.Item id='2' title='Accordion 2'>
+              <NavbarContent>
+                <NavbarItem>
+                  <NavbarLink href='/' icon='stock' isActive={false}>
                     Estoques
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink href='/' icon='arrow-up-down' isActive={false}>
+                  </NavbarLink>
+                </NavbarItem>
+                <NavbarItem>
+                  <NavbarLink href='/' icon='arrow-up-down' isActive={false}>
                     Lançamentos
-                  </NavLink>
-                </li>
-              </ul>
+                  </NavbarLink>
+                </NavbarItem>
+              </NavbarContent>
             </Expandable.Item>
           </Expandable.Root>
-        </li>
-      </ul>
-    </nav>
+        </NavbarItem>
+      </NavbarContent>
+    </NavbarRoot>
   )
 }

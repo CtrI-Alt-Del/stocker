@@ -1,4 +1,4 @@
-import { Button, Link } from '@nextui-org/react'
+import { Link } from '@nextui-org/react'
 
 import type { IconName } from '@/ui/components/commons/icon/types'
 import { Icon } from '@/ui/components/commons/icon'
@@ -11,7 +11,7 @@ type NavLinkProps = {
   children: string
 }
 
-export const NavLink = ({ icon, href, isActive, children: title }: NavLinkProps) => {
+export const NavbarLink = ({ icon, href, isActive, children: title }: NavLinkProps) => {
   return (
     <Link
       href={href}
