@@ -5,12 +5,11 @@ export class PrismaInventoryMovementsMapper {
     toDomain(prismaInventoryMovements: PrismaInventoryMovement): InventoryMovement {
         return InventoryMovement.create({
             id: prismaInventoryMovements.id,
-            movementType: prismaInventoryMovements.movementType,
-            itemsQuantity: prismaInventoryMovements.itemsQuantity,
-            responsibleId: prismaInventoryMovements.responsibleId,
-            productId: prismaInventoryMovements.productId,
-            companyId: prismaInventoryMovements.companyId, 
-            registeredAt: prismaInventoryMovements.registeredAt
+            movementType: prismaInventoryMovements.type,
+            itemsQuantity: prismaInventoryMovements.items_count,
+            responsibleId: prismaInventoryMovements.user_id,
+            productId: prismaInventoryMovements.id,
+            registeredAt: prismaInventoryMovements.registered_at
         })
     }
 
@@ -19,12 +18,11 @@ export class PrismaInventoryMovementsMapper {
 
         return {
             id: inventoryMovement.id,
-            movementType: inventoryMovementDto.movementType,
-            itemsQuantity: inventoryMovementDto.itemsQuantity,
-            responsibleId: inventoryMovementDto.responsibleId,
-            productId: inventoryMovementDto.productId,
-            companyId: inventoryMovementDto.companyId, 
-            registeredAt: inventoryMovementDto.registeredAt
+            type: inventoryMovement.movementType === "inbound" ? "INBOUND" : "OUTBOUND",
+            product_id: inventoryMovementDto.productId,
+            items_count: inventoryMovement.itemsQuantity,
+            user_id: inventoryMovement.responsibleId,
+            registered_at: inventoryMovement.registeredAt,
         }
     }
 }
