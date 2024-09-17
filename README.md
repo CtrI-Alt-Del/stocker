@@ -114,8 +114,8 @@ Work in progress... 🚧
 
 ---
 
-<img src="documentation/images/backlog.png" alt="Tabela contendo todos os requisitos em ordem de prioridade" width="5232" height="
-5960" />
+<img src="documentation/images/backlog.png" alt="Tabela contendo todos os requisitos em ordem de prioridade" width="2232" height="
+12960" />
 
 ---
 
