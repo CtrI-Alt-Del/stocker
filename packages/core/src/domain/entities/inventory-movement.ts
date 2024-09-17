@@ -9,7 +9,6 @@ type MovementProps = {
   itemsQuantity: number
   responsibleId: string
   productId: string
-  companyId: string
   registeredAt: Date
 }
 
@@ -25,7 +24,6 @@ export class InventoryMovement extends Entity<MovementProps> {
       {
         movementType,
         itemsQuantity: dto.itemsQuantity,
-        companyId: dto.companyId,
         responsibleId: dto.responsibleId,
         productId: dto.productId,
         registeredAt: new Date(),
@@ -43,10 +41,29 @@ export class InventoryMovement extends Entity<MovementProps> {
       id: this.id,
       movementType: this.props.movementType,
       itemsQuantity: this.props.itemsQuantity,
-      companyId: this.props.companyId,
       responsibleId: this.props.responsibleId,
       productId: this.props.productId,
       registeredAt: this.props.registeredAt,
     }
+  }
+
+  get movementType(): MovementType {
+    return this.props.movementType
+  }
+
+  get itemsQuantity(): number {
+    return this.props.itemsQuantity
+  }
+  
+  get responsibleId(): string {
+    return this.props.responsibleId
+  }
+
+  get productId(): string {
+    return this.props.productId
+  }
+
+  get registeredAt(): Date {
+    return this.props.registeredAt
   }
 }
