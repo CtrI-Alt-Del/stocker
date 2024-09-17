@@ -110,12 +110,12 @@ Work in progress... 🚧
 ## Requisitos 📒
 
 
-<img src="documentation/images/requirements.png" alt="Tabela contendo todos os requisitos em ordem de prioridade" width="1160" height="920" />
+<img src="documentation/images/requirements.png" alt="Tabela contendo todos os requisitos em ordem de prioridade" width="1460" height="920" />
 
 ---
 
-<img src="documentation/images/backlog.png" alt="Tabela contendo todos os requisitos em ordem de prioridade" width="4232" height="
-4960" />
+<img src="documentation/images/backlog.png" alt="Tabela contendo todos os requisitos em ordem de prioridade" width="5232" height="
+5960" />
 
 ---
 
