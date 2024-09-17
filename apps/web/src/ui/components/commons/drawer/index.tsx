@@ -30,7 +30,7 @@ export const Drawer = ({
           <div className='ml-auto w-max'>
             <IconButton name='close' onClick={close} size={20} />
           </div>
-          <div className='mt-1 h-full'>{children(close)}</div>
+          <div className='mt-1 h-full sm:h-auto'>{children(close)}</div>
         </div>
       </RmDrawer>
       <Slot onClick={open}>{trigger}</Slot>
