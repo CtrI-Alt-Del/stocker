@@ -1,1 +1,1 @@
-export { RegisterInboundInventoryMovementController } from './register-inbound-inventory-movement'
+export { RegisterInboundInventoryMovementController } from './register-inbound-inventory-movement-controller'
