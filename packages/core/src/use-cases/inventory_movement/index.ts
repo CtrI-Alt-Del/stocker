@@ -1,0 +1,1 @@
+export { RegisterInboundInventoryMovementUseCase } from './register-inbound-inventory-movement-use-case'
