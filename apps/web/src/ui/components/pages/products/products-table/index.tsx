@@ -8,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from '@nextui-org/react'
-import { pages } from 'next/dist/build/templates/app-page'
 
   const COLUMNS = [
     { name: 'NOME', uid: 'name' },

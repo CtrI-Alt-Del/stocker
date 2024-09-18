@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@nextui-org/react": "^2.4.6",
+    "@nextui-org/react": "^2.4.8",
     "@radix-ui/react-slot": "^1.1.0",
     "@stocker/core": "*",
     "autoprefixer": "^10.4.20",
