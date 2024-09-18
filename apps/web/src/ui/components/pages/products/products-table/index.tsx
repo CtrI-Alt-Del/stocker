@@ -1,23 +1,96 @@
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useProductsTableHook } from './use-products-table-hook'
 import {
+  Input,
+  Pagination,
+  Spinner,
   Table,
   TableBody,
   TableCell,
   TableColumn,
   TableHeader,
   TableRow,
+  Tooltip,
 } from '@nextui-org/react'
+import { Edit, Search } from 'lucide-react'
 
 export const ProductsTable = () => {
   const [page, setPage] = useState<number>(1)
+  const [filterByNameValue, setFilterByNameValue] = useState('')
+  const hasSearchByNameFilter = Boolean(filterByNameValue)
   const { products, loading } = useProductsTableHook(page)
+  const filteredItemsByName = useMemo(() => {
+    let filteredProducts = [...products]
+    if (hasSearchByNameFilter) {
+      filteredProducts = filteredProducts.filter((product) =>
+        product.name.toLowerCase().includes(filterByNameValue.toLowerCase()),
+      )
+    }
+    return filteredProducts
+  }, [products, filterByNameValue, hasSearchByNameFilter])
+  const rowsPerPage = 10
+  const pages = Math.ceil(filteredItemsByName.length / rowsPerPage)
+  const paginatedProducts = useMemo(() => {
+    const start = (page - 1) * rowsPerPage
+    const end = start + rowsPerPage
+    return filteredItemsByName.slice(start, end)
+  }, [page, products])
+  const onSearchChange = useCallback((value: string | null) => {
+    if (value) {
+      setFilterByNameValue(value)
+      setPage(1)
+    } else {
+      setFilterByNameValue('')
+    }
+  }, [])
+  const tableTopComponent = useMemo(() => {
+    return (
+      <Input
+        placeholder='Pesquise por nome'
+        size='md'
+        color='default'
+        radius='sm'
+        classNames={{
+          inputWrapper: ['bg-zinc-100', 'h-12'],
+          placeholder: 'text-zinc-300',
+        }}
+        className='w-[40rem] max-w-96'
+        endContent={<Search className='text-zinc-300' />}
+        value={filterByNameValue}
+        onValueChange={onSearchChange}
+      />
+    )
+  }, [filterByNameValue, onSearchChange])
   if (loading) {
-    return <h1>Carregando tabela....</h1>
+    return (
+      <Spinner
+        aria-label='loading'
+        label='Carregando...'
+        className='flex items-center justify-center  w-full h-full  mt-24'
+        size='lg'
+      />
+    )
   }
   return (
     <>
-      <Table>
+      <Table
+        shadow='none'
+        topContent={tableTopComponent}
+        topContentPlacement='outside'
+        selectionMode='multiple'
+        bottomContentPlacement='outside'
+        bottomContent={
+          <div className='flex w-full justify-start '>
+            <Pagination
+              aria-label='pagination'
+              showControls
+              page={page}
+              total={pages}
+              onChange={(page) => setPage(page)}
+            />
+          </div>
+        }
+      >
         <TableHeader>
           <TableColumn key={'name'}>NOME</TableColumn>
           <TableColumn key={'description'}>DESCRIÇÃO</TableColumn>
@@ -27,8 +100,13 @@ export const ProductsTable = () => {
           <TableColumn key={'minimumStock'}>ESTOQUE MINIMO</TableColumn>
 
           <TableColumn key={'status'}> ATIVO</TableColumn>
+          <TableColumn key={'option'}>{null}</TableColumn>
         </TableHeader>
-        <TableBody items={products}>
+        <TableBody
+          items={paginatedProducts}
+          isLoading={loading}
+          emptyContent={'Nenhum produto criado.'}
+        >
           {(item) => (
             <TableRow>
               <TableCell key={'NAME'}>
@@ -46,6 +124,13 @@ export const ProductsTable = () => {
               <TableCell key={'price'}>{item.costPrice}</TableCell>
               <TableCell key={'minimumStock'}>{item.minimumStock}</TableCell>
               <TableCell key={'status'}>status</TableCell>
+              <TableCell key={'option'}>
+                <Tooltip content='Editar produto'>
+                  <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
+                    <Edit className='size-6' />
+                  </span>
+                </Tooltip>
+              </TableCell>
             </TableRow>
           )}
         </TableBody>
