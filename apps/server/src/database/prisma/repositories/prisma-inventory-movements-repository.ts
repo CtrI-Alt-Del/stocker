@@ -15,12 +15,11 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
       prisma.inventoryMovement.create({
         data: {
           id: prismaInventoryMovements.id,
-          movementType: prismaInventoryMovements.movementType,
-          itemsQuantity: prismaInventoryMovements.itemsQuantity,
-          responsibleId: prismaInventoryMovements.responsibleId,
-          productId: prismaInventoryMovements.productId,
-          companyId: prismaInventoryMovements.companyId, 
-          registeredAt: prismaInventoryMovements.registeredAt
+          type: prismaInventoryMovements.type,
+          items_count: prismaInventoryMovements.items_count,
+          user_id: prismaInventoryMovements.user_id,
+          product_id: prismaInventoryMovements.product_id,
+          registered_at: prismaInventoryMovements.registered_at
         },
       })
     } catch (error) {
@@ -37,10 +36,10 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
       })
       if (!prismaInventoryMovements) return []
 
-      const inventoryMovements = prismaInventoryMovements.forEach((inventoryMovement: InventoryMovement) => {
-        this.mapper.toDomain(inventoryMovement)
+      const inventoryMovements = prismaInventoryMovements.map((inventoryMovement) => {
+        return this.mapper.toDomain(inventoryMovement)
       })
-      return inventoryMovements
+      return inventoryMovements 
 
     } catch (error) {
       throw new PrismaError(error)
