@@ -7,7 +7,7 @@ interface SearchComponentsProps {
   filterByNameValue: string
 }
 
-export const TableSearchComponent = ({
+export const TableSearch = ({
   onSearchChange,
   filterByNameValue,
 }: SearchComponentsProps) => {
