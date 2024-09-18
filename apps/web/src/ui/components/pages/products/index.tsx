@@ -1,7 +1,8 @@
 'use client'
 import { Button, Input, SelectItem, Select } from '@nextui-org/react'
 import { Search } from 'lucide-react'
-
+import { ProductsTable } from './products-table'
+import { NextApiClient } from '@/api/next/next-api-client'
 export const ProductsPage = () => {
   return (
     <>
@@ -20,10 +21,10 @@ export const ProductsPage = () => {
               }}
               endContent={<Search className='text-[#8E8E8E]' />}
             />
-            <Select>
+            {/* <Select>
               <SelectItem>Bananana</SelectItem>
               <SelectItem>joao doria</SelectItem>
-            </Select>
+            </Select> */}
           </div>
         </div>
         <Button
@@ -36,6 +37,7 @@ export const ProductsPage = () => {
           Adicionar
         </Button>
       </div>
+      <ProductsTable />
     </>
   )
 }
