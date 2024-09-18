@@ -1,5 +1,4 @@
 import Fastify, { type FastifyInstance } from 'fastify'
-import Cors from '@fastify/cors'
 import Multipart from '@fastify/multipart'
 
 import type { IServerApp } from '@stocker/core/interfaces'
@@ -21,7 +20,6 @@ export class FastifyApp implements IServerApp {
   constructor() {
     this.app = Fastify()
 
-    this.app.register(Cors, { origin: '*' })
     this.app.register(Multipart)
     this.registerRoutes()
     this.setErrorHandler()

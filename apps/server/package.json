@@ -12,10 +12,9 @@
     "db:seed": "prisma db seed"
   },
   "dependencies": {
-    "@fastify/cors": "^10.0.0",
+    "@stocker/core": "*",
     "@fastify/multipart": "^9.0.0",
     "@prisma/client": "^5.19.1",
-    "@stocker/core": "*",
     "@supabase/supabase-js": "^2.45.4",
     "fastify": "^4.28.1"
   },
