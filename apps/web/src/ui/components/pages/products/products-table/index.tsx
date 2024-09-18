@@ -1,4 +1,4 @@
-import { useProductsTableHook } from './use-products-table-hook'
+import { useProductsTable } from './use-products-table-hook'
 import {
   Pagination,
   Spinner,
@@ -22,7 +22,7 @@ export const ProductsTable = () => {
     onSearchChange,
     paginatedProducts,
     totalPages,
-  } = useProductsTableHook()
+  } = useProductsTable()
   if (loading) {
     return (
       <Spinner

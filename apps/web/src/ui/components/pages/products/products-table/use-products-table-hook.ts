@@ -4,7 +4,7 @@ import { useApi, useCache } from '@/ui/hooks'
 import { ProductDto } from '@stocker/core/dtos'
 import { usePagination } from '@/ui/hooks/use-pagination'
 
-export const useProductsTableHook = () => {
+export const useProductsTable = () => {
   const [pageState, setPage] = useQueryState('page', parseAsInteger)
   const page = pageState ?? 1
   const [filterByNameValueState, setFilterByNameValue] = useQueryState('name')
