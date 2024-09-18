@@ -10,10 +10,10 @@ export const useProductsTable = () => {
   const [filterByNameValueState, setFilterByNameValue] = useQueryState('name')
   const filterByNameValue = filterByNameValueState ?? ''
 
-  const useApiInstance = useApi()
+  const { productsService } = useApi()
 
   const fetchProducts = async () => {
-    const response = await useApiInstance.productsService.listProducts({ page })
+    const response = await productsService.listProducts({ page })
     return response.body.items
   }
 
