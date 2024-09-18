@@ -34,6 +34,25 @@ export const useProductsTableHook = (page: number) => {
       categoryId: 'category1',
       batches: [],
     },
+    {
+      id: 'product2',
+      name: 'Produto Super maneiro',
+      description: 'Este é um produto de exemplo para testes.',
+      image: 'https://example.com/image.png',
+      brand: 'Marca Exemplo',
+      costPrice: 50.0,
+      sellingPrice: 75.0,
+      height: 10.0,
+      length: 15.0,
+      weight: 1.5,
+      width: 5.0,
+      uom: 'kg',
+      code: 'EX12345',
+      minimumStock: 10,
+      companyId: 'company1',
+      categoryId: 'category1',
+      batches: [],
+    }
   ]
   const loading = isLoading
   return { products, loading }
