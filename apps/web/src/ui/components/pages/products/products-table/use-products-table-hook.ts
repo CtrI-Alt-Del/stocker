@@ -1,8 +1,9 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback  } from 'react'
 import { parseAsInteger, useQueryState } from 'nuqs'
 import { useApi, useCache } from '@/ui/hooks'
 import { ProductDto } from '@stocker/core/dtos'
 import { usePagination } from '@/ui/hooks/use-pagination'
+import { PAGINATION } from '@stocker/core/constants'
 
 export const useProductsTable = () => {
   const [pageState, setPage] = useQueryState('page', parseAsInteger)
@@ -27,19 +28,16 @@ export const useProductsTable = () => {
   const loading = isLoading
 
   // Filter products by name Logic :)
-  const filteredItemsByName = useMemo(() => {
-    if (!filterByNameValue) return products
-    return products.filter((product) =>
-      product.name.toLowerCase().includes(filterByNameValue.toLowerCase()),
-    )
-  }, [products, filterByNameValue])
+  const filteredItemsByName = products.filter((product) =>
+    product.name.toLowerCase().includes(filterByNameValue.toLowerCase()),
+  )
 
   // Pagination logic :)
-  const rowsPerPage = 10
+  const  itemsPerPage  = PAGINATION.itemsPerPage
   const { paginatedItems, totalPages } = usePagination(
     filteredItemsByName,
     page,
-    rowsPerPage,
+    itemsPerPage,
   )
 
   // Search change handle :)
@@ -125,7 +123,7 @@ const generateMockProducts = () => [
     batches: [],
   },
   {
-    id: 'product6',
+    id: 'product2',
     name: 'Produto Exemplo2',
     description: 'Este é um produto de exemplo para testes.',
     image: 'https://example.com/image.png',
@@ -137,7 +135,7 @@ const generateMockProducts = () => [
     batches: [],
   },
   {
-    id: 'product7',
+    id: 'product2',
     name: 'Produto Exemplo2',
     description: 'Este é um produto de exemplo para testes.',
     image: 'https://example.com/image.png',
@@ -149,7 +147,7 @@ const generateMockProducts = () => [
     batches: [],
   },
   {
-    id: 'product8',
+    id: 'product2',
     name: 'Produto Exemplo2',
     description: 'Este é um produto de exemplo para testes.',
     image: 'https://example.com/image.png',
@@ -161,7 +159,7 @@ const generateMockProducts = () => [
     batches: [],
   },
   {
-    id: 'product9',
+    id: 'product2',
     name: 'Produto Exemplo2',
     description: 'Este é um produto de exemplo para testes.',
     image: 'https://example.com/image.png',
@@ -173,7 +171,7 @@ const generateMockProducts = () => [
     batches: [],
   },
   {
-    id: 'product10',
+    id: 'product2',
     name: 'Produto Exemplo2',
     description: 'Este é um produto de exemplo para testes.',
     image: 'https://example.com/image.png',
@@ -185,7 +183,7 @@ const generateMockProducts = () => [
     batches: [],
   },
   {
-    id: 'product11',
+    id: 'product2',
     name: 'Produto Exemplo2',
     description: 'Este é um produto de exemplo para testes.',
     image: 'https://example.com/image.png',
@@ -197,7 +195,7 @@ const generateMockProducts = () => [
     batches: [],
   },
   {
-    id: 'product12',
+    id: 'product2',
     name: 'Produto Exemplo2',
     description: 'Este é um produto de exemplo para testes.',
     image: 'https://example.com/image.png',
