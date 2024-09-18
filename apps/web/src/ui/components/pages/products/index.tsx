@@ -3,7 +3,6 @@
 import { Button, Input, SelectItem, Select } from '@nextui-org/react'
 import { Search } from 'lucide-react'
 import { ProductsTable } from './products-table'
-import { NextApiClient } from '@/api/next/next-api-client'
 import { Drawer } from '../../commons/drawer'
 import { RegisterProductForm } from './register-product-form'
 import { useBreakpoint } from '@/ui/hooks'
