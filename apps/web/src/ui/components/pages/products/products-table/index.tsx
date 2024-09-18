@@ -1,7 +1,5 @@
-import { useCallback, useMemo, useState } from 'react'
 import { useProductsTableHook } from './use-products-table-hook'
 import {
-  Input,
   Pagination,
   Spinner,
   Table,
@@ -12,38 +10,19 @@ import {
   TableRow,
   Tooltip,
 } from '@nextui-org/react'
-import { Edit, Search } from 'lucide-react'
+import { Edit } from 'lucide-react'
 import { TableSearchComponent } from '@/ui/components/commons/search-component'
 
 export const ProductsTable = () => {
-  const [page, setPage] = useState<number>(1)
-  const [filterByNameValue, setFilterByNameValue] = useState('')
-  const hasSearchByNameFilter = Boolean(filterByNameValue)
-  const { products, loading } = useProductsTableHook(page)
-  const filteredItemsByName = useMemo(() => {
-    let filteredProducts = [...products]
-    if (hasSearchByNameFilter) {
-      filteredProducts = filteredProducts.filter((product) =>
-        product.name.toLowerCase().includes(filterByNameValue.toLowerCase()),
-      )
-    }
-    return filteredProducts
-  }, [products, filterByNameValue, hasSearchByNameFilter])
-  const rowsPerPage = 10
-  const pages = Math.ceil(filteredItemsByName.length / rowsPerPage)
-  const paginatedProducts = useMemo(() => {
-    const start = (page - 1) * rowsPerPage
-    const end = start + rowsPerPage
-    return filteredItemsByName.slice(start, end)
-  }, [page, products])
-  const onSearchChange = useCallback((value: string | null) => {
-    if (value) {
-      setFilterByNameValue(value)
-      setPage(1)
-    } else {
-      setFilterByNameValue('')
-    }
-  }, [])
+  const {
+    page,
+    setPage,
+    loading,
+    filterByNameValue,
+    onSearchChange,
+    paginatedProducts,
+    totalPages,
+  } = useProductsTableHook()
   if (loading) {
     return (
       <Spinner
@@ -57,10 +36,14 @@ export const ProductsTable = () => {
   return (
     <>
       <Table
-        arial-label="Products table"
-        
+        arial-label='Products table'
         shadow='none'
-        topContent={<TableSearchComponent onSearchChange={onSearchChange} filterByNameValue={filterByNameValue}/>}
+        topContent={
+          <TableSearchComponent
+            onSearchChange={onSearchChange}
+            filterByNameValue={filterByNameValue}
+          />
+        }
         topContentPlacement='outside'
         selectionMode='multiple'
         bottomContentPlacement='outside'
@@ -70,8 +53,14 @@ export const ProductsTable = () => {
               aria-label='pagination'
               showControls
               page={page}
-              total={pages}
-              onChange={(page) => setPage(page)}
+              total={totalPages}
+              onChange={(event) => {
+                if (event && typeof event === 'number') {
+                  setPage(event)
+                } else {
+                  setPage(1)
+                }
+              }}
             />
           </div>
         }
