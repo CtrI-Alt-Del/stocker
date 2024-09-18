@@ -35,13 +35,13 @@ export const useProductsTable = () => {
   )
 
   // Pagination logic :)
-  const  itemsPerPage  = PAGINATION.itemsPerPage
+  const itemsPerPage = PAGINATION.itemsPerPage
   const { paginatedItems, totalPages } = usePagination(
     filteredItemsByName,
     page,
-    itemsPerPage,
+    itemsPerPage
+    ,
   )
-
   // Search change handle :)
   const onSearchChange = useCallback(
     (value: string | null) => {

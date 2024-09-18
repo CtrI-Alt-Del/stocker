@@ -1,4 +1,4 @@
-import { useProductsTableHook } from './use-products-table-hook'
+import { useProductsTable } from './use-products-table-hook'
 import {
   Pagination,
   Spinner,
@@ -11,7 +11,7 @@ import {
   Tooltip,
 } from '@nextui-org/react'
 import { Edit } from 'lucide-react'
-import { TableSearchComponent } from '@/ui/components/commons/search-component'
+import { TableSearch } from '@/ui/components/commons/search-component'
 
 export const ProductsTable = () => {
   const {
@@ -22,7 +22,7 @@ export const ProductsTable = () => {
     onSearchChange,
     paginatedProducts,
     totalPages,
-  } = useProductsTableHook()
+  } = useProductsTable()
   if (loading) {
     return (
       <Spinner
@@ -39,7 +39,7 @@ export const ProductsTable = () => {
         arial-label='Products table'
         shadow='none'
         topContent={
-          <TableSearchComponent
+          <TableSearch
             onSearchChange={onSearchChange}
             filterByNameValue={filterByNameValue}
           />

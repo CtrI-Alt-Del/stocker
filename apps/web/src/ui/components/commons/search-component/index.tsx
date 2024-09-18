@@ -7,11 +7,10 @@ interface SearchComponentsProps {
   filterByNameValue: string
 }
 
-export const TableSearchComponent = ({
+export const TableSearch = ({
   onSearchChange,
   filterByNameValue,
 }: SearchComponentsProps) => {
-  return useMemo(() => {
     return (
       <Input
         placeholder='Pesquise por nome'
@@ -28,5 +27,5 @@ export const TableSearchComponent = ({
         onValueChange={onSearchChange}
       />
     )
-  }, [filterByNameValue, onSearchChange])
-}
+  }
+
