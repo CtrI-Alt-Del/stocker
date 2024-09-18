@@ -5,6 +5,7 @@ import { AppError } from '@stocker/core/errors'
 export const envSchema = z.object({
   port: z.coerce.number().default(3333),
   mode: z.enum(['dev', 'prod']).default('dev'),
+  supabaseUrl: z.string().url(),
 })
 
 const validation = envSchema.safeParse({

@@ -4,4 +4,5 @@ export interface IHttp {
   getQueryParams<QueryParams>(): QueryParams
   send(response: unknown, statusCode?: number): unknown
   redirect(route: string): unknown
+  getFile(): Promise<Buffer>
 }
