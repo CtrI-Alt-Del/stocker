@@ -9,7 +9,7 @@ import { useDrawer } from './use-drawer'
 import { IconButton } from '../icon-button'
 
 type DrawerProps = {
-  children: ReactNode
+  children: (closeDrawer: VoidFunction) => ReactNode
   trigger: ReactNode
   width?: number
   direction?: 'top' | 'left' | 'right' | 'bottom'
@@ -26,16 +26,14 @@ export const Drawer = ({
   return (
     <>
       <RmDrawer open={isOpen} onClose={close} size={width} direction={direction}>
-        <div className='p-6 pb-12 h-full'>
-          <div className='ml-auto w-max '>
-            <IconButton name='close' onClick={close} />
+        <div className='p-6 pb-12 h-full overflow-y-auto'>
+          <div className='ml-auto w-max'>
+            <IconButton name='close' onClick={close} size={20} />
           </div>
-          {children}
+          <div className='mt-1 h-full sm:h-auto'>{children(close)}</div>
         </div>
       </RmDrawer>
-      <Slot className='bg-transparent' onClick={open}>
-        {trigger}
-      </Slot>
+      <Slot onClick={open}>{trigger}</Slot>
     </>
   )
 }

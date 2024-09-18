@@ -4,7 +4,7 @@ export interface IApiClient {
   get<ResponseBody>(url: string, body?: unknown): Promise<ApiResponse<ResponseBody>>
   post<ResponseBody>(url: string, body?: unknown): Promise<ApiResponse<ResponseBody>>
   put<ResponseBody>(url: string, body: unknown): Promise<ApiResponse<ResponseBody>>
-  delete(url: string): Promise<ApiResponse<void>>
+  delete(url: string, body?: unknown): Promise<ApiResponse<void>>
   setBaseUrl(url: string): void
   setHeader(key: string, value: string): void
   setParam(key: string, value: string): void
