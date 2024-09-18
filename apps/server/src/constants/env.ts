@@ -5,6 +5,9 @@ import { AppError } from '@stocker/core/errors'
 export const envSchema = z.object({
   port: z.coerce.number().default(3333),
   mode: z.enum(['dev', 'prod']).default('dev'),
+  supabaseKey: z.string(),
+  databaseUrl: z.string().url(),
+  directUrl: z.string().url(),
   supabaseUrl: z.string().url(),
 })
 
