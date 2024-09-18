@@ -6,7 +6,7 @@ import { RegisterInboundInventoryMovementController } from '@/api/controllers/in
 export const InboundInventoryMovement = async (app: FastifyInstance) => {
   const registerInboundInventoryMovementController = new RegisterInboundInventoryMovementController()
 
-  app.post('/', async (request, response) => {
+  app.post('/inbound', async (request, response) => {
     const http = new FastifyHttp(request, response)
     return registerInboundInventoryMovementController.handle(http)
   })  
