@@ -1,29 +1,38 @@
-import { Button, Divider, Input } from '@nextui-org/react'
+import { Button, Divider, Input, Textarea } from '@nextui-org/react'
 
-export const RegisterProductForm = () => {
+type RegisterProductFormProps = {
+  onCancel: VoidFunction
+}
+
+export const RegisterProductForm = ({ onCancel }: RegisterProductFormProps) => {
   return (
     <div className='space-y-6'>
-      <div className='flex justify-between'>
+      <label
+        htmlFor='image'
+        className='grid place-content-center cursor-pointer h-32 w-full rounded-md border border-dashed border-zinc-500 bg-zinc-50'
+      >
+        <p className='text-zinc-500'>Carreque sua imagem aqui.</p>
+        <input id='image' type='file' className='sr-only' />
+      </label>
+      <div className='grid grid-cols-2 gap-6'>
         <Input label='Nome' isRequired />
-        <label
-          htmlFor='image'
-          className='grid place-content-center rounded-md border-dashed bg-zinc-400'
-        >
-          <p className='text-zinc-500'>Carreque sua imagem aqui.</p>
-          <input id='image' type='file' className='sr-only' />
-        </label>
-      </div>
-      <div className='flex justify-between'>
-        <Input label='Descrição' isRequired />
         <Input label='Código do produto' isRequired />
       </div>
-      <div className='flex justify-between'>
-        <Input label='Marca' isRequired />
+      <Textarea label='Descrição' isRequired />
+
+      <div className='grid grid-cols-2 gap-6'>
+        <Input label='Unidade' isRequired />
         <Input label='Modelo' isRequired />
       </div>
-      <div className='flex justify-between'>
+
+      <div className='grid grid-cols-2 gap-6'>
+        <Input label='Fornecedor' />
+        <Input label='Modelo' isRequired />
+      </div>
+
+      <div className='grid grid-cols-2 gap-3'>
         <Input label='Categoria' />
-        <div className='flex items-center gap-3'>
+        <div className='flex gap-3'>
           <Input label='Preço de custo' placeholder='R$' isRequired />
           <Input label='Preço de venda' placeholder='R$' isRequired />
         </div>
@@ -31,24 +40,27 @@ export const RegisterProductForm = () => {
 
       <Divider className='my-2' />
 
-      <div className='flex justify-between'>
+      <div className='grid grid-cols-2 gap-6'>
         <Input label='Peso' placeholder='kg' isRequired />
         <Input label='Largura' placeholder='cm' isRequired />
       </div>
-      <div className='flex justify-between'>
+
+      <div className='grid grid-cols-2 gap-6'>
         <Input label='Comprimento' placeholder='cm' isRequired />
         <Input label='Altura' placeholder='cm' isRequired />
       </div>
 
       <Divider className='my-2' />
 
-      <div className='flex justify-between'>
+      <div className='grid grid-cols-2 gap-6'>
         <Input label='Estoque mínimo' placeholder='cm' isRequired />
-        <Input label='Setor' placeholder='cm' />
+        <Input label='Setor' />
       </div>
 
       <div className='flex items-center gap-3'>
-        <Button color='danger'>Cancelar</Button>
+        <Button color='danger' onClick={onCancel}>
+          Cancelar
+        </Button>
         <Button color='primary'>Confirmar</Button>
       </div>
     </div>
