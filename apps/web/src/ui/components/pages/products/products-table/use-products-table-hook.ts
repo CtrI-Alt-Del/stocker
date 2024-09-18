@@ -28,7 +28,6 @@ export const useProductsTable = () => {
   const products = data ?? generateMockProduct
   const loading = isLoading
 
-  console.log(generateMockProduct)
   // Filter products by name Logic :)
   const filteredItemsByName = products.filter((product) =>
     product.name.toLowerCase().includes(filterByNameValue.toLowerCase()),
@@ -46,6 +45,7 @@ export const useProductsTable = () => {
   const onSearchChange = useCallback(
     (value: string | null) => {
       setFilterByNameValue(value ?? '')
+      // TODO: WHEN USER SEARCHS FOR NAME OUTSIDE OF PAGE 1 ITS RE-ROUTES HIM TO PAGE 1 CANCELLING HIS TYPING!
       if (value) setPage(1)
     },
     [setFilterByNameValue, setPage],
@@ -62,5 +62,4 @@ export const useProductsTable = () => {
   }
 }
 
-//this is a VERY bad mock data,but use here for tests while backend is even worst than this mock
-const generateMockProduct: ProductDto[] = ProductsFaker.fakeManyDto(10)
+const generateMockProduct: ProductDto[] = ProductsFaker.fakeManyDto(20)
