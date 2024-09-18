@@ -4,11 +4,14 @@ import { BatchDto, InventoryMovementDto } from "@stocker/core/dtos";
 import { IHttp } from "@stocker/core/interfaces";
 import { RegisterInboundInventoryMovementUseCase } from "@stocker/core/use-cases";
 
+type Body = {
+  batch: BatchDto
+  inventoryMovement: InventoryMovementDto
+}
 
 export class RegisterInboundInventoryMovementController {
   async handle(http: IHttp) {
-    const batchDto = http.getBody<BatchDto>()
-    const inventoryMovementDto = http.getBody<InventoryMovementDto>()
+    const body = http.getBody<Body>()
     const useCase = new RegisterInboundInventoryMovementUseCase(batchRepository, inventorymovementRepository)
     const inventoryMovement = await useCase.execute({ batchDto, inventoryMovementDto })
 
