@@ -1,8 +1,10 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import { parseAsInteger, useQueryState } from 'nuqs'
+import { ProductsFaker } from '@stocker/core/fakers'
 import { useApi, useCache } from '@/ui/hooks'
 import { ProductDto } from '@stocker/core/dtos'
 import { usePagination } from '@/ui/hooks/use-pagination'
+import { PAGINATION } from '@stocker/core/constants'
 
 export const useProductsTableHook = () => {
   const [pageState, setPage] = useQueryState('page', parseAsInteger)
@@ -23,9 +25,10 @@ export const useProductsTableHook = () => {
     dependencies: [page],
   })
 
-  const products = data ?? generateMockProducts()
+  const products = data ?? generateMockProduct
   const loading = isLoading
 
+  console.log(generateMockProduct)
   // Filter products by name Logic :)
   const filteredItemsByName = useMemo(() => {
     if (!filterByNameValue) return products
@@ -35,11 +38,12 @@ export const useProductsTableHook = () => {
   }, [products, filterByNameValue])
 
   // Pagination logic :)
-  const rowsPerPage = 10
+  const itemsPerPage = PAGINATION.itemsPerPage
   const { paginatedItems, totalPages } = usePagination(
     filteredItemsByName,
     page,
-    rowsPerPage,
+    itemsPerPage
+    ,
   )
 
   // Search change handle :)
@@ -63,149 +67,4 @@ export const useProductsTableHook = () => {
 }
 
 //this is a VERY bad mock data,but use here for tests while backend is even worst than this mock
-const generateMockProducts = () => [
-  {
-    id: 'product1',
-    name: 'Produto Exemplo',
-    description: 'Este é um produto de exemplo para testes.',
-    image: 'https://example.com/image.png',
-    brand: 'Marca Exemplo',
-    costPrice: 50.0,
-    sellingPrice: 75.0,
-    minimumStock: 10,
-    code: 'EX12345',
-    batches: [],
-  },
-  {
-    id: 'product2',
-    name: 'Produto Exemplo2',
-    description: 'Este é um produto de exemplo para testes.',
-    image: 'https://example.com/image.png',
-    brand: 'Marca Exemplo',
-    costPrice: 50.0,
-    sellingPrice: 75.0,
-    minimumStock: 10,
-    code: 'EX12345',
-    batches: [],
-  },
-  {
-    id: 'product3',
-    name: 'Produto Exemplo2',
-    description: 'Este é um produto de exemplo para testes.',
-    image: 'https://example.com/image.png',
-    brand: 'Marca Exemplo',
-    costPrice: 50.0,
-    sellingPrice: 75.0,
-    minimumStock: 10,
-    code: 'EX12345',
-    batches: [],
-  },
-  {
-    id: 'product4',
-    name: 'Produto Exemplo2',
-    description: 'Este é um produto de exemplo para testes.',
-    image: 'https://example.com/image.png',
-    brand: 'Marca Exemplo',
-    costPrice: 50.0,
-    sellingPrice: 75.0,
-    minimumStock: 10,
-    code: 'EX12345',
-    batches: [],
-  },
-  {
-    id: 'product5',
-    name: 'Produto Exemplo2',
-    description: 'Este é um produto de exemplo para testes.',
-    image: 'https://example.com/image.png',
-    brand: 'Marca Exemplo',
-    costPrice: 50.0,
-    sellingPrice: 75.0,
-    minimumStock: 10,
-    code: 'EX12345',
-    batches: [],
-  },
-  {
-    id: 'product6',
-    name: 'Produto Exemplo2',
-    description: 'Este é um produto de exemplo para testes.',
-    image: 'https://example.com/image.png',
-    brand: 'Marca Exemplo',
-    costPrice: 50.0,
-    sellingPrice: 75.0,
-    minimumStock: 10,
-    code: 'EX12345',
-    batches: [],
-  },
-  {
-    id: 'product7',
-    name: 'Produto Exemplo2',
-    description: 'Este é um produto de exemplo para testes.',
-    image: 'https://example.com/image.png',
-    brand: 'Marca Exemplo',
-    costPrice: 50.0,
-    sellingPrice: 75.0,
-    minimumStock: 10,
-    code: 'EX12345',
-    batches: [],
-  },
-  {
-    id: 'product8',
-    name: 'Produto Exemplo2',
-    description: 'Este é um produto de exemplo para testes.',
-    image: 'https://example.com/image.png',
-    brand: 'Marca Exemplo',
-    costPrice: 50.0,
-    sellingPrice: 75.0,
-    minimumStock: 10,
-    code: 'EX12345',
-    batches: [],
-  },
-  {
-    id: 'product9',
-    name: 'Produto Exemplo2',
-    description: 'Este é um produto de exemplo para testes.',
-    image: 'https://example.com/image.png',
-    brand: 'Marca Exemplo',
-    costPrice: 50.0,
-    sellingPrice: 75.0,
-    minimumStock: 10,
-    code: 'EX12345',
-    batches: [],
-  },
-  {
-    id: 'product10',
-    name: 'Produto Exemplo2',
-    description: 'Este é um produto de exemplo para testes.',
-    image: 'https://example.com/image.png',
-    brand: 'Marca Exemplo',
-    costPrice: 50.0,
-    sellingPrice: 75.0,
-    minimumStock: 10,
-    code: 'EX12345',
-    batches: [],
-  },
-  {
-    id: 'product11',
-    name: 'Produto Exemplo2',
-    description: 'Este é um produto de exemplo para testes.',
-    image: 'https://example.com/image.png',
-    brand: 'Marca Exemplo',
-    costPrice: 50.0,
-    sellingPrice: 75.0,
-    minimumStock: 10,
-    code: 'EX12345',
-    batches: [],
-  },
-  {
-    id: 'product12',
-    name: 'Produto Exemplo2',
-    description: 'Este é um produto de exemplo para testes.',
-    image: 'https://example.com/image.png',
-    brand: 'Marca Exemplo',
-    costPrice: 50.0,
-    sellingPrice: 75.0,
-    minimumStock: 10,
-    code: 'EX12345',
-    batches: [],
-  },
-]
+const generateMockProduct: ProductDto[] = ProductsFaker.fakeManyDto(10)
