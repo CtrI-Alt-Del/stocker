@@ -36,7 +36,7 @@ export const useProductsTableHook = (page: number) => {
     },
     {
       id: 'product2',
-      name: 'Produto Super maneiro',
+      name: 'Produto Exemplo2',
       description: 'Este é um produto de exemplo para testes.',
       image: 'https://example.com/image.png',
       brand: 'Marca Exemplo',
