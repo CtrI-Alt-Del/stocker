@@ -1,2 +1,2 @@
 export { ProductsRoutes } from './products-routes'
-export { InboundInventoryMovement } from './inbound-inventory-movement-routes'
+export { InventoryMovement } from './inventory-movement-routes'
