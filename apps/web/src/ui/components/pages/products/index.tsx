@@ -2,7 +2,7 @@
 
 import { Button, Input, SelectItem, Select } from '@nextui-org/react'
 import { Search } from 'lucide-react'
-import { ProductsTable } from './products-table'
+// import { ProductsTable } from './products-table'
 import { NextApiClient } from '@/api/next/next-api-client'
 import { Drawer } from '../../commons/drawer'
 import { RegisterProductForm } from './register-product-form'
@@ -24,7 +24,6 @@ export const ProductsPage = () => {
               radius='sm'
               classNames={{
                 inputWrapper: ['bg-zinc-100', 'h-12'],
-                placeholder: 'text-zinc-300',
               }}
               className='w-[40rem]'
               endContent={<Search className='text-zinc-300' />}
@@ -43,7 +42,7 @@ export const ProductsPage = () => {
           {(closeDrawer) => <RegisterProductForm onCancel={closeDrawer} />}
         </Drawer>
       </div>
-      <ProductsTable />
+      {/* <ProductsTable /> */}
     </>
   )
 }
