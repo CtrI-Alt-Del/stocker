@@ -7,7 +7,7 @@
     "declarationMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "inlineSources": false,
+    "inlineSources": true,
     "isolatedModules": true,
     "moduleResolution": "node",
     "noUnusedLocals": false,
@@ -15,8 +15,8 @@
     "preserveWatchOutput": true,
     "skipLibCheck": true,
     "strict": true,
-
     "target": "ES2022",
+    "baseUrl": ".",
     "paths": {
       "#domain/entities": ["./src/domain/entities/index.ts"],
       "#dtos": ["./src/dtos/index.ts"],
@@ -29,11 +29,7 @@
       "#interfaces/repositories": ["./src/interfaces/repositories/index.ts"],
       "#interfaces/providers": ["./src/interfaces/providers/index.ts"],
       "#interfaces/services": ["./src/interfaces/services/index.ts"]
-    },
-  }
-}
-
-    "baseUrl": "."
+    }
   },
   "exclude": [
     "node_modules"
