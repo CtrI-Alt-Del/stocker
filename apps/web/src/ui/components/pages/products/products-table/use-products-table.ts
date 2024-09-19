@@ -1,61 +1,47 @@
-import { useCallback } from 'react'
 import { parseAsInteger, useQueryState } from 'nuqs'
 
 import { useApi, useCache } from '@/ui/hooks'
-import { usePagination } from '@/ui/hooks/use-pagination'
 
 import { ProductsFaker } from '@stocker/core/fakers'
 import { PAGINATION } from '@stocker/core/constants'
 import { CACHE } from '@/constants'
 
 export const useProductsTable = () => {
+  const { productsService } = useApi()
   const [pageState, setPage] = useQueryState('page', parseAsInteger)
   const [filterByNameValueState, setFilterByNameValue] = useQueryState('name')
   const page = pageState ?? 1
   const filterByNameValue = filterByNameValueState ?? ''
 
-  const { productsService } = useApi()
-
-  const fetchProducts = async () => {
+  async function fetchProducts() {
     const response = await productsService.listProducts({ page })
-    return response.body.items
+    return response.body
   }
 
-  const { data, isLoading } = useCache<[]>({
+  function handlePageChange(page: number) {
+    setPage(page)
+  }
+
+  function handleSearchChange(value: string) {
+    setFilterByNameValue(value ?? '')
+  }
+
+  const { data, isLoading } = useCache({
     fetcher: fetchProducts,
     key: CACHE.productsList.key,
     dependencies: [page],
   })
 
-  const products = data ?? ProductsFaker.fakeManyDto(20)
-
-  const filteredItemsByName = products.filter((product) =>
-    product.name.toLowerCase().includes(filterByNameValue.toLowerCase()),
-  )
-
-  // Pagination logic 
-  const  itemsPerPage  = PAGINATION.itemsPerPage
-  console.log(itemsPerPage)
-  const totalPages= Math.ceil(filteredItemsByName.length / itemsPerPage);
-
-
-  // Search change handle :)
-  const HandleSearchChange = useCallback(
-
-    (value: string | null) => {
-      setFilterByNameValue(value ?? '')
-      if (value) setPage(1)
-    },
-    [setFilterByNameValue, setPage],
-  )
+  const products = data ? data.items : ProductsFaker.fakeManyDto(20)
+  const itemsCount = data ? data.itemsCount : 0
 
   return {
     page,
-    setPage,
     filterByNameValue,
-    HandleSearchChange,
-    paginatedProducts: products,
-    totalPages,
     isLoading,
+    products,
+    totalPages: itemsCount / PAGINATION.itemsPerPage,
+    handlePageChange,
+    handleSearchChange,
   }
 }

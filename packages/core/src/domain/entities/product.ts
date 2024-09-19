@@ -17,7 +17,6 @@ type ProductProps = {
   width: number
   uom: string
   code: string
-  model: string
   categoryId?: string | null
   companyId: string
   minimumStock: number
@@ -43,7 +42,6 @@ export class Product extends Entity<ProductProps> {
         categoryId: dto.categoryId,
         companyId: dto.companyId,
         uom: dto.uom,
-        model: dto.model,
         code: dto.code,
         minimumStock: dto.minimumStock,
         batches: dto.batches.map(Batch.create),
@@ -97,7 +95,6 @@ export class Product extends Entity<ProductProps> {
       id: this.id,
       name: this.props.name,
       description: this.props.description,
-      model: this.props.model,
       image: this.props.image,
       costPrice: this.props.costPrice,
       sellingPrice: this.props.sellingPrice,

@@ -7,13 +7,14 @@ export class ProductsFaker {
     return Product.create(ProductsFaker.fakeDto(baseDto))
   }
 
-  static fakeDto(baseDto?: Partial<ProductDto>) {
+  static fakeDto(baseDto?: Partial<ProductDto>): ProductDto {
     return {
       id: faker.string.uuid(),
       image: faker.image.url(),
       description: faker.commerce.productDescription(),
       code: faker.commerce.isbn(),
       name: faker.commerce.productName(),
+      model: faker.commerce.productName(),
       height: faker.number.int({ min: 0, max: 100 }),
       width: faker.number.int({ min: 0, max: 100 }),
       length: faker.number.int({ min: 0, max: 100 }),
