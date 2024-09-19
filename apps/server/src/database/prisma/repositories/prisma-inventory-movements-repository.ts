@@ -1,12 +1,14 @@
-import type { InventoryMovement, Product } from '@stocker/core/entities'
+import type { InventoryMovement } from '@stocker/core/entities'
 import type { IInventoryMovementsRepository } from '@stocker/core/interfaces'
+import type { InventoryMovementsListParams } from '@stocker/core/types'
 
 import { prisma } from '../prisma-client'
 import { PrismaInventoryMovementsMapper } from '../mappers'
 import { PrismaError } from '../prisma-error'
 
 export class PrismaInventoryMovementsRepository implements IInventoryMovementsRepository {
-  private readonly mapper: PrismaInventoryMovementsMapper = new PrismaInventoryMovementsMapper()
+  private readonly mapper: PrismaInventoryMovementsMapper =
+    new PrismaInventoryMovementsMapper()
 
   async add(inventoryMovement: InventoryMovement): Promise<void> {
     try {
@@ -19,12 +21,16 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
           items_count: prismaInventoryMovements.items_count,
           user_id: prismaInventoryMovements.user_id,
           product_id: prismaInventoryMovements.product_id,
-          registered_at: prismaInventoryMovements.registered_at
+          registered_at: prismaInventoryMovements.registered_at,
         },
       })
     } catch (error) {
       throw new PrismaError(error)
     }
+  }
+
+  findMany({ page }: InventoryMovementsListParams): Promise<InventoryMovement[]> {
+    throw new Error('Method not implemented.')
   }
 
   async findManyByProductId(productId: string): Promise<InventoryMovement[] | []> {
@@ -39,8 +45,7 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
       const inventoryMovements = prismaInventoryMovements.map((inventoryMovement) => {
         return this.mapper.toDomain(inventoryMovement)
       })
-      return inventoryMovements 
-
+      return inventoryMovements
     } catch (error) {
       throw new PrismaError(error)
     }
@@ -49,7 +54,7 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
   async count(): Promise<number> {
     try {
       return await prisma.inventoryMovement.count()
-    } catch(error) {
+    } catch (error) {
       throw new PrismaError(error)
     }
   }

@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
 const registerProductFormSchema = z.object({
+  image: z.instanceof(FileList).transform((fileList) => fileList.item(0)),
   name: z.string().min(3).max(50),
   description: z.string().min(10).max(500),
   costPrice: z.number(),
