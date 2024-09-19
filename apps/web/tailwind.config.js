@@ -16,8 +16,11 @@ export default {
       light: {
         colors: {
           primary: {
-            DEFAULT: '#e04d21',
-            foreground: '#fafafa'
+            DEFAULT: '#EF5C31',
+            foreground: '#FAFAFA'
+          },
+          danger: {
+            DEFAULT: "#E11D48"
           },
           secondary: {
             DEFAULT: '#18181b',

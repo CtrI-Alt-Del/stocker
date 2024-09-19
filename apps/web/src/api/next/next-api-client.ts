@@ -66,10 +66,11 @@ export const NextApiClient = (): IApiClient => {
       })
     },
 
-    async delete(url: string) {
+    async delete(url: string, body?: unknown) {
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
         method: 'DELETE',
         headers,
+        body: JSON.stringify(body),
       })
       const data = await response.json()
 

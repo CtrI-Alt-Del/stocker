@@ -22,8 +22,8 @@ export const ProductsService = (apiClient: IApiClient): IProductsService => {
       return await apiClient.put('/', partialProductDto)
     },
 
-    async deleteProduct(productId) {
-      return await apiClient.delete(`/products/${productId}`)
+    async deleteProducts(productsIds: string[]) {
+      return await apiClient.delete('/products', { productsIds })
     },
   }
 }

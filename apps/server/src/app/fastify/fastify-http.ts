@@ -3,9 +3,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify'
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 import type { IHttp } from '@stocker/core/interfaces'
 
-export class FastifyHttp
-  implements IHtttp
-{
+export class FastifyHttp implements IHttp {
   constructor(
     private readonly request: FastifyRequest,
     private readonly reply: FastifyReply,
