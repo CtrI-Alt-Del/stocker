@@ -10,26 +10,21 @@ type Request = {
 }
 
 export class RegisterInboundInventoryMovementUseCase {
-	private readonly inventorymovementRepository: IInventoryMovementsRepository
 	private readonly batchRepository: IBatchesRepository
-
-	constructor(inventorymovementRepository: IInventoryMovementsRepository, batchRepository: IBatchesRepository) {
-		this.inventorymovementRepository = inventorymovementRepository, this.batchRepository = batchRepository
+	private readonly inventorymovementRepository: IInventoryMovementsRepository
+	
+	constructor(batchRepository: IBatchesRepository, inventorymovementRepository: IInventoryMovementsRepository) {
+		this.batchRepository = batchRepository, this.inventorymovementRepository = inventorymovementRepository
 	}
 
 	async execute({ batchDto, inventoryMovementDto }: Request) {
 		const productId = batchDto.productId
-		if (productId) {
-			const product = await this.batchRepository.findById(productId)
-			if (!product) throw new ConflictError('Produto não existe')
-		}
-
-		const movement = InventoryMovement.create(inventoryMovementDto)
-		await this.inventorymovementRepository.add(movement)
+			if (!productId) throw new ConflictError('Produto não existe')
 
 		const batch = Batch.create(batchDto)
 		await this.batchRepository.add(batch)
-    return batch.id, movement.id
-
+		
+		const movement = InventoryMovement.create(inventoryMovementDto)
+		await this.inventorymovementRepository.add(movement)
 	}
 }
