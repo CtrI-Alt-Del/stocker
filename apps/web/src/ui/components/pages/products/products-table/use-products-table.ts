@@ -4,16 +4,14 @@ import { parseAsInteger, useQueryState } from 'nuqs'
 import { useApi, useCache } from '@/ui/hooks'
 import { usePagination } from '@/ui/hooks/use-pagination'
 
-import type { ProductDto } from '@stocker/core/dtos'
 import { ProductsFaker } from '@stocker/core/fakers'
 import { PAGINATION } from '@stocker/core/constants'
-
-const generateMockProduct: ProductDto[] = ProductsFaker.fakeManyDto(20)
+import { CACHE } from '@/constants'
 
 export const useProductsTable = () => {
   const [pageState, setPage] = useQueryState('page', parseAsInteger)
-  const page = pageState ?? 1
   const [filterByNameValueState, setFilterByNameValue] = useQueryState('name')
+  const page = pageState ?? 1
   const filterByNameValue = filterByNameValueState ?? ''
 
   const { productsService } = useApi()
@@ -25,11 +23,11 @@ export const useProductsTable = () => {
 
   const { data, isLoading } = useCache<[]>({
     fetcher: fetchProducts,
-    key: '/products',
+    key: CACHE.productsList.key,
     dependencies: [page],
   })
 
-  const products = data ?? generateMockProduct
+  const products = data ?? ProductsFaker.fakeManyDto(20)
   const loading = isLoading
 
   const filteredItemsByName = products.filter((product) =>

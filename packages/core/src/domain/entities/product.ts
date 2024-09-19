@@ -1,5 +1,5 @@
-import { ConflictError } from '#errors'
 import type { ProductDto } from '../../dtos'
+import { ConflictError } from '../../errors'
 import { Entity } from '../abstracts'
 import { Batch } from './batch'
 
@@ -16,6 +16,7 @@ type ProductProps = {
   width: number
   uom: string
   code: string
+  model: string
   categoryId?: string | null
   companyId: string
   minimumStock: number
@@ -40,6 +41,7 @@ export class Product extends Entity<ProductProps> {
         categoryId: dto.categoryId,
         companyId: dto.companyId,
         uom: dto.uom,
+        model: dto.model,
         code: dto.code,
         minimumStock: dto.minimumStock,
         batches: dto.batches.map(Batch.create),
@@ -101,6 +103,7 @@ export class Product extends Entity<ProductProps> {
       length: this.props.length,
       weight: this.props.weight,
       width: this.props.width,
+      model: this.props.model,
       uom: this.props.uom,
       code: this.props.code,
       minimumStock: this.props.minimumStock,
