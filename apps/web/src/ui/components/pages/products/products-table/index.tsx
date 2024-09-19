@@ -1,4 +1,4 @@
-import { useProductsTable } from './use-products-table-hook'
+import { useProductsTable } from './use-products-table'
 
 import {
   Chip,
