@@ -22,9 +22,9 @@ export class RegisterOutboundInventoryMovementUseCase {
     productsRepository: IProductsRepository,
     inventorymovementRepository: IInventoryMovementsRepository,
   ) {
-    ;(this.batchRepository = batchRepository),
-      (this.productsRepository = productsRepository),
-      (this.inventorymovementRepository = inventorymovementRepository)
+    this.batchRepository = batchRepository
+    this.productsRepository = productsRepository
+    this.inventorymovementRepository = inventorymovementRepository
   }
 
   async execute({ inventoryMovementDto }: Request) {

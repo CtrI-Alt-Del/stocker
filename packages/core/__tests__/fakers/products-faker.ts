@@ -1,7 +1,6 @@
 import { fakerPT_BR as faker } from '@faker-js/faker'
-
-import type { ProductDto } from '#dtos'
-import { Product } from '#domain/entities'
+import type { ProductDto } from '../../src/dtos'
+import { Product } from '../../src/domain/entities'
 
 export class ProductsFaker {
   static fake(baseDto?: Partial<ProductDto>) {

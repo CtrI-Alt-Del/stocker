@@ -1,4 +1,4 @@
-import { HTTP_STATUS_CODE } from '#constants'
+import { HTTP_STATUS_CODE } from '../constants'
 import { ApiError } from '../errors/api-error'
 import { AppError } from '../errors/app-error'
 

@@ -16,7 +16,10 @@ export class RegisterInboundInventoryMovementController {
       batchRepository,
       inventorymovementRepository,
     )
-    const inventoryMovement = await useCase.execute({ batchDto, inventoryMovementDto })
+    await useCase.execute({
+      batchDto: body.batch,
+      inventoryMovementDto: body.inventoryMovement,
+    })
 
     return http.send(null, HTTP_STATUS_CODE.created)
   }
