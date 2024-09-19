@@ -2,8 +2,7 @@
   "extends": "@stocker/typescript-config/base.json",
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/*"],
-      "@stocker/core/*": ["./node_modules/@stocker/core/*"]
+      "@/*": ["./src/*"]
     }
   }
 }

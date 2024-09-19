@@ -15,6 +15,7 @@ export type ProductDto = {
   uom: string
   code: string
   minimumStock: number
+  model: string
   companyId: string
   categoryId?: string | null
   batches: BatchDto[]

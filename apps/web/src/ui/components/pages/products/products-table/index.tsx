@@ -1,3 +1,4 @@
+
 import { useProductsTable } from './use-products-table-hook'
 import {
   Pagination,
@@ -112,3 +113,4 @@ export const ProductsTable = () => {
     </>
   )
 }
+
