@@ -26,23 +26,20 @@ export const useProductsTable = () => {
   })
 
   const products = data ?? generateMockProduct
-  const loading = isLoading
 
   // Filter products by name Logic :)
   const filteredItemsByName = products.filter((product) =>
     product.name.toLowerCase().includes(filterByNameValue.toLowerCase()),
   )
 
-  // Pagination logic :)
+  // Pagination logic 
   const  itemsPerPage  = PAGINATION.itemsPerPage
-  const { paginatedItems, totalPages } = usePagination(
-    filteredItemsByName,
-    page,
-    itemsPerPage,
-  )
+  console.log(itemsPerPage)
+  const totalPages= Math.ceil(filteredItemsByName.length / itemsPerPage);
+
 
   // Search change handle :)
-  const onSearchChange = useCallback(
+  const HandleSearchChange = useCallback(
     (value: string | null) => {
       setFilterByNameValue(value ?? '')
       // TODO: WHEN USER SEARCHS FOR NAME OUTSIDE OF PAGE 1 ITS RE-ROUTES HIM TO PAGE 1 CANCELLING HIS TYPING!
@@ -55,11 +52,11 @@ export const useProductsTable = () => {
     page,
     setPage,
     filterByNameValue,
-    onSearchChange,
-    paginatedProducts: paginatedItems,
+    HandleSearchChange,
+    paginatedProducts: products,
     totalPages,
-    loading,
+    isLoading,
   }
 }
 
-const generateMockProduct: ProductDto[] = ProductsFaker.fakeManyDto(20)
+const generateMockProduct: ProductDto[] = ProductsFaker.fakeManyDto(21)

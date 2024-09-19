@@ -1,5 +1,7 @@
 import { useProductsTable } from './use-products-table-hook'
+
 import {
+  Chip,
   Pagination,
   Spinner,
   Table,
@@ -10,29 +12,20 @@ import {
   TableRow,
   Tooltip,
 } from '@nextui-org/react'
-import { Edit } from 'lucide-react'
+import { Edit, EyeIcon } from 'lucide-react'
 import { TableSearch } from '@/ui/components/commons/search-component'
+import { Tag } from '@/ui/components/commons/chip'
 
 export const ProductsTable = () => {
   const {
     page,
     setPage,
-    loading,
+    isLoading,
     filterByNameValue,
-    onSearchChange,
+    HandleSearchChange,
     paginatedProducts,
     totalPages,
   } = useProductsTable()
-  if (loading) {
-    return (
-      <Spinner
-        aria-label='loading'
-        label='Carregando...'
-        className='flex items-center justify-center  w-full h-full  mt-24'
-        size='lg'
-      />
-    )
-  }
   return (
     <>
       <Table
@@ -40,7 +33,7 @@ export const ProductsTable = () => {
         shadow='none'
         topContent={
           <TableSearch
-            onSearchChange={onSearchChange}
+            onSearchChange={HandleSearchChange}
             filterByNameValue={filterByNameValue}
           />
         }
@@ -67,18 +60,20 @@ export const ProductsTable = () => {
       >
         <TableHeader>
           <TableColumn key={'name'}>NOME</TableColumn>
-          <TableColumn key={'description'}>DESCRIÇÃO</TableColumn>
           <TableColumn key={'code'}>CODIGO</TableColumn>
           <TableColumn key={'price'}>PREÇO</TableColumn>
 
           <TableColumn key={'minimumStock'}>ESTOQUE MINIMO</TableColumn>
+          <TableColumn key={'distributor'}>FORNECEDOR</TableColumn>
 
           <TableColumn key={'status'}> ATIVO</TableColumn>
-          <TableColumn key={'option'}>{null}</TableColumn>
+
+          <TableColumn key={'option'}>AÇÕES</TableColumn>
         </TableHeader>
         <TableBody
           items={paginatedProducts}
-          isLoading={loading}
+          isLoading={isLoading}
+          loadingContent={<Spinner color='primary' />}
           emptyContent={'Nenhum produto criado.'}
         >
           {(item) => (
@@ -93,17 +88,28 @@ export const ProductsTable = () => {
                   <p className='font-bold'>{item.name}</p>
                 </div>
               </TableCell>
-              <TableCell key={'description'}>{item.description}</TableCell>
               <TableCell key={'code'}>{item.code}</TableCell>
               <TableCell key={'price'}>{item.costPrice}</TableCell>
               <TableCell key={'minimumStock'}>{item.minimumStock}</TableCell>
-              <TableCell key={'status'}>status</TableCell>
+              <TableCell key={'distributor'}>GABRIEL :)</TableCell>
+
+              <TableCell key={'status'}>
+                <Tag type='sucess'>Ativo</Tag>
+              </TableCell>
+
               <TableCell key={'option'}>
-                <Tooltip content='Editar produto'>
-                  <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
-                    <Edit className='size-6' />
-                  </span>
-                </Tooltip>
+                <div className='flex flex-row items-center justify-center gap-2'>
+                  <Tooltip content='Editar produto'>
+                    <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
+                      <Edit className='size-6' />
+                    </span>
+                  </Tooltip>
+                  <Tooltip content='Ver produto'>
+                    <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
+                      <EyeIcon className='size-6' />
+                    </span>
+                  </Tooltip>
+                </div>
               </TableCell>
             </TableRow>
           )}

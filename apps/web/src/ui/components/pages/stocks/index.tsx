@@ -1,3 +1,5 @@
 export const StocksPage = () => {
-  return <div>Stocks Page</div>
+  return <>
+    <h1>OLa</h1>
+    </>
 }

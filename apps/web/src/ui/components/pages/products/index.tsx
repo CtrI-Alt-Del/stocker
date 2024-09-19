@@ -30,6 +30,7 @@ export const ProductsPage = () => {
         </Drawer>
       </div>
       <ProductsTable />
+
     </>
   )
 }

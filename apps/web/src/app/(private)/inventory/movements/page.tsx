@@ -1,4 +1,4 @@
-import { InventoryMovementsPage } from '@/ui/components/pages/invetory-movements'
+import { InventoryMovementsPage } from '@/ui/components/pages/inventory-movements'
 
 const Page = () => {
   return <InventoryMovementsPage />
