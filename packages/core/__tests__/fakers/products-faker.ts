@@ -5,7 +5,11 @@ import { Product } from '#domain/entities'
 
 export class ProductsFaker {
   static fake(baseDto?: Partial<ProductDto>) {
-    return Product.create({
+    return Product.create(ProductsFaker.fakeDto(baseDto))
+  }
+
+  static fakeDto(baseDto?: Partial<ProductDto>) {
+    return {
       id: faker.string.uuid(),
       image: faker.image.url(),
       description: faker.commerce.productDescription(),
@@ -24,10 +28,16 @@ export class ProductsFaker {
       companyId: faker.string.uuid(),
       batches: [],
       ...baseDto,
-    })
+    }
   }
 
   static fakeMany(count = 10, baseDto?: Partial<ProductDto>) {
     return Array.from({ length: count }).map(() => ProductsFaker.fake(baseDto))
   }
+
+  static fakeManyDto(count = 10, baseDto?: Partial<ProductDto>) {
+    return Array.from({ length: count }).map(() => ProductsFaker.fakeDto(baseDto))
+  }
 }
+
+ProductsFaker.fakeManyDto(20)
