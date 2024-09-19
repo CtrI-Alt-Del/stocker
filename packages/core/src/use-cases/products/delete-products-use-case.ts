@@ -1,4 +1,4 @@
-import type { IProductsRepository } from '#interfaces/repositories'
+import type { IProductsRepository } from '../../interfaces'
 
 type Request = {
   productsIds: string[]

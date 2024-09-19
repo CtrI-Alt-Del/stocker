@@ -1,6 +1,7 @@
-import { Button, Divider, Input, Progress, Switch, Textarea } from '@nextui-org/react'
+import { Button, Divider, Input, Switch, Textarea } from '@nextui-org/react'
 
 import { useRegisterProductForm } from './use-register-product-form'
+import { FileInput } from '@/ui/components/commons/file-input'
 
 type RegisterProductFormProps = {
   onCancel: VoidFunction
@@ -11,13 +12,8 @@ export const RegisterProductForm = ({ onCancel }: RegisterProductFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className='space-y-6'>
-      <label
-        htmlFor='image'
-        className='grid place-content-center cursor-pointer h-32 w-full rounded-md border border-dashed border-zinc-500 bg-zinc-50'
-      >
-        <p className='text-zinc-500'>Carreque sua imagem aqui.</p>
-        <input id='image' type='file' className='sr-only' />
-      </label>
+      <FileInput {...register('image')} />
+
       <div className='grid grid-cols-2 gap-6'>
         <Input label='Nome' isRequired {...register('name')} />
         <Input label='Código do produto' isRequired {...register('code')} />

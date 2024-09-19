@@ -1,4 +1,4 @@
-import type { Batch } from '#domain/entities'
+import type { Batch } from '../../domain/entities'
 
 export interface IBatchesRepository {
   add(batch: Batch): Promise<void>

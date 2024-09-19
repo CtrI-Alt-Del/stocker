@@ -1,7 +1,7 @@
-import { Product } from '#domain/entities'
-import type { ProductDto } from '#dtos'
-import { ConflictError } from '#errors'
-import type { IProductsRepository } from '#interfaces/repositories'
+import { Product } from '../../domain/entities'
+import { ConflictError } from '../../errors'
+import type { ProductDto } from '../../dtos'
+import type { IProductsRepository } from '../../interfaces'
 
 type Request = {
   productDto: ProductDto

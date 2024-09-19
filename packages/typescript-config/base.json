@@ -2,37 +2,18 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Default",
   "compilerOptions": {
-    "composite": false,
     "declaration": true,
     "declarationMap": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "inlineSources": true,
+    "incremental": false,
     "isolatedModules": true,
-    "moduleResolution": "node",
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "preserveWatchOutput": true,
+    "module": "NodeNext",
+    "moduleDetection": "force",
+    "moduleResolution": "NodeNext",
+    "noUncheckedIndexedAccess": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES2022",
-    "baseUrl": ".",
-    "paths": {
-      "#domain/entities": ["./src/domain/entities/index.ts"],
-      "#dtos": ["./src/dtos/index.ts"],
-      "#types": ["./src/types/index.ts"],
-      "#constants": ["./src/constants/index.ts"],
-      "#responses": ["./src/responses/index.ts"],
-      "#libs": ["./src/libs/index.ts"],
-      "#errors": ["./src/errors/index.ts"],
-      "#interfaces/handlers": ["./src/interfaces/handlers/index.ts"],
-      "#interfaces/repositories": ["./src/interfaces/repositories/index.ts"],
-      "#interfaces/providers": ["./src/interfaces/providers/index.ts"],
-      "#interfaces/services": ["./src/interfaces/services/index.ts"]
-    }
-  },
-  "exclude": [
-    "node_modules"
-  ]
+    "target": "ES2022"
+  }
 }
-
