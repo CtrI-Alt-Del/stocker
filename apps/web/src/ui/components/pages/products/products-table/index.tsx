@@ -1,7 +1,5 @@
-import { useProductsTable } from './use-products-table'
-
 import {
-  Chip,
+  Avatar,
   Pagination,
   Spinner,
   Table,
@@ -12,20 +10,23 @@ import {
   TableRow,
   Tooltip,
 } from '@nextui-org/react'
-import { Edit, EyeIcon } from 'lucide-react'
+
 import { TableSearch } from '@/ui/components/commons/search-component'
 import { Tag } from '@/ui/components/commons/chip'
+import { Icon } from '@/ui/components/commons/icon'
+import { useProductsTable } from './use-products-table'
 
 export const ProductsTable = () => {
   const {
     page,
-    setPage,
     isLoading,
     filterByNameValue,
-    HandleSearchChange,
-    paginatedProducts,
+    products,
     totalPages,
+    handlePageChange,
+    handleSearchChange,
   } = useProductsTable()
+
   return (
     <>
       <Table
@@ -33,7 +34,7 @@ export const ProductsTable = () => {
         shadow='none'
         topContent={
           <TableSearch
-            onSearchChange={HandleSearchChange}
+            onSearchChange={handleSearchChange}
             filterByNameValue={filterByNameValue}
           />
         }
@@ -47,40 +48,31 @@ export const ProductsTable = () => {
               showControls
               page={page}
               total={totalPages}
-              onChange={(event) => {
-                if (event && typeof event === 'number') {
-                  setPage(event)
-                } else {
-                  setPage(1)
-                }
-              }}
+              onChange={handlePageChange}
             />
           </div>
         }
       >
         <TableHeader>
-          <TableColumn key={'name'}>NOME</TableColumn>
-          <TableColumn key={'code'}>CODIGO</TableColumn>
-          <TableColumn key={'price'}>PREÇO</TableColumn>
-
-          <TableColumn key={'minimumStock'}>ESTOQUE MINIMO</TableColumn>
-          <TableColumn key={'distributor'}>FORNECEDOR</TableColumn>
-
-          <TableColumn key={'status'}> ATIVO</TableColumn>
-
-          <TableColumn key={'option'}>AÇÕES</TableColumn>
+          <TableColumn key='name'>NOME</TableColumn>
+          <TableColumn key='code'>CODIGO</TableColumn>
+          <TableColumn key='price'>PREÇO</TableColumn>
+          <TableColumn key='minimumStock'>ESTOQUE MINIMO</TableColumn>
+          <TableColumn key='distributor'>FORNECEDOR</TableColumn>
+          <TableColumn key='status'>ATIVO</TableColumn>
+          <TableColumn key='option'>AÇÕES</TableColumn>
         </TableHeader>
         <TableBody
-          items={paginatedProducts}
+          items={products}
           isLoading={isLoading}
           loadingContent={<Spinner color='primary' />}
           emptyContent={'Nenhum produto criado.'}
         >
           {(item) => (
             <TableRow>
-              <TableCell key={'NAME'}>
+              <TableCell key='NAME'>
                 <div className='flex items-center gap-2'>
-                  <img
+                  <Avatar
                     src={item.image}
                     alt={item.name}
                     className='w-8 h-8 rounded-full'
@@ -88,25 +80,25 @@ export const ProductsTable = () => {
                   <p className='font-bold'>{item.name}</p>
                 </div>
               </TableCell>
-              <TableCell key={'code'}>{item.code}</TableCell>
-              <TableCell key={'price'}>{item.costPrice}</TableCell>
-              <TableCell key={'minimumStock'}>{item.minimumStock}</TableCell>
-              <TableCell key={'distributor'}>GABRIEL :)</TableCell>
+              <TableCell key='code'>{item.code}</TableCell>
+              <TableCell key='price'>{item.costPrice}</TableCell>
+              <TableCell key='minimumStock'>{item.minimumStock}</TableCell>
+              <TableCell key='distributor'>GABRIEL :)</TableCell>
 
-              <TableCell key={'status'}>
+              <TableCell key='status'>
                 <Tag type='sucess'>Ativo</Tag>
               </TableCell>
 
-              <TableCell key={'option'}>
+              <TableCell key='option'>
                 <div className='flex flex-row items-center justify-center gap-2'>
                   <Tooltip content='Editar produto'>
                     <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
-                      <Edit className='size-6' />
+                      <Icon name='edit' className='size-6' />
                     </span>
                   </Tooltip>
                   <Tooltip content='Ver produto'>
                     <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
-                      <EyeIcon className='size-6' />
+                      <Icon name='view' className='size-6' />
                     </span>
                   </Tooltip>
                 </div>
