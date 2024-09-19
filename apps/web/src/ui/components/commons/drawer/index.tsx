@@ -5,8 +5,8 @@ import RmDrawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
 import { Slot } from '@radix-ui/react-slot'
 
-import { useDrawer } from './use-drawer'
 import { IconButton } from '../icon-button'
+import { useDrawer } from './use-drawer'
 
 type DrawerProps = {
   children: (closeDrawer: VoidFunction) => ReactNode

@@ -1,7 +1,7 @@
-import type { Product } from '#domain/entities'
-import type { ProductDto } from '#dtos'
-import type { ProductsListParams } from '#types'
-import type { ApiResponse, PaginationResponse } from '#responses'
+import type { Product } from '../../domain/entities'
+import type { ProductDto } from '../../dtos'
+import type { ApiResponse, PaginationResponse } from '../../responses'
+import type { ProductsListParams } from '../../types'
 
 export interface IProductsService {
   listProducts(

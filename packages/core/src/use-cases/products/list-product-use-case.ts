@@ -1,5 +1,5 @@
 import type { IProductsRepository } from '../../interfaces'
-import { PaginationResponse } from '#responses'
+import { PaginationResponse } from '../../responses'
 
 type Request = {
   page: number

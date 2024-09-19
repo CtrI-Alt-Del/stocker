@@ -1,20 +1,20 @@
 import { fakerPT_BR as faker } from '@faker-js/faker'
-
-import type { ProductDto } from '#dtos'
-import { Product } from '#domain/entities'
+import type { ProductDto } from '../../src/dtos'
+import { Product } from '../../src/domain/entities'
 
 export class ProductsFaker {
   static fake(baseDto?: Partial<ProductDto>) {
     return Product.create(ProductsFaker.fakeDto(baseDto))
   }
 
-  static fakeDto(baseDto?: Partial<ProductDto>) {
+  static fakeDto(baseDto?: Partial<ProductDto>): ProductDto {
     return {
       id: faker.string.uuid(),
       image: faker.image.url(),
       description: faker.commerce.productDescription(),
       code: faker.commerce.isbn(),
       name: faker.commerce.productName(),
+      model: faker.commerce.productName(),
       height: faker.number.int({ min: 0, max: 100 }),
       width: faker.number.int({ min: 0, max: 100 }),
       length: faker.number.int({ min: 0, max: 100 }),

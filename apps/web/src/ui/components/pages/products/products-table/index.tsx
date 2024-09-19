@@ -1,77 +1,110 @@
-import { useCallback, useState } from 'react'
-import { useProductsTableHook } from './use-products-table-hook'
 import {
+  Avatar,
+  Pagination,
+  Spinner,
   Table,
   TableBody,
   TableCell,
   TableColumn,
   TableHeader,
   TableRow,
+  Tooltip,
 } from '@nextui-org/react'
 
-  const COLUMNS = [
-    { name: 'NOME', uid: 'name' },
-    { name: 'DESCRIÇÃO', uid: 'description' },
-    { name: 'CODIGO', uid: 'code' },
-    { name: 'PREÇO', uid: 'price' },
-    { name: 'ESTOQUE MINIMO', uid: 'minimumStock' },
-    { name: 'ATIVO', uid: 'status' },
-  ]
+import { TableSearch } from '@/ui/components/commons/search-component'
+import { Tag } from '@/ui/components/commons/chip'
+import { Icon } from '@/ui/components/commons/icon'
+import { useProductsTable } from './use-products-table'
 
 export const ProductsTable = () => {
-  const renderCell = useCallback((product, columnKey) => {
-    const cellValue = product[columnKey]
+  const {
+    page,
+    isLoading,
+    filterByNameValue,
+    products,
+    totalPages,
+    handlePageChange,
+    handleSearchChange,
+  } = useProductsTable()
 
-    switch (columnKey) {
-      case 'name':
-        return (
-          <div className='flex items-center gap-2'>
-            <img
-              src={product.image}
-              alt={product.name}
-              className='w-8 h-8 rounded-full'
-            />
-            <p className='font-bold'>{cellValue}</p>
-          </div>
-        )
-      case 'description':
-        return <p className='text-sm text-gray-500'>{cellValue}</p>
-      case 'code':
-        return <p>{cellValue}</p>
-      case 'price':
-        return <p>${cellValue}</p>
-      case 'availableStock':
-        return <p>{cellValue}</p>
-      case 'minimumStock':
-        return <p>{cellValue}</p>
-      case 'status':
-        return <p>{cellValue}</p>
-    }
-  }, [])
-  const [page, setPage] = useState<number>(1)
-  const { products, loading } = useProductsTableHook(page)
-  if (loading) {
-    return <h1>Carregando tabela....</h1>
-  }
   return (
     <>
-      <Table>
-        <TableHeader columns={COLUMNS}>
-          {(column) => (
-            <TableColumn
-              key={column.uid}
-              align={column.uid === 'actions' ? 'center' : 'start'}
-            >
-              {column.name}
-            </TableColumn>
-          )}
+      <Table
+        arial-label='Products table'
+        shadow='none'
+        topContent={
+          <TableSearch
+            onSearchChange={handleSearchChange}
+            filterByNameValue={filterByNameValue}
+          />
+        }
+        topContentPlacement='outside'
+        selectionMode='multiple'
+        bottomContentPlacement='outside'
+        bottomContent={
+          <div className='flex w-full justify-start '>
+            <Pagination
+              aria-label='pagination'
+              showControls
+              page={page}
+              total={totalPages}
+              onChange={handlePageChange}
+            />
+          </div>
+        }
+      >
+        <TableHeader>
+          <TableColumn key='name'>NOME</TableColumn>
+          <TableColumn key='code'>CODIGO</TableColumn>
+          <TableColumn key='price'>PREÇO</TableColumn>
+          <TableColumn key='minimumStock'>ESTOQUE MINIMO</TableColumn>
+          <TableColumn key='distributor'>FORNECEDOR</TableColumn>
+          <TableColumn key='status'>ATIVO</TableColumn>
+          <TableColumn key='option'>AÇÕES</TableColumn>
         </TableHeader>
-        <TableBody items={products}>
-        {(item) => (
-        <TableRow>
-              <TableCell key={'NAME'}>{item.name}</TableCell>
-              </TableRow>
-        )}
+        <TableBody
+          items={products}
+          isLoading={isLoading}
+          loadingContent={<Spinner color='primary' />}
+          emptyContent={'Nenhum produto criado.'}
+        >
+          {(item) => (
+            <TableRow>
+              <TableCell key='NAME'>
+                <div className='flex items-center gap-2'>
+                  <Avatar
+                    src={item.image}
+                    alt={item.name}
+                    className='w-8 h-8 rounded-full'
+                  />
+                  <p className='font-bold'>{item.name}</p>
+                </div>
+              </TableCell>
+              <TableCell key='code'>{item.code}</TableCell>
+              <TableCell key='price'>{item.costPrice}</TableCell>
+              <TableCell key='minimumStock'>{item.minimumStock}</TableCell>
+              <TableCell key='distributor'>GABRIEL :)</TableCell>
+
+              <TableCell key='status'>
+                <Tag type='sucess'>Ativo</Tag>
+              </TableCell>
+
+              <TableCell key='option'>
+                <div className='flex flex-row items-center justify-center gap-2'>
+                  <Tooltip content='Editar produto'>
+                    <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
+                      <Icon name='edit' className='size-6' />
+                    </span>
+                  </Tooltip>
+                  <Tooltip content='Ver produto'>
+                    <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
+                      <Icon name='view' className='size-6' />
+                    </span>
+                  </Tooltip>
+                </div>
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </>
