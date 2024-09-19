@@ -53,23 +53,18 @@ export class Product extends Entity<ProductProps> {
     return Product.create({ ...this.dto, ...partialDto })
   }
 
-  reduceStock(itemsCount: number): Batch[] {
+  reduceStock(itemsCount: number): void {
     let stock = itemsCount
     if (stock > this.currentStock) {
       throw new ConflictError('Estoque insuficiente')
     }
 
-    const updatedBatches: Batch[] = []
-
     for (const batch of this.props.batches) {
       const batchItemsCount = batch.itemsCount
       batch.reduceItemsCount(stock)
       stock -= batchItemsCount
-      updatedBatches.push(batch)
       if (!stock) break
     }
-
-    return updatedBatches
   }
 
   get currentStock(): number {
