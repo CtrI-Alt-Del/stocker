@@ -15,7 +15,6 @@ export const IconButton = ({ name, size, onClick }: IconButton) => {
       <Button isIconOnly onClick={onClick} className='bg-transparent' size='sm'>
         <Icon name={name} size={size} />
       </Button>
-      <Progress />
     </>
   )
 }

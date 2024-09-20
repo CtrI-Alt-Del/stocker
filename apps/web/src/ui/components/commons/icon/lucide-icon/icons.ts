@@ -15,6 +15,7 @@ import {
   ScanBarcode,
   Bell,
   Eye,
+  Search,
   Menu,
   EllipsisVertical,
   X,
@@ -45,4 +46,5 @@ export const ICONS: Record<
   supplier: Truck,
   category: Tag,
   view: Eye,
+  search: Search,
 }
