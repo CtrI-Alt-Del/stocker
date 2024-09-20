@@ -26,21 +26,21 @@ export const useProductsTable = () => {
     setFilterByNameValue(value ?? '')
   }
 
-  const { data, isLoading } = useCache({
+  const { data, isFetching } = useCache({
     fetcher: fetchProducts,
     key: CACHE.productsList.key,
     dependencies: [page],
   })
 
-  const products = data ? data.items : ProductsFaker.fakeManyDto(20)
+  const products = data ? data.items : []
   const itemsCount = data ? data.itemsCount : 0
 
   return {
     page,
     filterByNameValue,
-    isLoading,
+    isFetching,
     products,
-    totalPages: itemsCount / PAGINATION.itemsPerPage,
+    totalPages: Math.round(itemsCount / PAGINATION.itemsPerPage),
     handlePageChange,
     handleSearchChange,
   }

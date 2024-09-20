@@ -10,7 +10,7 @@ export function handleApiError<Body>(error: object, statusCode: number) {
     }) as ApiResponse<Body>
   }
 
-  console.error('OPA')
+  console.error(error)
 
   return new ApiResponse({
     errorMessage: 'Unknown api error',

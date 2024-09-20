@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Avatar,
   Pagination,
@@ -11,46 +13,46 @@ import {
   Tooltip,
 } from '@nextui-org/react'
 
-import { TableSearch } from '@/ui/components/commons/search-component'
-import { Tag } from '@/ui/components/commons/chip'
+import { Tag } from '@/ui/components/commons/tag'
 import { Icon } from '@/ui/components/commons/icon'
-import { useProductsTable } from './use-products-table'
+import { IMAGE_PLACEHOLDER } from '@/constants'
+import type { ProductDto } from '@stocker/core/dtos'
 
-export const ProductsTable = () => {
-  const {
-    page,
-    isLoading,
-    filterByNameValue,
-    products,
-    totalPages,
-    handlePageChange,
-    handleSearchChange,
-  } = useProductsTable()
+type ProductsTableProps = {
+  page: number
+  isLoading: boolean
+  products: ProductDto[]
+  totalPages: number
+  onPageChange: (page: number) => void
+}
 
+export const ProductsTable = ({
+  isLoading,
+  page,
+  products,
+  totalPages,
+  onPageChange,
+}: ProductsTableProps) => {
   return (
     <>
       <Table
         arial-label='Products table'
         shadow='none'
-        topContent={
-          <TableSearch
-            onSearchChange={handleSearchChange}
-            filterByNameValue={filterByNameValue}
-          />
-        }
         topContentPlacement='outside'
         selectionMode='multiple'
         bottomContentPlacement='outside'
         bottomContent={
-          <div className='flex w-full justify-start '>
-            <Pagination
-              aria-label='pagination'
-              showControls
-              page={page}
-              total={totalPages}
-              onChange={handlePageChange}
-            />
-          </div>
+          totalPages ? (
+            <div className='flex w-full justify-start '>
+              <Pagination
+                aria-label='pagination'
+                showControls
+                page={page}
+                total={totalPages}
+                onChange={onPageChange}
+              />
+            </div>
+          ) : null
         }
       >
         <TableHeader>
@@ -75,6 +77,7 @@ export const ProductsTable = () => {
                   <Avatar
                     src={item.image}
                     alt={item.name}
+                    fallback={IMAGE_PLACEHOLDER}
                     className='w-8 h-8 rounded-full'
                   />
                   <p className='font-bold'>{item.name}</p>
@@ -83,12 +86,14 @@ export const ProductsTable = () => {
               <TableCell key='code'>{item.code}</TableCell>
               <TableCell key='price'>{item.costPrice}</TableCell>
               <TableCell key='minimumStock'>{item.minimumStock}</TableCell>
-              <TableCell key='distributor'>GABRIEL :)</TableCell>
-
+              <TableCell key='distributor'>GABRIEL</TableCell>
               <TableCell key='status'>
-                <Tag type='sucess'>Ativo</Tag>
+                {item.isActive ? (
+                  <Tag type='sucess'>Ativo</Tag>
+                ) : (
+                  <Tag type='danger'>Desativo</Tag>
+                )}
               </TableCell>
-
               <TableCell key='option'>
                 <div className='flex flex-row items-center justify-center gap-2'>
                   <Tooltip content='Editar produto'>

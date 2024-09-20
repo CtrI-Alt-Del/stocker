@@ -1,4 +1,4 @@
-import type { IInventoryMovementsRepository } from '../../interfaces/repositories/inventory-movements'
+import type { IInventoryMovementsRepository } from '../../interfaces/repositories/inventory-movements-repository'
 import type { IBatchesRepository } from '../../interfaces'
 import type { BatchDto, InventoryMovementDto } from '../../dtos'
 import { ConflictError } from '../../errors'

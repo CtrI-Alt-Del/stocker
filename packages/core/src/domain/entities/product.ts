@@ -9,7 +9,7 @@ type ProductProps = {
   image: string
   costPrice: number
   sellingPrice: number
-  model: string
+  model?: string
   brand: string
   height: number
   length: number
@@ -20,6 +20,7 @@ type ProductProps = {
   categoryId?: string | null
   companyId: string
   minimumStock: number
+  isActive: boolean
   batchesWithoutStockIds: string[]
   batches: Batch[]
 }
@@ -36,16 +37,16 @@ export class Product extends Entity<ProductProps> {
         brand: dto.brand,
         height: dto.height,
         length: dto.length,
-        model: dto.model,
         weight: dto.weight,
         width: dto.width,
-        categoryId: dto.categoryId,
-        companyId: dto.companyId,
+        model: dto.model,
         uom: dto.uom,
         code: dto.code,
         minimumStock: dto.minimumStock,
-        batches: dto.batches.map(Batch.create),
+        isActive: dto.isActive,
+        batches: dto.batches ? dto.batches.map(Batch.create) : [],
         batchesWithoutStockIds: [],
+        companyId: dto.companyId,
       },
       dto.id,
     )
@@ -101,6 +102,7 @@ export class Product extends Entity<ProductProps> {
       model: this.props.model,
       uom: this.props.uom,
       code: this.props.code,
+      isActive: this.props.isActive,
       minimumStock: this.props.minimumStock,
       categoryId: this.props.categoryId,
       companyId: this.props.companyId,

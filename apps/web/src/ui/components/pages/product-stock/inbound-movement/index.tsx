@@ -1,21 +1,12 @@
-import {
-  Button,
-  DateInput,
-  Divider,
-  Input,
-  Progress,
-  Switch,
-  Textarea,
-} from '@nextui-org/react'
-
-import { useRegisterProductForm } from './use-inbound-movement'
+import { Button, DateInput, Divider, Input, Textarea } from '@nextui-org/react'
+import { useRegisterInboundMovement } from './use-inbound-movement'
 
 type RegisterProductFormProps = {
   onCancel: VoidFunction
 }
 
 export const RegisterInboundMovementForm = ({ onCancel }: RegisterProductFormProps) => {
-  const { register, handleSubmit } = useRegisterProductForm()
+  const { register, handleSubmit, errors } = useRegisterInboundMovement()
 
   return (
     <form onSubmit={handleSubmit} className='space-y-6'>
@@ -23,24 +14,39 @@ export const RegisterInboundMovementForm = ({ onCancel }: RegisterProductFormPro
         <DateInput
           label='Data e hora'
           granularity='second'
-          hideTimeZone
           isRequired
           {...register('creationDate')}
+          errorMessage={errors.creationDate?.message}
         />
         <DateInput
           granularity='second'
           label='Validade'
           isRequired
           {...register('expireDate')}
+          errorMessage={errors.expireDate?.message}
         />
       </div>
 
       <div className='grid grid-cols-2 gap-6'>
-        <Input label='Quantia' isRequired {...register('quantity')} />
-        <Input label='Codigo do Lote' isRequired  {...register('batchCode')}/>
+        <Input
+          label='Quantia'
+          isRequired
+          {...register('quantity')}
+          errorMessage={errors.quantity?.message}
+        />
+        <Input
+          label='Codigo do Lote'
+          isRequired
+          {...register('batchCode')}
+          errorMessage={errors.batchCode?.message}
+        />
       </div>
 
-      <Textarea label='Descrição' {...register('description')} />
+      <Textarea
+        label='Descrição'
+        {...register('description')}
+        errorMessage={errors.description?.message}
+      />
 
       <Divider className='my-2' />
 

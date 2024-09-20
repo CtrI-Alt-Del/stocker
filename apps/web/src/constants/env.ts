@@ -1,10 +1,11 @@
 import z from 'zod'
 
 import { AppError } from '@stocker/core/errors'
+import { urlSchema } from '@stocker/validation/schemas'
 
 const envSchema = z.object({
-  appUrl: z.string().url(),
-  serverUrl: z.string().url(),
+  appUrl: urlSchema,
+  serverUrl: urlSchema,
 })
 
 const validation = envSchema.safeParse({

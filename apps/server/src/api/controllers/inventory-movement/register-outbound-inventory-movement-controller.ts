@@ -3,14 +3,13 @@ import type { BatchDto, InventoryMovementDto } from '@stocker/core/dtos'
 import { RegisterOutboundInventoryMovementUseCase } from '@stocker/core/use-cases'
 import {
   batchRepository,
-  type ProductsRepository,
   inventorymovementRepository,
+  productsRepository,
 } from '@/database'
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 
 type Body = {
   batch: BatchDto
-  productsRepository: ProductsRepository
   inventoryMovement: InventoryMovementDto
 }
 
@@ -23,7 +22,14 @@ export class RegisterOutboundInventoryMovementController {
       inventorymovementRepository,
     )
 
-    await useCase.execute({ batchDto, inventoryMovementDto })
+    await useCase.execute({
+      batchDto: body.batch,
+      inventoryMovementDto: body.inventoryMovement,
+    })
+    await useCase.execute({
+      batchDto: body.batch,
+      inventoryMovementDto: body.inventoryMovement,
+    })
 
     return http.send(null, HTTP_STATUS_CODE.created)
   }

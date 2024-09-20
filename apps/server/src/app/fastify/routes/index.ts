@@ -1,2 +1,3 @@
 export { ProductsRoutes } from './products-routes'
-export { InventoryMovement } from './inventory-movement-routes'
+export { InventoryMovementRoutes } from './inventory-movement-routes'
+export { FileStorageRoutes } from './file-storage-routes'
