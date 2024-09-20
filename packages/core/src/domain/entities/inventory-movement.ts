@@ -10,6 +10,9 @@ type MovementProps = {
   responsibleId: string
   productId: string
   registeredAt: Date
+  expireDate?: Date
+  batchCode?: string
+  description?: string
 }
 
 export class InventoryMovement extends Entity<MovementProps> {
@@ -27,6 +30,9 @@ export class InventoryMovement extends Entity<MovementProps> {
         responsibleId: dto.responsibleId,
         productId: dto.productId,
         registeredAt: new Date(),
+        expireDate: new Date(),
+        batchCode: dto.batchCode,
+        description: dto.description
       },
       dto.id,
     )
@@ -44,6 +50,9 @@ export class InventoryMovement extends Entity<MovementProps> {
       responsibleId: this.props.responsibleId,
       productId: this.props.productId,
       registeredAt: this.props.registeredAt,
+      batchCode: this.props.batchCode,
+      expireDate: this.props.expireDate,
+      description: this.props.description
     }
   }
 

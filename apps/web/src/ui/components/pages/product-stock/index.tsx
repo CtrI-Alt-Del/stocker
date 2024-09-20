@@ -3,8 +3,10 @@ import { Button } from '@nextui-org/react'
 import { Drawer } from '../../commons/drawer'
 import { RegisterInboundMovementForm } from './inbound-movement'
 import { useBreakpoint } from '@/ui/hooks'
+import { useInventoryMovementPage } from '../inventory-movements/use-inventory-moviment'
 
 export const ProductStockPage = () => {
+  const { handleRegisterInventoryMovementFormSubmit, page, movements, totalPages, handlePageChange, isFetching } = useInventoryMovementPage("idMOck")
   const { md } = useBreakpoint()
 
   return (
@@ -20,11 +22,14 @@ export const ProductStockPage = () => {
             width={md ? 400 : 700}
             trigger={
               <Button variant='solid' color='primary' radius='sm'>
-              Lançamento de entrada
+                Lançamento de entrada
               </Button>
             }
           >
-            {(closeDrawer) => <RegisterInboundMovementForm onCancel={closeDrawer} />}
+            {(closeDrawer) => <RegisterInboundMovementForm onCancel={closeDrawer} onSubmit={async () => {
+              await handleRegisterInventoryMovementFormSubmit()
+              closeDrawer()
+            }} />}
           </Drawer>
 
           <Button color='primary'>Lançamento de saída</Button>
