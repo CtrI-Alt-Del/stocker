@@ -36,6 +36,7 @@ export const NextApiClient = (): IApiClient => {
         headers,
         body: JSON.stringify(body),
       })
+
       const data = await response.json()
 
       if (!response.ok) {
@@ -66,8 +67,7 @@ export const NextApiClient = (): IApiClient => {
       })
     },
 
-    async delete(url: string, body?: unknown) {
-      console.log(`${baseUrl}${addUrlParams(url, params)}`)
+    async delete(url: string, body: unknown) {
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
         method: 'DELETE',
         headers,
@@ -80,6 +80,23 @@ export const NextApiClient = (): IApiClient => {
       }
 
       return new ApiResponse({
+        body: data,
+        statusCode: response.status,
+      })
+    },
+
+    async multipart<ResponseBody>(url: string, body: FormData) {
+      const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
+        method: 'POST',
+        body: body,
+      })
+      const data = await response.json()
+
+      if (!response.ok) {
+        return handleApiError<ResponseBody>(data, response.status)
+      }
+
+      return new ApiResponse<ResponseBody>({
         body: data,
         statusCode: response.status,
       })
