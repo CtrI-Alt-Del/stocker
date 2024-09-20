@@ -1,11 +1,11 @@
-import {
-  IBatchesRepository,
-  IProductsRepository,
-  IInventoryMovementsRepository,
-} from '#interfaces/repositories'
-import { BatchDto, InventoryMovementDto } from '#dtos'
-import { NotFoundError } from '#errors'
 import { InventoryMovement } from '../../domain/entities'
+import type { BatchDto, InventoryMovementDto } from '../../dtos'
+import { NotFoundError } from '../../errors'
+import type {
+  IBatchesRepository,
+  IInventoryMovementsRepository,
+  IProductsRepository,
+} from '../../interfaces'
 
 type Request = {
   batchDto: BatchDto
@@ -22,9 +22,9 @@ export class RegisterOutboundInventoryMovementUseCase {
     productsRepository: IProductsRepository,
     inventorymovementRepository: IInventoryMovementsRepository,
   ) {
-    ;(this.batchRepository = batchRepository),
-      (this.productsRepository = productsRepository),
-      (this.inventorymovementRepository = inventorymovementRepository)
+    this.batchRepository = batchRepository
+    this.productsRepository = productsRepository
+    this.inventorymovementRepository = inventorymovementRepository
   }
 
   async execute({ inventoryMovementDto }: Request) {
