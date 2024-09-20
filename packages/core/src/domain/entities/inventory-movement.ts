@@ -1,5 +1,5 @@
-import type { InventoryMovementDto } from '#dtos'
-import { ValidationError } from '#errors'
+import type { InventoryMovementDto } from '../../dtos'
+import { ValidationError } from '../../errors'
 import { Entity } from '../abstracts'
 
 type MovementType = 'inbound' | 'outbound'
@@ -54,7 +54,7 @@ export class InventoryMovement extends Entity<MovementProps> {
   get itemsQuantity(): number {
     return this.props.itemsQuantity
   }
-  
+
   get responsibleId(): string {
     return this.props.responsibleId
   }

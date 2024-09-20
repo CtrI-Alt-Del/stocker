@@ -1,4 +1,4 @@
-import { HTTP_STATUS_CODE } from '#constants'
+import { HTTP_STATUS_CODE } from '../constants'
 import { AppError } from './app-error'
 
 export class ApiError extends AppError {

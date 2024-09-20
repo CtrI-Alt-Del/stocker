@@ -1,5 +1,5 @@
-import { ConflictError } from '#errors'
 import type { ProductDto } from '../../dtos'
+import { ConflictError } from '../../errors'
 import { Entity } from '../abstracts'
 import { Batch } from './batch'
 
@@ -9,6 +9,7 @@ type ProductProps = {
   image: string
   costPrice: number
   sellingPrice: number
+  model: string
   brand: string
   height: number
   length: number
@@ -35,6 +36,7 @@ export class Product extends Entity<ProductProps> {
         brand: dto.brand,
         height: dto.height,
         length: dto.length,
+        model: dto.model,
         weight: dto.weight,
         width: dto.width,
         categoryId: dto.categoryId,
@@ -93,6 +95,7 @@ export class Product extends Entity<ProductProps> {
       id: this.id,
       name: this.props.name,
       description: this.props.description,
+      model: this.props.model,
       image: this.props.image,
       costPrice: this.props.costPrice,
       sellingPrice: this.props.sellingPrice,
