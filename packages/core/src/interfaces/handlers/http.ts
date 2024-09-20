@@ -5,4 +5,5 @@ export interface IHttp {
   send(response: unknown, statusCode?: number): unknown
   redirect(route: string): unknown
   getFile(): Promise<Buffer>
+  getImageFile(): Promise<Buffer>
 }

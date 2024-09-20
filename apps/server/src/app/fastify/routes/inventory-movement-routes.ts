@@ -1,12 +1,13 @@
-import type { FastifyInstance } from "fastify";
-import { FastifyHttp } from "../fastify-http";
+import type { FastifyInstance } from 'fastify'
+import { FastifyHttp } from '../fastify-http'
+import { RegisterInboundInventoryMovementController } from '@/api/controllers/inventory-movement'
+import { RegisterOutboundInventoryMovementController } from '@/api/controllers/inventory-movement'
 
-import { RegisterInboundInventoryMovementController } from '@/api/controllers/inbound-inventory-movement/register-inbound-inventory-movement-controller'
-import { RegisterOutboundInventoryMovementController } from '@/api/controllers/outbound-inventory-movement/register-outbound-inventory-movement-controller'
-
-export const InventoryMovement = async (app: FastifyInstance) => {
-  const registerInboundInventoryMovementController = new RegisterInboundInventoryMovementController()
-  const registerOutboundInventoryMovementController = new RegisterOutboundInventoryMovementController()
+export const InventoryMovementRoutes = async (app: FastifyInstance) => {
+  const registerInboundInventoryMovementController =
+    new RegisterInboundInventoryMovementController()
+  const registerOutboundInventoryMovementController =
+    new RegisterOutboundInventoryMovementController()
 
   app.post('/inbound', async (request, response) => {
     const http = new FastifyHttp(request, response)

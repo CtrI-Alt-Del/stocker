@@ -1,14 +1,20 @@
 import { z } from 'zod'
 
 import { AppError } from '@stocker/core/errors'
+import {
+  appModeSchema,
+  integerSchema,
+  stringSchema,
+  urlSchema,
+} from '@stocker/validation/schemas'
 
 export const envSchema = z.object({
-  port: z.coerce.number().default(3333),
-  mode: z.enum(['dev', 'prod']).default('dev'),
-  supabaseKey: z.string(),
-  // databaseUrl: z.string(),
-  directUrl: z.string().url(),
-  // supabaseUrl: z.string(),
+  port: integerSchema.default(3333),
+  mode: appModeSchema,
+  supabaseKey: stringSchema,
+  databaseUrl: stringSchema,
+  directUrl: urlSchema,
+  supabaseUrl: stringSchema,
 })
 
 const validation = envSchema.safeParse({
@@ -19,7 +25,6 @@ const validation = envSchema.safeParse({
   supabaseUrl: process.env.SUPABASE_URL,
   supabaseKey: process.env.SUPABASE_KEY,
 })
-
 
 if (!validation.success) {
   throw new AppError('Env Error', validation.error.issues.join(', '))

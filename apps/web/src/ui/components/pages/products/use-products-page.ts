@@ -1,12 +1,10 @@
 import { parseAsInteger, useQueryState } from 'nuqs'
 
 import { useApi, useCache } from '@/ui/hooks'
-
-import { ProductsFaker } from '@stocker/core/fakers'
-import { PAGINATION } from '@stocker/core/constants'
 import { CACHE } from '@/constants'
+import { PAGINATION } from '@stocker/core/constants'
 
-export const useProductsTable = () => {
+export function useProductsPage() {
   const { productsService } = useApi()
   const [pageState, setPage] = useQueryState('page', parseAsInteger)
   const [filterByNameValueState, setFilterByNameValue] = useQueryState('name')
@@ -26,7 +24,7 @@ export const useProductsTable = () => {
     setFilterByNameValue(value ?? '')
   }
 
-  const { data, isFetching } = useCache({
+  const { data, isFetching, refetch } = useCache({
     fetcher: fetchProducts,
     key: CACHE.productsList.key,
     dependencies: [page],
@@ -35,12 +33,17 @@ export const useProductsTable = () => {
   const products = data ? data.items : []
   const itemsCount = data ? data.itemsCount : 0
 
+  async function handleRegisterProductFormSubmit() {
+    refetch()
+  }
+
   return {
     page,
     filterByNameValue,
     isFetching,
     products,
     totalPages: Math.round(itemsCount / PAGINATION.itemsPerPage),
+    handleRegisterProductFormSubmit,
     handlePageChange,
     handleSearchChange,
   }

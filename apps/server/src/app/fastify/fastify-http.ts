@@ -35,7 +35,27 @@ export class FastifyHttp implements IHttp {
     const file = await this.request.file({ limits: { fileSize: MAX_FILE_SIZE } })
 
     if (!file) {
-      throw new ValidationError('Tamanho máximo de arquivo excedido')
+      throw new ValidationError('Arquivo não encontrado')
+    }
+
+    const buffer = await file.toBuffer()
+
+    return buffer
+  }
+
+  async getImageFile(): Promise<Buffer> {
+    const file = await this.request.file({ limits: { fileSize: MAX_FILE_SIZE } })
+
+    if (!file) {
+      throw new ValidationError('Arquivo não encontrado')
+    }
+
+    const imageMimeTypeRegex = /^(image\/(?:gif|jpg|jpeg|png))/i
+
+    const isValidMimeType = imageMimeTypeRegex.test(file.mimetype)
+
+    if (!isValidMimeType) {
+      throw new ValidationError('Arquivo não é uma imagem')
     }
 
     const buffer = await file.toBuffer()
