@@ -17,7 +17,7 @@ import {
 } from '@stocker/validation/schemas'
 import type { ProductDto } from '@stocker/core/dtos'
 
-import { useApi } from '@/ui/hooks'
+import { useApi, useToast } from '@/ui/hooks'
 import type { ImageInputRef } from '@/ui/components/commons/image-input/types'
 
 const updateProductFormSchema = z.object({
@@ -70,13 +70,13 @@ export function useUpdateProductForm({
         width: productDto.width,
         minimumStock: productDto.minimumStock,
         sellingPrice: productDto.sellingPrice,
-
         model: productDto.model ?? undefined,
         ...(productDto.model ? { model: productDto.model } : null),
       },
       resolver: zodResolver(updateProductFormSchema),
     })
   const { fileStorageService, productsService } = useApi()
+  const { showSuccess, showError } = useToast()
 
   function handleCancelButtonClick() {
     reset()
@@ -131,11 +131,11 @@ export function useUpdateProductForm({
     )
 
     if (response.isFailure) {
-      alert(response.errorMessage)
+      showError(response.errorMessage)
     }
 
     if (response.isSuccess) {
-      alert('Product updated successfully')
+      showSuccess('Produto atualizado com sucesso')
       imageInputRef.current?.reset()
       reset()
       onCancel()

@@ -3,6 +3,7 @@
 import { useRef } from 'react'
 import {
   Avatar,
+  Link,
   Pagination,
   Spinner,
   Table,
@@ -20,10 +21,11 @@ import { Tag } from '@/ui/components/commons/tag'
 import { Drawer } from '@/ui/components/commons/drawer'
 import { IconButton } from '@/ui/components/commons/icon-button'
 import type { DrawerRef } from '@/ui/components/commons/drawer/types'
-import { IMAGE_PLACEHOLDER } from '@/constants'
+import { IMAGE_PLACEHOLDER, ROUTES } from '@/constants'
 import { useBreakpoint } from '@/ui/hooks'
 import { UpdateProductForm } from '../update-product-form'
 import { useProductsTable } from './use-products-table'
+import { Icon } from '@/ui/components/commons/icon'
 
 type ProductsTableProps = {
   page: number
@@ -128,6 +130,9 @@ export const ProductsTable = ({
                     onClick={() => handleEditProductButtonClick(item)}
                   />
                 </Tooltip>
+                <Link href={`${ROUTES.inventory.stocks}/${item.id}`}>
+                  <Icon name='stock' className='size-6 text-zinc-500' />
+                </Link>
               </TableCell>
             </TableRow>
           )}

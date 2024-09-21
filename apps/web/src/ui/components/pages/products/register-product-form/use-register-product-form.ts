@@ -15,7 +15,7 @@ import {
   nonZeroIntegerSchema,
   stringSchema,
 } from '@stocker/validation/schemas'
-import { useApi } from '@/ui/hooks'
+import { useApi, useToast } from '@/ui/hooks'
 import { Product } from '@stocker/core/entities'
 import type { ImageInputRef } from '@/ui/components/commons/image-input/types'
 
@@ -48,6 +48,7 @@ export function useRegisterProductForm(
     useForm<RegisterProductFormData>({
       resolver: zodResolver(registerProductFormSchema),
     })
+  const { showSuccess, showError } = useToast()
   const { fileStorageService, productsService } = useApi()
   const [isSubmiting, setIsSubmiting] = useState(false)
 
@@ -89,10 +90,11 @@ export function useRegisterProductForm(
     const response = await productsService.registerProduct(product)
 
     if (response.isFailure) {
-      alert(response.errorMessage)
+      showError(response.errorMessage)
     }
 
     if (response.isSuccess) {
+      showSuccess('Produto cadastrado com sucesso')
       reset()
       imageInputRef.current?.reset()
       onSubmit()

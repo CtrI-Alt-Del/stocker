@@ -1,4 +1,4 @@
-import { NextApiClient } from '@/api/next/next-api-client'
+import { NextApiClient } from '@/api/next/clients'
 import { FileStorageService, ProductsService } from '@/api/services'
 import { MovementService } from '@/api/services/movement-service'
 import { ENV } from '@/constants'

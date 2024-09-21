@@ -1,12 +1,13 @@
 import { parseAsInteger, useQueryState } from 'nuqs'
 
-import { useApi, useCache } from '@/ui/hooks'
+import { useApi, useCache, useToast } from '@/ui/hooks'
 import { CACHE } from '@/constants'
 import { PAGINATION } from '@stocker/core/constants'
 import { useState } from 'react'
 
 export function useProductsPage() {
   const { productsService } = useApi()
+  const { showSuccess, showError } = useToast()
   const [selectedProductsIds, setSelectedProductsIds] = useState<string[]>([])
   const [pageState, setPage] = useQueryState('page', parseAsInteger)
   const [filterByNameValueState, setFilterByNameValue] = useQueryState('name')
@@ -47,12 +48,12 @@ export function useProductsPage() {
     const response = await productsService.deleteProducts(selectedProductsIds)
 
     if (response.isFailure) {
-      alert(response.errorMessage)
+      showError(response.errorMessage)
     }
 
     if (response.isSuccess) {
       refetch()
-      alert('Produto(s) deletado(s) com sucesso')
+      showSuccess('Produto(s) deletado(s) com sucesso')
     }
 
     setSelectedProductsIds([])
