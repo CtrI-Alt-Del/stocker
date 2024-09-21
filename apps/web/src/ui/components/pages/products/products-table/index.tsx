@@ -1,8 +1,8 @@
 'use client'
 
+import { useRef } from 'react'
 import {
   Avatar,
-  Button,
   Pagination,
   Spinner,
   Table,
@@ -19,12 +19,11 @@ import type { ProductDto } from '@stocker/core/dtos'
 import { Tag } from '@/ui/components/commons/tag'
 import { Drawer } from '@/ui/components/commons/drawer'
 import { IconButton } from '@/ui/components/commons/icon-button'
+import type { DrawerRef } from '@/ui/components/commons/drawer/types'
 import { IMAGE_PLACEHOLDER } from '@/constants'
 import { useBreakpoint } from '@/ui/hooks'
 import { UpdateProductForm } from '../update-product-form'
 import { useProductsTable } from './use-products-table'
-import { useRef } from 'react'
-import type { DrawerRef } from '@/ui/components/commons/drawer/types'
 
 type ProductsTableProps = {
   page: number
@@ -32,6 +31,7 @@ type ProductsTableProps = {
   products: ProductDto[]
   totalPages: number
   onUpdateProduct: VoidFunction
+  onProductsSelectionChange: (productsIds: string[]) => void
   onPageChange: (page: number) => void
 }
 
@@ -40,6 +40,7 @@ export const ProductsTable = ({
   page,
   products,
   totalPages,
+  onProductsSelectionChange,
   onUpdateProduct,
   onPageChange,
 }: ProductsTableProps) => {
@@ -56,16 +57,19 @@ export const ProductsTable = ({
   return (
     <>
       <Table
-        arial-label='Products table'
+        arial-label='Tabela de produtos'
         shadow='none'
         topContentPlacement='outside'
         selectionMode='multiple'
+        onSelectionChange={(selection) =>
+          onProductsSelectionChange(Array.from(selection) as string[])
+        }
         bottomContentPlacement='outside'
         bottomContent={
           totalPages ? (
             <div className='flex w-full justify-start '>
               <Pagination
-                aria-label='pagination'
+                aria-label='paginação'
                 showControls
                 page={page}
                 total={totalPages}
@@ -88,11 +92,12 @@ export const ProductsTable = ({
           items={products}
           isLoading={isLoading}
           loadingContent={<Spinner color='primary' />}
+          aria-label='conteúdo da tabela'
           emptyContent={'Nenhum produto criado.'}
         >
           {(item) => (
-            <TableRow>
-              <TableCell key='NAME'>
+            <TableRow key={item.id}>
+              <TableCell key='name'>
                 <div className='flex items-center gap-2'>
                   <Avatar
                     src={item.image}
@@ -115,7 +120,7 @@ export const ProductsTable = ({
                 )}
               </TableCell>
               <TableCell key='option'>
-                <Tooltip content='Editar produto'>
+                <Tooltip aria-content='Editar produto'>
                   <IconButton
                     name='view'
                     tooltip='Editar produto'

@@ -32,8 +32,6 @@ export function useImageInput({ defaultImage, onChange }: UseImageInputProps) {
     }
   }, [image])
 
-  console.log(image)
-
   return {
     image,
     reset,

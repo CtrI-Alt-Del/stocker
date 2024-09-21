@@ -9,6 +9,7 @@ import { RegisterProductForm } from './register-product-form'
 import { useBreakpoint } from '@/ui/hooks'
 import { useProductsPage } from './use-products-page'
 import { Search } from '../../commons/search'
+import { AlertDialog } from '../../commons/alert-dialog'
 
 export const ProductsPage = () => {
   const {
@@ -17,9 +18,12 @@ export const ProductsPage = () => {
     products,
     totalPages,
     filterByNameValue,
+    isDeleteProductsButtonVisible,
     handlePageChange,
     handleSearchChange,
     handleUpdateProduct,
+    handleDeleteProductsAlertDialogConfirm,
+    handleProductsSelectionChange,
     handleRegisterProductFormSubmit,
   } = useProductsPage()
   const { md } = useBreakpoint()
@@ -32,30 +36,41 @@ export const ProductsPage = () => {
           <Search value={filterByNameValue} onSearchChange={handleSearchChange} />
         </div>
 
-        <Drawer
-          width={md ? 400 : 700}
-          trigger={
-            <Button variant='solid' color='primary' radius='sm'>
-              Adicionar produto
-            </Button>
-          }
-        >
-          {(closeDrawer) => (
-            <RegisterProductForm
-              onSubmit={async () => {
-                await handleRegisterProductFormSubmit()
-                closeDrawer()
-              }}
-              onCancel={closeDrawer}
-            />
+        <div className='flex items-center gap-1'>
+          {isDeleteProductsButtonVisible && (
+            <AlertDialog
+              trigger={<Button color='danger'>Deletar produtos</Button>}
+              onConfirm={handleDeleteProductsAlertDialogConfirm}
+            >
+              Você tem certeza que deseja deletar esse(s) produto(s)?
+            </AlertDialog>
           )}
-        </Drawer>
+          <Drawer
+            width={md ? 400 : 700}
+            trigger={
+              <Button variant='solid' color='primary' radius='sm'>
+                Adicionar produto
+              </Button>
+            }
+          >
+            {(closeDrawer) => (
+              <RegisterProductForm
+                onSubmit={async () => {
+                  await handleRegisterProductFormSubmit()
+                  closeDrawer()
+                }}
+                onCancel={closeDrawer}
+              />
+            )}
+          </Drawer>
+        </div>
       </div>
       <ProductsTable
         products={products}
         totalPages={totalPages}
         isLoading={isFetching}
         page={page}
+        onProductsSelectionChange={handleProductsSelectionChange}
         onUpdateProduct={handleUpdateProduct}
         onPageChange={handlePageChange}
       />

@@ -37,8 +37,6 @@ export const ImageInputComponent = (
     [reset],
   )
 
-  console.log({ image })
-
   return (
     <>
       <label

@@ -17,6 +17,7 @@ export const IconButton = ({ tooltip, name, size, className, onClick }: IconButt
     <>
       <Button
         isIconOnly
+        aria-label='OPA'
         onClick={onClick}
         className={twMerge('bg-transparent', className)}
         size='sm'
