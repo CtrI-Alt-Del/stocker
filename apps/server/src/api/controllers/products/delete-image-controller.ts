@@ -1,4 +1,4 @@
-import type { IFileStorageProvider } from '@stocker/core/interfaces'
+import { fileStorageProvider } from '@/providers'
 import type { IHttp } from '@stocker/core/interfaces'
 
 type Body = {
@@ -6,15 +6,9 @@ type Body = {
 }
 
 export class DeleteImageController {
-  private fileStorageProvider: IFileStorageProvider
-
-  constructor(fileStorageProvider: IFileStorageProvider) {
-    this.fileStorageProvider = fileStorageProvider
-  }
-
   async handle(http: IHttp): Promise<unknown> {
     const { fileId } = http.getBody<Body>()
-    await this.fileStorageProvider.delete(fileId)
+    await fileStorageProvider.delete(fileId)
     return http.send(null)
   }
 }
