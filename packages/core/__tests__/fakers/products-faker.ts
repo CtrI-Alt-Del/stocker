@@ -26,6 +26,7 @@ export class ProductsFaker {
       uom: faker.string.sample({ min: 1, max: 3 }),
       categoryId: faker.string.uuid(),
       companyId: faker.string.uuid(),
+      isActive: true,
       batches: [],
       ...baseDto,
     }

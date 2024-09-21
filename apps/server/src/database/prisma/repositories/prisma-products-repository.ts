@@ -31,6 +31,8 @@ export class PrismaProductsRepository implements IProductsRepository {
           code: prismaProduct.code,
           minimum_stock: prismaProduct.minimum_stock,
           brand: prismaProduct.brand,
+          is_active: prismaProduct.is_active,
+          model: prismaProduct.model,
         },
       })
     } catch (error) {
@@ -102,6 +104,8 @@ export class PrismaProductsRepository implements IProductsRepository {
           code: prismaProduct.code,
           minimum_stock: prismaProduct.minimum_stock,
           brand: prismaProduct.brand,
+          is_active: prismaProduct.is_active,
+          model: prismaProduct.model,
         },
         where: {
           id: product.id,

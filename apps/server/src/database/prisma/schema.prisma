@@ -34,6 +34,7 @@ model Product {
   uom           String
   code          String
   minimum_stock Int
+  model         String?
   is_active     Boolean @default(true)
   category_id   String?
   company_id    String
