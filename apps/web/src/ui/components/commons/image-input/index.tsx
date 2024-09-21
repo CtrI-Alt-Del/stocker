@@ -12,20 +12,21 @@ import { useImageInput } from './use-image-input'
 import type { ImageInputRef } from './types'
 
 type ImageInputProps = {
+  name?: string
+  defaultImage?: string
   onChange: (imageFile: File) => void
 } & ComponentProps<'input'>
 
 export const ImageInputComponent = (
-  { onChange, ...inputProps }: ImageInputProps,
+  { name, defaultImage, onChange, ...inputProps }: ImageInputProps,
   ref: ForwardedRef<ImageInputRef>,
 ) => {
   const modalRef = useRef<DialogRef>(null)
-  const cropperRef = useRef(null)
-  const { image, reset, handleInputFileChange } = useImageInput(
+  const { image, reset, handleInputFileChange } = useImageInput({
+    defaultImage,
     modalRef,
-    cropperRef,
     onChange,
-  )
+  })
   useImperativeHandle(
     ref,
     () => {
@@ -36,16 +37,18 @@ export const ImageInputComponent = (
     [reset],
   )
 
+  console.log({ image })
+
   return (
     <>
       <label
-        htmlFor='image'
+        htmlFor={name}
         className='grid place-content-center overflow-hidden w-[310px] h-[220px] cursor-pointer rounded-md border border-dashed border-zinc-500 bg-zinc-50'
       >
         {image ? (
           <Image
             src={image}
-            alt='cropped image'
+            alt='preview da imagem'
             radius='none'
             width={310}
             height={220}
@@ -55,9 +58,9 @@ export const ImageInputComponent = (
           <p className='text-zinc-500'>Carreque sua imagem aqui.</p>
         )}
         <input
-          id='image'
+          id={name}
           type='file'
-          name='image'
+          name={name}
           accept='image/*'
           onChange={handleInputFileChange}
           onReset={() => alert('reset')}

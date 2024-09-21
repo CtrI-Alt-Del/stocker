@@ -4,21 +4,39 @@ import { useRef } from 'react'
 import { Controller } from 'react-hook-form'
 import { Button, Divider, Input, Switch, Textarea } from '@nextui-org/react'
 
-import { useRegisterProductForm } from './use-register-product-form'
+import type { ProductDto } from '@stocker/core/dtos'
+
 import { ImageInput } from '@/ui/components/commons/image-input'
 import type { ImageInputRef } from '@/ui/components/commons/image-input/types'
+import { useUpdateProductForm } from './use-update-product-form'
+import { Dialog } from '@/ui/components/commons/dialog'
 
 type RegisterProductFormProps = {
+  productDto: ProductDto
   onCancel: VoidFunction
   onSubmit: VoidFunction
 }
 
-export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormProps) => {
+export const UpdateProductForm = ({
+  productDto,
+  onSubmit,
+  onCancel,
+}: RegisterProductFormProps) => {
   const imageInputRef = useRef<ImageInputRef>(null)
-  const { control, errors, isSubmiting, register, handleSubmit } = useRegisterProductForm(
-    onSubmit,
+  const {
+    control,
+    errors,
+    isSubmiting,
+    isDirty,
+    register,
+    handleSubmit,
+    handleCancelButtonClick,
+  } = useUpdateProductForm({
+    productDto,
     imageInputRef,
-  )
+    onSubmit,
+    onCancel,
+  })
 
   return (
     <form onSubmit={handleSubmit} encType='multiform/form-data' className='space-y-6'>
@@ -47,10 +65,15 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
           />
         </div>
         <Controller
-          name='image'
+          name='updatedImage'
           control={control}
           render={({ field: { onChange } }) => (
-            <ImageInput ref={imageInputRef} name='image' onChange={onChange} />
+            <ImageInput
+              ref={imageInputRef}
+              name='updatedImage'
+              defaultImage={productDto.image}
+              onChange={onChange}
+            />
           )}
         />
       </div>
@@ -156,12 +179,11 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
       </div>
 
       <div className='grid grid-cols-2 gap-6'>
-        <Switch defaultSelected {...register('isActive')}>
+        <Switch defaultSelected={productDto.isActive} {...register('isActive')}>
           Ativo
         </Switch>
         <Input
           label='Modelo'
-          isRequired
           errorMessage={errors.model?.message}
           isInvalid={Boolean(errors.model)}
           {...register('model')}
@@ -169,11 +191,11 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
       </div>
 
       <div className='flex items-center gap-3'>
-        <Button onClick={onCancel} isDisabled={isSubmiting}>
+        <Button onClick={handleCancelButtonClick} isDisabled={isSubmiting}>
           Cancelar
         </Button>
-        <Button type='submit' color='primary' isLoading={isSubmiting}>
-          Confirmar
+        <Button type='submit' color='primary' disabled={!isDirty} isLoading={isSubmiting}>
+          Atualizar
         </Button>
       </div>
     </form>

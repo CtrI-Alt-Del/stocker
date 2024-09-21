@@ -18,8 +18,8 @@ export const ProductsService = (apiClient: IApiClient): IProductsService => {
       return await apiClient.get<PaginationResponse<ProductDto>>('/products')
     },
 
-    async updateProduct(partialProductDto: Partial<ProductDto>) {
-      return await apiClient.put('/products', partialProductDto)
+    async updateProduct(partialProductDto: Partial<ProductDto>, productId: string) {
+      return await apiClient.put(`/products/${productId}`, partialProductDto)
     },
 
     async deleteProducts(productsIds: string[]) {

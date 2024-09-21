@@ -1,4 +1,5 @@
-import { Button, Progress } from '@nextui-org/react'
+import { Button, Tooltip } from '@nextui-org/react'
+import { twMerge } from 'tailwind-merge'
 
 import type { IconName } from '../icon/types'
 import { Icon } from '../icon'
@@ -7,12 +8,19 @@ type IconButton = {
   name: IconName
   size?: number
   onClick?: () => void
+  className?: string
+  tooltip?: string
 }
 
-export const IconButton = ({ name, size, onClick }: IconButton) => {
+export const IconButton = ({ tooltip, name, size, className, onClick }: IconButton) => {
   return (
     <>
-      <Button isIconOnly onClick={onClick} className='bg-transparent' size='sm'>
+      <Button
+        isIconOnly
+        onClick={onClick}
+        className={twMerge('bg-transparent', className)}
+        size='sm'
+      >
         <Icon name={name} size={size} />
       </Button>
     </>

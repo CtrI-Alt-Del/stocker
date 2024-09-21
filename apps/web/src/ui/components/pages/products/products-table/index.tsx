@@ -2,6 +2,7 @@
 
 import {
   Avatar,
+  Button,
   Pagination,
   Spinner,
   Table,
@@ -13,16 +14,24 @@ import {
   Tooltip,
 } from '@nextui-org/react'
 
-import { Tag } from '@/ui/components/commons/tag'
-import { Icon } from '@/ui/components/commons/icon'
-import { IMAGE_PLACEHOLDER } from '@/constants'
 import type { ProductDto } from '@stocker/core/dtos'
+
+import { Tag } from '@/ui/components/commons/tag'
+import { Drawer } from '@/ui/components/commons/drawer'
+import { IconButton } from '@/ui/components/commons/icon-button'
+import { IMAGE_PLACEHOLDER } from '@/constants'
+import { useBreakpoint } from '@/ui/hooks'
+import { UpdateProductForm } from '../update-product-form'
+import { useProductsTable } from './use-products-table'
+import { useRef } from 'react'
+import type { DrawerRef } from '@/ui/components/commons/drawer/types'
 
 type ProductsTableProps = {
   page: number
   isLoading: boolean
   products: ProductDto[]
   totalPages: number
+  onUpdateProduct: VoidFunction
   onPageChange: (page: number) => void
 }
 
@@ -31,8 +40,19 @@ export const ProductsTable = ({
   page,
   products,
   totalPages,
+  onUpdateProduct,
   onPageChange,
 }: ProductsTableProps) => {
+  const drawerRef = useRef<DrawerRef>(null)
+  const {
+    productBeingEditting,
+    handleEditProductButtonClick,
+    handleUpdateProductFormSubmit,
+    handleCancelEditting,
+    handleDrawerClose,
+  } = useProductsTable(drawerRef, onUpdateProduct)
+  const { md } = useBreakpoint()
+
   return (
     <>
       <Table
@@ -61,8 +81,8 @@ export const ProductsTable = ({
           <TableColumn key='price'>PREÇO</TableColumn>
           <TableColumn key='minimumStock'>ESTOQUE MINIMO</TableColumn>
           <TableColumn key='distributor'>FORNECEDOR</TableColumn>
-          <TableColumn key='status'>ATIVO</TableColumn>
-          <TableColumn key='option'>AÇÕES</TableColumn>
+          <TableColumn key='status'>STATUS</TableColumn>
+          <TableColumn key='option'>{null}</TableColumn>
         </TableHeader>
         <TableBody
           items={products}
@@ -95,23 +115,35 @@ export const ProductsTable = ({
                 )}
               </TableCell>
               <TableCell key='option'>
-                <div className='flex flex-row items-center justify-center gap-2'>
-                  <Tooltip content='Editar produto'>
-                    <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
-                      <Icon name='edit' className='size-6' />
-                    </span>
-                  </Tooltip>
-                  <Tooltip content='Ver produto'>
-                    <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
-                      <Icon name='view' className='size-6' />
-                    </span>
-                  </Tooltip>
-                </div>
+                <Tooltip content='Editar produto'>
+                  <IconButton
+                    name='view'
+                    tooltip='Editar produto'
+                    className='size-6 text-zinc-500'
+                    onClick={() => handleEditProductButtonClick(item)}
+                  />
+                </Tooltip>
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
+      <Drawer
+        ref={drawerRef}
+        width={md ? 400 : 700}
+        trigger={null}
+        onClose={handleDrawerClose}
+      >
+        {() =>
+          productBeingEditting && (
+            <UpdateProductForm
+              productDto={productBeingEditting}
+              onSubmit={handleUpdateProductFormSubmit}
+              onCancel={handleCancelEditting}
+            />
+          )
+        }
+      </Drawer>
     </>
   )
 }

@@ -5,14 +5,11 @@ export const FileStorageService = (apiClient: IApiClient): IFileStorageService =
     async uploadImage(imageFile: File) {
       const data = new FormData()
       data.set('file', imageFile)
-      return await apiClient.multipart<{ imageUrl: string }>(
-        '/file-storage/upload/image',
-        data,
-      )
+      return await apiClient.multipart<{ imageUrl: string }>('/file-storage/image', data)
     },
 
     async deleteImage(imageId: string) {
-      return await apiClient.delete(`/file-storage/image/${imageId}`)
+      return await apiClient.delete('/file-storage/image', { imageId })
     },
   }
 }

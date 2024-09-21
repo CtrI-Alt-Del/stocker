@@ -19,6 +19,7 @@ export const ProductsPage = () => {
     filterByNameValue,
     handlePageChange,
     handleSearchChange,
+    handleUpdateProduct,
     handleRegisterProductFormSubmit,
   } = useProductsPage()
   const { md } = useBreakpoint()
@@ -55,6 +56,7 @@ export const ProductsPage = () => {
         totalPages={totalPages}
         isLoading={isFetching}
         page={page}
+        onUpdateProduct={handleUpdateProduct}
         onPageChange={handlePageChange}
       />
     </>

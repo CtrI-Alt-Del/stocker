@@ -43,8 +43,8 @@ export function useCache<CacheData>({
     fetcher,
     {
       fallbackData: initialData,
-      refreshInterval,
       revalidateOnFocus: shouldRefetchOnFocus,
+      refreshInterval,
     },
   )
 

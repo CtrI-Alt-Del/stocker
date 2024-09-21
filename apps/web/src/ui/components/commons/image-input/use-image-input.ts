@@ -3,12 +3,14 @@ import type { ReactCropperElement } from 'react-cropper'
 
 import type { DialogRef } from '../dialog/types'
 
-export function useImageInput(
-  modalRef: RefObject<DialogRef>,
-  cropperRef: RefObject<ReactCropperElement>,
-  onChange: (file: File) => void,
-) {
-  const [image, setImage] = useState<string>('')
+type UseImageInputProps = {
+  defaultImage?: string
+  modalRef: RefObject<DialogRef>
+  onChange: (file: File) => void
+}
+
+export function useImageInput({ defaultImage, onChange }: UseImageInputProps) {
+  const [image, setImage] = useState(defaultImage ?? '')
 
   const reset = useCallback(() => {
     setImage('')
@@ -25,8 +27,12 @@ export function useImageInput(
   }
 
   useEffect(() => {
-    return () => URL.revokeObjectURL(image)
+    return () => {
+      URL.revokeObjectURL(image)
+    }
   }, [image])
+
+  console.log(image)
 
   return {
     image,

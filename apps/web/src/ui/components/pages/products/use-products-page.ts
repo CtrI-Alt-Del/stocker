@@ -37,12 +37,17 @@ export function useProductsPage() {
     refetch()
   }
 
+  async function handleUpdateProduct() {
+    refetch()
+  }
+
   return {
     page,
     filterByNameValue,
     isFetching,
     products,
     totalPages: Math.round(itemsCount / PAGINATION.itemsPerPage),
+    handleUpdateProduct,
     handleRegisterProductFormSubmit,
     handlePageChange,
     handleSearchChange,

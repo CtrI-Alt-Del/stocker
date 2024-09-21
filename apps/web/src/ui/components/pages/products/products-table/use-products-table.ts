@@ -1,47 +1,42 @@
-import { parseAsInteger, useQueryState } from 'nuqs'
+import { type RefObject, useState } from 'react'
 
-import { useApi, useCache } from '@/ui/hooks'
+import type { ProductDto } from '@stocker/core/dtos'
 
-import { ProductsFaker } from '@stocker/core/fakers'
-import { PAGINATION } from '@stocker/core/constants'
-import { CACHE } from '@/constants'
+import type { DrawerRef } from '@/ui/components/commons/drawer/types'
 
-export const useProductsTable = () => {
-  const { productsService } = useApi()
-  const [pageState, setPage] = useQueryState('page', parseAsInteger)
-  const [filterByNameValueState, setFilterByNameValue] = useQueryState('name')
-  const page = pageState ?? 1
-  const filterByNameValue = filterByNameValueState ?? ''
+export const useProductsTable = (
+  drawerRef: RefObject<DrawerRef>,
+  onUpdateProduct: VoidFunction,
+) => {
+  const [productBeingEditting, setProductBeingEditting] = useState<ProductDto | null>(
+    null,
+  )
 
-  async function fetchProducts() {
-    const response = await productsService.listProducts({ page })
-    return response.body
+  function handleEditProductButtonClick(productDto: ProductDto) {
+    setProductBeingEditting(productDto)
+    drawerRef.current?.open()
   }
 
-  function handlePageChange(page: number) {
-    setPage(page)
+  function handleDrawerClose() {
+    setProductBeingEditting(null)
   }
 
-  function handleSearchChange(value: string) {
-    setFilterByNameValue(value ?? '')
+  function handleCancelEditting() {
+    setProductBeingEditting(null)
+    drawerRef.current?.close()
   }
 
-  const { data, isFetching } = useCache({
-    fetcher: fetchProducts,
-    key: CACHE.productsList.key,
-    dependencies: [page],
-  })
-
-  const products = data ? data.items : []
-  const itemsCount = data ? data.itemsCount : 0
+  function handleUpdateProductFormSubmit() {
+    setProductBeingEditting(null)
+    drawerRef.current?.close()
+    onUpdateProduct()
+  }
 
   return {
-    page,
-    filterByNameValue,
-    isFetching,
-    products,
-    totalPages: Math.round(itemsCount / PAGINATION.itemsPerPage),
-    handlePageChange,
-    handleSearchChange,
+    productBeingEditting,
+    handleCancelEditting,
+    handleUpdateProductFormSubmit,
+    handleEditProductButtonClick,
+    handleDrawerClose,
   }
 }

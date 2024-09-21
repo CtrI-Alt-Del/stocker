@@ -9,7 +9,7 @@ export const NextApiClient = (): IApiClient => {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
   }
-  const params: Record<string, string> = {}
+  let params: Record<string, string> = {}
 
   return {
     async get<ResponseBody>(url: string, body: unknown) {
@@ -18,6 +18,7 @@ export const NextApiClient = (): IApiClient => {
         headers,
         body: JSON.stringify(body),
       })
+      params = {}
       const data = await response.json()
 
       if (!response.ok) {
@@ -34,9 +35,9 @@ export const NextApiClient = (): IApiClient => {
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
         method: 'POST',
         headers,
-        body: JSON.stringify(body),
+        body: JSON.stringify(body) ?? {},
       })
-
+      params = {}
       const data = await response.json()
 
       if (!response.ok) {
@@ -53,8 +54,9 @@ export const NextApiClient = (): IApiClient => {
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
         method: 'PUT',
         headers,
-        body: JSON.stringify(body),
+        body: JSON.stringify(body) ?? {},
       })
+      params = {}
       const data = await response.json()
 
       if (!response.ok) {
@@ -68,11 +70,13 @@ export const NextApiClient = (): IApiClient => {
     },
 
     async delete(url: string, body: unknown) {
+      console.log({ body })
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
         method: 'DELETE',
         headers,
-        body: JSON.stringify(body),
+        body: JSON.stringify({ opa: 'eita' }),
       })
+      params = {}
       const data = await response.json()
 
       if (!response.ok) {
@@ -90,6 +94,7 @@ export const NextApiClient = (): IApiClient => {
         method: 'POST',
         body: body,
       })
+      params = {}
       const data = await response.json()
 
       if (!response.ok) {

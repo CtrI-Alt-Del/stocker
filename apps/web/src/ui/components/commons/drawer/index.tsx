@@ -1,31 +1,49 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import { type ForwardedRef, forwardRef, useImperativeHandle, type ReactNode } from 'react'
+import { Slot } from '@radix-ui/react-slot'
 import RmDrawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
-import { Slot } from '@radix-ui/react-slot'
 
 import { IconButton } from '../icon-button'
 import { useDrawer } from './use-drawer'
+import type { DrawerRef } from './types'
 
 type DrawerProps = {
   children: (closeDrawer: VoidFunction) => ReactNode
   trigger: ReactNode
   width?: number
   direction?: 'top' | 'left' | 'right' | 'bottom'
+  zIndex?: number
+  onClose?: VoidFunction
 }
 
-export const Drawer = ({
-  children,
-  trigger,
-  width = 220,
-  direction = 'right',
-}: DrawerProps) => {
-  const { isOpen, open, close } = useDrawer()
+export const DrawerComponent = (
+  { children, trigger, width = 220, direction = 'right', zIndex, onClose }: DrawerProps,
+  ref: ForwardedRef<DrawerRef>,
+) => {
+  const { isOpen, open, close } = useDrawer(onClose)
+
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        close,
+        open,
+      }
+    },
+    [close, open],
+  )
 
   return (
     <>
-      <RmDrawer open={isOpen} onClose={close} size={width} direction={direction}>
+      <RmDrawer
+        open={isOpen}
+        onClose={close}
+        size={width}
+        direction={direction}
+        zIndex={zIndex}
+      >
         <div className='p-6 pb-12 h-full overflow-y-auto'>
           <div className='ml-auto w-max'>
             <IconButton name='close' onClick={close} size={20} />
@@ -37,3 +55,5 @@ export const Drawer = ({
     </>
   )
 }
+
+export const Drawer = forwardRef(DrawerComponent)
