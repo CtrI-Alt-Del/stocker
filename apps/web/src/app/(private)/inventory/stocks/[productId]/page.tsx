@@ -14,7 +14,7 @@ const Page = async ({ params }: PageProps) => {
   const apiClient = NextServerApiClient()
   const productsService = ProductsService(apiClient)
   console.log(params.productId)
-  const response = await productsService.listProducts({ page: 1 })
+  const response = await productsService.getProduct(params.productId)
 
   if (response.isFailure) {
     return notFound()

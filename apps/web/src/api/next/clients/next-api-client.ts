@@ -1,8 +1,8 @@
 import type { IApiClient } from '@stocker/core/interfaces'
 import { ApiResponse } from '@stocker/core/responses'
 
-import { addUrlParams } from './utils'
-import { handleApiError } from './utils/handle-api-error'
+import { addUrlParams } from '../utils'
+import { handleApiError } from '../utils/handle-api-error'
 
 export const NextApiClient = (): IApiClient => {
   let baseUrl: string
@@ -13,6 +13,7 @@ export const NextApiClient = (): IApiClient => {
 
   return {
     async get<ResponseBody>(url: string, body: unknown) {
+      console.log(`${baseUrl}${addUrlParams(url, params)}`)
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
         method: 'GET',
         headers,
