@@ -1,25 +1,34 @@
 import { Button, DateInput, Divider, Input, Textarea } from '@nextui-org/react'
 import { useRegisterInboundMovement } from './use-inbound-movement'
+import { Controller } from 'react-hook-form'
 
-type RegisterProductFormProps = {
+type RegisterInboundMovementForm = {
+  onSubmit: VoidFunction
   onCancel: VoidFunction
 }
 
-export const RegisterInboundMovementForm = ({ onCancel }: RegisterProductFormProps) => {
-  const { register, handleSubmit, errors } = useRegisterInboundMovement()
+export const RegisterInboundMovementForm = ({ onCancel,onSubmit }: RegisterInboundMovementForm) => {
+  const { control, errors, handleSubmit, isSubmiting, register } = useRegisterInboundMovement(onSubmit)
 
   return (
     <form onSubmit={handleSubmit} className='space-y-6'>
       <div className='grid grid-cols-2 gap-6 flex-'>
-        <DateInput
-          label='Data e hora'
-          granularity='second'
-          isRequired
-          {...register('creationDate')}
-          errorMessage={errors.creationDate?.message}
+        <Controller
+          name='registeredAt'
+          control={control}
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <DateInput
+              label='Data e hora'
+              granularity='second'
+              isRequired
+              onChange={onChange}
+              errorMessage={error?.message}
+            />
+
+          )}
         />
-        <DateInput
-          granularity='second'
+        <Input
+          type='date'
           label='Validade'
           isRequired
           {...register('expireDate')}
@@ -31,8 +40,8 @@ export const RegisterInboundMovementForm = ({ onCancel }: RegisterProductFormPro
         <Input
           label='Quantia'
           isRequired
-          {...register('quantity')}
-          errorMessage={errors.quantity?.message}
+          {...register('itemsQuantity')}
+          errorMessage={errors.itemsQuantity?.message}
         />
         <Input
           label='Codigo do Lote'
@@ -51,8 +60,8 @@ export const RegisterInboundMovementForm = ({ onCancel }: RegisterProductFormPro
       <Divider className='my-2' />
 
       <div className='flex items-center gap-3'>
-        <Button onClick={onCancel}>Cancelar</Button>
-        <Button type='submit' color='primary'>
+        <Button onClick={onCancel} isDisabled={isSubmiting}>Cancelar</Button>
+        <Button type='submit' color='primary' isLoading={isSubmiting}>
           Confirmar
         </Button>
       </div>
