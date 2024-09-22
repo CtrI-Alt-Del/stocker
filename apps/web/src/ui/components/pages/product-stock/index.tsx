@@ -1,20 +1,30 @@
 'use client'
-import { Button } from '@nextui-org/react'
-import { Drawer } from '../../commons/drawer'
-import { RegisterInboundMovementForm } from './inbound-movement'
-import { useBreakpoint } from '@/ui/hooks'
-import { useInventoryMovementPage } from '../inventory-movements/use-inventory-moviment'
 
-export const ProductStockPage = () => {
-  const { handleRegisterInventoryMovementFormSubmit, page, movements, totalPages, handlePageChange, isFetching } = useInventoryMovementPage("idMOck")
+import { Button } from '@nextui-org/react'
+
+import type { ProductDto } from '@stocker/core/dtos'
+import { type Batch, Product } from '@stocker/core/entities'
+
+import { useBreakpoint } from '@/ui/hooks'
+import { Drawer } from '../../commons/drawer'
+import { useProductStockPage } from './use-product-stock'
+import { RegisterInboundInventoryMovementForm } from './register-inbound-movement-form'
+
+type ProductStockPageProps = {
+  productDto: ProductDto
+}
+
+export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
+  const { product, handleRegisterInboundInventoryMovementFormSubmit } =
+    useProductStockPage(productDto)
   const { md } = useBreakpoint()
 
   return (
     <div>
       <div className='flex items-center justify-between'>
         <div className='flex justify-end flex-col'>
-          <h1 className='text-2xl flex justify-end'>Banana</h1>
-          <small className='uppercase text-xl text-zinc-400'>K04-59</small>
+          <h1 className='text-2xl flex justify-end font-semibold'>{product.name}</h1>
+          <small className='uppercase text-lg text-zinc-400'>{product.code}</small>
         </div>
 
         <div className='space-x-2'>
@@ -26,10 +36,16 @@ export const ProductStockPage = () => {
               </Button>
             }
           >
-            {(closeDrawer) => <RegisterInboundMovementForm onCancel={closeDrawer} onSubmit={async () => {
-              await handleRegisterInventoryMovementFormSubmit()
-              closeDrawer()
-            }} />}
+            {(closeDrawer) => (
+              <RegisterInboundInventoryMovementForm
+                productId={product.id}
+                onCancel={closeDrawer}
+                onSubmit={async (newBatch: Batch) => {
+                  await handleRegisterInboundInventoryMovementFormSubmit(newBatch)
+                  closeDrawer()
+                }}
+              />
+            )}
           </Drawer>
 
           <Button color='primary'>Lançamento de saída</Button>

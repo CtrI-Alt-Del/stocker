@@ -13,14 +13,13 @@ type PageProps = {
 const Page = async ({ params }: PageProps) => {
   const apiClient = NextServerApiClient()
   const productsService = ProductsService(apiClient)
-  console.log(params.productId)
   const response = await productsService.getProduct(params.productId)
 
   if (response.isFailure) {
     return notFound()
   }
 
-  return <ProductStockPage />
+  return <ProductStockPage productDto={response.body} />
 }
 
 export default Page

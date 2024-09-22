@@ -3,9 +3,9 @@ import { Entity } from '../abstracts'
 
 type BatchProps = {
   code: string
-  expirationDate: Date
   itemsCount: number
   productId: string
+  expirationDate: Date | null
   hasUpdatedStock: boolean
 }
 
@@ -14,7 +14,7 @@ export class Batch extends Entity<BatchProps> {
     return new Batch(
       {
         code: dto.code,
-        expirationDate: dto.expirationDate,
+        expirationDate: dto.expirationDate ?? null,
         itemsCount: dto.itemsCount,
         productId: dto.productId,
         hasUpdatedStock: false,
@@ -44,17 +44,20 @@ export class Batch extends Entity<BatchProps> {
     return this.props.itemsCount
   }
 
-  get expirationDate(): Date {
+  get expirationDate(): Date | null {
     return this.props.expirationDate
   }
 
   get dto(): BatchDto {
-    return {
+    const dto: BatchDto = {
       id: this.id,
       code: this.props.code,
-      expirationDate: this.props.expirationDate,
       itemsCount: this.itemsCount,
       productId: this.props.productId,
     }
+
+    if (this.expirationDate) dto.expirationDate = this.expirationDate
+
+    return dto
   }
 }

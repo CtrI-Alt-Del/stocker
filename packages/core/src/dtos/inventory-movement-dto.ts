@@ -1,11 +1,9 @@
 export type InventoryMovementDto = {
-  description?: string
   id?: string
   movementType: string
-  itemsQuantity: number
+  itemsCount: number
   responsibleId: string
   productId: string
   registeredAt: Date
-  expireDate?: Date
-  batchCode?: string
+  remark?: string
 }

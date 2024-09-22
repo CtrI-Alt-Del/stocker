@@ -71,6 +71,18 @@ export class Product extends Entity<ProductProps> {
     }
   }
 
+  appendBatch(batch: Batch) {
+    this.props.batches.push(batch)
+  }
+
+  get name(): string {
+    return this.props.name
+  }
+
+  get code(): string {
+    return this.props.code
+  }
+
   get currentStock(): number {
     return this.props.batches.reduce((stock, batch) => stock + batch.itemsCount, 0)
   }

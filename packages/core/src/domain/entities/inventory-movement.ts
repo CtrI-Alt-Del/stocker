@@ -6,17 +6,16 @@ type MovementType = 'inbound' | 'outbound'
 
 type MovementProps = {
   movementType: MovementType
-  itemsQuantity: number
+  itemsCount: number
   responsibleId: string
   productId: string
   registeredAt: Date
-  expireDate?: Date
-  batchCode?: string
-  description?: string
+  remark: string | null
 }
 
 export class InventoryMovement extends Entity<MovementProps> {
   static create(dto: InventoryMovementDto): InventoryMovement {
+    console.log({ dto })
     const movementType = dto.movementType
 
     if (!InventoryMovement.isMovementType(movementType)) {
@@ -26,13 +25,11 @@ export class InventoryMovement extends Entity<MovementProps> {
     return new InventoryMovement(
       {
         movementType,
-        itemsQuantity: dto.itemsQuantity,
+        itemsCount: dto.itemsCount,
         responsibleId: dto.responsibleId,
         productId: dto.productId,
         registeredAt: new Date(),
-        expireDate: new Date(),
-        batchCode: dto.batchCode,
-        description: dto.description
+        remark: dto.remark ?? null,
       },
       dto.id,
     )
@@ -43,25 +40,26 @@ export class InventoryMovement extends Entity<MovementProps> {
   }
 
   get dto(): InventoryMovementDto {
-    return {
+    const dto: InventoryMovementDto = {
       id: this.id,
       movementType: this.props.movementType,
-      itemsQuantity: this.props.itemsQuantity,
+      itemsCount: this.props.itemsCount,
       responsibleId: this.props.responsibleId,
       productId: this.props.productId,
       registeredAt: this.props.registeredAt,
-      batchCode: this.props.batchCode,
-      expireDate: this.props.expireDate,
-      description: this.props.description
     }
+
+    if (this.props.remark) dto.remark = this.props.remark
+
+    return dto
   }
 
   get movementType(): MovementType {
     return this.props.movementType
   }
 
-  get itemsQuantity(): number {
-    return this.props.itemsQuantity
+  get itemsCount(): number {
+    return this.props.itemsCount
   }
 
   get responsibleId(): string {

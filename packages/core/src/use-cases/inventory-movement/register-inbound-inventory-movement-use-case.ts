@@ -23,7 +23,7 @@ export class RegisterInboundInventoryMovementUseCase {
 
   async execute({ batchDto, inventoryMovementDto }: Request) {
     const productId = batchDto.productId
-    if (!productId) throw new ConflictError('Produto não existe')
+    if (!productId) throw new ConflictError('Produto não encontrado')
 
     const batch = Batch.create(batchDto)
     await this.batchRepository.add(batch)
