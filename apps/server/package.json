@@ -13,17 +13,17 @@
     "db:seed": "prisma db seed"
   },
   "dependencies": {
-    "@stocker/validation": "*",
     "@fastify/cors": "10.0.0",
     "@fastify/multipart": "9.0.0",
     "@prisma/client": "^5.19.1",
     "@stocker/core": "*",
+    "@stocker/validation": "*",
     "@supabase/supabase-js": "^2.45.4",
-    "fastify": "^5.0.0"
+    "fastify": "4.28.1"
   },
   "devDependencies": {
     "@stocker/typescript-config": "*",
-    "@types/node": "^20",
+    "@types/node": "20.16.5",
     "esbuild": "0.23.1",
     "prisma": "^5.19.1",
     "tsx": "^4.19.1",
