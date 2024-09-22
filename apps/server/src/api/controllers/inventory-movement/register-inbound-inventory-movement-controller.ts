@@ -1,8 +1,8 @@
+import { batchRepository, inventorymovementRepository } from '@/database'
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 import type { BatchDto, InventoryMovementDto } from '@stocker/core/dtos'
 import type { IHttp } from '@stocker/core/interfaces'
 import { RegisterInboundInventoryMovementUseCase } from '@stocker/core/use-cases'
-import { batchRepository, inventorymovementRepository } from '@/database'
 
 type Body = {
   batch: BatchDto

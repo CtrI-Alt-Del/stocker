@@ -6,7 +6,7 @@ import type { PaginationResponse } from '@stocker/core/responses'
 export const ProductsService = (apiClient: IApiClient): IProductsService => {
   return {
     async registerProduct(product: Product) {
-      return await apiClient.post('/', product.dto)
+      return await apiClient.post('/products', product.dto)
     },
 
     async getProduct(productId: string) {
@@ -18,8 +18,8 @@ export const ProductsService = (apiClient: IApiClient): IProductsService => {
       return await apiClient.get<PaginationResponse<ProductDto>>('/products')
     },
 
-    async updateProduct(partialProductDto: Partial<ProductDto>) {
-      return await apiClient.put('/', partialProductDto)
+    async updateProduct(partialProductDto: Partial<ProductDto>, productId: string) {
+      return await apiClient.put(`/products/${productId}`, partialProductDto)
     },
 
     async deleteProducts(productsIds: string[]) {

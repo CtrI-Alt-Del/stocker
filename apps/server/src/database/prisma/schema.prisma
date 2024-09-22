@@ -34,6 +34,8 @@ model Product {
   uom           String
   code          String
   minimum_stock Int
+  model         String?
+  is_active     Boolean @default(true)
   category_id   String?
   company_id    String
 
@@ -47,9 +49,9 @@ model Product {
 }
 
 model Batch {
-  id              String   @id @default(uuid())
+  id              String    @id @default(uuid())
   code            String
-  expiration_date DateTime
+  expiration_date DateTime?
   items_count     Int
   product_id      String
 
@@ -61,7 +63,7 @@ model Batch {
 
 model InventoryMovement {
   id            String                @id @default(uuid())
-  type          InventoryMovementType @default(INBOUND)
+  movement_type InventoryMovementType @default(INBOUND)
   items_count   Int
   product_id    String
   user_id       String

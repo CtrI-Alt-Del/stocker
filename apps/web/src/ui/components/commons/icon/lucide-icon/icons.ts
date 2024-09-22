@@ -14,6 +14,8 @@ import {
   Container,
   ScanBarcode,
   Bell,
+  Eye,
+  Search,
   Menu,
   EllipsisVertical,
   X,
@@ -43,4 +45,6 @@ export const ICONS: Record<
   employee: CircleUserRound,
   supplier: Truck,
   category: Tag,
+  view: Eye,
+  search: Search,
 }

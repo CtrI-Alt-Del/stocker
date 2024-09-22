@@ -1,23 +1,25 @@
 import type { IApiClient } from '@stocker/core/interfaces'
 import { ApiResponse } from '@stocker/core/responses'
 
-import { addUrlParams } from './utils'
-import { handleApiError } from './utils/handle-api-error'
+import { addUrlParams } from '../utils'
+import { handleApiError } from '../utils/handle-api-error'
 
 export const NextApiClient = (): IApiClient => {
   let baseUrl: string
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
   }
-  const params: Record<string, string> = {}
+  let params: Record<string, string> = {}
 
   return {
     async get<ResponseBody>(url: string, body: unknown) {
+      console.log(`${baseUrl}${addUrlParams(url, params)}`)
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
         method: 'GET',
         headers,
         body: JSON.stringify(body),
       })
+      params = {}
       const data = await response.json()
 
       if (!response.ok) {
@@ -34,8 +36,9 @@ export const NextApiClient = (): IApiClient => {
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
         method: 'POST',
         headers,
-        body: JSON.stringify(body),
+        body: JSON.stringify(body) ?? {},
       })
+      params = {}
       const data = await response.json()
 
       if (!response.ok) {
@@ -52,8 +55,9 @@ export const NextApiClient = (): IApiClient => {
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
         method: 'PUT',
         headers,
-        body: JSON.stringify(body),
+        body: JSON.stringify(body) ?? {},
       })
+      params = {}
       const data = await response.json()
 
       if (!response.ok) {
@@ -66,13 +70,14 @@ export const NextApiClient = (): IApiClient => {
       })
     },
 
-    async delete(url: string, body?: unknown) {
-      console.log(`${baseUrl}${addUrlParams(url, params)}`)
+    async delete(url: string, body: unknown) {
+      console.log({ body })
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
         method: 'DELETE',
         headers,
-        body: JSON.stringify(body),
+        body: JSON.stringify({ opa: 'eita' }),
       })
+      params = {}
       const data = await response.json()
 
       if (!response.ok) {
@@ -80,6 +85,24 @@ export const NextApiClient = (): IApiClient => {
       }
 
       return new ApiResponse({
+        body: data,
+        statusCode: response.status,
+      })
+    },
+
+    async multipart<ResponseBody>(url: string, body: FormData) {
+      const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
+        method: 'POST',
+        body: body,
+      })
+      params = {}
+      const data = await response.json()
+
+      if (!response.ok) {
+        return handleApiError<ResponseBody>(data, response.status)
+      }
+
+      return new ApiResponse<ResponseBody>({
         body: data,
         statusCode: response.status,
       })

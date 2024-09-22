@@ -1,5 +1,11 @@
-import { useProductsTable } from './use-products-table'
+
+'use client'
+
+import { useRef } from 'react'
+
 import {
+  Avatar,
+  Link,
   Pagination,
   Spinner,
   Table,
@@ -10,105 +16,146 @@ import {
   TableRow,
   Tooltip,
 } from '@nextui-org/react'
-import { Edit } from 'lucide-react'
-import { TableSearch } from '@/ui/components/commons/search-component'
 
-export const ProductsTable = () => {
+import type { ProductDto } from '@stocker/core/dtos'
+
+import { Tag } from '@/ui/components/commons/tag'
+import { Drawer } from '@/ui/components/commons/drawer'
+import { IconButton } from '@/ui/components/commons/icon-button'
+import type { DrawerRef } from '@/ui/components/commons/drawer/types'
+import { IMAGE_PLACEHOLDER, ROUTES } from '@/constants'
+import { useBreakpoint } from '@/ui/hooks'
+import { UpdateProductForm } from '../update-product-form'
+import { useProductsTable } from './use-products-table'
+import { Icon } from '@/ui/components/commons/icon'
+
+type ProductsTableProps = {
+  page: number
+  isLoading: boolean
+  products: ProductDto[]
+  totalPages: number
+  onUpdateProduct: VoidFunction
+  onProductsSelectionChange: (productsIds: string[]) => void
+  onPageChange: (page: number) => void
+}
+
+export const ProductsTable = ({
+  isLoading,
+  page,
+  products,
+  totalPages,
+  onProductsSelectionChange,
+  onUpdateProduct,
+  onPageChange,
+}: ProductsTableProps) => {
+  const drawerRef = useRef<DrawerRef>(null)
   const {
-    page,
-    setPage,
-    loading,
-    filterByNameValue,
-    onSearchChange,
-    paginatedProducts,
-    totalPages,
-  } = useProductsTable()
-  if (loading) {
-    return (
-      <Spinner
-        aria-label='loading'
-        label='Carregando...'
-        className='flex items-center justify-center  w-full h-full  mt-24'
-        size='lg'
-      />
-    )
-  }
+    productBeingEditting,
+    handleEditProductButtonClick,
+    handleUpdateProductFormSubmit,
+    handleCancelEditting,
+    handleDrawerClose,
+  } = useProductsTable(drawerRef, onUpdateProduct)
+  const { md } = useBreakpoint()
+
   return (
     <>
       <Table
-        arial-label='Products table'
+        arial-label='Tabela de produtos'
         shadow='none'
-        topContent={
-          <TableSearch
-            onSearchChange={onSearchChange}
-            filterByNameValue={filterByNameValue}
-          />
-        }
         topContentPlacement='outside'
         selectionMode='multiple'
+        onSelectionChange={(selection) =>
+          onProductsSelectionChange(Array.from(selection) as string[])
+        }
         bottomContentPlacement='outside'
         bottomContent={
-          <div className='flex w-full justify-start '>
-            <Pagination
-              aria-label='pagination'
-              showControls
-              page={page}
-              total={totalPages}
-              onChange={(event) => {
-                if (event && typeof event === 'number') {
-                  setPage(event)
-                } else {
-                  setPage(1)
-                }
-              }}
-            />
-          </div>
+          totalPages ? (
+            <div className='flex w-full justify-start '>
+              <Pagination
+                aria-label='paginação'
+                showControls
+                page={page}
+                total={totalPages}
+                onChange={onPageChange}
+              />
+            </div>
+          ) : null
         }
       >
         <TableHeader>
-          <TableColumn key={'name'}>NOME</TableColumn>
-          <TableColumn key={'description'}>DESCRIÇÃO</TableColumn>
-          <TableColumn key={'code'}>CODIGO</TableColumn>
-          <TableColumn key={'price'}>PREÇO</TableColumn>
-
-          <TableColumn key={'minimumStock'}>ESTOQUE MINIMO</TableColumn>
-
-          <TableColumn key={'status'}> ATIVO</TableColumn>
-          <TableColumn key={'option'}>{null}</TableColumn>
+          <TableColumn key='name'>NOME</TableColumn>
+          <TableColumn key='code'>CODIGO</TableColumn>
+          <TableColumn key='price'>PREÇO</TableColumn>
+          <TableColumn key='minimumStock'>ESTOQUE MINIMO</TableColumn>
+          <TableColumn key='distributor'>FORNECEDOR</TableColumn>
+          <TableColumn key='status'>STATUS</TableColumn>
+          <TableColumn key='option'>{null}</TableColumn>
         </TableHeader>
         <TableBody
-          items={paginatedProducts}
-          isLoading={loading}
+          items={products}
+          isLoading={isLoading}
+          loadingContent={<Spinner color='primary' />}
+          aria-label='conteúdo da tabela'
           emptyContent={'Nenhum produto criado.'}
         >
           {(item) => (
-            <TableRow>
-              <TableCell key={'NAME'}>
+            <TableRow key={item.id}>
+              <TableCell key='name'>
                 <div className='flex items-center gap-2'>
-                  <img
+                  <Avatar
                     src={item.image}
                     alt={item.name}
+                    fallback={IMAGE_PLACEHOLDER}
                     className='w-8 h-8 rounded-full'
                   />
                   <p className='font-bold'>{item.name}</p>
                 </div>
               </TableCell>
-              <TableCell key={'description'}>{item.description}</TableCell>
-              <TableCell key={'code'}>{item.code}</TableCell>
-              <TableCell key={'price'}>{item.costPrice}</TableCell>
-              <TableCell key={'minimumStock'}>{item.minimumStock}</TableCell>
-              <TableCell key={'status'}>status</TableCell>
-              <TableCell key={'option'}>
-                <Tooltip content='Editar produto'>
-                  <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
-                    <Edit className='size-6' />
-                  </span>
+              <TableCell key='code'>{item.code}</TableCell>
+              <TableCell key='price'>{item.costPrice}</TableCell>
+              <TableCell key='minimumStock'>{item.minimumStock}</TableCell>
+              <TableCell key='distributor'>GABRIEL</TableCell>
+              <TableCell key='status'>
+                {item.isActive ? (
+                  <Tag type='sucess'>Ativo</Tag>
+                ) : (
+                  <Tag type='danger'>Desativo</Tag>
+                )}
+              </TableCell>
+              <TableCell key='option'>
+                <Tooltip aria-content='Editar produto'>
+                  <IconButton
+                    name='view'
+                    tooltip='Editar produto'
+                    className='size-6 text-zinc-500'
+                    onClick={() => handleEditProductButtonClick(item)}
+                  />
                 </Tooltip>
+                <Link href={`${ROUTES.inventory.stocks}/${item.id}`}>
+                  <Icon name='stock' className='size-6 text-zinc-500' />
+                </Link>
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
+      <Drawer
+        ref={drawerRef}
+        width={md ? 400 : 700}
+        trigger={null}
+        onClose={handleDrawerClose}
+      >
+        {() =>
+          productBeingEditting && (
+            <UpdateProductForm
+              productDto={productBeingEditting}
+              onSubmit={handleUpdateProductFormSubmit}
+              onCancel={handleCancelEditting}
+            />
+          )
+        }
+      </Drawer>
     </>
   )
 }

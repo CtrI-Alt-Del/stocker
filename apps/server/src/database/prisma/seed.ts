@@ -37,7 +37,6 @@ async function seed() {
       company_id: COMPANY_ID,
     },
   })
-
   const fakeProduct = ProductsFaker.fake({
     id: PRODUCT_ID,
     categoryId: CATEGORY_ID,

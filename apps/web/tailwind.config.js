@@ -25,6 +25,9 @@ export default {
           secondary: {
             DEFAULT: '#18181b',
           },
+          success: {
+            DEFAULT: '#17C964'
+          }
         },
       },
     },

@@ -18,6 +18,8 @@ export class PrismaProductMapper {
       uom: prismaProduct.uom,
       weight: prismaProduct.weight,
       width: prismaProduct.width,
+      isActive: prismaProduct.is_active,
+      model: prismaProduct.model,
       length: prismaProduct.length,
       minimumStock: prismaProduct.minimum_stock,
       batches: prismaProduct.batches.map((prismaBatch) => ({
@@ -50,13 +52,17 @@ export class PrismaProductMapper {
       uom: productDto.uom,
       weight: productDto.weight,
       width: productDto.width,
-      batches: productDto.batches.map((batchDto) => ({
-        id: String(batchDto.id),
-        product_id: batchDto.productId,
-        code: batchDto.code,
-        items_count: batchDto.itemsCount,
-        expiration_date: batchDto.expirationDate,
-      })),
+      is_active: productDto.isActive,
+      model: productDto.model ?? null,
+      batches: productDto.batches?.length
+        ? productDto.batches.map((batchDto) => ({
+            id: String(batchDto.id),
+            product_id: batchDto.productId,
+            code: batchDto.code,
+            items_count: batchDto.itemsCount,
+            expiration_date: batchDto.expirationDate,
+          }))
+        : [],
     }
   }
 }

@@ -19,7 +19,7 @@ type CacheConfig<CacheData> = {
 type Cache<CacheData> = {
   data: CacheData | null
   error: string
-  isLoading: boolean
+  isFetching: boolean
   isRefetching: boolean
   refetch: () => void
   mutate: (newCacheData: CacheData | null, consig: MudateConfig) => void
@@ -43,8 +43,8 @@ export function useCache<CacheData>({
     fetcher,
     {
       fallbackData: initialData,
-      refreshInterval,
       revalidateOnFocus: shouldRefetchOnFocus,
+      refreshInterval,
     },
   )
 
@@ -55,7 +55,7 @@ export function useCache<CacheData>({
   return {
     data: data ?? null,
     error,
-    isLoading,
+    isFetching: isLoading,
     isRefetching: isValidating,
     refetch: () => mutate(),
     mutate: mutateCache,

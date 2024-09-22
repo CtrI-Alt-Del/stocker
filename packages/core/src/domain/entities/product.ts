@@ -9,7 +9,6 @@ type ProductProps = {
   image: string
   costPrice: number
   sellingPrice: number
-  model: string
   brand: string
   height: number
   length: number
@@ -17,10 +16,11 @@ type ProductProps = {
   width: number
   uom: string
   code: string
-  model: string
-  categoryId?: string | null
+  model: string | null
+  categoryId: string | null
   companyId: string
   minimumStock: number
+  isActive: boolean
   batchesWithoutStockIds: string[]
   batches: Batch[]
 }
@@ -37,17 +37,17 @@ export class Product extends Entity<ProductProps> {
         brand: dto.brand,
         height: dto.height,
         length: dto.length,
-        model: dto.model,
         weight: dto.weight,
         width: dto.width,
-        categoryId: dto.categoryId,
-        companyId: dto.companyId,
         uom: dto.uom,
-        model: dto.model,
         code: dto.code,
         minimumStock: dto.minimumStock,
-        batches: dto.batches.map(Batch.create),
+        isActive: dto.isActive,
+        categoryId: dto.categoryId ?? null,
+        model: dto.model ?? null,
+        batches: dto.batches ? dto.batches.map(Batch.create) : [],
         batchesWithoutStockIds: [],
+        companyId: dto.companyId,
       },
       dto.id,
     )
@@ -57,23 +57,30 @@ export class Product extends Entity<ProductProps> {
     return Product.create({ ...this.dto, ...partialDto })
   }
 
-  reduceStock(itemsCount: number): Batch[] {
+  reduceStock(itemsCount: number): void {
     let stock = itemsCount
     if (stock > this.currentStock) {
       throw new ConflictError('Estoque insuficiente')
     }
 
-    const updatedBatches: Batch[] = []
-
     for (const batch of this.props.batches) {
       const batchItemsCount = batch.itemsCount
       batch.reduceItemsCount(stock)
       stock -= batchItemsCount
-      updatedBatches.push(batch)
       if (!stock) break
     }
+  }
 
-    return updatedBatches
+  appendBatch(batch: Batch) {
+    this.props.batches.push(batch)
+  }
+
+  get name(): string {
+    return this.props.name
+  }
+
+  get code(): string {
+    return this.props.code
   }
 
   get currentStock(): number {
@@ -97,7 +104,6 @@ export class Product extends Entity<ProductProps> {
       id: this.id,
       name: this.props.name,
       description: this.props.description,
-      model: this.props.model,
       image: this.props.image,
       costPrice: this.props.costPrice,
       sellingPrice: this.props.sellingPrice,
@@ -109,6 +115,7 @@ export class Product extends Entity<ProductProps> {
       model: this.props.model,
       uom: this.props.uom,
       code: this.props.code,
+      isActive: this.props.isActive,
       minimumStock: this.props.minimumStock,
       categoryId: this.props.categoryId,
       companyId: this.props.companyId,

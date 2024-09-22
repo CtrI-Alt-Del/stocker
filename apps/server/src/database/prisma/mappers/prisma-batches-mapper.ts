@@ -1,24 +1,30 @@
-import type { PrismaBatch } from "../types";
-import { Batch } from "@stocker/core/entities";
+import type { BatchDto } from '@stocker/core/dtos'
+import type { PrismaBatch } from '../types'
+import { Batch } from '@stocker/core/entities'
 
 export class PrismaBatchesMapper {
-    toDomain(prismaBatch: PrismaBatch): Batch {
-        return Batch.create({
-            id: prismaBatch.id,
-            code: prismaBatch.code,
-            itemsCount: prismaBatch.items_count,
-            expirationDate: prismaBatch.expiration_date,
-            productId: prismaBatch.product_id,
-        });
+  toDomain(prismaBatch: PrismaBatch): Batch {
+    const dto: BatchDto = {
+      id: prismaBatch.id,
+      code: prismaBatch.code,
+      itemsCount: prismaBatch.items_count,
+      productId: prismaBatch.product_id,
     }
 
-    toPrisma(batch: Batch): PrismaBatch {
-        return {
-            id: batch.id,
-            code: batch.code,
-            items_count: batch.itemsCount,
-            expiration_date: batch.expirationDate,
-            product_id: batch.id,
-        };
+    if (prismaBatch.expiration_date) dto.expirationDate = prismaBatch.expiration_date
+
+    return Batch.create(dto)
+  }
+
+  toPrisma(batch: Batch): PrismaBatch {
+    const batchDto = batch.dto
+
+    return {
+      id: batch.id,
+      code: batchDto.code,
+      items_count: batchDto.itemsCount,
+      product_id: batchDto.productId,
+      expiration_date: batchDto.expirationDate ?? null,
     }
+  }
 }

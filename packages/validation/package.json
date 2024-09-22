@@ -1,0 +1,9 @@
+{
+  "name": "@stocker/validation",
+  "devDependencies": {
+    "@stocker/typescript-config": "*"
+  },
+  "exports": {
+    "./schemas": "./src/schemas/index.ts"
+  }
+}

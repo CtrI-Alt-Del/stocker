@@ -1,61 +1,48 @@
-import { useCallback } from 'react'
-import { parseAsInteger, useQueryState } from 'nuqs'
+import { type RefObject, useState } from 'react'
+import type { Selection } from '@nextui-org/react'
 
-import { useApi, useCache } from '@/ui/hooks'
-import { usePagination } from '@/ui/hooks/use-pagination'
+import type { ProductDto } from '@stocker/core/dtos'
 
-import { ProductsFaker } from '@stocker/core/fakers'
-import { PAGINATION } from '@stocker/core/constants'
-import { CACHE } from '@/constants'
+import type { DrawerRef } from '@/ui/components/commons/drawer/types'
 
-export const useProductsTable = () => {
-  const [pageState, setPage] = useQueryState('page', parseAsInteger)
-  const [filterByNameValueState, setFilterByNameValue] = useQueryState('name')
-  const page = pageState ?? 1
-  const filterByNameValue = filterByNameValueState ?? ''
+export const useProductsTable = (
+  drawerRef: RefObject<DrawerRef>,
+  onUpdateProduct: VoidFunction,
+) => {
+  const [productBeingEditting, setProductBeingEditting] = useState<ProductDto | null>(
+    null,
+  )
 
-  const { productsService } = useApi()
-
-  const fetchProducts = async () => {
-    const response = await productsService.listProducts({ page })
-    return response.body.items
+  function handleEditProductButtonClick(productDto: ProductDto) {
+    setProductBeingEditting(productDto)
+    drawerRef.current?.open()
   }
 
-  const { data, isLoading } = useCache<[]>({
-    fetcher: fetchProducts,
-    key: CACHE.productsList.key,
-    dependencies: [page],
-  })
+  function handleDrawerClose() {
+    setProductBeingEditting(null)
+  }
 
-  const products = data ?? ProductsFaker.fakeManyDto(20)
-  const loading = isLoading
+  function handleCancelEditting() {
+    setProductBeingEditting(null)
+    drawerRef.current?.close()
+  }
 
-  const filteredItemsByName = products.filter((product) =>
-    product.name.toLowerCase().includes(filterByNameValue.toLowerCase()),
-  )
+  function handleUpdateProductFormSubmit() {
+    setProductBeingEditting(null)
+    drawerRef.current?.close()
+    onUpdateProduct()
+  }
 
-  const itemsPerPage = PAGINATION.itemsPerPage
-  const { paginatedItems, totalPages } = usePagination(
-    filteredItemsByName,
-    page,
-    itemsPerPage,
-  )
-
-  const onSearchChange = useCallback(
-    (value: string | null) => {
-      setFilterByNameValue(value ?? '')
-      if (value) setPage(1)
-    },
-    [setFilterByNameValue, setPage],
-  )
+  function handleSelectionChange(selection: Selection) {
+    console.log(Array.from(selection))
+  }
 
   return {
-    page,
-    setPage,
-    filterByNameValue,
-    onSearchChange,
-    paginatedProducts: paginatedItems,
-    totalPages,
-    loading,
+    productBeingEditting,
+    handleCancelEditting,
+    handleUpdateProductFormSubmit,
+    handleEditProductButtonClick,
+    handleSelectionChange,
+    handleDrawerClose,
   }
 }

@@ -3,6 +3,7 @@ export type IconName =
   | 'inventory'
   | 'record'
   | 'edit'
+  | 'view'
   | 'arrow-up'
   | 'arrow-down'
   | 'arrow-up-down'
@@ -16,3 +17,4 @@ export type IconName =
   | 'ellipses'
   | 'menu-hamburguer'
   | 'close'
+  | 'search'
