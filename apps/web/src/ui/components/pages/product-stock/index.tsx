@@ -9,6 +9,7 @@ import { useBreakpoint } from '@/ui/hooks'
 import { Drawer } from '../../commons/drawer'
 import { useProductStockPage } from './use-product-stock'
 import { RegisterInboundInventoryMovementForm } from './register-inbound-movement-form'
+import { BatchesTable } from './batches-table'
 
 type ProductStockPageProps = {
   productDto: ProductDto
@@ -68,7 +69,7 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
         >
           <Tab key='batches' title='Lotes' className='text-xl'>
             <Divider />
-            Aba de Lotes
+            <BatchesTable batches={product.batches} />
           </Tab>
           <Tab key='inventory-movements' title='Lançamentos' className='text-xl'>
             <Divider />
