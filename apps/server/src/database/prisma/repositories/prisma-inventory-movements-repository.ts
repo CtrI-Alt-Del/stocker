@@ -13,17 +13,10 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
 
   async add(inventoryMovement: InventoryMovement): Promise<void> {
     try {
-      const prismaInventoryMovements = this.mapper.toPrisma(inventoryMovement)
+      const prismaInventoryMovement = this.mapper.toPrisma(inventoryMovement)
 
-      prisma.inventoryMovement.create({
-        data: {
-          id: prismaInventoryMovements.id,
-          type: prismaInventoryMovements.type,
-          items_count: prismaInventoryMovements.items_count,
-          user_id: prismaInventoryMovements.user_id,
-          product_id: prismaInventoryMovements.product_id,
-          registered_at: prismaInventoryMovements.registered_at,
-        },
+      await prisma.inventoryMovement.create({
+        data: prismaInventoryMovement,
       })
     } catch (error) {
       throw new PrismaError(error)

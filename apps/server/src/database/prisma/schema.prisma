@@ -49,9 +49,9 @@ model Product {
 }
 
 model Batch {
-  id              String   @id @default(uuid())
+  id              String    @id @default(uuid())
   code            String
-  expiration_date DateTime
+  expiration_date DateTime?
   items_count     Int
   product_id      String
 
@@ -63,7 +63,7 @@ model Batch {
 
 model InventoryMovement {
   id            String                @id @default(uuid())
-  type          InventoryMovementType @default(INBOUND)
+  movement_type InventoryMovementType @default(INBOUND)
   items_count   Int
   product_id    String
   user_id       String
