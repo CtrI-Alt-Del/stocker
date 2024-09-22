@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { useIntersectionObserver } from 'usehooks-ts'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -9,12 +11,12 @@ import {
   stringSchema,
 } from '@stocker/validation/schemas'
 import { Batch, InventoryMovement } from '@stocker/core/entities'
-
-import { useApi, useToast } from '@/ui/hooks'
 import { Datetime } from '@stocker/core/libs'
 
+import { useApi, useToast } from '@/ui/hooks'
+
 const registerInboundMovementFormSchema = z.object({
-  expirationDate: dateSchema.optional(),
+  batchExpirationDate: dateSchema.optional(),
   registeredAt: dateSchema,
   batchCode: stringSchema,
   itemsCount: nonZeroIntegerSchema,
@@ -29,7 +31,7 @@ export function useRegisterInboundMovementForm(
   productId: string,
   onSubmit: (newBatch: Batch) => Promise<void>,
 ) {
-  const { control, formState, reset, register, handleSubmit } =
+  const { control, formState, setValue, reset, register, handleSubmit } =
     useForm<RegisterInboundMovementFormData>({
       defaultValues: {
         registeredAt: new Date(),
@@ -49,13 +51,13 @@ export function useRegisterInboundMovementForm(
       productId,
     })
 
-    if (formData.expirationDate) {
-      formData.expirationDate = new Datetime().addDays(formData.expirationDate, 1)
+    if (formData.batchExpirationDate) {
+      formData.batchExpirationDate = new Datetime(formData.batchExpirationDate).addDays(1)
     }
 
     const batch = Batch.create({
       code: formData.batchCode,
-      expirationDate: formData.expirationDate,
+      expirationDate: formData.batchExpirationDate,
       itemsCount: formData.itemsCount,
       productId,
     })
@@ -75,10 +77,20 @@ export function useRegisterInboundMovementForm(
       onSubmit(batch)
     }
   }
+
+  const { isIntersecting, ref } = useIntersectionObserver({
+    threshold: 0.5,
+  })
+
+  useEffect(() => {
+    if (isIntersecting) setValue('registeredAt', new Date())
+  }, [isIntersecting, setValue])
+
   return {
     control,
     errors: formState.errors,
     isSubmiting: formState.isSubmitting,
+    formRef: ref,
     register,
     handleSubmit: handleSubmit(handleFormSubmit),
   }

@@ -7,6 +7,7 @@ import { type Batch, Product } from '@stocker/core/entities'
 
 import { CACHE } from '@/constants'
 import { useApi, useCache } from '@/ui/hooks'
+import { Datetime } from '@stocker/core/libs'
 
 export function useProductStockPage(productDto: ProductDto) {
   const [product, setProduct] = useState(Product.create(productDto))
@@ -32,8 +33,13 @@ export function useProductStockPage(productDto: ProductDto) {
     setPage(page)
   }
 
+  function handleDrawerOpen() {}
+
   async function handleRegisterInboundInventoryMovementFormSubmit(newBatch: Batch) {
-    product.appendBatch(newBatch)
+    setProduct((product) => {
+      product.appendBatch(newBatch)
+      return product
+    })
     refetch()
   }
 
@@ -45,8 +51,9 @@ export function useProductStockPage(productDto: ProductDto) {
     inventoryMovements,
     totalPages: Math.round(itemsCount / PAGINATION.itemsPerPage),
     page,
-    handlePageChange,
     isFetching,
+    handleDrawerOpen,
+    handlePageChange,
     handleRegisterInboundInventoryMovementFormSubmit,
   }
 }

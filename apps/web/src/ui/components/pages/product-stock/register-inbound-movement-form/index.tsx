@@ -1,7 +1,5 @@
-import { Button, DateInput, Divider, Input, Textarea } from '@nextui-org/react'
+import { Button, Divider, Input, Textarea } from '@nextui-org/react'
 import { Controller } from 'react-hook-form'
-import { now, getLocalTimeZone } from '@internationalized/date'
-import { I18nProvider } from '@react-aria/i18n'
 
 import type { Batch } from '@stocker/core/entities'
 import { Datetime } from '@stocker/core/libs'
@@ -19,11 +17,11 @@ export const RegisterInboundInventoryMovementForm = ({
   onCancel,
   onSubmit,
 }: RegisterInboundMovementForm) => {
-  const { control, errors, isSubmiting, register, handleSubmit } =
+  const { control, errors, isSubmiting, formRef, register, handleSubmit } =
     useRegisterInboundMovementForm(productId, onSubmit)
 
   return (
-    <form onSubmit={handleSubmit} className='space-y-6'>
+    <form ref={formRef} onSubmit={handleSubmit} className='space-y-6'>
       <div className='grid grid-cols-2 gap-6'>
         <Input
           type='number'
@@ -36,11 +34,11 @@ export const RegisterInboundInventoryMovementForm = ({
         <Controller
           name='registeredAt'
           control={control}
-          render={({ field: { onChange }, fieldState: { error } }) => (
+          render={({ field: { value, onChange }, fieldState: { error } }) => (
             <Input
               type='datetime-local'
               label='Data e hora de registro'
-              defaultValue={new Datetime().format(new Date(), 'YYYY-MM-DDTHH:mm')}
+              value={new Datetime(value).format('YYYY-MM-DDTHH:mm')}
               onChange={onChange}
               isInvalid={Boolean(error?.message)}
               errorMessage={error?.message}
@@ -58,13 +56,13 @@ export const RegisterInboundInventoryMovementForm = ({
           errorMessage={errors.batchCode?.message}
         />
         <Controller
-          name='expirationDate'
+          name='batchExpirationDate'
           control={control}
           render={({ field: { onChange }, fieldState: { error } }) => (
             <Input
               type='date'
               label='Validade do lote'
-              isInvalid={Boolean(errors.expirationDate?.message)}
+              isInvalid={Boolean(errors.batchExpirationDate?.message)}
               onChange={(value) => {
                 console.log('OPA', value)
                 onChange(value)

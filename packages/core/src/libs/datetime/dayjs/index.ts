@@ -7,15 +7,17 @@ import type { IDatetime } from '../../../interfaces'
 dayjs.extend(utc)
 
 export class DayjsDatetime implements IDatetime {
-  now(): Date {
-    return dayjs().toDate()
+  private date: dayjs.Dayjs
+
+  constructor(date: Date) {
+    this.date = dayjs(date)
   }
 
-  format(date: Date, dateFormat: DateFormat): string {
-    return dayjs(date).format(dateFormat)
+  format(dateFormat: DateFormat): string {
+    return this.date.format(dateFormat)
   }
 
-  addDays(date: Date, daysCount: number): Date {
-    return dayjs(date).add(daysCount, 'day').toDate()
+  addDays(daysCount: number): Date {
+    return this.date.add(daysCount, 'day').toDate()
   }
 }

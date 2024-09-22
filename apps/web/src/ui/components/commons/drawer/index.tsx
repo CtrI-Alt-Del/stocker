@@ -15,14 +15,23 @@ type DrawerProps = {
   width?: number
   direction?: 'top' | 'left' | 'right' | 'bottom'
   zIndex?: number
+  onOpen?: VoidFunction
   onClose?: VoidFunction
 }
 
 export const DrawerComponent = (
-  { children, trigger, width = 220, direction = 'right', zIndex, onClose }: DrawerProps,
+  {
+    children,
+    trigger,
+    width = 220,
+    direction = 'right',
+    zIndex,
+    onOpen,
+    onClose,
+  }: DrawerProps,
   ref: ForwardedRef<DrawerRef>,
 ) => {
-  const { isOpen, open, close } = useDrawer(onClose)
+  const { isOpen, open, close } = useDrawer(onOpen, onClose)
 
   useImperativeHandle(
     ref,

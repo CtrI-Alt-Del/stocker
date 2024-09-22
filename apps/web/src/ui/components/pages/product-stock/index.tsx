@@ -1,9 +1,9 @@
 'use client'
 
-import { Button } from '@nextui-org/react'
+import { Button, Divider, Tab, Tabs } from '@nextui-org/react'
 
 import type { ProductDto } from '@stocker/core/dtos'
-import { type Batch, Product } from '@stocker/core/entities'
+import type { Batch } from '@stocker/core/entities'
 
 import { useBreakpoint } from '@/ui/hooks'
 import { Drawer } from '../../commons/drawer'
@@ -15,7 +15,7 @@ type ProductStockPageProps = {
 }
 
 export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
-  const { product, handleRegisterInboundInventoryMovementFormSubmit } =
+  const { product, handleDrawerOpen, handleRegisterInboundInventoryMovementFormSubmit } =
     useProductStockPage(productDto)
   const { md } = useBreakpoint()
 
@@ -30,6 +30,7 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
         <div className='space-x-2'>
           <Drawer
             width={md ? 400 : 700}
+            onOpen={handleDrawerOpen}
             trigger={
               <Button variant='solid' color='primary' radius='sm'>
                 Lançamento de entrada
@@ -50,6 +51,30 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
 
           <Button color='primary'>Lançamento de saída</Button>
         </div>
+      </div>
+
+      <div>
+        <Tabs
+          aria-label='Abas'
+          color='primary'
+          variant='underlined'
+          classNames={{
+            tabList:
+              'gap-12 mt-6 w-full relative rounded-none p-0 border-b-2 border-divider ',
+            cursor: 'w-full bg-zinc-900',
+            tab: 'max-w-fit px-0 h-12',
+            tabContent: 'group-data-[selected=true]:text-zinc-800',
+          }}
+        >
+          <Tab key='batches' title='Lotes' className='text-xl'>
+            <Divider />
+            Aba de Lotes
+          </Tab>
+          <Tab key='inventory-movements' title='Lançamentos' className='text-xl'>
+            <Divider />
+            Aba de Lançamentos
+          </Tab>
+        </Tabs>
       </div>
     </div>
   )
