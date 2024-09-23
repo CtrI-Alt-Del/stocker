@@ -17,7 +17,7 @@ import { useApi, useToast } from '@/ui/hooks'
 
 const registerInboundMovementFormSchema = z.object({
   batchExpirationDate: dateSchema
-    .refine((value) => new Datetime(value).isSameOrBefore(new Date()), {
+    .refine((value) => new Datetime(value).isSameOrAfter(new Date()), {
       message: 'Somente datas futuras',
     })
     .optional(),

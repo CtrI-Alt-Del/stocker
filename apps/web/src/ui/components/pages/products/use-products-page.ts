@@ -16,6 +16,13 @@ export function useProductsPage() {
 
   async function fetchProducts() {
     const response = await productsService.listProducts({ page })
+
+    if (response.isFailure) {
+      response.throwError()
+      showError(response.errorMessage)
+      return
+    }
+
     return response.body
   }
 
@@ -27,7 +34,7 @@ export function useProductsPage() {
     setFilterByNameValue(value ?? '')
   }
 
-  const { data, isFetching, refetch } = useCache({
+  const { data, error, isFetching, refetch } = useCache({
     fetcher: fetchProducts,
     key: CACHE.productsList.key,
     dependencies: [page],

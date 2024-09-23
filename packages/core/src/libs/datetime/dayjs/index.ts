@@ -24,4 +24,8 @@ export class DayjsDatetime implements IDatetime {
   isSameOrBefore(date: Date): boolean {
     return this.date.isSame(date) || this.date.isBefore(date)
   }
+
+  isSameOrAfter(date: Date): boolean {
+    return this.date.isSame(date) || this.date.isAfter(date)
+  }
 }

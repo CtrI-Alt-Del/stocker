@@ -4,4 +4,5 @@ export interface IDatetime {
   format(dateFormat: DateFormat): string
   addDays(daysCount: number): Date
   isSameOrBefore(date: Date): boolean
+  isSameOrAfter(date: Date): boolean
 }
