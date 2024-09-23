@@ -52,7 +52,7 @@ export class PrismaProductsRepository implements IProductsRepository {
                 expiration_date: 'asc',
               },
               {
-                resgitered_at: 'asc',
+                registered_at: 'asc',
               },
             ],
           },
@@ -79,7 +79,7 @@ export class PrismaProductsRepository implements IProductsRepository {
                 expiration_date: 'asc',
               },
               {
-                resgitered_at: 'asc',
+                registered_at: 'asc',
               },
             ],
           },

@@ -3,7 +3,7 @@ import type { PrismaInventoryMovement } from '../types'
 
 export class PrismaInventoryMovementsMapper {
   toDomain(prismaInventoryMovements: PrismaInventoryMovement): InventoryMovement {
-    return InventoryMovement.create({
+    const inventoryMovement = InventoryMovement.create({
       id: prismaInventoryMovements.id,
       movementType: prismaInventoryMovements.movement_type.toLowerCase(),
       itemsCount: prismaInventoryMovements.items_count,
@@ -11,6 +11,10 @@ export class PrismaInventoryMovementsMapper {
       productId: prismaInventoryMovements.id,
       registeredAt: prismaInventoryMovements.registered_at,
     })
+
+    if (prismaInventoryMovements.User)
+      inventoryMovement.responsibleData = prismaInventoryMovements.User
+    return inventoryMovement
   }
 
   toPrisma(inventoryMovement: InventoryMovement): PrismaInventoryMovement {
