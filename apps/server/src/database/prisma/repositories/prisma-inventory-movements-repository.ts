@@ -23,11 +23,17 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
     }
   }
 
-  async findMany({ page }: InventoryMovementsListParams): Promise<InventoryMovement[]> {
+  async findMany({
+    page,
+    productId,
+  }: InventoryMovementsListParams): Promise<InventoryMovement[]> {
     try {
+      const whereCondition = productId ? { product_id: productId } : undefined
+
       const prismaInventoryMovements = await prisma.inventoryMovement.findMany({
         take: PAGINATION.itemsPerPage,
         skip: (page - 1) * PAGINATION.itemsPerPage,
+        where: whereCondition,
       })
       if (!prismaInventoryMovements) return []
 

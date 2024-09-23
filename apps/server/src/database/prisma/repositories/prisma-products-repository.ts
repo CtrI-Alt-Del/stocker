@@ -46,7 +46,16 @@ export class PrismaProductsRepository implements IProductsRepository {
           id: productId,
         },
         include: {
-          batches: true,
+          batches: {
+            orderBy: [
+              {
+                expiration_date: 'asc',
+              },
+              {
+                resgitered_at: 'asc',
+              },
+            ],
+          },
         },
       })
 
@@ -64,7 +73,16 @@ export class PrismaProductsRepository implements IProductsRepository {
         take: PAGINATION.itemsPerPage,
         skip: (page - 1) * PAGINATION.itemsPerPage,
         include: {
-          batches: true,
+          batches: {
+            orderBy: [
+              {
+                expiration_date: 'asc',
+              },
+              {
+                resgitered_at: 'asc',
+              },
+            ],
+          },
         },
       })
 

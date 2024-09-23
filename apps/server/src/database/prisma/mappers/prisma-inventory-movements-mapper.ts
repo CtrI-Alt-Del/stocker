@@ -5,7 +5,7 @@ export class PrismaInventoryMovementsMapper {
   toDomain(prismaInventoryMovements: PrismaInventoryMovement): InventoryMovement {
     return InventoryMovement.create({
       id: prismaInventoryMovements.id,
-      movementType: prismaInventoryMovements.movement_type,
+      movementType: prismaInventoryMovements.movement_type.toLowerCase(),
       itemsCount: prismaInventoryMovements.items_count,
       responsibleId: prismaInventoryMovements.user_id,
       productId: prismaInventoryMovements.id,
