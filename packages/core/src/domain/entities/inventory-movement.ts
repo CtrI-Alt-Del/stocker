@@ -1,12 +1,12 @@
 import type { InventoryMovementDto } from '../../dtos'
 import { ValidationError } from '../../errors'
+import { InventoryMovementType } from '../../types'
 import { Entity } from '../abstracts'
 import type { User } from './user'
 
-type MovementType = 'inbound' | 'outbound'
 
 type MovementProps = {
-  movementType: MovementType
+  movementType: InventoryMovementType
   itemsCount: number
   responsibleId: string
   productId: string
@@ -37,7 +37,7 @@ export class InventoryMovement extends Entity<MovementProps> {
     )
   }
 
-  static isMovementType(movementType: string): movementType is MovementType {
+  static isMovementType(movementType: string): movementType is InventoryMovementType {
     return ['inbound', 'outbound'].includes(movementType)
   }
 
@@ -64,7 +64,7 @@ export class InventoryMovement extends Entity<MovementProps> {
     return this.props.responsibleData
   }
 
-  get movementType(): MovementType {
+  get movementType(): InventoryMovementType {
     return this.props.movementType
   }
 
