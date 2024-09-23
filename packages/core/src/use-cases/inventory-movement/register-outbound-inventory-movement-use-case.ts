@@ -1,6 +1,6 @@
 import { InventoryMovement } from '../../domain/entities'
-import type { BatchDto, InventoryMovementDto } from '../../dtos'
-import { NotFoundError } from '../../errors'
+import type { InventoryMovementDto } from '../../dtos'
+import { NotAllowedError, NotFoundError } from '../../errors'
 import type {
   IBatchesRepository,
   IInventoryMovementsRepository,
@@ -8,7 +8,6 @@ import type {
 } from '../../interfaces'
 
 type Request = {
-  batchDto: BatchDto
   inventoryMovementDto: InventoryMovementDto
 }
 
@@ -32,13 +31,14 @@ export class RegisterOutboundInventoryMovementUseCase {
     const product = await this.productsRepository.findById(productId)
     if (!product) throw new NotFoundError('Produto não existe')
 
-    product.reduceStock(product.currentStock)
+    const inventory = InventoryMovement.create(inventoryMovementDto)
+
+    product.reduceStock(inventory.itemsCount)
     const updatedbatches = product.updatedBatches
     await this.batchRepository.updateManyItemsCount(updatedbatches)
-    const emptybatches = product.batchesWithoutStock
-    const emptybatchesId = emptybatches.map((batch) => batch.id)
+    const emptyBatches = product.emptyBatches
+    const emptybatchesId = emptyBatches.map((batch) => batch.id)
     await this.batchRepository.deleteMany(emptybatchesId)
-    const inventory = InventoryMovement.create(inventoryMovementDto)
     await this.inventorymovementRepository.add(inventory)
   }
 }

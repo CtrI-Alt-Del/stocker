@@ -8,14 +8,9 @@ import {
 } from '@/database'
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 
-type Body = {
-  batch: BatchDto
-  inventoryMovement: InventoryMovementDto
-}
-
 export class RegisterOutboundInventoryMovementController {
   async handle(http: IHttp) {
-    const body = http.getBody<Body>()
+    const body = http.getBody<InventoryMovementDto>()
     const useCase = new RegisterOutboundInventoryMovementUseCase(
       batchRepository,
       productsRepository,
@@ -23,12 +18,7 @@ export class RegisterOutboundInventoryMovementController {
     )
 
     await useCase.execute({
-      batchDto: body.batch,
-      inventoryMovementDto: body.inventoryMovement,
-    })
-    await useCase.execute({
-      batchDto: body.batch,
-      inventoryMovementDto: body.inventoryMovement,
+      inventoryMovementDto: body,
     })
 
     return http.send(null, HTTP_STATUS_CODE.created)

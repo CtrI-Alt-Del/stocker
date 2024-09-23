@@ -1,6 +1,6 @@
 export { ApiError } from './api-error'
 export { AppError } from './app-error'
-export { AuthError } from './auth-error'
+export { NotAllowedError } from './not-allowed-error'
 export { ConflictError } from './conflict-error'
 export { NotFoundError } from './not-found-error'
 export { DatabaseError } from './database-error'

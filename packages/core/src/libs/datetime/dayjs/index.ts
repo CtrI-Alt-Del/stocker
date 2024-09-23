@@ -20,4 +20,12 @@ export class DayjsDatetime implements IDatetime {
   addDays(daysCount: number): Date {
     return this.date.add(daysCount, 'day').toDate()
   }
+
+  isSameOrBefore(date: Date): boolean {
+    return this.date.isSame(date) || this.date.isBefore(date)
+  }
+
+  isSameOrAfter(date: Date): boolean {
+    return this.date.isSame(date) || this.date.isAfter(date)
+  }
 }

@@ -67,12 +67,16 @@ export class Product extends Entity<ProductProps> {
       const batchItemsCount = batch.itemsCount
       batch.reduceItemsCount(stock)
       stock -= batchItemsCount
-      if (!stock) break
+      if (stock <= 0) break
     }
   }
 
   appendBatch(batch: Batch) {
     this.props.batches.push(batch)
+  }
+
+  get isInactive(): boolean {
+    return !this.props.isActive
   }
 
   get name(): string {
@@ -95,7 +99,7 @@ export class Product extends Entity<ProductProps> {
     return this.props.batches.filter((batch) => batch.hasUpdatedStock)
   }
 
-  get batchesWithoutStock(): Batch[] {
+  get emptyBatches(): Batch[] {
     return this.props.batches.filter((batch) => !batch.hasItems)
   }
 

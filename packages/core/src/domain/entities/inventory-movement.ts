@@ -1,6 +1,7 @@
 import type { InventoryMovementDto } from '../../dtos'
 import { ValidationError } from '../../errors'
 import { Entity } from '../abstracts'
+import type { User } from './user'
 
 type MovementType = 'inbound' | 'outbound'
 
@@ -10,12 +11,12 @@ type MovementProps = {
   responsibleId: string
   productId: string
   registeredAt: Date
+  responsibleData: Pick<User, 'name'> | null
   remark: string | null
 }
 
 export class InventoryMovement extends Entity<MovementProps> {
   static create(dto: InventoryMovementDto): InventoryMovement {
-    console.log({ dto })
     const movementType = dto.movementType
 
     if (!InventoryMovement.isMovementType(movementType)) {
@@ -30,6 +31,7 @@ export class InventoryMovement extends Entity<MovementProps> {
         productId: dto.productId,
         registeredAt: new Date(),
         remark: dto.remark ?? null,
+        responsibleData: null,
       },
       dto.id,
     )
@@ -52,6 +54,14 @@ export class InventoryMovement extends Entity<MovementProps> {
     if (this.props.remark) dto.remark = this.props.remark
 
     return dto
+  }
+
+  set responsibleData(responsible: Pick<User, 'name'> | null) {
+    this.props.responsibleData = responsible
+  }
+
+  get responsibleData() {
+    return this.props.responsibleData
   }
 
   get movementType(): MovementType {

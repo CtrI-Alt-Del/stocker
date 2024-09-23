@@ -10,6 +10,8 @@ import { useBreakpoint } from '@/ui/hooks'
 import { Drawer } from '../../commons/drawer'
 import { useProductStockPage } from './use-product-stock'
 import { RegisterInboundInventoryMovementForm } from './register-inbound-movement-form'
+import { BatchesTable } from './batches-table'
+import { Icon } from '../../commons/icon'
 
 type ProductStockPageProps = {
   productDto: ProductDto
@@ -33,7 +35,7 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
             width={md ? 400 : 700}
             onOpen={handleDrawerOpen}
             trigger={
-              <Button variant='solid' color='primary' radius='sm'>
+              <Button color='primary' radius='sm' endContent={<Icon name='inbound' />}>
                 Lançamento de entrada
               </Button>
             }
@@ -50,7 +52,9 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
             )}
           </Drawer>
 
-          <Button color='primary'>Lançamento de saída</Button>
+          <Button color='primary' radius='sm' endContent={<Icon name='outbound' />}>
+            Lançamento de saída
+          </Button>
         </div>
       </div>
 
@@ -67,11 +71,11 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
             tabContent: 'group-data-[selected=true]:text-zinc-800',
           }}
         >
-          <Tab key='batches' title='Lotes' className='text-xl'>
+          <Tab key='batches' title='Lotes' className='text-lgp'>
             <Divider />
-            Aba de Lotes
+            <BatchesTable batches={product.batches} />
           </Tab>
-          <Tab key='inventory-movements' title='Lançamentos' className='text-xl'>
+          <Tab key='inventory-movements' title='Lançamentos' className='text-lgp'>
             <Divider />
             Aba de Lançamentos
           </Tab>

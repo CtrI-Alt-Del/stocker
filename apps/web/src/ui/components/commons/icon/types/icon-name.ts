@@ -14,6 +14,8 @@ export type IconName =
   | 'supplier'
   | 'stock'
   | 'notification'
+  | 'inbound'
+  | 'outbound'
   | 'ellipses'
   | 'menu-hamburguer'
   | 'close'

@@ -16,18 +16,38 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
       const prismaInventoryMovement = this.mapper.toPrisma(inventoryMovement)
 
       await prisma.inventoryMovement.create({
-        data: prismaInventoryMovement,
+        data: {
+          id: prismaInventoryMovement.id,
+          items_count: prismaInventoryMovement.items_count,
+          registered_at: prismaInventoryMovement.registered_at,
+          movement_type: prismaInventoryMovement.movement_type,
+          product_id: prismaInventoryMovement.product_id,
+          user_id: prismaInventoryMovement.user_id,
+        },
       })
     } catch (error) {
       throw new PrismaError(error)
     }
   }
 
-  async findMany({ page }: InventoryMovementsListParams): Promise<InventoryMovement[]> {
+  async findMany({
+    page,
+    productId,
+  }: InventoryMovementsListParams): Promise<InventoryMovement[]> {
     try {
+      const whereCondition = productId ? { product_id: productId } : undefined
+
       const prismaInventoryMovements = await prisma.inventoryMovement.findMany({
         take: PAGINATION.itemsPerPage,
         skip: (page - 1) * PAGINATION.itemsPerPage,
+        where: whereCondition,
+        include: {
+          User: {
+            select: {
+              name: true,
+            },
+          },
+        },
       })
       if (!prismaInventoryMovements) return []
 
