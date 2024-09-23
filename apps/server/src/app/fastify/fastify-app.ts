@@ -5,7 +5,7 @@ import Cors from '@fastify/cors'
 import type { IServerApp } from '@stocker/core/interfaces'
 import {
   AppError,
-  AuthError,
+  NotAllowedError,
   ConflictError,
   NotFoundError,
   ValidationError,
@@ -53,7 +53,7 @@ export class FastifyApp implements IServerApp {
 
         error.statusCode
 
-        if (error instanceof AuthError)
+        if (error instanceof NotAllowedError)
           return reply.status(HTTP_STATUS_CODE.unauthorized).send(response)
 
         if (error instanceof NotFoundError)

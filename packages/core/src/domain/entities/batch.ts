@@ -25,6 +25,7 @@ export class Batch extends Entity<BatchProps> {
 
   reduceItemsCount(itemsCount: number): void {
     this.props.itemsCount -= itemsCount
+
     if (this.props.itemsCount) this.props.hasUpdatedStock = true
   }
 
