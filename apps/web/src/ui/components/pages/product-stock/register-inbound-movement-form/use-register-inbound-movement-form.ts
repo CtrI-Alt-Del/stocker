@@ -16,7 +16,11 @@ import { Datetime } from '@stocker/core/libs'
 import { useApi, useToast } from '@/ui/hooks'
 
 const registerInboundMovementFormSchema = z.object({
-  batchExpirationDate: dateSchema.optional(),
+  batchExpirationDate: dateSchema
+    .refine((value) => new Datetime(value).isSameOrBefore(new Date()), {
+      message: 'Somente datas futuras',
+    })
+    .optional(),
   registeredAt: dateSchema,
   batchCode: stringSchema,
   itemsCount: nonZeroIntegerSchema,
