@@ -1,10 +1,11 @@
 import type { Product } from '../../domain/entities'
-import { StockLevelReportDto } from '../../dtos/stock-level-report-dto'
+import type { StockLevelReportDto } from '../../dtos/stock-level-report-dto'
+import type { ProducsStocksListParams } from '../../types'
 
 export interface IProductsRepository {
   findById(productId: string): Promise<Product | null>
-  findMany(page: number): Promise<Product[]>
-  findManyWithInventory(page: number): Promise<Product[]>
+  findMany(): Promise<Product[]>
+  findManyWithInventoryMovements(params: ProducsStocksListParams): Promise<Product[]>
   count(): Promise<number>
   countStockLevel(): Promise<StockLevelReportDto>
   add(product: Product): Promise<void>

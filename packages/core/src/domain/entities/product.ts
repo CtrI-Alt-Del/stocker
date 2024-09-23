@@ -1,9 +1,8 @@
 import type { ProductDto } from '../../dtos'
 import { ConflictError } from '../../errors'
-import { StockLevel } from '../../types/stock-level'
+import type { StockLevel } from '../../types/stock-level'
 import { Entity } from '../abstracts'
 import { Batch } from './batch'
-
 
 type ProductProps = {
   name: string
@@ -53,7 +52,7 @@ export class Product extends Entity<ProductProps> {
         batchesWithoutStockIds: [],
         companyId: dto.companyId,
         inboundInventoryMovementsCount: 0,
-        outboundInventoryMovementsCount: 0
+        outboundInventoryMovementsCount: 0,
       },
       dto.id,
     )
