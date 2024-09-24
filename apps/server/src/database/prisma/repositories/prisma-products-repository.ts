@@ -3,17 +3,24 @@ import type { IProductsRepository } from '@stocker/core/interfaces'
 import { PAGINATION } from '@stocker/core/constants'
 
 import { prisma } from '../prisma-client'
-import { PrismaProductMapper } from '../mappers'
+import { PrismaBatchesMapper, PrismaProductMapper } from '../mappers'
 import { PrismaError } from '../prisma-error'
-import type { ProducsStocksListParams } from '@stocker/core/types'
+import type { ProducsStocksListParams, ProductsListParams } from '@stocker/core/types'
 
 export class PrismaProductsRepository implements IProductsRepository {
-
   private readonly mapper: PrismaProductMapper = new PrismaProductMapper()
 
   async add(product: Product): Promise<void> {
     try {
       const prismaProduct = this.mapper.toPrisma(product)
+
+      const companyExists = await prisma.company.findUnique({
+        where: { id: prismaProduct.company_id },
+      })
+
+      if (!companyExists) {
+        throw new Error(`Company with ID ${prismaProduct.company_id} does not exist.`)
+      }
 
       await prisma.product.create({
         data: {
@@ -69,11 +76,11 @@ export class PrismaProductsRepository implements IProductsRepository {
     }
   }
 
-  async findMany({page}: ProducsStocksListParams): Promise<Product[]> {
+  async findMany({ page }: ProductsListParams): Promise<Product[]> {
     try {
       const prismaProducts = await prisma.product.findMany({
         take: PAGINATION.itemsPerPage,
-        skip: (page - 1) * PAGINATION.itemsPerPage,
+        skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,
         include: {
           batches: {
             orderBy: [
@@ -100,7 +107,6 @@ export class PrismaProductsRepository implements IProductsRepository {
 
   async countAverageStockLevel(): Promise<number> {
     throw new Error()
-
   }
 
   async countDangerStockLevel(): Promise<number> {
@@ -110,66 +116,43 @@ export class PrismaProductsRepository implements IProductsRepository {
   async findManyWithInventoryMovements(params: ProducsStocksListParams): Promise<{
     products: Product[]
     count: number
-    inventoryMovementsCount: { inbound: number; outbound: number }
   }> {
-    throw new Error()
+    try {
+      const offset = (params.page - 1) * PAGINATION.itemsPerPage
+      const limit = PAGINATION.itemsPerPage
 
-    // try {
-    //   const offset = (params.page - 1) * PAGINATION.itemsPerPage
-    //   const limit = PAGINATION.itemsPerPage
+      const prismaProducts: any = await prisma.$queryRaw`
+        SELECT p.*,
+              ARRAY_AGG(
+               JSON_BUILD_OBJECT(
+                  'id', b.id,
+                  'code', b.code,
+                  'expiration_date', b.expiration_date,
+                  'items_count', b.items_count,
+                  'product_id', b.product_id,
+                  'registered_at', b.registered_at,
+                )
+              ) AS batchItemsJson
+        'inboundCount', COUNT(DISTINCT CASE WHEN im.movement_type = 'INBOUND' THEN im.id ELSE NULL END),
+        'outboundCount', COUNT(DISTINCT CASE WHEN im.movement_type = 'OUTBOUND' THEN im.id ELSE NULL END),
+        FROM products p
+        LEFT JOIN inventory_movements im ON p.id = im.product_id
+        GROUP BY p.id
+        ORDER BY p.id
+        LIMIT ${limit} OFFSET ${offset}
+      `
 
-    //   const prismaProducts: any = await prisma.$queryRaw`
-    //     SELECT p.*, 
-    //            (SELECT COUNT(*) FROM inventory_movements im WHERE im.product_id = p.id AND im.movement_type = 'INBOUND') as inboundCount,
-    //            (SELECT COUNT(*) FROM inventory_movements im WHERE im.product_id = p.id AND im.movement_type = 'OUTBOUND') as outboundCount
-    //     FROM products p
-    //     ORDER BY p.id
-    //     LIMIT ${limit} OFFSET ${offset}
-    //   `
-
-    //   const productIds = prismaProducts.map((product: any) => product.id)
-
-    //   // Query to fetch batches for each product
-    //   const prismaBatches: any = await prisma.$queryRaw`
-    //     SELECT b.* 
-    //     FROM batches b
-    //     WHERE b.product_id IN (${productIds})
-    //     ORDER BY b.product_id, b.registered_at ASC
-    //   `
-
-    //   // Group batches by product ID
-    //   const batchesByProductId: Record<string, any[]> = prismaBatches.reduce(
-    //     (acc: any, batch: any) => {
-    //       if (!acc[batch.product_id]) acc[batch.product_id] = []
-    //       acc[batch.product_id].push(batch)
-    //       return acc
-    //     },
-    //     {},
-    //   )
-
-    //   const products = prismaProducts.map((prismaProduct: any) => {
-    //     const product = this.mapper.toDomain(prismaProduct)
-    //     product.batches = batchesByProductId[prismaProduct.id] || []
-    //     return product
-    //   })
-
-    //   const count: any = await prisma.$queryRaw`SELECT COUNT(*) FROM products`
-
-    //   const inventoryMovementsCount = {
-    //     inbound: prismaProducts.reduce(
-    //       (acc: number, product: any) => acc + Number(product.inboundCount),
-    //       0,
-    //     ),
-    //     outbound: prismaProducts.reduce(
-    //       (acc: number, product: any) => acc + Number(product.outboundCount),
-    //       0,
-    //     ),
-    //   }
-
-    //   return { products, count: Number(count[0]?.count || 0), inventoryMovementsCount }
-    // } catch (error) {
-    //   throw new PrismaError(error)
-    // }
+      const products = prismaProducts.map((prismaProduct: any) => {
+        const product = this.mapper.toDomain(prismaProduct)
+        product.inboundInventoryMovementsCount = prismaProduct[prismaProduct.id]
+        product.outboundInventoryMovementsCount = prismaProduct[prismaProduct.id]
+        return product
+      })
+      const count: any = await prisma.$queryRaw`SELECT COUNT(*) FROM products`
+      return { products, count: Number(count[0]?.count || 0) }
+    } catch (error) {
+      throw new PrismaError(error)
+    }
   }
 
   async count(): Promise<number> {
@@ -179,7 +162,6 @@ export class PrismaProductsRepository implements IProductsRepository {
       throw new PrismaError(error)
     }
   }
-
 
   async update(product: Product): Promise<void> {
     try {
