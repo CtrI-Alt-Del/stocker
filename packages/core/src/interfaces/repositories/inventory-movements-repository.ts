@@ -8,6 +8,5 @@ export type FindManyParams = {
 export interface IInventoryMovementsRepository {
   add(inventoryMovement: InventoryMovement): Promise<void>
   findMany(params: InventoryMovementsListParams): Promise<InventoryMovement[]>
-  findManyByProductId(productId: string): Promise<InventoryMovement[]>
   count(): Promise<number>
 }

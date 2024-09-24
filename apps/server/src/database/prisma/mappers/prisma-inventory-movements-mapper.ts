@@ -8,7 +8,7 @@ export class PrismaInventoryMovementsMapper {
       movementType: prismaInventoryMovements.movement_type.toLowerCase(),
       itemsCount: prismaInventoryMovements.items_count,
       responsibleId: prismaInventoryMovements.user_id,
-      productId: prismaInventoryMovements.id,
+      productId: prismaInventoryMovements.product_id,
       registeredAt: prismaInventoryMovements.registered_at,
     })
 

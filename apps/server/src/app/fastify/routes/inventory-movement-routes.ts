@@ -13,7 +13,7 @@ export const InventoryMovementRoutes = async (app: FastifyInstance) => {
   const registerOutboundInventoryMovementController =
     new RegisterOutboundInventoryMovementController()
 
-  app.get('/:productId', async (request, response) => {
+  app.get('/', async (request, response) => {
     const http = new FastifyHttp(request, response)
     return listInventoryMovementsController.handle(http)
   })
