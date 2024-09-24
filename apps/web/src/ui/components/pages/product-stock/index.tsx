@@ -11,6 +11,7 @@ import { useProductStockPage } from './use-product-stock'
 import { RegisterInboundInventoryMovementForm } from './register-inbound-movement-form'
 import { BatchesTable } from './batches-table'
 import { Icon } from '../../commons/icon'
+import { RegisterOutboundInventoryMovementForm } from './register-outbond-movement-form'
 
 type ProductStockPageProps = {
   productDto: ProductDto
@@ -51,9 +52,28 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
             )}
           </Drawer>
 
-          <Button color='primary' radius='sm' endContent={<Icon name='outbound' />}>
-            Lançamento de saída
-          </Button>
+          <Drawer
+            width={md ? 400 : 700}
+            onOpen={handleDrawerOpen}
+            trigger={
+              <Button
+                color='primary'
+                radius='sm'
+                endContent={<Icon name='outbound' />}
+              ></Button>
+            }
+          >
+            {(closeDrawer) => (
+              <RegisterOutboundInventoryMovementForm
+                productID={product.id}
+                onCancel={closeDrawer}
+                onSubmit={async (newBatch: Batch) => {
+                  await handleRegisterInboundInventoryMovementFormSubmit(newBatch)
+                  closeDrawer()
+                }}
+              />
+            )}
+          </Drawer>
         </div>
       </div>
 
