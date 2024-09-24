@@ -12,13 +12,14 @@ import { useProductStockPage } from './use-product-stock'
 import { RegisterInboundInventoryMovementForm } from './register-inbound-movement-form'
 import { BatchesTable } from './batches-table'
 import { Icon } from '../../commons/icon'
+import { InventoryMovementsTable } from './inventory-moves-table'
 
 type ProductStockPageProps = {
   productDto: ProductDto
 }
 
 export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
-  const { product, handleDrawerOpen, handleRegisterInboundInventoryMovementFormSubmit } =
+  const { product, inventoryMovements, handleDrawerOpen, handleRegisterInboundInventoryMovementFormSubmit } =
     useProductStockPage(productDto)
   const { md } = useBreakpoint()
 
@@ -77,7 +78,7 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
           </Tab>
           <Tab key='inventory-movements' title='Lançamentos' className='text-lgp'>
             <Divider />
-            Aba de Lançamentos
+            <InventoryMovementsTable inventoryMovements={inventoryMovements} />
           </Tab>
         </Tabs>
       </div>
