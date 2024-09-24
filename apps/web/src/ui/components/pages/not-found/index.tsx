@@ -1,4 +1,4 @@
-import React from 'react'
+"use client"
 import {Image} from "@nextui-org/react";
 
 const Error404 = () => {
