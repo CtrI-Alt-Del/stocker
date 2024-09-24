@@ -13,7 +13,8 @@ import {
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 
 import { ENV } from '@/constants'
-import { ProductsRoutes, FileStorageRoutes, InventoryMovementRoutes } from './routes'
+import { ProductsRoutes, FileStorageRoutes, InventoryMovementRoutes, StockLevelRoutes } from './routes'
+import { ReportStockLevelController } from '@/api/controllers/reports'
 
 export class FastifyApp implements IServerApp {
   private readonly app: FastifyInstance
@@ -81,5 +82,6 @@ export class FastifyApp implements IServerApp {
     this.app.register(ProductsRoutes, { prefix: '/products' })
     this.app.register(InventoryMovementRoutes, { prefix: '/inventory-movements' })
     this.app.register(FileStorageRoutes, { prefix: '/file-storage' })
+    this.app.register(StockLevelRoutes, {prefix: '/reports'})
   }
 }
