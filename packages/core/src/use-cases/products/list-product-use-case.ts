@@ -12,7 +12,7 @@ export class ListProductsUseCase {
   }
 
   async execute({ page }: Request) {
-    const products = await this.productsRepository.findMany(page)
+    const products = await this.productsRepository.findMany()
 
     const productsCount = await this.productsRepository.count()
 
