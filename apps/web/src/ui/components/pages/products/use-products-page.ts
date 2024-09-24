@@ -75,7 +75,7 @@ export function useProductsPage() {
     filterByNameValue,
     isFetching,
     products,
-    totalPages: Math.round(itemsCount / PAGINATION.itemsPerPage),
+    totalPages: Math.ceil(itemsCount / PAGINATION.itemsPerPage),
     isDeleteProductsButtonVisible: selectedProductsIds.length > 0,
     handleUpdateProduct,
     handleDeleteProductsAlertDialogConfirm,

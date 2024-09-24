@@ -17,8 +17,12 @@ type ProductStockPageProps = {
 }
 
 export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
-  const { product, handleDrawerOpen, handleRegisterInboundInventoryMovementFormSubmit } =
-    useProductStockPage(productDto)
+  const {
+    product,
+    inventoryMovements,
+    handleDrawerOpen,
+    handleRegisterInboundInventoryMovementFormSubmit,
+  } = useProductStockPage(productDto)
   const { md } = useBreakpoint()
 
   return (
