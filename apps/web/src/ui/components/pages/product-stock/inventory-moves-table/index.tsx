@@ -10,26 +10,30 @@ import {
   getKeyValue,
 } from '@nextui-org/react'
 
-import type { Batch } from '@stocker/core/entities'
+import type { InventoryMovement } from '@stocker/core/entities'
 
-type BatchesTableProps = {
-  batches: Batch[]
+type InventoryMovementsTableProps = {
+  inventoryMovements: InventoryMovement[]
 }
 
-export const BatchesTable = ({ batches }: BatchesTableProps) => {
+export const InventoryMovementsTable = ({ inventoryMovements }: InventoryMovementsTableProps) => {
 
   const columns = [
     {
-      key: 'validity',
-      label: 'VALIDADE',
+      key: 'datetime',
+      label: 'DATA E HORA',
     },
     {
-      key: 'batch',
-      label: 'LOTE',
+      key: 'lançamento',
+      label: 'TIPO DE LANÇAMENTO',
     },
     {
-      key: 'disponibility',
-      label: 'DISPONÍVEL',
+      key: 'observation',
+      label: 'OBSERVAÇÃO',
+    },
+    {
+      key: 'funcionario',
+      label: 'FUNCIONÁRIO',
     },
   ]
 
@@ -38,7 +42,7 @@ export const BatchesTable = ({ batches }: BatchesTableProps) => {
       <TableHeader columns={columns}>
         {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
       </TableHeader>
-      <TableBody items={batches}>
+      <TableBody items={inventoryMovements}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}
