@@ -72,7 +72,14 @@ export const RegisterInboundInventoryMovementForm = ({
           )}
         />
       </div>
-
+      <div className='grid grid-cols-2 gap-6 '>
+        <Input
+          label='Prazo da validade'
+          isInvalid={Boolean(errors.daysUntilExpire?.message)}
+          errorMessage={errors.daysUntilExpire?.message}
+          {...register('daysUntilExpire')}
+        />
+      </div>
       <Textarea
         label='Observação'
         isInvalid={Boolean(errors.remark?.message)}
