@@ -19,8 +19,10 @@ export const InventoryMovementsService = (
 
     async listInventoryMovements({ page, productId }) {
       apiClient.setParam('page', String(page))
+      apiClient.setParam('productId', productId)
+      
       return await apiClient.get<PaginationResponse<InventoryMovement>>(
-        `/inventory-movements/${productId}`,
+        '/inventory-movements',
       )
     },
   }

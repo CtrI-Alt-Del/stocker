@@ -7,7 +7,6 @@ import { type Batch, Product } from '@stocker/core/entities'
 
 import { CACHE } from '@/constants'
 import { useApi, useCache } from '@/ui/hooks'
-import { Datetime } from '@stocker/core/libs'
 
 export function useProductStockPage(productDto: ProductDto) {
   const [product, setProduct] = useState(Product.create(productDto))
@@ -25,7 +24,7 @@ export function useProductStockPage(productDto: ProductDto) {
 
   const { data, isFetching, refetch } = useCache({
     fetcher: fetchInventoryMovements,
-    key: `${CACHE.inventoryMovements.key}/${product.id}`,
+    key: CACHE.inventoryMovements.key,
     dependencies: [page],
   })
 
@@ -45,6 +44,8 @@ export function useProductStockPage(productDto: ProductDto) {
 
   const inventoryMovements = data ? data.items : []
   const itemsCount = data ? data.itemsCount : 0
+
+  console.log(inventoryMovements)
 
   return {
     product,

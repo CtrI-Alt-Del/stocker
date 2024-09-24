@@ -3,8 +3,9 @@ import type { IProductsRepository } from '@stocker/core/interfaces'
 import { PAGINATION } from '@stocker/core/constants'
 
 import { prisma } from '../prisma-client'
-import { PrismaProductMapper } from '../mappers'
+import { PrismaBatchesMapper, PrismaProductMapper } from '../mappers'
 import { PrismaError } from '../prisma-error'
+import type { ProducsStocksListParams, ProductsListParams } from '@stocker/core/types'
 
 export class PrismaProductsRepository implements IProductsRepository {
   private readonly mapper: PrismaProductMapper = new PrismaProductMapper()
@@ -12,6 +13,14 @@ export class PrismaProductsRepository implements IProductsRepository {
   async add(product: Product): Promise<void> {
     try {
       const prismaProduct = this.mapper.toPrisma(product)
+
+      const companyExists = await prisma.company.findUnique({
+        where: { id: prismaProduct.company_id },
+      })
+
+      if (!companyExists) {
+        throw new Error(`Company with ID ${prismaProduct.company_id} does not exist.`)
+      }
 
       await prisma.product.create({
         data: {
@@ -67,11 +76,11 @@ export class PrismaProductsRepository implements IProductsRepository {
     }
   }
 
-  async findMany(page: number): Promise<Product[]> {
+  async findMany({ page }: ProductsListParams): Promise<Product[]> {
     try {
       const prismaProducts = await prisma.product.findMany({
         take: PAGINATION.itemsPerPage,
-        skip: (page - 1) * PAGINATION.itemsPerPage,
+        skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,
         include: {
           batches: {
             orderBy: [
@@ -87,6 +96,82 @@ export class PrismaProductsRepository implements IProductsRepository {
       })
 
       return prismaProducts.map((prismaProduct) => this.mapper.toDomain(prismaProduct))
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
+  async countSafeStockLevel(): Promise<number> {
+   const result = await prisma.$queryRaw`
+      SELECT COUNT(*) count, SUM(B.items_count) stock FROM products P
+      JOIN batches B JOIN B.product_id = P.id
+      GROUP BY P.id
+      HAVING stock > P.minimum_stock
+    `
+    console.log(result)
+    return 0
+  }
+
+  async countAverageStockLevel(): Promise<number> {
+    const result = await prisma.$queryRaw`
+      SELECT COUNT(*) count, SUM(B.items_count) stock FROM products P
+      JOIN batches B JOIN B.product_id = P.id
+      GROUP BY P.id
+      HAVING stock > 0 AND stock <= P.minimum_stock
+    `
+    console.log(result)
+    return 0
+
+  }
+
+  async countDangerStockLevel(): Promise<number> {
+    const result = await prisma.$queryRaw`
+    SELECT COUNT(*) count, SUM(B.items_count) stock FROM products P
+    JOIN batches B JOIN B.product_id = P.id
+    GROUP BY P.id
+    HAVING stock == 0
+  `
+  console.log(result)
+  return 0
+  }
+
+  async findManyWithInventoryMovements(params: ProducsStocksListParams): Promise<{
+    products: Product[]
+    count: number
+  }> {
+    try {
+      const offset = (params.page - 1) * PAGINATION.itemsPerPage
+      const limit = PAGINATION.itemsPerPage
+
+      const prismaProducts: any = await prisma.$queryRaw`
+        SELECT p.*,
+              ARRAY_AGG(
+               JSON_BUILD_OBJECT(
+                  'id', b.id,
+                  'code', b.code,
+                  'expiration_date', b.expiration_date,
+                  'items_count', b.items_count,
+                  'product_id', b.product_id,
+                  'registered_at', b.registered_at,
+                )
+              ) AS batchItemsJson
+        'inboundCount', COUNT(DISTINCT CASE WHEN im.movement_type = 'INBOUND' THEN im.id ELSE NULL END),
+        'outboundCount', COUNT(DISTINCT CASE WHEN im.movement_type = 'OUTBOUND' THEN im.id ELSE NULL END),
+        FROM products p
+        LEFT JOIN inventory_movements im ON p.id = im.product_id
+        GROUP BY p.id
+        ORDER BY p.id
+        LIMIT ${limit} OFFSET ${offset}
+      `
+
+      const products = prismaProducts.map((prismaProduct: any) => {
+        const product = this.mapper.toDomain(prismaProduct)
+        product.inboundInventoryMovementsCount = prismaProduct[prismaProduct.id]
+        product.outboundInventoryMovementsCount = prismaProduct[prismaProduct.id]
+        return product
+      })
+      const count: any = await prisma.$queryRaw`SELECT COUNT(*) FROM products`
+      return { products, count: Number(count[0]?.count || 0) }
     } catch (error) {
       throw new PrismaError(error)
     }

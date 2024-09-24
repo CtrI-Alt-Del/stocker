@@ -60,24 +60,6 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
     }
   }
 
-  async findManyByProductId(productId: string): Promise<InventoryMovement[] | []> {
-    try {
-      const prismaInventoryMovements = await prisma.inventoryMovement.findMany({
-        where: {
-          product_id: productId,
-        },
-      })
-      if (!prismaInventoryMovements) return []
-
-      const inventoryMovements = prismaInventoryMovements.map((inventoryMovement) => {
-        return this.mapper.toDomain(inventoryMovement)
-      })
-      return inventoryMovements
-    } catch (error) {
-      throw new PrismaError(error)
-    }
-  }
-
   async count(): Promise<number> {
     try {
       return await prisma.inventoryMovement.count()

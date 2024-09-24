@@ -1,6 +1,9 @@
 import type { FastifyInstance } from 'fastify'
 
-import { RegisterProductController } from '@/api/controllers/products'
+import {
+  ListProductsStocksController,
+  RegisterProductController,
+} from '@/api/controllers/products'
 import { ListProductsController } from '@/api/controllers/products'
 
 import { FastifyHttp } from '../fastify-http'
@@ -10,6 +13,7 @@ import { UpdateProductController } from '@/api/controllers/products/update-produ
 
 export const ProductsRoutes = async (app: FastifyInstance) => {
   const getProductController = new GetProductController()
+  const listProductStocksController = new ListProductsStocksController()
   const listProductController = new ListProductsController()
   const registerProductController = new RegisterProductController()
   const updateProductController = new UpdateProductController()
@@ -23,6 +27,11 @@ export const ProductsRoutes = async (app: FastifyInstance) => {
   app.get('/:productId', async (request, response) => {
     const http = new FastifyHttp(request, response)
     return getProductController.handle(http)
+  })
+
+  app.get('/stocks', async (request, response) => {
+    const http = new FastifyHttp(request, response)
+    return listProductStocksController.handle(http)
   })
 
   app.post('/', async (request, response) => {
