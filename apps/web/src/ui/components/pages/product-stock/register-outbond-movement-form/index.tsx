@@ -3,7 +3,6 @@ import { Batch } from '@stocker/core/entities'
 import { Controller } from 'react-hook-form'
 import { useRegisterOutbondMovementForm } from './use-register-outbond-movement-form'
 import { Datetime } from '@stocker/core/libs'
-import { error } from 'console'
 
 type RegisterInboundMovementForm = {
   productID: string
@@ -18,7 +17,7 @@ export const RegisterOutboundInventoryMovementForm = ({
   const { control, errors, isSubmiting, formRef, register, handleSubmit } =
     useRegisterOutbondMovementForm(productID, onSubmit)
   return (
-    <form ref={formRef} onSubmit={handleSubmit}>
+    <form ref={formRef} onSubmit={handleSubmit} className='space-y-6'>
       <div className='grid grid-cols-2 gap-6'>
         <Input
           type='number'

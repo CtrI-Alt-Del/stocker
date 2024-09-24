@@ -13,6 +13,7 @@ import { RegisterInboundInventoryMovementForm } from './register-inbound-movemen
 import { BatchesTable } from './batches-table'
 import { Icon } from '../../commons/icon'
 import { RegisterOutboundInventoryMovementForm } from './register-outbond-movement-form'
+import { InventoryMovementsTable } from './inventory-moves-table'
 
 type ProductStockPageProps = {
   productDto: ProductDto
@@ -31,7 +32,7 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
           <small className='uppercase text-lg text-zinc-400'>{product.code}</small>
         </div>
 
-        <div className='space-x-2'>
+        <div className='flex flex-row gap-3'>
           <Drawer
             width={md ? 400 : 700}
             onOpen={handleDrawerOpen}
@@ -61,7 +62,7 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
                 color='primary'
                 radius='sm'
                 endContent={<Icon name='outbound' />}
-              ></Button>
+              >Lançamento de saída</Button>
             }
           >
             {(closeDrawer) => (
