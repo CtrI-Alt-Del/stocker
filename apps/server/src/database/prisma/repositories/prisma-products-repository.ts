@@ -95,16 +95,37 @@ export class PrismaProductsRepository implements IProductsRepository {
   }
 
   async countSafeStockLevel(): Promise<number> {
-    throw new Error()
+   const result = await prisma.$queryRaw`
+      SELECT COUNT(*) count, SUM(B.items_count) stock FROM products P
+      JOIN batches B JOIN B.product_id = P.id
+      GROUP BY P.id
+      HAVING stock > P.minimum_stock
+    `
+    console.log(result)
+    return 0
   }
 
   async countAverageStockLevel(): Promise<number> {
-    throw new Error()
+    const result = await prisma.$queryRaw`
+      SELECT COUNT(*) count, SUM(B.items_count) stock FROM products P
+      JOIN batches B JOIN B.product_id = P.id
+      GROUP BY P.id
+      HAVING stock > 0 AND stock <= P.minimum_stock
+    `
+    console.log(result)
+    return 0
 
   }
 
   async countDangerStockLevel(): Promise<number> {
-    throw new Error('Method not implemented.')
+    const result = await prisma.$queryRaw`
+    SELECT COUNT(*) count, SUM(B.items_count) stock FROM products P
+    JOIN batches B JOIN B.product_id = P.id
+    GROUP BY P.id
+    HAVING stock == 0
+  `
+  console.log(result)
+  return 0
   }
 
   async findManyWithInventoryMovements(params: ProducsStocksListParams): Promise<{
