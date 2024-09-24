@@ -20,6 +20,7 @@ const Page = async ({ params }: PageProps) => {
   }
 
   return <ProductStockPage productDto={response.body} />
+
 }
 
 export default Page

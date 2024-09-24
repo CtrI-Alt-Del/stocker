@@ -1,5 +1,6 @@
 import type { ProductDto } from '../../dtos'
 import { ConflictError } from '../../errors'
+import type { StockLevel } from '../../types/stock-level'
 import { Entity } from '../abstracts'
 import { Batch } from './batch'
 
@@ -23,6 +24,8 @@ type ProductProps = {
   isActive: boolean
   batchesWithoutStockIds: string[]
   batches: Batch[]
+  inboundInventoryMovementsCount: number
+  outboundInventoryMovementsCount: number
 }
 
 export class Product extends Entity<ProductProps> {
@@ -48,6 +51,8 @@ export class Product extends Entity<ProductProps> {
         batches: dto.batches ? dto.batches.map(Batch.create) : [],
         batchesWithoutStockIds: [],
         companyId: dto.companyId,
+        inboundInventoryMovementsCount: 0,
+        outboundInventoryMovementsCount: 0,
       },
       dto.id,
     )
@@ -75,6 +80,20 @@ export class Product extends Entity<ProductProps> {
     this.props.batches.push(batch)
   }
 
+  get stockLevel(): StockLevel {
+    if (this.currentStock >= this.minimumStock) {
+      return 'safe'
+    }
+    if (this.currentStock > 0) {
+      return 'average'
+    }
+    return 'danger'
+  }
+
+  get minimumStock(): number {
+    return this.props.minimumStock
+  }
+
   get isInactive(): boolean {
     return !this.props.isActive
   }
@@ -93,6 +112,26 @@ export class Product extends Entity<ProductProps> {
 
   get batches(): Batch[] {
     return this.props.batches
+  }
+
+  get inboundInventoryMovementsCount(): number {
+    return this.props.inboundInventoryMovementsCount
+  }
+
+  set inboundInventoryMovementsCount(inboundInventoryMovementsCount: number) {
+    this.props.inboundInventoryMovementsCount = inboundInventoryMovementsCount
+  }
+
+  get outboundInventoryMovementsCount(): number {
+    return this.props.outboundInventoryMovementsCount
+  }
+
+  set outboundInventoryMovementsCount(outboundInventoryMovementsCount: number) {
+    this.props.outboundInventoryMovementsCount = outboundInventoryMovementsCount
+  }
+
+  get batchesCount(): number {
+    return this.props.batches.length
   }
 
   get updatedBatches(): Batch[] {

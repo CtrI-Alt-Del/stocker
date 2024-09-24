@@ -1,24 +1,21 @@
 import type { IProductsRepository } from '../../interfaces'
-import { PaginationResponse } from '../../responses'
 
 type Request = {
   page: number
 }
 
-export class ListProductsUseCase {
+export class ListProductsStocksUseCase {
   private readonly productsRepository: IProductsRepository
   constructor(productsRepository: IProductsRepository) {
     this.productsRepository = productsRepository
   }
 
   async execute({ page }: Request) {
-    const products = await this.productsRepository.findMany()
-
-    const productsCount = await this.productsRepository.count()
-
-    return new PaginationResponse({
+    const { products, count } =
+      await this.productsRepository.findManyWithInventoryMovements({ page })
+    return {
       items: products.map((product) => product.dto),
-      itemsCount: productsCount,
-    })
+      totalCount: count,
+    }
   }
 }
