@@ -1,6 +1,6 @@
 import type { InventoryMovementDto } from '../../dtos'
 import { ValidationError } from '../../errors'
-import { InventoryMovementType } from '../../types'
+import type { InventoryMovementType } from '../../types'
 import { Entity } from '../abstracts'
 import type { User } from './user'
 
@@ -26,12 +26,12 @@ export class InventoryMovement extends Entity<MovementProps> {
     return new InventoryMovement(
       {
         movementType,
-        itemsCount: dto.itemsCount,
-        responsibleId: dto.responsibleId,
-        productId: dto.productId,
-        registeredAt: new Date(),
-        remark: dto.remark ?? null,
-        responsibleData: null,
+        itemsCount: dto.itemsCount, //quantidade de itens
+        responsibleId: dto.responsibleId, //id do funcionario que fez o lancamento
+        productId: dto.productId, //id do produto
+        registeredAt: new Date(), //data do lançamento da movimentação
+        remark: dto.remark ?? null, //observação
+        responsibleData: null, //nome do funcionario que fez a movimentação
       },
       dto.id,
     )
@@ -82,5 +82,9 @@ export class InventoryMovement extends Entity<MovementProps> {
 
   get registeredAt(): Date {
     return this.props.registeredAt
+  }
+
+  get remark(): string|null {
+    return this.props.remark
   }
 }
