@@ -1,6 +1,7 @@
 'use client'
 
 import { Button, Divider, Tab, Tabs } from '@nextui-org/react'
+import { twMerge } from 'tailwind-merge'
 
 import type { ProductDto } from '@stocker/core/dtos'
 import type { Batch } from '@stocker/core/entities'
@@ -11,8 +12,7 @@ import { RegisterInboundInventoryMovementForm } from './register-inbound-movemen
 import { BatchesTable } from './batches-table'
 import { Icon } from '../../commons/icon'
 import { RegisterOutboundInventoryMovementForm } from './register-outbond-movement-form'
-import { InventoryMovementsTable } from './inventory-moves-table'
-import { twMerge } from 'tailwind-merge'
+import { InventoryMovementsTable } from './inventory-movements-table'
 
 type ProductStockPageProps = {
   productDto: ProductDto
