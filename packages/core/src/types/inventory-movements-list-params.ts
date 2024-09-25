@@ -1,4 +1,4 @@
 export type InventoryMovementsListParams = {
   page: number
-  productId: string | 'all'
+  productId: string
 }
