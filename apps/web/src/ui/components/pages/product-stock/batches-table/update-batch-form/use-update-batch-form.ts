@@ -27,7 +27,7 @@ export function useUpdateBatchForm(
     resolver: zodResolver(batchFormSchema),
   })
   const { showSuccess, showError } = useToast()
-  const { productsService } = useApi()
+  const { batchesService } = useApi()
 
   async function handleFormSubmit(formData: UpdateBatchFormData) {
     const partialBatchDto: Partial<BatchDto> = {
@@ -38,7 +38,7 @@ export function useUpdateBatchForm(
         : undefined,
     }
 
-    const response = await productsService.updateBatch(partialBatchDto, batch.id)
+    const response = await batchesService.updateBatch(partialBatchDto, batch.id)
 
     if (response.isFailure) {
       showError(response.errorMessage)

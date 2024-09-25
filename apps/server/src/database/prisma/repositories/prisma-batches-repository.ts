@@ -75,6 +75,7 @@ export class PrismaBatchesRepository implements IBatchesRepository {
   }
 
   async deleteMany(batchesIds: string[]): Promise<void> {
+    console.log(batchesIds)
     try {
       await prisma.batch.deleteMany({
         where: {

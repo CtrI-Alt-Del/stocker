@@ -72,11 +72,10 @@ export const NextApiClient = (cacheConfig?: CacheConfig): IApiClient => {
     },
 
     async delete(url: string, body: unknown) {
-      console.log({ body })
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
         method: 'DELETE',
         headers,
-        body: JSON.stringify({ opa: 'eita' }),
+        body: JSON.stringify(body),
       })
       params = {}
       const data = await response.json()

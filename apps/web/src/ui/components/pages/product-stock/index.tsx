@@ -12,6 +12,7 @@ import { BatchesTable } from './batches-table'
 import { Icon } from '../../commons/icon'
 import { RegisterOutboundInventoryMovementForm } from './register-outbond-movement-form'
 import { InventoryMovementsTable } from './inventory-moves-table'
+import { twMerge } from 'tailwind-merge'
 
 type ProductStockPageProps = {
   productDto: ProductDto
@@ -21,7 +22,11 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
   const {
     product,
     inventoryMovements,
+    isDeletingBatches,
+    selectedBatchesIds,
     handleBatchUpdate,
+    handleBatchesIdsSelectionChange,
+    handleDeleteBatchesButtonClick,
     handleRegisterInboundInventoryMovementFormSubmit,
   } = useProductStockPage(productDto)
 
@@ -95,7 +100,26 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
       >
         <Tab key='batches' title='Lotes' className='text-lg'>
           <Divider />
-          <BatchesTable batches={product.batches} onUpdateBatch={handleBatchUpdate} />
+          <Button
+            color='danger'
+            onClick={handleDeleteBatchesButtonClick}
+            isLoading={isDeletingBatches}
+            className={twMerge(
+              'mt-1',
+              selectedBatchesIds.length > 0 ? 'visible' : 'invisible pointer-events-auto',
+            )}
+          >
+            Deletar lote(s)
+          </Button>
+
+          <div className='mt-2'>
+            <BatchesTable
+              batches={product.batches}
+              selectedBatchesIds={selectedBatchesIds}
+              onUpdateBatch={handleBatchUpdate}
+              onBatchesSelectionChange={handleBatchesIdsSelectionChange}
+            />
+          </div>
         </Tab>
         <Tab key='inventory-movements' title='Lançamentos' className='text-lg'>
           <Divider />

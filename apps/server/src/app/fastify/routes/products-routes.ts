@@ -6,7 +6,6 @@ import {
   ListProductsController,
   ListProductsStocksController,
   RegisterProductController,
-  UpdateBatchController,
   UpdateProductController,
 } from '@/api/controllers/products'
 import { FastifyHttp } from '../fastify-http'
@@ -17,8 +16,7 @@ export const ProductsRoutes = async (app: FastifyInstance) => {
   const listProductController = new ListProductsController()
   const registerProductController = new RegisterProductController()
   const updateProductController = new UpdateProductController()
-  const updateBatchController = new UpdateBatchController()
-  const deleteProductController = new DeleteProductsController()
+  const deleteProductsController = new DeleteProductsController()
 
   app.get('/', async (request, response) => {
     const http = new FastifyHttp(request, response)
@@ -45,13 +43,8 @@ export const ProductsRoutes = async (app: FastifyInstance) => {
     return updateProductController.handle(http)
   })
 
-  app.put('/batch/:batchId', async (request, response) => {
-    const http = new FastifyHttp(request, response)
-    return updateBatchController.handle(http)
-  })
-
   app.delete('/', async (request, response) => {
     const http = new FastifyHttp(request, response)
-    return deleteProductController.handle(http)
+    return deleteProductsController.handle(http)
   })
 }

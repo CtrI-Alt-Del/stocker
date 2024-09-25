@@ -34,7 +34,7 @@ export function useProductsPage() {
     setFilterByNameValue(value ?? '')
   }
 
-  const { data, error, isFetching, refetch } = useCache({
+  const { data, isFetching, refetch } = useCache({
     fetcher: fetchProducts,
     key: CACHE.productsList.key,
     dependencies: [page],

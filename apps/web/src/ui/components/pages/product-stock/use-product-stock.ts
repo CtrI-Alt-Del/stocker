@@ -6,12 +6,15 @@ import type { ProductDto } from '@stocker/core/dtos'
 import { type Batch, Product } from '@stocker/core/entities'
 
 import { CACHE } from '@/constants'
-import { useApi, useCache } from '@/ui/hooks'
+import { useApi, useCache, useToast } from '@/ui/hooks'
 
 export function useProductStockPage(productDto: ProductDto) {
+  const { batchesService, inventoryMovementService } = useApi()
   const [product, setProduct] = useState(Product.create(productDto))
-  const { inventoryMovementService } = useApi()
+  const [selectedBatchesIds, setSelectedBatchesIds] = useState<string[]>([])
   const [pageState, setPage] = useQueryState('page', parseAsInteger)
+  const [isDeletingBatches, setIsDeletingBatches] = useState(false)
+  const { showError, showSuccess } = useToast()
   const page = pageState ?? 1
 
   async function fetchInventoryMovements() {
@@ -39,6 +42,31 @@ export function useProductStockPage(productDto: ProductDto) {
     })
   }
 
+  function handleBatchesIdsSelectionChange(selectedBatchesIds: string[]) {
+    setSelectedBatchesIds(selectedBatchesIds)
+  }
+
+  async function handleDeleteBatchesButtonClick() {
+    setIsDeletingBatches(true)
+    const respose = await batchesService.deleteBatches(selectedBatchesIds)
+
+    if (respose.isFailure) {
+      showError(respose.errorMessage)
+    }
+
+    if (respose.isSuccess) {
+      showSuccess('Lote(s) deletado(s) com sucesso')
+
+      setProduct((product) => {
+        product.deleteBatches(selectedBatchesIds)
+        return Product.create(product.dto)
+      })
+    }
+
+    setIsDeletingBatches(false)
+    setSelectedBatchesIds([])
+  }
+
   async function handleRegisterInboundInventoryMovementFormSubmit(newBatch: Batch) {
     setProduct((product) => {
       product.appendBatch(newBatch)
@@ -53,11 +81,15 @@ export function useProductStockPage(productDto: ProductDto) {
   return {
     product,
     inventoryMovements,
-    totalPages: Math.round(itemsCount / PAGINATION.itemsPerPage),
+    totalPages: Math.ceil(itemsCount / PAGINATION.itemsPerPage),
     page,
     isFetching,
+    isDeletingBatches,
+    selectedBatchesIds,
     handlePageChange,
     handleBatchUpdate,
+    handleDeleteBatchesButtonClick,
+    handleBatchesIdsSelectionChange,
     handleRegisterInboundInventoryMovementFormSubmit,
   }
 }

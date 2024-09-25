@@ -1,5 +1,5 @@
 import { NextApiClient } from '@/api/next/clients'
-import { FileStorageService, ProductsService } from '@/api/services'
+import { FileStorageService, ProductsService, BatchesService } from '@/api/services'
 import { InventoryMovementsService } from '@/api/services/inventory-movements-service'
 import { ENV } from '@/constants'
 
@@ -10,6 +10,7 @@ export function useApi() {
   return {
     inventoryMovementService: InventoryMovementsService(nextApiClient),
     productsService: ProductsService(nextApiClient),
+    batchesService: BatchesService(nextApiClient),
     fileStorageService: FileStorageService(nextApiClient),
   }
 }
