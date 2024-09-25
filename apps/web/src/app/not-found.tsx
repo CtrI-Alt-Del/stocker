@@ -1,4 +1,4 @@
-import Error404 from '@/ui/components/pages/not-found'
+import { Error404 } from '@/ui/components/pages/not-found'
 
 const Page = () => {
   return <Error404 />

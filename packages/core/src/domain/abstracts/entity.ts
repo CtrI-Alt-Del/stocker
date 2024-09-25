@@ -8,4 +8,8 @@ export abstract class Entity<Props> {
     this.id = id ?? uuid()
     this.props = props
   }
+
+  isEqualTo(entity: Entity<Props>): boolean {
+    return this.id === entity.id
+  }
 }

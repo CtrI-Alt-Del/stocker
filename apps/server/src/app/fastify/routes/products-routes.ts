@@ -1,15 +1,15 @@
 import type { FastifyInstance } from 'fastify'
 
 import {
+  DeleteProductsController,
+  GetProductController,
+  ListProductsController,
   ListProductsStocksController,
   RegisterProductController,
+  UpdateBatchController,
+  UpdateProductController,
 } from '@/api/controllers/products'
-import { ListProductsController } from '@/api/controllers/products'
-
 import { FastifyHttp } from '../fastify-http'
-import { DeleteProductsController } from '@/api/controllers/products/delete-products-controller'
-import { GetProductController } from '@/api/controllers/products/get-product-controller'
-import { UpdateProductController } from '@/api/controllers/products/update-product-controller'
 
 export const ProductsRoutes = async (app: FastifyInstance) => {
   const getProductController = new GetProductController()
@@ -17,6 +17,7 @@ export const ProductsRoutes = async (app: FastifyInstance) => {
   const listProductController = new ListProductsController()
   const registerProductController = new RegisterProductController()
   const updateProductController = new UpdateProductController()
+  const updateBatchController = new UpdateBatchController()
   const deleteProductController = new DeleteProductsController()
 
   app.get('/', async (request, response) => {
@@ -42,6 +43,11 @@ export const ProductsRoutes = async (app: FastifyInstance) => {
   app.put('/:productId', async (request, response) => {
     const http = new FastifyHttp(request, response)
     return updateProductController.handle(http)
+  })
+
+  app.put('/batch/:batchId', async (request, response) => {
+    const http = new FastifyHttp(request, response)
+    return updateBatchController.handle(http)
   })
 
   app.delete('/', async (request, response) => {

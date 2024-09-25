@@ -5,7 +5,6 @@ import { Button, Divider, Tab, Tabs } from '@nextui-org/react'
 import type { ProductDto } from '@stocker/core/dtos'
 import type { Batch } from '@stocker/core/entities'
 
-import { useBreakpoint } from '@/ui/hooks'
 import { Drawer } from '../../commons/drawer'
 import { useProductStockPage } from './use-product-stock'
 import { RegisterInboundInventoryMovementForm } from './register-inbound-movement-form'
@@ -22,23 +21,27 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
   const {
     product,
     inventoryMovements,
-    handleDrawerOpen,
+    handleBatchUpdate,
     handleRegisterInboundInventoryMovementFormSubmit,
   } = useProductStockPage(productDto)
-  const { md } = useBreakpoint()
 
   return (
     <div>
       <div className='flex items-center justify-between'>
         <div className='flex justify-end flex-col'>
           <h1 className='text-2xl flex justify-end font-semibold'>{product.name}</h1>
-          <small className='uppercase text-lg text-zinc-400'>{product.code}</small>
+          <small className='uppercase text-base text-zinc-400'>{product.code}</small>
+          <div className='mt-3 flex items-center gap-2'>
+            <p className='text-zinc-400 text-sm'>Estoque atual: {product.currentStock}</p>
+            <span className='size-1 rounded-full bg-zinc-400' />
+            <p className='text-zinc-400 text-sm'>
+              Estoque mínimo: {product.minimumStock}
+            </p>
+          </div>
         </div>
 
         <div className='flex flex-row gap-3'>
           <Drawer
-            width={md ? 400 : 700}
-            onOpen={handleDrawerOpen}
             trigger={
               <Button color='primary' radius='sm' endContent={<Icon name='inbound' />}>
                 Lançamento de entrada
@@ -58,8 +61,6 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
           </Drawer>
 
           <Drawer
-            width={md ? 400 : 700}
-            onOpen={handleDrawerOpen}
             trigger={
               <Button color='primary' radius='sm' endContent={<Icon name='outbound' />}>
                 Lançamento de saída
@@ -80,29 +81,27 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
         </div>
       </div>
 
-      <div>
-        <Tabs
-          aria-label='Abas'
-          color='primary'
-          variant='underlined'
-          classNames={{
-            tabList:
-              'gap-12 mt-6 w-full relative rounded-none p-0 border-b-2 border-divider ',
-            cursor: 'w-full bg-zinc-900',
-            tab: 'max-w-fit px-0 h-12',
-            tabContent: 'group-data-[selected=true]:text-zinc-800',
-          }}
-        >
-          <Tab key='batches' title='Lotes' className='text-lgp'>
-            <Divider />
-            <BatchesTable batches={product.batches} />
-          </Tab>
-          <Tab key='inventory-movements' title='Lançamentos' className='text-lgp'>
-            <Divider />
-            <InventoryMovementsTable inventoryMovements={inventoryMovements} />
-          </Tab>
-        </Tabs>
-      </div>
+      <Tabs
+        aria-label='Abas'
+        color='primary'
+        variant='underlined'
+        classNames={{
+          tabList:
+            'gap-12 mt-6 w-full relative rounded-none p-0 border-b-2 border-divider ',
+          cursor: 'w-full bg-zinc-900',
+          tab: 'max-w-fit px-0',
+          tabContent: 'group-data-[selected=true]:text-zinc-800',
+        }}
+      >
+        <Tab key='batches' title='Lotes' className='text-lg'>
+          <Divider />
+          <BatchesTable batches={product.batches} onUpdateBatch={handleBatchUpdate} />
+        </Tab>
+        <Tab key='inventory-movements' title='Lançamentos' className='text-lg'>
+          <Divider />
+          <InventoryMovementsTable inventoryMovements={inventoryMovements} />
+        </Tab>
+      </Tabs>
     </div>
   )
 }

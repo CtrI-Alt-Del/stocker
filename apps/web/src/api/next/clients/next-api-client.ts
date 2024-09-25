@@ -3,8 +3,9 @@ import { ApiResponse } from '@stocker/core/responses'
 
 import { addUrlParams } from '../utils'
 import { handleApiError } from '../utils/handle-api-error'
+import type { CacheConfig } from '../types'
 
-export const NextApiClient = (): IApiClient => {
+export const NextApiClient = (cacheConfig?: CacheConfig): IApiClient => {
   let baseUrl: string
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -13,11 +14,11 @@ export const NextApiClient = (): IApiClient => {
 
   return {
     async get<ResponseBody>(url: string, body: unknown) {
-      console.log(`${baseUrl}${addUrlParams(url, params)}`)
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
         method: 'GET',
         headers,
         body: JSON.stringify(body),
+        cache: cacheConfig?.isCacheEnabled ? 'force-cache' : 'no-store',
       })
       params = {}
       const data = await response.json()

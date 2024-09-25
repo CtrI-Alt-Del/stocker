@@ -1,4 +1,4 @@
-import type { ProductDto } from '@stocker/core/dtos'
+import type { BatchDto, ProductDto } from '@stocker/core/dtos'
 import type { Product } from '@stocker/core/entities'
 import type { IApiClient, IProductsService } from '@stocker/core/interfaces'
 import type { PaginationResponse } from '@stocker/core/responses'
@@ -20,6 +20,10 @@ export const ProductsService = (apiClient: IApiClient): IProductsService => {
 
     async updateProduct(partialProductDto: Partial<ProductDto>, productId: string) {
       return await apiClient.put(`/products/${productId}`, partialProductDto)
+    },
+
+    async updateBatch(batchDto: Partial<BatchDto>, batchId: string) {
+      return await apiClient.put(`/products/batch/${batchId}`, batchDto)
     },
 
     async deleteProducts(productsIds: string[]) {

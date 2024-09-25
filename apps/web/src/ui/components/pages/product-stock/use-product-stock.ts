@@ -32,12 +32,17 @@ export function useProductStockPage(productDto: ProductDto) {
     setPage(page)
   }
 
-  function handleDrawerOpen() {}
+  function handleBatchUpdate(updatedBatch: Batch) {
+    setProduct((product) => {
+      product.updateBatch(updatedBatch)
+      return Product.create(product.dto)
+    })
+  }
 
   async function handleRegisterInboundInventoryMovementFormSubmit(newBatch: Batch) {
     setProduct((product) => {
       product.appendBatch(newBatch)
-      return product
+      return Product.create(product.dto)
     })
     refetch()
   }
@@ -45,16 +50,14 @@ export function useProductStockPage(productDto: ProductDto) {
   const inventoryMovements = data ? data.items : []
   const itemsCount = data ? data.itemsCount : 0
 
-  console.log(inventoryMovements)
-
   return {
     product,
     inventoryMovements,
     totalPages: Math.round(itemsCount / PAGINATION.itemsPerPage),
     page,
     isFetching,
-    handleDrawerOpen,
     handlePageChange,
+    handleBatchUpdate,
     handleRegisterInboundInventoryMovementFormSubmit,
   }
 }

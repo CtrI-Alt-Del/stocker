@@ -14,14 +14,6 @@ export class PrismaProductsRepository implements IProductsRepository {
     try {
       const prismaProduct = this.mapper.toPrisma(product)
 
-      const companyExists = await prisma.company.findUnique({
-        where: { id: prismaProduct.company_id },
-      })
-
-      if (!companyExists) {
-        throw new Error(`Company with ID ${prismaProduct.company_id} does not exist.`)
-      }
-
       await prisma.product.create({
         data: {
           id: prismaProduct.id,
@@ -102,7 +94,7 @@ export class PrismaProductsRepository implements IProductsRepository {
   }
 
   async countSafeStockLevel(): Promise<number> {
-   const result = await prisma.$queryRaw`
+    const result = await prisma.$queryRaw`
       SELECT COUNT(*) count, SUM(B.items_count) stock FROM products P
       JOIN batches B JOIN B.product_id = P.id
       GROUP BY P.id
@@ -121,7 +113,6 @@ export class PrismaProductsRepository implements IProductsRepository {
     `
     console.log(result)
     return 0
-
   }
 
   async countDangerStockLevel(): Promise<number> {
@@ -131,8 +122,8 @@ export class PrismaProductsRepository implements IProductsRepository {
     GROUP BY P.id
     HAVING stock == 0
   `
-  console.log(result)
-  return 0
+    console.log(result)
+    return 0
   }
 
   async findManyWithInventoryMovements(params: ProducsStocksListParams): Promise<{
@@ -191,7 +182,6 @@ export class PrismaProductsRepository implements IProductsRepository {
 
       await prisma.product.update({
         data: {
-          id: prismaProduct.id,
           name: prismaProduct.name,
           image: prismaProduct.image,
           cost_price: prismaProduct.cost_price,

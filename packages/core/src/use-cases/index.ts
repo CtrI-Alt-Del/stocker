@@ -1,3 +1,3 @@
 export * from './products'
-export * from './inventory-movement'
+export * from './inventory-movements'
 export * from './reports'

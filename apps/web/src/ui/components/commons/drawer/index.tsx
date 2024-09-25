@@ -8,6 +8,7 @@ import 'react-modern-drawer/dist/index.css'
 import { IconButton } from '../icon-button'
 import { useDrawer } from './use-drawer'
 import type { DrawerRef } from './types'
+import { useBreakpoint } from '@/ui/hooks'
 
 type DrawerProps = {
   children: (closeDrawer: VoidFunction) => ReactNode
@@ -20,18 +21,11 @@ type DrawerProps = {
 }
 
 export const DrawerComponent = (
-  {
-    children,
-    trigger,
-    width = 220,
-    direction = 'right',
-    zIndex,
-    onOpen,
-    onClose,
-  }: DrawerProps,
+  { children, trigger, width, direction = 'right', zIndex, onOpen, onClose }: DrawerProps,
   ref: ForwardedRef<DrawerRef>,
 ) => {
   const { isOpen, open, close } = useDrawer(onOpen, onClose)
+  const { md } = useBreakpoint()
 
   useImperativeHandle(
     ref,
@@ -49,7 +43,7 @@ export const DrawerComponent = (
       <RmDrawer
         open={isOpen}
         onClose={close}
-        size={width}
+        size={width ? width : md ? 400 : 700}
         direction={direction}
         zIndex={zIndex}
       >

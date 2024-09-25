@@ -11,7 +11,7 @@ type PageProps = {
 }
 
 const Page = async ({ params }: PageProps) => {
-  const apiClient = NextServerApiClient()
+  const apiClient = NextServerApiClient({ isCacheEnabled: false })
   const productsService = ProductsService(apiClient)
   const response = await productsService.getProduct(params.productId)
 
@@ -20,7 +20,6 @@ const Page = async ({ params }: PageProps) => {
   }
 
   return <ProductStockPage productDto={response.body} />
-
 }
 
 export default Page

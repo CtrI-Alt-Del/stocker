@@ -11,8 +11,8 @@ export class GetProductController {
   async handle(http: IHttp) {
     const { productId } = http.getRouteParams<RouteParams>()
     const useCase = new GetProductUseCase(productsRepository)
-    const product = await useCase.execute({ productId })
+    const productDto = await useCase.execute({ productId })
 
-    return http.send(product)
+    return http.send(productDto)
   }
 }
