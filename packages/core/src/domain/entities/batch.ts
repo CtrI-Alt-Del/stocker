@@ -6,6 +6,7 @@ type BatchProps = {
   itemsCount: number
   productId: string
   expirationDate: Date | null
+  maximumDaysToExpiration: Date | null
   hasUpdatedStock: boolean
   registeredAt: Date
 }
@@ -16,6 +17,7 @@ export class Batch extends Entity<BatchProps> {
       {
         code: dto.code,
         expirationDate: dto.expirationDate ?? null,
+        maximumDaysToExpiration: dto.maximumDaysToExpiration ?? null,
         itemsCount: dto.itemsCount,
         productId: dto.productId,
         hasUpdatedStock: false,
@@ -55,6 +57,10 @@ export class Batch extends Entity<BatchProps> {
     return this.props.expirationDate
   }
 
+  get maximumDaysToExpiration(): Date | null {
+    return this.props.maximumDaysToExpiration
+  }
+
   get registeredAt(): Date {
     return this.props.registeredAt
   }
@@ -68,6 +74,8 @@ export class Batch extends Entity<BatchProps> {
     }
 
     if (this.expirationDate) dto.expirationDate = this.expirationDate
+
+    if (this.maximumDaysToExpiration) dto.maximumDaysToExpiration = this.maximumDaysToExpiration
 
     return dto
   }
