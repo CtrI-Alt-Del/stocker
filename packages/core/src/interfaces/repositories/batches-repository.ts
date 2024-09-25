@@ -5,5 +5,6 @@ export interface IBatchesRepository {
   count(): Promise<number>
   findById(productId: string): Promise<Batch | null>
   updateManyItemsCount(batches: Batch[]): Promise<void>
+  update(batch: Batch): Promise<void>
   deleteMany(batchesIds: string[]): Promise<void>
 }

@@ -80,6 +80,19 @@ export class Product extends Entity<ProductProps> {
     this.props.batches.push(batch)
   }
 
+  updateBatch(updatedBatch: Batch) {
+    const batchIndex = this.props.batches.findIndex((batch) =>
+      batch.isEqualTo(updatedBatch),
+    )
+    this.props.batches.splice(batchIndex, 1, updatedBatch)
+  }
+
+  deleteBatches(batchesIds: string[]) {
+    this.props.batches = this.props.batches.filter(
+      (batch) => !batchesIds.includes(batch.id),
+    )
+  }
+
   get stockLevel(): StockLevel {
     if (this.currentStock >= this.minimumStock) {
       return 'safe'

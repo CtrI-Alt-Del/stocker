@@ -1,5 +1,5 @@
 import type { Product } from '../../domain/entities'
-import type { ProductDto } from '../../dtos'
+import type { BatchDto, ProductDto } from '../../dtos'
 import type { ApiResponse, PaginationResponse } from '../../responses'
 import type { ProductsListParams } from '../../types'
 
@@ -13,5 +13,6 @@ export interface IProductsService {
     partialProductDto: Partial<ProductDto>,
     productId: string,
   ): Promise<ApiResponse<void>>
+  updateBatch(batchDto: Partial<BatchDto>, batchId: string): Promise<ApiResponse<void>>
   deleteProducts(productsIds: string[]): Promise<ApiResponse<void>>
 }

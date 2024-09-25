@@ -63,10 +63,7 @@ export const RegisterInboundInventoryMovementForm = ({
               type='date'
               label='Validade do lote'
               isInvalid={Boolean(errors.batchExpirationDate?.message)}
-              onChange={(value) => {
-                console.log('OPA', value)
-                onChange(value)
-              }}
+              onChange={onChange}
               errorMessage={error?.message}
             />
           )}

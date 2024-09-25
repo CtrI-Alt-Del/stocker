@@ -34,7 +34,7 @@ export function useProductsPage() {
     setFilterByNameValue(value ?? '')
   }
 
-  const { data, error, isFetching, refetch } = useCache({
+  const { data, isFetching, refetch } = useCache({
     fetcher: fetchProducts,
     key: CACHE.productsList.key,
     dependencies: [page],
@@ -75,7 +75,7 @@ export function useProductsPage() {
     filterByNameValue,
     isFetching,
     products,
-    totalPages: Math.round(itemsCount / PAGINATION.itemsPerPage),
+    totalPages: Math.ceil(itemsCount / PAGINATION.itemsPerPage),
     isDeleteProductsButtonVisible: selectedProductsIds.length > 0,
     handleUpdateProduct,
     handleDeleteProductsAlertDialogConfirm,

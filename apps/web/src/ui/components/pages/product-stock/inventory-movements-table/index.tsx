@@ -16,8 +16,9 @@ type InventoryMovementsTableProps = {
   inventoryMovements: InventoryMovement[]
 }
 
-export const InventoryMovementsTable = ({ inventoryMovements }: InventoryMovementsTableProps) => {
-
+export const InventoryMovementsTable = ({
+  inventoryMovements,
+}: InventoryMovementsTableProps) => {
   const columns = [
     {
       key: 'datetime',
@@ -38,11 +39,11 @@ export const InventoryMovementsTable = ({ inventoryMovements }: InventoryMovemen
   ]
 
   return (
-    <Table aria-label='Example table with dynamic content' className='mt-24'>
+    <Table aria-label='Example table with dynamic content' className='mt-8'>
       <TableHeader columns={columns}>
         {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
       </TableHeader>
-      <TableBody items={inventoryMovements}>
+      <TableBody items={[]} emptyContent='Nenhum lançamento registrado para esse produto'>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}

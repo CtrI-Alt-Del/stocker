@@ -25,6 +25,7 @@ export class PrismaBatchesMapper {
       items_count: batchDto.itemsCount,
       product_id: batchDto.productId,
       expiration_date: batchDto.expirationDate ?? null,
+      registered_at: batch.registeredAt,
     }
   }
 }

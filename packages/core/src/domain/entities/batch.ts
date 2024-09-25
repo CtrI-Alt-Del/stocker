@@ -7,6 +7,7 @@ type BatchProps = {
   productId: string
   expirationDate: Date | null
   hasUpdatedStock: boolean
+  registeredAt: Date
 }
 
 export class Batch extends Entity<BatchProps> {
@@ -18,6 +19,7 @@ export class Batch extends Entity<BatchProps> {
         itemsCount: dto.itemsCount,
         productId: dto.productId,
         hasUpdatedStock: false,
+        registeredAt: new Date(),
       },
       dto.id,
     )
@@ -27,6 +29,10 @@ export class Batch extends Entity<BatchProps> {
     this.props.itemsCount -= itemsCount
 
     if (this.props.itemsCount) this.props.hasUpdatedStock = true
+  }
+
+  update(dto: Partial<BatchDto>) {
+    return Batch.create({ ...this.dto, ...dto })
   }
 
   get hasItems(): boolean {
@@ -47,6 +53,10 @@ export class Batch extends Entity<BatchProps> {
 
   get expirationDate(): Date | null {
     return this.props.expirationDate
+  }
+
+  get registeredAt(): Date {
+    return this.props.registeredAt
   }
 
   get dto(): BatchDto {

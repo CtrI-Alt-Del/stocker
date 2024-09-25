@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useRef } from 'react'
@@ -70,7 +69,7 @@ export const ProductsTable = ({
         }
         bottomContentPlacement='outside'
         bottomContent={
-          totalPages ? (
+          totalPages > 1 ? (
             <div className='flex w-full justify-start '>
               <Pagination
                 aria-label='paginação'

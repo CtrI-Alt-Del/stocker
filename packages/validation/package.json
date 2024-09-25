@@ -1,5 +1,8 @@
 {
   "name": "@stocker/validation",
+  "dependencies": {
+    "@stocker/core": "*"
+  },
   "devDependencies": {
     "@stocker/typescript-config": "*"
   },

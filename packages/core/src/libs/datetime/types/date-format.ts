@@ -1,1 +1,1 @@
-export type DateFormat = 'YYYY-MM-DDTHH:mm'
+export type DateFormat = 'YYYY-MM-DDTHH:mm' | 'YYYY-MM-DD' | 'DD/MM/YYYY'
