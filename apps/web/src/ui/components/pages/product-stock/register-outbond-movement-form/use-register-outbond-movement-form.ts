@@ -1,6 +1,6 @@
 import { useApi, useToast } from '@/ui/hooks'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Batch, InventoryMovement } from '@stocker/core/entities'
+import {  InventoryMovement } from '@stocker/core/entities'
 import {
   dateSchema,
   descriptionSchema,
@@ -21,7 +21,7 @@ const registerOutboundMovementFormSchema = z.object({
 type RegisterInboundMovementFormData = z.infer<typeof registerOutboundMovementFormSchema>
 export function useRegisterOutbondMovementForm(
   productId: string,
-  onSubmit: (newBatch: Batch) => Promise<void>,
+  onSubmit: (newMovement: InventoryMovement) => Promise<void>,
 ) {
   const { control, formState, setValue, reset, register, handleSubmit } =
     useForm<RegisterInboundMovementFormData>({
@@ -41,6 +41,7 @@ export function useRegisterOutbondMovementForm(
       registeredAt: formData.registeredAt,
       itemsCount: formData.itemsCount,
       remark: formData.remark,
+      
       responsibleId: '29fcf7a0-5ee3-4cb0-b36e-ecc825f1cdaa',
       productId,
     })
@@ -53,7 +54,7 @@ export function useRegisterOutbondMovementForm(
     if (response.isSuccess) {
       showSuccess('Lançamento de saída realizado! ')
       reset()
-      onSubmit()
+      onSubmit(outboundMovement)
     }
   }
   const { isIntersecting, ref } = useIntersectionObserver({ threshold: 0.5 })

@@ -1,12 +1,12 @@
 import { Button, Divider, Input, Textarea } from '@nextui-org/react'
-import { Batch } from '@stocker/core/entities'
+import {  InventoryMovement } from '@stocker/core/entities'
 import { Controller } from 'react-hook-form'
 import { useRegisterOutbondMovementForm } from './use-register-outbond-movement-form'
 import { Datetime } from '@stocker/core/libs'
 
 type RegisterInboundMovementForm = {
   productID: string
-  onSubmit: (newBatch: Batch) => Promise<void>
+  onSubmit: (newMovement: InventoryMovement) => Promise<void>
   onCancel: VoidFunction
 }
 export const RegisterOutboundInventoryMovementForm = ({
