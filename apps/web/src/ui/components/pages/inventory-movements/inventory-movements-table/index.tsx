@@ -9,30 +9,28 @@ import {
   TableHeader,
   TableRow,
 } from '@nextui-org/react'
-import { InventoryMovementDto } from '@stocker/core/dtos'
-import { useInventoryMovementPage } from '../use-inventory-moviment'
-import { InventoryMovement } from '@stocker/core/entities'
-import { Datetime } from '@stocker/core/libs'
-import { Tag } from 'lucide-react'
 
-type AllInventoryMovementsTableProps = {
+import type { InventoryMovementDto } from '@stocker/core/dtos'
+import { Datetime } from '@stocker/core/libs'
+
+type InventoryMovementsTableProps = {
   page: number
   isLoading: boolean
   movements: InventoryMovementDto[]
   totalPages: number
   onPageChange: (page: number) => void
 }
-export const AllInventoryMovementsTable = ({
+export const InventoryMovementsTable = ({
   isLoading,
   page,
   movements,
   totalPages,
   onPageChange,
-}: AllInventoryMovementsTableProps) => {
+}: InventoryMovementsTableProps) => {
   return (
     <>
       <Table
-        aria-label='Inventory Movements Table'
+        aria-label='Tabela de lançamentos de estoque'
         shadow='none'
         topContentPlacement='outside'
         bottomContentPlacement='outside'
@@ -51,31 +49,42 @@ export const AllInventoryMovementsTable = ({
         }
       >
         <TableHeader>
-          <TableColumn key='product'>PRODUTO</TableColumn>
-          <TableColumn key='date'>DATA E HORA</TableColumn>
-          <TableColumn key='type'>TIPO DE LANÇAMENTO </TableColumn>
-          <TableColumn key='quantity'>QUANTIDADE MOVIMENTADA </TableColumn>
-          <TableColumn key='employee'>FUNCIONÁRIO </TableColumn>
-          <TableColumn key='remark'>OBSERVAÇÁO </TableColumn>
+          <TableColumn key='product' className='uppercase'>
+            Produto
+          </TableColumn>
+          <TableColumn key='date' className='uppercase'>
+            Data e hora
+          </TableColumn>
+          <TableColumn key='type' className='uppercase'>
+            Tipo de lançamento
+          </TableColumn>
+          <TableColumn key='quantity' className='uppercase'>
+            Quantidade movimentada
+          </TableColumn>
+          <TableColumn key='employee' className='uppercase'>
+            Funcionário
+          </TableColumn>
+          <TableColumn key='remark' className='uppercase'>
+            Observação
+          </TableColumn>
         </TableHeader>
         <TableBody
           items={movements}
           isLoading={isLoading}
           loadingContent={<Spinner color='primary' />}
-          aria-label='conteudo'
-          emptyContent={'Nenhum lançamento criado'}
+          emptyContent='Nenhum lançamento de estoque registrado'
         >
           {(item) => (
             <TableRow key={item.id}>
-              <TableCell key='product'>{item.productId}</TableCell>
+              <TableCell key='product'>{item.product.name}</TableCell>
               <TableCell key='date'>
                 {new Datetime(item.registeredAt).format('DD/MM/YYYY HH:mm')}
               </TableCell>
-              <TableCell key='type'>
-                {item.movementType === 'inbound' ? 'Entrada' : 'Saida'}
+              <TableCell key='movement-type' className='font-semibold'>
+                {item.movementType === 'inbound' ? 'Entrada' : 'Saída'}
               </TableCell>
               <TableCell key='quantity'>{item.itemsCount}</TableCell>
-              <TableCell key='employee'>{item.responsibleId}</TableCell>
+              <TableCell key='employee'>{item.responsible.name}</TableCell>
               <TableCell key='remark'>{item.remark}</TableCell>
             </TableRow>
           )}

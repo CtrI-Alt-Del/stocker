@@ -1,6 +1,7 @@
 import type { BatchDto } from '@stocker/core/dtos'
-import type { PrismaBatch } from '../types'
 import { Batch } from '@stocker/core/entities'
+
+import type { PrismaBatch } from '../types'
 
 export class PrismaBatchesMapper {
   toDomain(prismaBatch: PrismaBatch): Batch {
@@ -9,12 +10,15 @@ export class PrismaBatchesMapper {
       code: prismaBatch.code,
       itemsCount: prismaBatch.items_count,
       productId: prismaBatch.product_id,
-      maximumDaysToExpiration: prismaBatch.maximum_days_to_expiration
+      resgisteredAt: prismaBatch.registered_at,
     }
 
     if (prismaBatch.expiration_date) dto.expirationDate = prismaBatch.expiration_date
-    
-    if (prismaBatch.maximum_days_to_expiration) dto.maximumDaysToExpiration = prismaBatch.maximum_days_to_expiration
+
+    console.log(prismaBatch.maximum_days_to_expiration)
+
+    if (prismaBatch.maximum_days_to_expiration)
+      dto.maximumDaysToExpiration = prismaBatch.maximum_days_to_expiration
 
     return Batch.create(dto)
   }

@@ -62,9 +62,8 @@ export class PrismaBatchesRepository implements IBatchesRepository {
 
   async updateManyItemsCount(batches: Batch[]): Promise<void> {
     try {
-      const prismaBatches = batches.map((batch) => this.mapper.toPrisma(batch))
-      for (const prismaBatch of prismaBatches) {
-        console.log(prismaBatch)
+      for (const batch of batches) {
+        const prismaBatch = this.mapper.toPrisma(batch)
         await prisma.batch.update({
           where: {
             id: prismaBatch.id,
@@ -80,7 +79,6 @@ export class PrismaBatchesRepository implements IBatchesRepository {
   }
 
   async deleteMany(batchesIds: string[]): Promise<void> {
-    console.log(batchesIds)
     try {
       await prisma.batch.deleteMany({
         where: {

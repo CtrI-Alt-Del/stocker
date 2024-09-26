@@ -2,17 +2,20 @@ import type { InventoryMovementDto } from '../../dtos'
 import { ValidationError } from '../../errors'
 import type { InventoryMovementType } from '../../types'
 import { Entity } from '../abstracts'
-import type { User } from './user'
-
 
 type MovementProps = {
   movementType: InventoryMovementType
   itemsCount: number
-  responsibleId: string
-  productId: string
   registeredAt: Date
-  responsibleData: Pick<User, 'name'> | null
   remark: string | null
+  product: {
+    id: string
+    name?: string
+  }
+  responsible: {
+    id: string
+    name?: string
+  }
 }
 
 export class InventoryMovement extends Entity<MovementProps> {
@@ -26,12 +29,11 @@ export class InventoryMovement extends Entity<MovementProps> {
     return new InventoryMovement(
       {
         movementType,
-        itemsCount: dto.itemsCount, //quantidade de itens
-        responsibleId: dto.responsibleId, //id do funcionario que fez o lancamento
-        productId: dto.productId, //id do produto
-        registeredAt: new Date(), //data do lançamento da movimentação
-        remark: dto.remark ?? null, //observação
-        responsibleData: null, //nome do funcionario que fez a movimentação
+        itemsCount: dto.itemsCount,
+        registeredAt: dto.registeredAt,
+        remark: dto.remark ?? null,
+        product: dto.product,
+        responsible: dto.responsible,
       },
       dto.id,
     )
@@ -46,22 +48,15 @@ export class InventoryMovement extends Entity<MovementProps> {
       id: this.id,
       movementType: this.props.movementType,
       itemsCount: this.props.itemsCount,
-      responsibleId: this.props.responsibleId,
-      productId: this.props.productId,
+      responsible: this.props.responsible,
+      product: this.props.product,
       registeredAt: this.props.registeredAt,
+      remark: this.props.remark ?? undefined,
     }
 
     if (this.props.remark) dto.remark = this.props.remark
 
     return dto
-  }
-
-  set responsibleData(responsible: Pick<User, 'name'> | null) {
-    this.props.responsibleData = responsible
-  }
-
-  get responsibleData() {
-    return this.props.responsibleData
   }
 
   get movementType(): InventoryMovementType {
@@ -72,19 +67,19 @@ export class InventoryMovement extends Entity<MovementProps> {
     return this.props.itemsCount
   }
 
-  get responsibleId(): string {
-    return this.props.responsibleId
+  get responsible() {
+    return this.props.responsible
   }
 
-  get productId(): string {
-    return this.props.productId
+  get product() {
+    return this.props.product
   }
 
   get registeredAt(): Date {
     return this.props.registeredAt
   }
 
-  get remark(): string|null {
+  get remark(): string | null {
     return this.props.remark
   }
 }

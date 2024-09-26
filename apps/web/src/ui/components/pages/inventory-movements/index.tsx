@@ -1,17 +1,11 @@
-"use client"
-import { AllInventoryMovementsTable } from './inventory-movements-table'
-import { useInventoryMovementPage } from './use-inventory-moviment'
+'use client'
+import { InventoryMovementsTable } from './inventory-movements-table'
+import { useInventoryMovementPage } from './use-inventory-moviments-page'
 
 export const InventoryMovementsPage = () => {
-  const {
-    isFetching,
-    page,
-    movements,
-    totalPages,
-    filterByNameValue,
-    handlePageChange,
-    handleSearchChange,
-  } = useInventoryMovementPage()
+  const { isFetching, page, movements, totalPages, handlePageChange } =
+    useInventoryMovementPage()
+
   return (
     <>
       <div className=' flex space-y-2 flex-col'>
@@ -20,7 +14,7 @@ export const InventoryMovementsPage = () => {
             <h1 className='text-3xl font-black'>Lançamentos</h1>
           </div>
         </div>
-        <AllInventoryMovementsTable
+        <InventoryMovementsTable
           page={page}
           isLoading={isFetching}
           movements={movements}

@@ -9,10 +9,10 @@ import type { Batch } from '@stocker/core/entities'
 import { Drawer } from '../../commons/drawer'
 import { useProductStockPage } from './use-product-stock'
 import { RegisterInboundInventoryMovementForm } from './register-inbound-movement-form'
-import { BatchesTable } from './batches-table'
-import { Icon } from '../../commons/icon'
 import { RegisterOutboundInventoryMovementForm } from './register-outbond-movement-form'
+import { BatchesTable } from './batches-table'
 import { InventoryMovementsTable } from './inventory-movements-table'
+import { Icon } from '../../commons/icon'
 
 type ProductStockPageProps = {
   productDto: ProductDto
@@ -28,13 +28,14 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
     handleBatchesIdsSelectionChange,
     handleDeleteBatchesButtonClick,
     handleRegisterInboundInventoryMovementFormSubmit,
+    handleRegisterOutboundInventoryMovementFormSubmit,
   } = useProductStockPage(productDto)
 
   return (
     <div>
       <div className='flex items-center justify-between'>
         <div className='flex justify-end flex-col'>
-          <h1 className='text-2xl flex justify-end font-semibold'>{product.name}</h1>
+          <h1 className='text-2xl font-semibold'>{product.name}</h1>
           <small className='uppercase text-base text-zinc-400'>{product.code}</small>
           <div className='mt-3 flex items-center gap-2'>
             <p className='text-zinc-400 text-sm'>Estoque atual: {product.currentStock}</p>
@@ -74,11 +75,11 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
           >
             {(closeDrawer) => (
               <RegisterOutboundInventoryMovementForm
-                productID={product.id}
+                productId={product.id}
                 onCancel={closeDrawer}
-                onSubmit={async (newBatch: Batch) => {
-                  await handleRegisterInboundInventoryMovementFormSubmit(newBatch)
+                onSubmit={async () => {
                   closeDrawer()
+                  await handleRegisterOutboundInventoryMovementFormSubmit()
                 }}
               />
             )}
@@ -99,7 +100,6 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
         }}
       >
         <Tab key='batches' title='Lotes' className='text-lg'>
-          <Divider />
           <Button
             color='danger'
             onClick={handleDeleteBatchesButtonClick}
@@ -122,7 +122,6 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
           </div>
         </Tab>
         <Tab key='inventory-movements' title='Lançamentos' className='text-lg'>
-          <Divider />
           <InventoryMovementsTable inventoryMovements={inventoryMovements} />
         </Tab>
       </Tabs>

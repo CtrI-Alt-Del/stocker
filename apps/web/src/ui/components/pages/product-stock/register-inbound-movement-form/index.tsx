@@ -40,43 +40,41 @@ export const RegisterInboundInventoryMovementForm = ({
               label='Data e hora de registro'
               value={new Datetime(value).format('YYYY-MM-DDTHH:mm')}
               onChange={onChange}
+              isRequired
               isInvalid={Boolean(error?.message)}
               errorMessage={error?.message}
             />
           )}
         />
       </div>
-
+      <Input
+        label='Codigo do Lote'
+        isRequired
+        isInvalid={Boolean(errors.code?.message)}
+        {...register('code')}
+        className='w-full'
+        errorMessage={errors.code?.message}
+      />
       <div className='grid grid-cols-2 gap-6'>
-        <Input
-          label='Codigo do Lote'
-          isRequired
-          isInvalid={Boolean(errors.batchCode?.message)}
-          {...register('batchCode')}
-          errorMessage={errors.batchCode?.message}
-        />
         <Controller
-          name='batchExpirationDate'
+          name='expirationDate'
           control={control}
           render={({ field: { onChange }, fieldState: { error } }) => (
             <Input
               type='date'
               label='Validade do lote'
-              isInvalid={Boolean(errors.batchExpirationDate?.message)}
+              isInvalid={Boolean(errors.expirationDate?.message)}
               onChange={onChange}
               errorMessage={error?.message}
             />
           )}
         />
-      </div>
-      <div className='grid grid-cols-2 gap-6 '>
         <Input
-          label='Prazo da validade'
+          label='Máximo de dias até validade'
           type='number'
-          isInvalid={Boolean(errors.daysUntilExpire?.message)}
-          errorMessage={errors.daysUntilExpire?.message}
-
-          {...register('daysUntilExpire')}
+          isInvalid={Boolean(errors.maximumDaysToExipiration?.message)}
+          errorMessage={errors.maximumDaysToExipiration?.message}
+          {...register('maximumDaysToExipiration')}
         />
       </div>
       <Textarea

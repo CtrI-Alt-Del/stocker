@@ -162,7 +162,6 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
         </Switch>
         <Input
           label='Modelo'
-          isRequired
           errorMessage={errors.model?.message}
           isInvalid={Boolean(errors.model)}
           {...register('model')}

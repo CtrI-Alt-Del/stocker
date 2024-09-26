@@ -1,27 +1,29 @@
 import { Button, Divider, Input, Textarea } from '@nextui-org/react'
-import {  InventoryMovement } from '@stocker/core/entities'
 import { Controller } from 'react-hook-form'
-import { useRegisterOutbondMovementForm } from './use-register-outbond-movement-form'
+
 import { Datetime } from '@stocker/core/libs'
 
+import { useRegisterOutbondMovementForm } from './use-register-outbond-movement-form'
+
 type RegisterInboundMovementForm = {
-  productID: string
-  onSubmit: (newMovement: InventoryMovement) => Promise<void>
+  productId: string
+  onSubmit: VoidFunction
   onCancel: VoidFunction
 }
 export const RegisterOutboundInventoryMovementForm = ({
-  productID,
+  productId,
   onCancel,
   onSubmit,
 }: RegisterInboundMovementForm) => {
   const { control, errors, isSubmiting, formRef, register, handleSubmit } =
-    useRegisterOutbondMovementForm(productID, onSubmit)
+    useRegisterOutbondMovementForm(productId, onSubmit)
+
   return (
     <form ref={formRef} onSubmit={handleSubmit} className='space-y-6'>
       <div className='grid grid-cols-2 gap-6'>
         <Input
           type='number'
-          label='Quantidade de  itens'
+          label='Quantidade de itens'
           isRequired
           isInvalid={Boolean(errors.itemsCount?.message)}
           errorMessage={errors.itemsCount?.message}

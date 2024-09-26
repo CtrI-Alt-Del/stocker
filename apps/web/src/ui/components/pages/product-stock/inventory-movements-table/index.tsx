@@ -7,7 +7,6 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  getKeyValue,
 } from '@nextui-org/react'
 
 import type { InventoryMovement } from '@stocker/core/entities'
@@ -20,36 +19,38 @@ type InventoryMovementsTableProps = {
 export const InventoryMovementsTable = ({
   inventoryMovements,
 }: InventoryMovementsTableProps) => {
-
   return (
-    <Table aria-label='Example table with dynamic content' className='mt-8'
-    >
+    <Table aria-label='Example table with dynamic content' className='mt-8'>
       <TableHeader>
-         <TableColumn key='datetime' className='uppercase'>
-            DATA E HORA
-          </TableColumn>
-         <TableColumn key='lançamento' className='uppercase'>
-            TIPO DE LANÇAMENTO
-          </TableColumn>
-         <TableColumn key='qtditems' className='uppercase'>
-            QUANTIDADE MOVIMENTADA
-          </TableColumn>
-         <TableColumn key='funcionario' className='uppercase'>
-            FUNCIONÁRIO
-          </TableColumn>
-         <TableColumn key='observation' className='uppercase'>
-            OBSERVAÇÃO
-          </TableColumn>
-
+        <TableColumn key='datetime' className='uppercase'>
+          Data e hora
+        </TableColumn>
+        <TableColumn key='lançamento' className='uppercase'>
+          Tipo de lançamento
+        </TableColumn>
+        <TableColumn key='qtditems' className='uppercase'>
+          Quantidade movimentada
+        </TableColumn>
+        <TableColumn key='funcionario' className='uppercase'>
+          Funcionário
+        </TableColumn>
+        <TableColumn key='observation' className='uppercase'>
+          Observação
+        </TableColumn>
       </TableHeader>
-      <TableBody items={inventoryMovements} emptyContent='Nenhum lançamento registrado para esse produto'>
+      <TableBody
+        items={inventoryMovements}
+        emptyContent='Nenhum lançamento registrado para esse produto'
+      >
         {(item) => (
           <TableRow>
-           <TableCell>{ new Datetime(item.registeredAt).format('DD/MM/YYYY HH:mm')}</TableCell>
-           <TableCell> {item.movementType === 'inbound'?'Entrada':'Saída' } </TableCell>
-           <TableCell> {item.itemsCount} </TableCell>
-           <TableCell> {item.responsibleId} </TableCell>
-           <TableCell> {item.remark ??'N\A'} </TableCell>
+            <TableCell>
+              {new Datetime(item.registeredAt).format('DD/MM/YYYY HH:mm')}
+            </TableCell>
+            <TableCell>{item.movementType === 'inbound' ? 'Entrada' : 'Saída'}</TableCell>
+            <TableCell>{item.itemsCount}</TableCell>
+            <TableCell>{item.responsible.name}</TableCell>
+            <TableCell>{item.remark ?? 'N/A'}</TableCell>
           </TableRow>
         )}
       </TableBody>

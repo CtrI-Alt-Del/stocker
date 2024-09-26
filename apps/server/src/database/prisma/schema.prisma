@@ -49,15 +49,15 @@ model Product {
 }
 
 model Batch {
-  id              String         @id @default(uuid())
-  code            String
-  expiration_date DateTime?
-  maximum_days_to_expiration  Int?
-  items_count     Int
-  product_id      String
-  registered_at   DateTime       @default(now())
-  Product         Product        @relation(fields: [product_id], references: [id])
-  notification    Notification[] @relation(name: "BatcheToNotification")
+  id                         String         @id @default(uuid())
+  code                       String
+  expiration_date            DateTime?
+  maximum_days_to_expiration Int?
+  items_count                Int
+  product_id                 String
+  registered_at              DateTime       @default(now())
+  Product                    Product        @relation(fields: [product_id], references: [id])
+  notification               Notification[] @relation(name: "BatcheToNotification")
 
   @@map("batches")
 }
@@ -68,6 +68,7 @@ model InventoryMovement {
   items_count   Int
   product_id    String
   user_id       String
+  remark        String?
   registered_at DateTime
 
   Product Product @relation(fields: [product_id], references: [id])

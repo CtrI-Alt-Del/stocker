@@ -16,22 +16,23 @@ import {
   Tooltip,
 } from '@nextui-org/react'
 
-import type { ProductDto } from '@stocker/core/dtos'
+import type { Product } from '@stocker/core/entities'
 
 import { Tag } from '@/ui/components/commons/tag'
 import { Drawer } from '@/ui/components/commons/drawer'
 import { IconButton } from '@/ui/components/commons/icon-button'
 import type { DrawerRef } from '@/ui/components/commons/drawer/types'
+import { Icon } from '@/ui/components/commons/icon'
+
 import { IMAGE_PLACEHOLDER, ROUTES } from '@/constants'
-import { useBreakpoint } from '@/ui/hooks'
+
 import { UpdateProductForm } from '../update-product-form'
 import { useProductsTable } from './use-products-table'
-import { Icon } from '@/ui/components/commons/icon'
 
 type ProductsTableProps = {
   page: number
   isLoading: boolean
-  products: ProductDto[]
+  products: Product[]
   totalPages: number
   onUpdateProduct: VoidFunction
   onProductsSelectionChange: (productsIds: string[]) => void
@@ -54,8 +55,12 @@ export const ProductsTable = ({
     handleUpdateProductFormSubmit,
     handleCancelEditting,
     handleDrawerClose,
-  } = useProductsTable(drawerRef, onUpdateProduct)
-  const { md } = useBreakpoint()
+  } = useProductsTable({
+    products,
+    drawerRef,
+    onUpdateProduct,
+    onProductsSelectionChange,
+  })
 
   return (
     <>
@@ -86,7 +91,7 @@ export const ProductsTable = ({
           <TableColumn key='code'>CODIGO</TableColumn>
           <TableColumn key='price'>PREÇO</TableColumn>
           <TableColumn key='minimumStock'>ESTOQUE MINIMO</TableColumn>
-          <TableColumn key='distributor'>FORNECEDOR</TableColumn>
+          <TableColumn key='supplier'>FORNECEDOR</TableColumn>
           <TableColumn key='status'>STATUS</TableColumn>
           <TableColumn key='option'>{null}</TableColumn>
         </TableHeader>
@@ -97,25 +102,24 @@ export const ProductsTable = ({
           aria-label='conteúdo da tabela'
           emptyContent={'Nenhum produto criado.'}
         >
-          {(item) => (
-            <TableRow key={item.id}>
+          {(product) => (
+            <TableRow key={product.id}>
               <TableCell key='name'>
                 <div className='flex items-center gap-2'>
                   <Avatar
-                    src={item.image}
-                    alt={item.name}
-                    fallback={IMAGE_PLACEHOLDER}
-                    className='w-8 h-8 rounded-full'
+                    src={product.image !== '' ? product.image : IMAGE_PLACEHOLDER}
+                    alt={product.name}
+                    size='md'
                   />
-                  <p className='font-bold'>{item.name}</p>
+                  <p className='font-bold'>{product.name}</p>
                 </div>
               </TableCell>
-              <TableCell key='code'>{item.code}</TableCell>
-              <TableCell key='price'>{item.costPrice}</TableCell>
-              <TableCell key='minimumStock'>{item.minimumStock}</TableCell>
-              <TableCell key='distributor'>GABRIEL</TableCell>
+              <TableCell key='code'>{product.code}</TableCell>
+              <TableCell key='price'>{product.costPrice.brl}</TableCell>
+              <TableCell key='minimumStock'>{product.minimumStock}</TableCell>
+              <TableCell key='supplier'>Gabriel Fernandez SRC</TableCell>
               <TableCell key='status'>
-                {item.isActive ? (
+                {product.isActive ? (
                   <Tag type='sucess'>Ativo</Tag>
                 ) : (
                   <Tag type='danger'>Desativo</Tag>
@@ -127,10 +131,10 @@ export const ProductsTable = ({
                     name='view'
                     tooltip='Editar produto'
                     className='size-6 text-zinc-500'
-                    onClick={() => handleEditProductButtonClick(item)}
+                    onClick={() => handleEditProductButtonClick(product)}
                   />
                 </Tooltip>
-                <Link href={`${ROUTES.inventory.stocks}/${item.id}`}>
+                <Link href={`${ROUTES.inventory.stocks}/${product.id}`}>
                   <Icon name='stock' className='size-6 text-zinc-500' />
                 </Link>
               </TableCell>
@@ -138,16 +142,11 @@ export const ProductsTable = ({
           )}
         </TableBody>
       </Table>
-      <Drawer
-        ref={drawerRef}
-        width={md ? 400 : 700}
-        trigger={null}
-        onClose={handleDrawerClose}
-      >
+      <Drawer ref={drawerRef} trigger={null} onClose={handleDrawerClose}>
         {() =>
           productBeingEditting && (
             <UpdateProductForm
-              productDto={productBeingEditting}
+              product={productBeingEditting}
               onSubmit={handleUpdateProductFormSubmit}
               onCancel={handleCancelEditting}
             />

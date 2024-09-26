@@ -23,6 +23,7 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
           movement_type: prismaInventoryMovement.movement_type,
           product_id: prismaInventoryMovement.product_id,
           user_id: prismaInventoryMovement.user_id,
+          remark: prismaInventoryMovement.remark,
         },
       })
     } catch (error) {
@@ -30,12 +31,11 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
     }
   }
 
-  async findMany({
-    page,
-    productId,
-  }: InventoryMovementsListParams): Promise<InventoryMovement[]> {
+  async findMany({ page, productId }: InventoryMovementsListParams) {
     try {
-      const whereCondition = productId ? { product_id: productId } : undefined
+      const whereCondition = productId !== 'all' ? { product_id: productId } : undefined
+
+      const count = await prisma.inventoryMovement.count({ where: whereCondition })
 
       const prismaInventoryMovements = await prisma.inventoryMovement.findMany({
         take: PAGINATION.itemsPerPage,
@@ -47,14 +47,22 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
               name: true,
             },
           },
+          Product: {
+            select: {
+              name: true,
+            },
+          },
         },
       })
-      if (!prismaInventoryMovements) return []
 
       const inventoryMovements = prismaInventoryMovements.map((inventoryMovement) => {
         return this.mapper.toDomain(inventoryMovement)
       })
-      return inventoryMovements
+
+      return {
+        inventoryMovements,
+        count,
+      }
     } catch (error) {
       throw new PrismaError(error)
     }

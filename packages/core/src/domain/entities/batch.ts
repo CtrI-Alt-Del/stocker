@@ -75,7 +75,8 @@ export class Batch extends Entity<BatchProps> {
 
     if (this.expirationDate) dto.expirationDate = this.expirationDate
 
-    if (this.maximumDaysToExpiration) dto.maximumDaysToExpiration = this.maximumDaysToExpiration
+    if (this.maximumDaysToExpiration)
+      dto.maximumDaysToExpiration = this.maximumDaysToExpiration
 
     return dto
   }

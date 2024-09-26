@@ -1,6 +1,6 @@
 import { useApi, useToast } from '@/ui/hooks'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {  InventoryMovement } from '@stocker/core/entities'
+import { InventoryMovement } from '@stocker/core/entities'
 import {
   dateSchema,
   descriptionSchema,
@@ -18,10 +18,12 @@ const registerOutboundMovementFormSchema = z.object({
     .transform((value) => (value === '' ? undefined : value))
     .optional(),
 })
+
 type RegisterInboundMovementFormData = z.infer<typeof registerOutboundMovementFormSchema>
+
 export function useRegisterOutbondMovementForm(
   productId: string,
-  onSubmit: (newMovement: InventoryMovement) => Promise<void>,
+  onSubmit: VoidFunction,
 ) {
   const { control, formState, setValue, reset, register, handleSubmit } =
     useForm<RegisterInboundMovementFormData>({
@@ -41,9 +43,12 @@ export function useRegisterOutbondMovementForm(
       registeredAt: formData.registeredAt,
       itemsCount: formData.itemsCount,
       remark: formData.remark,
-      
-      responsibleId: '29fcf7a0-5ee3-4cb0-b36e-ecc825f1cdaa',
-      productId,
+      responsible: {
+        id: '29fcf7a0-5ee3-4cb0-b36e-ecc825f1cdaa',
+      },
+      product: {
+        id: productId,
+      },
     })
 
     const response =
@@ -54,19 +59,21 @@ export function useRegisterOutbondMovementForm(
     if (response.isSuccess) {
       showSuccess('Lançamento de saída realizado! ')
       reset()
-      onSubmit(outboundMovement)
+      onSubmit()
     }
   }
   const { isIntersecting, ref } = useIntersectionObserver({ threshold: 0.5 })
+
   useEffect(() => {
     if (isIntersecting) setValue('registeredAt', new Date())
   }, [isIntersecting, setValue])
+
   return {
     control,
     errors: formState.errors,
     isSubmiting: formState.isSubmitting,
     formRef: ref,
     register,
-    handleSubmit: handleSubmit(handleFormSubmit)
+    handleSubmit: handleSubmit(handleFormSubmit),
   }
 }

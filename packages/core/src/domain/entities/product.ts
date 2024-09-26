@@ -2,14 +2,15 @@ import type { ProductDto } from '../../dtos'
 import { ConflictError } from '../../errors'
 import type { StockLevel } from '../../types/stock-level'
 import { Entity } from '../abstracts'
+import { Price } from '../structs'
 import { Batch } from './batch'
 
 type ProductProps = {
   name: string
   description: string
   image: string
-  costPrice: number
-  sellingPrice: number
+  costPrice: Price
+  sellingPrice: Price
   brand: string
   height: number
   length: number
@@ -35,8 +36,8 @@ export class Product extends Entity<ProductProps> {
         name: dto.name,
         description: dto.description,
         image: dto.image,
-        costPrice: dto.costPrice,
-        sellingPrice: dto.sellingPrice,
+        costPrice: Price.create(dto.costPrice),
+        sellingPrice: Price.create(dto.sellingPrice),
         brand: dto.brand,
         height: dto.height,
         length: dto.length,
@@ -103,6 +104,54 @@ export class Product extends Entity<ProductProps> {
     return 'danger'
   }
 
+  get costPrice(): Price {
+    return this.props.costPrice
+  }
+
+  get sellingPrice(): Price {
+    return this.props.sellingPrice
+  }
+
+  get isActive(): boolean {
+    return this.props.isActive
+  }
+
+  get image(): string {
+    return this.props.image
+  }
+
+  get model(): string | null {
+    return this.props.model
+  }
+
+  get description(): string {
+    return this.props.description
+  }
+
+  get height(): number {
+    return this.props.height
+  }
+
+  get length(): number {
+    return this.props.length
+  }
+
+  get width(): number {
+    return this.props.width
+  }
+
+  get brand(): string {
+    return this.props.brand
+  }
+
+  get weight(): number {
+    return this.props.weight
+  }
+
+  get uom(): string {
+    return this.props.uom
+  }
+
   get minimumStock(): number {
     return this.props.minimumStock
   }
@@ -161,8 +210,8 @@ export class Product extends Entity<ProductProps> {
       name: this.props.name,
       description: this.props.description,
       image: this.props.image,
-      costPrice: this.props.costPrice,
-      sellingPrice: this.props.sellingPrice,
+      costPrice: this.props.costPrice.value,
+      sellingPrice: this.props.sellingPrice.value,
       brand: this.props.brand,
       height: this.props.height,
       length: this.props.length,

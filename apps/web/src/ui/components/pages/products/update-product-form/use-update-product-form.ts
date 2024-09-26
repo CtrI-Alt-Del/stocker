@@ -15,10 +15,11 @@ import {
   nonZeroIntegerSchema,
   stringSchema,
 } from '@stocker/validation/schemas'
-import type { ProductDto } from '@stocker/core/dtos'
 
 import { useApi, useToast } from '@/ui/hooks'
 import type { ImageInputRef } from '@/ui/components/commons/image-input/types'
+import type { ProductDto } from '@stocker/core/dtos'
+import type { Product } from '@stocker/core/entities'
 
 const updateProductFormSchema = z.object({
   updatedImage: fileSchema.optional(),
@@ -42,14 +43,14 @@ const updateProductFormSchema = z.object({
 type UpdateProductFormData = z.infer<typeof updateProductFormSchema>
 
 type UseUpdateProductFormProps = {
-  productDto: ProductDto
+  product: Product
   imageInputRef: RefObject<ImageInputRef>
   onCancel: VoidFunction
   onSubmit: VoidFunction
 }
 
 export function useUpdateProductForm({
-  productDto,
+  product,
   imageInputRef,
   onSubmit,
   onCancel,
@@ -57,21 +58,21 @@ export function useUpdateProductForm({
   const { control, formState, reset, register, handleSubmit } =
     useForm<UpdateProductFormData>({
       defaultValues: {
-        brand: productDto.brand,
-        costPrice: productDto.costPrice,
-        description: productDto.description,
-        height: productDto.height,
-        length: productDto.length,
-        name: productDto.name,
-        isActive: productDto.isActive,
-        code: productDto.code,
-        uom: productDto.uom,
-        weight: productDto.weight,
-        width: productDto.width,
-        minimumStock: productDto.minimumStock,
-        sellingPrice: productDto.sellingPrice,
-        model: productDto.model ?? undefined,
-        ...(productDto.model ? { model: productDto.model } : null),
+        brand: product.brand,
+        description: product.description,
+        height: product.height,
+        length: product.length,
+        name: product.name,
+        isActive: product.isActive,
+        code: product.code,
+        uom: product.uom,
+        weight: product.weight,
+        width: product.width,
+        minimumStock: product.minimumStock,
+        costPrice: product.costPrice.value,
+        sellingPrice: product.sellingPrice.value,
+        model: product.model ?? undefined,
+        ...(product.model ? { model: product.model } : null),
       },
       resolver: zodResolver(updateProductFormSchema),
     })
@@ -88,7 +89,7 @@ export function useUpdateProductForm({
     let imageUrl = ''
 
     if (formImageFile) {
-      const deleteImageResponse = await fileStorageService.deleteImage(productDto.image)
+      const deleteImageResponse = await fileStorageService.deleteImage(product.image)
 
       if (deleteImageResponse.isFailure) {
         alert(deleteImageResponse.errorMessage)
@@ -111,23 +112,23 @@ export function useUpdateProductForm({
   async function handleFormSubmit(formData: UpdateProductFormData) {
     const imageUrl = await handleImageUpload(formData.updatedImage)
 
-    const partialProductDto: Record<string, unknown> = {}
+    const partialProduct: Record<string, unknown> = {}
 
     const updatedFields = Object.keys(formState.dirtyFields)
     for (const updatedField of updatedFields) {
       if (updatedField === 'image') continue
 
       const updatedValue = formData[updatedField as keyof UpdateProductFormData]
-      partialProductDto[updatedField] = updatedValue
+      partialProduct[updatedField] = updatedValue
     }
 
-    if (imageUrl) partialProductDto.image = imageUrl
+    if (imageUrl) partialProduct.image = imageUrl
 
-    if (!productDto.id) return
+    if (!product.id) return
 
     const response = await productsService.updateProduct(
-      partialProductDto as Partial<ProductDto>,
-      productDto.id,
+      partialProduct as Partial<ProductDto>,
+      product.id,
     )
 
     if (response.isFailure) {

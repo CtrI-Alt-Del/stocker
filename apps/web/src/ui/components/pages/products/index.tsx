@@ -26,7 +26,6 @@ export const ProductsPage = () => {
     handleProductsSelectionChange,
     handleRegisterProductFormSubmit,
   } = useProductsPage()
-  const { md } = useBreakpoint()
 
   return (
     <>
@@ -46,7 +45,6 @@ export const ProductsPage = () => {
             </AlertDialog>
           )}
           <Drawer
-            width={md ? 400 : 700}
             trigger={
               <Button variant='solid' color='primary' radius='sm'>
                 Adicionar produto
@@ -65,15 +63,17 @@ export const ProductsPage = () => {
           </Drawer>
         </div>
       </div>
-      <ProductsTable
-        products={products}
-        totalPages={totalPages}
-        isLoading={isFetching}
-        page={page}
-        onProductsSelectionChange={handleProductsSelectionChange}
-        onUpdateProduct={handleUpdateProduct}
-        onPageChange={handlePageChange}
-      />
+      <div className='mt-3'>
+        <ProductsTable
+          products={products}
+          totalPages={totalPages}
+          isLoading={isFetching}
+          page={page}
+          onProductsSelectionChange={handleProductsSelectionChange}
+          onUpdateProduct={handleUpdateProduct}
+          onPageChange={handlePageChange}
+        />
+      </div>
     </>
   )
 }

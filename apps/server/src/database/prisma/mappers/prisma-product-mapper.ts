@@ -26,8 +26,10 @@ export class PrismaProductMapper {
         id: prismaBatch.id,
         code: prismaBatch.code,
         itemsCount: prismaBatch.items_count,
-        expirationDate: prismaBatch.expiration_date,
+        expirationDate: prismaBatch.expiration_date ?? undefined,
+        maximumDaysToExpiration: prismaBatch.maximum_days_to_expiration ?? undefined,
         productId: prismaBatch.product_id,
+        resgisteredAt: prismaBatch.registered_at,
       })),
     })
   }
@@ -60,7 +62,9 @@ export class PrismaProductMapper {
             product_id: batchDto.productId,
             code: batchDto.code,
             items_count: batchDto.itemsCount,
-            expiration_date: batchDto.expirationDate,
+            expiration_date: batchDto.expirationDate ?? null,
+            maximum_days_to_expiration: batchDto.maximumDaysToExpiration ?? null,
+            registered_at: batchDto.resgisteredAt ?? new Date(),
           }))
         : [],
     }

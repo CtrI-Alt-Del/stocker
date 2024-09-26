@@ -4,21 +4,20 @@ import { useRef } from 'react'
 import { Controller } from 'react-hook-form'
 import { Button, Divider, Input, Switch, Textarea } from '@nextui-org/react'
 
-import type { ProductDto } from '@stocker/core/dtos'
+import type { Product } from '@stocker/core/entities'
 
 import { ImageInput } from '@/ui/components/commons/image-input'
 import type { ImageInputRef } from '@/ui/components/commons/image-input/types'
 import { useUpdateProductForm } from './use-update-product-form'
-import { Dialog } from '@/ui/components/commons/dialog'
 
 type RegisterProductFormProps = {
-  productDto: ProductDto
+  product: Product
   onCancel: VoidFunction
   onSubmit: VoidFunction
 }
 
 export const UpdateProductForm = ({
-  productDto,
+  product,
   onSubmit,
   onCancel,
 }: RegisterProductFormProps) => {
@@ -32,7 +31,7 @@ export const UpdateProductForm = ({
     handleSubmit,
     handleCancelButtonClick,
   } = useUpdateProductForm({
-    productDto,
+    product,
     imageInputRef,
     onSubmit,
     onCancel,
@@ -71,7 +70,7 @@ export const UpdateProductForm = ({
             <ImageInput
               ref={imageInputRef}
               name='updatedImage'
-              defaultImage={productDto.image}
+              defaultImage={product.image}
               onChange={onChange}
             />
           )}
@@ -179,7 +178,7 @@ export const UpdateProductForm = ({
       </div>
 
       <div className='grid grid-cols-2 gap-6'>
-        <Switch defaultSelected={productDto.isActive} {...register('isActive')}>
+        <Switch defaultSelected={product.isActive} {...register('isActive')}>
           Ativo
         </Switch>
         <Input

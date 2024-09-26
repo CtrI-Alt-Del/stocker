@@ -4,40 +4,16 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-import {
-  dateSchema,
-  descriptionSchema,
-  nonZeroIntegerSchema,
-  stringSchema,
-} from '@stocker/validation/schemas'
+import { inventoryMovementSchema, batchSchema } from '@stocker/validation/schemas'
 import { Batch, InventoryMovement } from '@stocker/core/entities'
 import { Datetime } from '@stocker/core/libs'
 
 import { useApi, useToast } from '@/ui/hooks'
 
-const registerInboundMovementFormSchema = z.object({
-  batchExpirationDate: dateSchema
-    .refine((value) => new Datetime(value).isSameOrAfter(new Date()), {
-      message: 'Somente datas futuras',
-    })
-    .optional(),
-  registeredAt: dateSchema,
-  batchCode: stringSchema,
-  itemsCount: nonZeroIntegerSchema,
-  remark: descriptionSchema
-    .transform((value) => (value === '' ? undefined : value))
-    .optional()
-    .default('N/A'),
-  daysUntilExpire: nonZeroIntegerSchema
-    .transform((value) => {
-      if (typeof value === 'string' && value == '') {
-        return undefined
-      }
-      return value
-    })
-    .optional()
-    .default(30),
-})
+const registerInboundMovementFormSchema = z.intersection(
+  inventoryMovementSchema,
+  batchSchema,
+)
 
 type RegisterInboundMovementFormData = z.infer<typeof registerInboundMovementFormSchema>
 
@@ -61,18 +37,22 @@ export function useRegisterInboundMovementForm(
       registeredAt: formData.registeredAt,
       itemsCount: formData.itemsCount,
       remark: formData.remark,
-      responsibleId: '29fcf7a0-5ee3-4cb0-b36e-ecc825f1cdaa',
-      productId,
+      responsible: {
+        id: '29fcf7a0-5ee3-4cb0-b36e-ecc825f1cdaa',
+      },
+      product: {
+        id: productId,
+      },
     })
 
-    if (formData.batchExpirationDate) {
-      formData.batchExpirationDate = new Datetime(formData.batchExpirationDate).addDays(1)
+    if (formData.expirationDate) {
+      formData.expirationDate = new Datetime(formData.expirationDate).addDays(1)
     }
 
     const batch = Batch.create({
-      code: formData.batchCode,
-      expirationDate: formData.batchExpirationDate,
-      maximumDaysToExpiration: formData.daysUntilExpire,
+      code: formData.code,
+      expirationDate: formData.expirationDate,
+      maximumDaysToExpiration: formData.maximumDaysToExipiration,
       itemsCount: formData.itemsCount,
       productId,
     })
@@ -106,6 +86,7 @@ export function useRegisterInboundMovementForm(
     errors: formState.errors,
     isSubmiting: formState.isSubmitting,
     formRef: ref,
+    setValue,
     register,
     handleSubmit: handleSubmit(handleFormSubmit),
   }

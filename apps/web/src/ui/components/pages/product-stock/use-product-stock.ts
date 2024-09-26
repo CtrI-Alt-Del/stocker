@@ -3,7 +3,7 @@ import { parseAsInteger, useQueryState } from 'nuqs'
 
 import { PAGINATION } from '@stocker/core/constants'
 import type { ProductDto } from '@stocker/core/dtos'
-import { type Batch, Product } from '@stocker/core/entities'
+import { type Batch, InventoryMovement, Product } from '@stocker/core/entities'
 
 import { CACHE } from '@/constants'
 import { useApi, useCache, useToast } from '@/ui/hooks'
@@ -75,7 +75,11 @@ export function useProductStockPage(productDto: ProductDto) {
     refetch()
   }
 
-  const inventoryMovements = data ? data.items : []
+  async function handleRegisterOutboundInventoryMovementFormSubmit() {
+    refetch()
+  }
+
+  const inventoryMovements = data ? data.items.map(InventoryMovement.create) : []
   const itemsCount = data ? data.itemsCount : 0
 
   return {
@@ -91,5 +95,6 @@ export function useProductStockPage(productDto: ProductDto) {
     handleDeleteBatchesButtonClick,
     handleBatchesIdsSelectionChange,
     handleRegisterInboundInventoryMovementFormSubmit,
+    handleRegisterOutboundInventoryMovementFormSubmit,
   }
 }

@@ -4,17 +4,25 @@ import type { Selection } from '@nextui-org/react'
 import type { ProductDto } from '@stocker/core/dtos'
 
 import type { DrawerRef } from '@/ui/components/commons/drawer/types'
+import type { Product } from '@stocker/core/entities'
 
-export const useProductsTable = (
-  drawerRef: RefObject<DrawerRef>,
-  onUpdateProduct: VoidFunction,
-) => {
-  const [productBeingEditting, setProductBeingEditting] = useState<ProductDto | null>(
-    null,
-  )
+type UseProductsTableProps = {
+  products: Product[]
+  drawerRef: RefObject<DrawerRef>
+  onUpdateProduct: VoidFunction
+  onProductsSelectionChange: (productsIds: string[]) => void
+}
 
-  function handleEditProductButtonClick(productDto: ProductDto) {
-    setProductBeingEditting(productDto)
+export const useProductsTable = ({
+  products,
+  drawerRef,
+  onUpdateProduct,
+  onProductsSelectionChange,
+}: UseProductsTableProps) => {
+  const [productBeingEditting, setProductBeingEditting] = useState<Product | null>(null)
+
+  function handleEditProductButtonClick(product: Product) {
+    setProductBeingEditting(product)
     drawerRef.current?.open()
   }
 
@@ -34,7 +42,11 @@ export const useProductsTable = (
   }
 
   function handleSelectionChange(selection: Selection) {
-    console.log(Array.from(selection))
+    if (selection === 'all') {
+      onProductsSelectionChange(products.map((product) => product.id))
+    }
+
+    onProductsSelectionChange(Array.from(selection) as string[])
   }
 
   return {

@@ -7,27 +7,33 @@ export class PrismaInventoryMovementsMapper {
       id: prismaInventoryMovements.id,
       movementType: prismaInventoryMovements.movement_type.toLowerCase(),
       itemsCount: prismaInventoryMovements.items_count,
-      responsibleId: prismaInventoryMovements.user_id,
-      productId: prismaInventoryMovements.product_id,
+      responsible: {
+        id: prismaInventoryMovements.user_id,
+        name: prismaInventoryMovements.User?.name,
+      },
+      product: {
+        id: prismaInventoryMovements.product_id,
+        name: prismaInventoryMovements.Product?.name,
+      },
+      remark: prismaInventoryMovements.remark ?? undefined,
       registeredAt: prismaInventoryMovements.registered_at,
     })
 
-    if (prismaInventoryMovements.User)
-      inventoryMovement.responsibleData = prismaInventoryMovements.User
+    console.log(inventoryMovement)
+
     return inventoryMovement
   }
 
   toPrisma(inventoryMovement: InventoryMovement): PrismaInventoryMovement {
-    const inventoryMovementDto = inventoryMovement.dto
-
     return {
       id: inventoryMovement.id,
       movement_type:
         inventoryMovement.movementType === 'inbound' ? 'INBOUND' : 'OUTBOUND',
-      product_id: inventoryMovementDto.productId,
       items_count: inventoryMovement.itemsCount,
-      user_id: inventoryMovement.responsibleId,
       registered_at: inventoryMovement.registeredAt,
+      remark: inventoryMovement.remark,
+      product_id: inventoryMovement.product.id,
+      user_id: inventoryMovement.responsible.id,
     }
   }
 }

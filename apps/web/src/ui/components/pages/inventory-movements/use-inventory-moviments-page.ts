@@ -7,12 +7,13 @@ export function useInventoryMovementPage() {
   const { inventoryMovementService } = useApi()
   const { showError } = useToast()
   const [pageState, setPage] = useQueryState('page', parseAsInteger)
-  const [filterByNameValueState, setFilterByValueName] = useQueryState('name')
   const page = pageState ?? 1
-  const filterByNameValue = filterByNameValueState ?? ''
 
   async function fetchInventoryMovements() {
-    const response = await inventoryMovementService.listManyInventoryMovement(page)
+    const response = await inventoryMovementService.listInventoryMovements({
+      page,
+      productId: 'all',
+    })
     if (response.isFailure) {
       response.throwError()
       showError(response.errorMessage)
@@ -20,13 +21,12 @@ export function useInventoryMovementPage() {
     }
     return response.body
   }
+
   function handlePageChange(page: number) {
     setPage(page)
   }
-  function handleSearchChange(value: string) {
-    setFilterByValueName(value ?? '')
-  }
-  const { data, isFetching, refetch } = useCache({
+
+  const { data, isFetching } = useCache({
     fetcher: fetchInventoryMovements,
     key: CACHE.inventoryMovements.key,
     dependencies: [page],
@@ -34,15 +34,14 @@ export function useInventoryMovementPage() {
   const movements = data ? data.items : []
   const itemsCount = data ? data.itemsCount : 0
 
+  console.log(data)
+
   return {
     page,
-    filterByNameValue,
     isFetching,
     movements,
-    totalPages: Math.ceil(itemsCount/PAGINATION.itemsPerPage),
+    totalPages: Math.ceil(itemsCount / PAGINATION.itemsPerPage),
     itemsCount,
     handlePageChange,
-    handleSearchChange,
-    refetch,
   }
 }

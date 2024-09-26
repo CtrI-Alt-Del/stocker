@@ -79,7 +79,7 @@ export const BatchesTable = ({
                   ? new Datetime(batch.expirationDate).format('DD/MM/YYYY')
                   : 'N/A'}
               </TableCell>
-              <TableCell>{batch.maximumDaysToExpiration}</TableCell>
+              <TableCell>{batch.maximumDaysToExpiration ?? 'N/A'}</TableCell>
               <TableCell>
                 <IconButton
                   name='view'

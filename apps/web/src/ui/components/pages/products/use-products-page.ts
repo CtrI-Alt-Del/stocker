@@ -4,6 +4,8 @@ import { useApi, useCache, useToast } from '@/ui/hooks'
 import { CACHE } from '@/constants'
 import { PAGINATION } from '@stocker/core/constants'
 import { useState } from 'react'
+import { Product } from '@stocker/core/entities'
+import { ProductDto } from '@stocker/core/dtos'
 
 export function useProductsPage() {
   const { productsService } = useApi()
@@ -34,13 +36,13 @@ export function useProductsPage() {
     setFilterByNameValue(value ?? '')
   }
 
-  const { data, isFetching, refetch } = useCache({
+  const { data, isFetching, mutate, refetch } = useCache({
     fetcher: fetchProducts,
     key: CACHE.productsList.key,
     dependencies: [page],
   })
 
-  const products = data ? data.items : []
+  const products = data ? data.items.map(Product.create) : []
   const itemsCount = data ? data.itemsCount : 0
 
   async function handleRegisterProductFormSubmit() {

@@ -22,7 +22,7 @@ type Cache<CacheData> = {
   isFetching: boolean
   isRefetching: boolean
   refetch: () => void
-  mutate: (newCacheData: CacheData | null, consig: MudateConfig) => void
+  mutate: (newCacheData: CacheData | null, consig?: MudateConfig) => void
 }
 
 export function useCache<CacheData>({
@@ -48,8 +48,12 @@ export function useCache<CacheData>({
     },
   )
 
-  function mutateCache(newCacheData: CacheData | null, mutateConfig: MudateConfig) {
-    if (newCacheData) mutate(newCacheData, { revalidate: mutateConfig.shouldRevalidate })
+  function mutateCache(newCacheData: CacheData | null, mutateConfig?: MudateConfig) {
+    if (newCacheData)
+      mutate(
+        newCacheData,
+        mutateConfig ? { revalidate: mutateConfig.shouldRevalidate } : undefined,
+      )
   }
 
   return {
