@@ -62,7 +62,6 @@ export const ProductsTable = ({
       <Table
         arial-label='Tabela de produtos'
         shadow='none'
-        topContentPlacement='outside'
         selectionMode='multiple'
         onSelectionChange={(selection) =>
           onProductsSelectionChange(Array.from(selection) as string[])
