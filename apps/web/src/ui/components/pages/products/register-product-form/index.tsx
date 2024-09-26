@@ -40,6 +40,7 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
           />
           <Input
             label='Estoque mínimo'
+            type='number'
             isRequired
             isInvalid={Boolean(errors.minimumStock)}
             errorMessage={errors.minimumStock?.message}
