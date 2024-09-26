@@ -49,6 +49,7 @@ export class PrismaBatchesRepository implements IBatchesRepository {
           code: prismaBatch.code,
           items_count: prismaBatch.items_count,
           expiration_date: prismaBatch.expiration_date,
+          maximum_days_to_expiration: prismaBatch.maximum_days_to_expiration
         },
         where: {
           id: batch.id,
