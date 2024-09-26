@@ -52,7 +52,7 @@ model Batch {
   id              String         @id @default(uuid())
   code            String
   expiration_date DateTime?
-  maximum_days_to_expiration  DateTime?
+  maximum_days_to_expiration  Int?
   items_count     Int
   product_id      String
   registered_at   DateTime       @default(now())
