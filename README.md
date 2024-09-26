@@ -89,6 +89,12 @@ Stocker é uma aplicação que visa facilitar o gerenciamento de estoque, oferec
       </a>
       <span>Nuqs</span>
     </td>
+    <td align="center" width="96">
+      <a href="https://supabase.com/">
+        <img src="documentation/images/supabase.svg" width="48" height="48" alt="supabase"/>
+      </a>
+      <span>Supabase</span>
+    </td>
   </tr>
   </table>
 </div>
