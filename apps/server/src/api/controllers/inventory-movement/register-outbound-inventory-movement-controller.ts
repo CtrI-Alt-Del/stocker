@@ -1,8 +1,8 @@
 import type { IHttp } from '@stocker/core/interfaces'
-import type { BatchDto, InventoryMovementDto } from '@stocker/core/dtos'
+import type {  InventoryMovementDto } from '@stocker/core/dtos'
 import { RegisterOutboundInventoryMovementUseCase } from '@stocker/core/use-cases'
 import {
-  batchRepository,
+  batchesRepository,
   inventorymovementRepository,
   productsRepository,
 } from '@/database'
@@ -12,7 +12,7 @@ export class RegisterOutboundInventoryMovementController {
   async handle(http: IHttp) {
     const body = http.getBody<InventoryMovementDto>()
     const useCase = new RegisterOutboundInventoryMovementUseCase(
-      batchRepository,
+      batchesRepository,
       productsRepository,
       inventorymovementRepository,
     )
