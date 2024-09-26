@@ -26,7 +26,17 @@ const registerInboundMovementFormSchema = z.object({
   itemsCount: nonZeroIntegerSchema,
   remark: descriptionSchema
     .transform((value) => (value === '' ? undefined : value))
-    .optional(),
+    .optional()
+    .default('N/A'),
+  daysUntilExpire: nonZeroIntegerSchema
+    .transform((value) => {
+      if (typeof value === 'string' && value == '') {
+        return undefined
+      }
+      return value
+    })
+    .optional()
+    .default(30),
 })
 
 type RegisterInboundMovementFormData = z.infer<typeof registerInboundMovementFormSchema>
@@ -62,6 +72,7 @@ export function useRegisterInboundMovementForm(
     const batch = Batch.create({
       code: formData.batchCode,
       expirationDate: formData.batchExpirationDate,
+      // daysUntilExpire: formData.daysUntilExpire
       itemsCount: formData.itemsCount,
       productId,
     })
