@@ -1,7 +1,8 @@
-import Error404 from '@/ui/components/pages/not-found'
+"use client";
+import { NotFoundPage } from "@/ui/components/pages/notfound";
 
-const Page = () => {
-  return <Error404 />
+ // Adiciona esta diretiva no topo do arquivo
+
+export default function NotFound() {
+  return <NotFoundPage />
 }
-
-export default Page
