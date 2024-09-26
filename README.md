@@ -1,3 +1,5 @@
+# 🚀 Stocker Web App
+
 <div align="center">
   <img src="documentation/images/stockerlogo.jpeg" alt="Stocker" width="500" height="330" />
 </div>
@@ -64,7 +66,7 @@ Stocker é uma aplicação que visa facilitar o gerenciamento de estoque, oferec
       <span>Fastify</span>
     </td>
   </tr>
-</table>
+  </table>
 </div>
 
 ---
@@ -84,6 +86,80 @@ A aplicação tem como objetivo automatizar o controle de estoque, permitindo o 
 ## Metodologia empregada 💡
 
 Para a confecção do produto foi empregado o framework de [metodologia ágil Scrum](https://aws.amazon.com/pt/what-is/scrum/#:~:text=O%20Scrum%20%C3%A9%20um%20framework,uma%20entrega%20eficiente%20de%20projetos.), que consiste sumariamente dividir o desenvolvimento do projeto em Sprints, um conjunto de tarefas que devem ser executadas e desenvolvidas em um período pré-definido de tempo. Além disso, foi definido o Backlog do Produto, que são todas as funcionalidades que o software deverá ter com base nos requisitos levantados com o cliente. Uma vez aprovado por ele, para selecionar quais seriam as entregas das Sprints do projeto, primeiro foi definido o [MVP](https://rockcontent.com/br/blog/o-que-e-mvp/) de cada Sprint, que é uma versão do produto que prioriza as tarefas que trazem maior entrega de valor para o cliente. Então, a partir disso o Backlog do Produto foi dividido em 4 Backlog de Sprint.
+
+---
+
+## Como Executar Localmente no Windows 🖥️
+
+### Pré-requisitos
+
+Antes de começar, certifique-se de que você tem o seguinte instalado em sua máquina Windows:
+
+1. **Node.js**: Baixe e instale o Node.js a partir de [nodejs.org](https://nodejs.org/). Isso também instalará o npm (Node Package Manager).
+2. **Git**: Baixe e instale o Git a partir de [git-scm.com](https://git-scm.com/).
+3. **Um editor de código**: Você pode usar qualquer editor de código, mas o Visual Studio Code é recomendado. Baixe-o em [code.visualstudio.com](https://code.visualstudio.com/).
+
+### Passo 1: Clonar o Repositório
+
+Abra o seu prompt de comando (cmd) ou PowerShell e execute o seguinte comando para clonar o repositório:
+
+```bash
+git clone https://github.com/CtrI-Alt-Del/stocker
+```
+
+### Passo 2: Navegar até o Diretório do Projeto
+
+Mude para o diretório do projeto:
+
+```bash
+cd stocker
+```
+
+### Passo 3: Instalar Dependências
+
+Execute o seguinte comando para instalar as dependências necessárias:
+
+```bash
+npm install
+```
+
+### Passo 4: Configurar Variáveis de Ambiente
+
+1. **Localize o arquivo `.env.example`** na raiz do seu diretório do projeto. Este arquivo contém exemplos de variáveis de ambiente que você precisa configurar.
+2. **Crie um novo arquivo chamado `.env`** no mesmo diretório que o `.env.example`.
+3. **Copie o conteúdo do `.env.example`** para o novo arquivo `.env`.
+4. **Atualize os valores** no arquivo `.env` de acordo com sua configuração local. Aqui está um exemplo de como o arquivo `.env` pode parecer:
+
+```
+PORT=3333
+MODE=development
+DATABASE_URL=sua_url_do_banco_de_dados
+DIRECT_URL=sua_url_direta
+SUPABASE_URL=sua_url_supabase
+SUPABASE_KEY=sua_chave_supabase
+```
+
+Certifique-se de substituir os valores de espaço reservado pelos seus dados reais.
+
+### Passo 5: Executar o Projeto
+
+Após configurar as variáveis de ambiente, você pode executar o projeto usando o seguinte comando:
+
+```bash
+npm run dev
+```
+
+Este comando iniciará a aplicação, e você deverá ver uma saída indicando que o servidor está em execução.
+
+### Passo 6: Acessar a Aplicação
+
+Abra seu navegador e navegue até `http://localhost:3333` (ou a porta que você especificou no arquivo `.env`) para acessar a aplicação.
+
+### Solução de Problemas
+
+- Se você encontrar algum problema, verifique a saída do console para mensagens de erro.
+- Certifique-se de que todas as variáveis de ambiente estão configuradas corretamente no arquivo `.env`.
+- Verifique se seu banco de dados e quaisquer outros serviços estão em execução, caso sua aplicação dependa deles.
 
 ---
 
