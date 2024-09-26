@@ -6,7 +6,7 @@ type BatchProps = {
   itemsCount: number
   productId: string
   expirationDate: Date | null
-  maximumDaysToExpiration: Date | null
+  maximumDaysToExpiration: number | null
   hasUpdatedStock: boolean
   registeredAt: Date
 }
@@ -57,7 +57,7 @@ export class Batch extends Entity<BatchProps> {
     return this.props.expirationDate
   }
 
-  get maximumDaysToExpiration(): Date | null {
+  get maximumDaysToExpiration(): number | null {
     return this.props.maximumDaysToExpiration
   }
 

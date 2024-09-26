@@ -4,6 +4,6 @@ export type BatchDto = {
   itemsCount: number
   productId: string
   expirationDate?: Date
-  maximumDaysToExpiration?: Date
+  maximumDaysToExpiration?: number
   resgisteredAt?: Date
 }
