@@ -35,6 +35,7 @@ export class RegisterOutboundInventoryMovementUseCase {
 
     product.reduceStock(inventory.itemsCount)
     const updatedbatches = product.updatedBatches
+
     await this.batchRepository.updateManyItemsCount(updatedbatches)
     const emptyBatches = product.emptyBatches
     const emptybatchesId = emptyBatches.map((batch) => batch.id)
