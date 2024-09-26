@@ -65,6 +65,30 @@ Stocker é uma aplicação que visa facilitar o gerenciamento de estoque, oferec
       </a>
       <span>Fastify</span>
     </td>
+    <td align="center" width="96">
+      <a href="https://nextui.org/">
+        <img src="documentation/images/nextui.png" width="48" height="48" alt="NextUi"/>
+      </a>
+      <span>NextUI</span>
+    </td>
+    <td align="center" width="96">
+      <a href="https://www.prisma.io/">
+        <img src="documentation/images/prisma.svg" width="48" height="48" alt="prisma"/>
+      </a>
+      <span>Prisma</span>
+    </td>
+    <td align="center" width="96">
+      <a href="https://zod.dev/">
+        <img src="documentation/images/zod.svg" width="48" height="48" alt="zod"/>
+      </a>
+      <span>Zod</span>
+    </td>
+    <td align="center" width="96">
+      <a href="https://nuqs.47ng.com/">
+        <img src="documentation/images/nuqs.svg" width="48" height="48" alt="nuqs"/>
+      </a>
+      <span>Nuqs</span>
+    </td>
   </tr>
   </table>
 </div>
