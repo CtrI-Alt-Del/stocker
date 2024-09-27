@@ -5,7 +5,6 @@ import { CACHE } from '@/constants'
 import { PAGINATION } from '@stocker/core/constants'
 import { useState } from 'react'
 import { Product } from '@stocker/core/entities'
-import { ProductDto } from '@stocker/core/dtos'
 
 export function useProductsPage() {
   const { productsService } = useApi()
@@ -13,6 +12,7 @@ export function useProductsPage() {
   const [selectedProductsIds, setSelectedProductsIds] = useState<string[]>([])
   const [pageState, setPage] = useQueryState('page', parseAsInteger)
   const [filterByNameValueState, setFilterByNameValue] = useQueryState('name')
+  const [isDeleting, setIsDeleting] = useState(false)
   const page = pageState ?? 1
   const filterByNameValue = filterByNameValueState ?? ''
 
@@ -54,6 +54,7 @@ export function useProductsPage() {
   }
 
   async function handleDeleteProductsAlertDialogConfirm() {
+    setIsDeleting(true)
     const response = await productsService.deleteProducts(selectedProductsIds)
 
     if (response.isFailure) {
@@ -66,6 +67,7 @@ export function useProductsPage() {
     }
 
     setSelectedProductsIds([])
+    setIsDeleting(false)
   }
 
   function handleProductsSelectionChange(productsIds: string[]) {
@@ -76,9 +78,10 @@ export function useProductsPage() {
     page,
     filterByNameValue,
     isFetching,
+    isDeleting,
     products,
     totalPages: Math.ceil(itemsCount / PAGINATION.itemsPerPage),
-    isDeleteProductsButtonVisible: selectedProductsIds.length > 0,
+    selectedProductsIds,
     handleUpdateProduct,
     handleDeleteProductsAlertDialogConfirm,
     handleRegisterProductFormSubmit,

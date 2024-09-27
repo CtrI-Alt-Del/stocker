@@ -12,8 +12,12 @@ export class ListInventoryMovementsUseCase {
   ) {}
 
   async execute({ page, productId }: Request) {
-    const items = await this.inventoryMovementsRepository.findMany({ page, productId })
-    const itemsCount = await this.inventoryMovementsRepository.count()
-    return new PaginationResponse({ items: items.map((item) => item.dto), itemsCount })
+    const { inventoryMovements, count } =
+      await this.inventoryMovementsRepository.findMany({ page, productId })
+
+    return new PaginationResponse({
+      items: inventoryMovements.map((inventoryMovement) => inventoryMovement.dto),
+      itemsCount: count,
+    })
   }
 }

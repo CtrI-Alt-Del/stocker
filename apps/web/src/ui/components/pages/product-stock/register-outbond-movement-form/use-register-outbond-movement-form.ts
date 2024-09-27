@@ -1,20 +1,23 @@
-import { useApi, useToast } from '@/ui/hooks'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { useIntersectionObserver } from 'usehooks-ts'
+import { z } from 'zod'
+
 import { InventoryMovement } from '@stocker/core/entities'
 import {
   dateSchema,
   descriptionSchema,
   nonZeroIntegerSchema,
 } from '@stocker/validation/schemas'
-import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { useIntersectionObserver } from 'usehooks-ts'
-import { z } from 'zod'
+
+import { useApi, useToast } from '@/ui/hooks'
 
 const registerOutboundMovementFormSchema = z.object({
   registeredAt: dateSchema,
   itemsCount: nonZeroIntegerSchema,
-  remark: descriptionSchema
+  remark: z
+    .string()
     .transform((value) => (value === '' ? undefined : value))
     .optional(),
 })
@@ -23,7 +26,7 @@ type RegisterInboundMovementFormData = z.infer<typeof registerOutboundMovementFo
 
 export function useRegisterOutbondMovementForm(
   productId: string,
-  onSubmit: VoidFunction,
+  onSubmit: (itemsCount: number) => void,
 ) {
   const { control, formState, setValue, reset, register, handleSubmit } =
     useForm<RegisterInboundMovementFormData>({
@@ -59,7 +62,7 @@ export function useRegisterOutbondMovementForm(
     if (response.isSuccess) {
       showSuccess('Lançamento de saída realizado! ')
       reset()
-      onSubmit()
+      onSubmit(outboundMovement.itemsCount)
     }
   }
   const { isIntersecting, ref } = useIntersectionObserver({ threshold: 0.5 })

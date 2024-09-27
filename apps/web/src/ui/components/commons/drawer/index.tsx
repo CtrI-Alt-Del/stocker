@@ -21,7 +21,15 @@ type DrawerProps = {
 }
 
 export const DrawerComponent = (
-  { children, trigger, width, direction = 'right', zIndex, onOpen, onClose }: DrawerProps,
+  {
+    children,
+    trigger,
+    width,
+    direction = 'right',
+    zIndex = 1,
+    onOpen,
+    onClose,
+  }: DrawerProps,
   ref: ForwardedRef<DrawerRef>,
 ) => {
   const { isOpen, open, close } = useDrawer(onOpen, onClose)

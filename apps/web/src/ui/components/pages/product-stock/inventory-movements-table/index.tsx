@@ -47,7 +47,9 @@ export const InventoryMovementsTable = ({
             <TableCell>
               {new Datetime(item.registeredAt).format('DD/MM/YYYY HH:mm')}
             </TableCell>
-            <TableCell>{item.movementType === 'inbound' ? 'Entrada' : 'Saída'}</TableCell>
+            <TableCell className='font-semibold'>
+              {item.movementType === 'inbound' ? 'Entrada' : 'Saída'}
+            </TableCell>
             <TableCell>{item.itemsCount}</TableCell>
             <TableCell>{item.responsible.name}</TableCell>
             <TableCell>{item.remark ?? 'N/A'}</TableCell>

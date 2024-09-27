@@ -14,7 +14,7 @@ import type { DialogRef } from './types'
 
 type DialogProps = {
   title: string
-  children: (closeDialog: VoidFunction) => ReactNode 
+  children: (closeDialog: VoidFunction) => ReactNode
   trigger?: ReactNode
   isLarge?: boolean
 }
@@ -39,7 +39,7 @@ const DialogComponent = (
   return (
     <>
       <Modal size={isLarge ? '2xl' : 'md'} isOpen={isOpen} onClose={onClose}>
-        <ModalContent className='z-[1000]'>
+        <ModalContent className='z-50'>
           <ModalHeader>{title}</ModalHeader>
           <ModalBody>{children(onClose)}</ModalBody>
         </ModalContent>

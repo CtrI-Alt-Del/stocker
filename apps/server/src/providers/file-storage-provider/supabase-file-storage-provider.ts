@@ -2,7 +2,7 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
 import type { IFileStorageProvider } from '@stocker/core/interfaces'
 import { ENV } from '@/constants'
-import { AppError } from '@stocker/core/errors'
+import { AppError, ValidationError } from '@stocker/core/errors'
 
 const supabaseUrl = ENV.supabaseUrl
 const supabaseKey = ENV.supabaseKey
@@ -35,7 +35,16 @@ export class SupabaseFileStorageProvider implements IFileStorageProvider {
   }
 
   async delete(fileId: string): Promise<void> {
-    const { error } = await this.supabase.storage.from('stocker').remove([fileId])
+    console.log({ fileId })
+    const filePath = fileId.split('stocker/')[1]
+    if (!filePath) {
+      throw new ValidationError('Storaged file not found')
+    }
+
+    const { error } = await this.supabase.storage
+      .from('stocker')
+      .remove([filePath.slice(1)])
+
     if (error) {
       throw new AppError('Storage Error', `Delete Failed: ${error.message}`)
     }

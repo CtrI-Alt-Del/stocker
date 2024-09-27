@@ -6,11 +6,11 @@ import { nonZeroIntegerSchema } from './non-zero-integer-schema'
 import { stringSchema } from './string-schema'
 import { integerSchema } from './integer-schema'
 
-export const batchFormSchema = z
+export const batchSchema = z
   .object({
     code: stringSchema,
     itemsCount: nonZeroIntegerSchema,
-    expirationDate: z
+    expirationDate: z.coerce
       .string()
       .transform((value) => {
         if (!value) return undefined

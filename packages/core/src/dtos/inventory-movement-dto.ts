@@ -2,8 +2,14 @@ export type InventoryMovementDto = {
   id?: string
   movementType: string
   itemsCount: number
-  responsibleId: string
-  productId: string
   registeredAt: Date
+  responsible: {
+    id: string
+    name?: string
+  }
+  product: {
+    id: string
+    name?: string
+  }
   remark?: string
 }

@@ -13,6 +13,7 @@ import { RegisterOutboundInventoryMovementForm } from './register-outbond-moveme
 import { BatchesTable } from './batches-table'
 import { InventoryMovementsTable } from './inventory-movements-table'
 import { Icon } from '../../commons/icon'
+import { AlertDialog } from '../../commons/alert-dialog'
 
 type ProductStockPageProps = {
   productDto: ProductDto
@@ -77,9 +78,9 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
               <RegisterOutboundInventoryMovementForm
                 productId={product.id}
                 onCancel={closeDrawer}
-                onSubmit={async () => {
+                onSubmit={(itemsCount) => {
                   closeDrawer()
-                  await handleRegisterOutboundInventoryMovementFormSubmit()
+                  handleRegisterOutboundInventoryMovementFormSubmit(itemsCount)
                 }}
               />
             )}
@@ -100,17 +101,27 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
         }}
       >
         <Tab key='batches' title='Lotes' className='text-lg'>
-          <Button
-            color='danger'
-            onClick={handleDeleteBatchesButtonClick}
-            isLoading={isDeletingBatches}
-            className={twMerge(
-              'mt-1',
-              selectedBatchesIds.length > 0 ? 'visible' : 'invisible pointer-events-auto',
-            )}
+          <AlertDialog
+            onConfirm={handleDeleteBatchesButtonClick}
+            trigger={
+              <Button
+                color='danger'
+                isLoading={isDeletingBatches}
+                className={twMerge(
+                  'mt-1',
+                  selectedBatchesIds.length > 0
+                    ? 'visible'
+                    : 'invisible pointer-events-auto',
+                )}
+              >
+                Deletar lote(s)
+              </Button>
+            }
           >
-            Deletar lote(s)
-          </Button>
+            {selectedBatchesIds.length > 1
+              ? 'Tem certeza que deseja deletar esses lotes?'
+              : 'Tem certeza que deseja deletar esse lote?'}
+          </AlertDialog>
 
           <div className='mt-2'>
             <BatchesTable

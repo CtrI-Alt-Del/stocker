@@ -6,7 +6,6 @@ import { ProductsTable } from './products-table'
 
 import { Drawer } from '../../commons/drawer'
 import { RegisterProductForm } from './register-product-form'
-import { useBreakpoint } from '@/ui/hooks'
 import { useProductsPage } from './use-products-page'
 import { Search } from '../../commons/search'
 import { AlertDialog } from '../../commons/alert-dialog'
@@ -14,11 +13,12 @@ import { AlertDialog } from '../../commons/alert-dialog'
 export const ProductsPage = () => {
   const {
     isFetching,
+    isDeleting,
     page,
     products,
     totalPages,
     filterByNameValue,
-    isDeleteProductsButtonVisible,
+    selectedProductsIds,
     handlePageChange,
     handleSearchChange,
     handleUpdateProduct,
@@ -36,12 +36,18 @@ export const ProductsPage = () => {
         </div>
 
         <div className='flex items-center gap-1'>
-          {isDeleteProductsButtonVisible && (
+          {selectedProductsIds.length > 0 && (
             <AlertDialog
-              trigger={<Button color='danger'>Deletar produtos</Button>}
+              trigger={
+                <Button color='danger' isLoading={isDeleting}>
+                  Deletar produtos
+                </Button>
+              }
               onConfirm={handleDeleteProductsAlertDialogConfirm}
             >
-              Você tem certeza que deseja deletar esse(s) produto(s)?
+              {selectedProductsIds.length > 1
+                ? 'Você tem certeza que deseja deletar esses produtos?'
+                : 'Você tem certeza que deseja deletar esse produto?'}
             </AlertDialog>
           )}
           <Drawer
@@ -68,6 +74,7 @@ export const ProductsPage = () => {
           products={products}
           totalPages={totalPages}
           isLoading={isFetching}
+          selectedProductsIds={selectedProductsIds}
           page={page}
           onProductsSelectionChange={handleProductsSelectionChange}
           onUpdateProduct={handleUpdateProduct}

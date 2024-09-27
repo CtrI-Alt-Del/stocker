@@ -8,8 +8,8 @@ export const FileStorageService = (apiClient: IApiClient): IFileStorageService =
       return await apiClient.multipart<{ imageUrl: string }>('/file-storage/image', data)
     },
 
-    async deleteImage(imageId: string) {
-      return await apiClient.delete('/file-storage/image', { imageId })
+    async deleteImage(imageFileId: string) {
+      return await apiClient.delete('/file-storage/image', { fileId: imageFileId })
     },
   }
 }

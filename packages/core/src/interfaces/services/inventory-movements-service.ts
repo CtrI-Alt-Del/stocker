@@ -1,19 +1,17 @@
 import type { Batch, InventoryMovement } from '../../domain/entities'
-import { InventoryMovementDto } from '../../dtos'
+import type { InventoryMovementDto } from '../../dtos'
 import type { ApiResponse, PaginationResponse } from '../../responses'
 import type { InventoryMovementsListParams } from '../../types'
 
 export interface IInventoryMovementsService {
   registerInboundMovement(
-    inventoryMovemen: InventoryMovement,
+    inventoryMovement: InventoryMovement,
     batch: Batch,
   ): Promise<ApiResponse<void>>
   registerOutbondMovement(
-    inventoryMovemenDto: InventoryMovement,
+    inventoryMovement: InventoryMovement,
   ): Promise<ApiResponse<void>>
   listInventoryMovements(
     params: InventoryMovementsListParams,
-  ): Promise<ApiResponse<PaginationResponse<InventoryMovement>>>
-  listManyInventoryMovement(params:InventoryMovementsListParams): Promise<ApiResponse<PaginationResponse<InventoryMovement>>>
-
+  ): Promise<ApiResponse<PaginationResponse<InventoryMovementDto>>>
 }

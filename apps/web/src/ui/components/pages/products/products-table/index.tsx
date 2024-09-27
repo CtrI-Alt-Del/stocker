@@ -34,6 +34,7 @@ type ProductsTableProps = {
   isLoading: boolean
   products: Product[]
   totalPages: number
+  selectedProductsIds?: string[]
   onUpdateProduct: VoidFunction
   onProductsSelectionChange: (productsIds: string[]) => void
   onPageChange: (page: number) => void
@@ -44,6 +45,7 @@ export const ProductsTable = ({
   page,
   products,
   totalPages,
+  selectedProductsIds,
   onProductsSelectionChange,
   onUpdateProduct,
   onPageChange,
@@ -68,6 +70,7 @@ export const ProductsTable = ({
         arial-label='Tabela de produtos'
         shadow='none'
         selectionMode='multiple'
+        selectedKeys={selectedProductsIds}
         onSelectionChange={(selection) =>
           onProductsSelectionChange(Array.from(selection) as string[])
         }

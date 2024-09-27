@@ -21,79 +21,82 @@ export const RegisterInboundInventoryMovementForm = ({
     useRegisterInboundMovementForm(productId, onSubmit)
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className='space-y-6'>
-      <div className='grid grid-cols-2 gap-6'>
+    <>
+      <h3 className='text-xl text-zinc-800 font-semibold'>Lançamento de entrada</h3>
+      <form ref={formRef} onSubmit={handleSubmit} className='space-y-6 mt-6'>
+        <div className='grid grid-cols-2 gap-6'>
+          <Input
+            type='number'
+            label='Quantidade de itens'
+            isRequired
+            isInvalid={Boolean(errors.itemsCount?.message)}
+            {...register('itemsCount')}
+            errorMessage={errors.itemsCount?.message}
+          />
+          <Controller
+            name='registeredAt'
+            control={control}
+            render={({ field: { value, onChange }, fieldState: { error } }) => (
+              <Input
+                type='datetime-local'
+                label='Data e hora de registro'
+                value={new Datetime(value).format('YYYY-MM-DDTHH:mm')}
+                onChange={onChange}
+                isRequired
+                isInvalid={Boolean(error?.message)}
+                errorMessage={error?.message}
+              />
+            )}
+          />
+        </div>
         <Input
-          type='number'
-          label='Quantidade de itens'
+          label='Codigo do Lote'
           isRequired
-          isInvalid={Boolean(errors.itemsCount?.message)}
-          {...register('itemsCount')}
-          errorMessage={errors.itemsCount?.message}
+          isInvalid={Boolean(errors.code?.message)}
+          {...register('code')}
+          className='w-full'
+          errorMessage={errors.code?.message}
         />
-        <Controller
-          name='registeredAt'
-          control={control}
-          render={({ field: { value, onChange }, fieldState: { error } }) => (
-            <Input
-              type='datetime-local'
-              label='Data e hora de registro'
-              value={new Datetime(value).format('YYYY-MM-DDTHH:mm')}
-              onChange={onChange}
-              isRequired
-              isInvalid={Boolean(error?.message)}
-              errorMessage={error?.message}
-            />
-          )}
+        <div className='grid grid-cols-2 gap-6'>
+          <Controller
+            name='expirationDate'
+            control={control}
+            render={({ field: { onChange }, fieldState: { error } }) => (
+              <Input
+                type='date'
+                label='Validade do lote'
+                isInvalid={Boolean(errors.expirationDate?.message)}
+                onChange={onChange}
+                errorMessage={error?.message}
+              />
+            )}
+          />
+          <Input
+            label='Máximo de dias até validade'
+            type='number'
+            isInvalid={Boolean(errors.maximumDaysToExipiration?.message)}
+            errorMessage={errors.maximumDaysToExipiration?.message}
+            {...register('maximumDaysToExipiration')}
+          />
+        </div>
+        <Textarea
+          label='Observação'
+          isInvalid={Boolean(errors.remark?.message)}
+          {...register('remark')}
+          errorMessage={errors.remark?.message}
         />
-      </div>
-      <Input
-        label='Codigo do Lote'
-        isRequired
-        isInvalid={Boolean(errors.code?.message)}
-        {...register('code')}
-        className='w-full'
-        errorMessage={errors.code?.message}
-      />
-      <div className='grid grid-cols-2 gap-6'>
-        <Controller
-          name='expirationDate'
-          control={control}
-          render={({ field: { onChange }, fieldState: { error } }) => (
-            <Input
-              type='date'
-              label='Validade do lote'
-              isInvalid={Boolean(errors.expirationDate?.message)}
-              onChange={onChange}
-              errorMessage={error?.message}
-            />
-          )}
-        />
-        <Input
-          label='Máximo de dias até validade'
-          type='number'
-          isInvalid={Boolean(errors.maximumDaysToExipiration?.message)}
-          errorMessage={errors.maximumDaysToExipiration?.message}
-          {...register('maximumDaysToExipiration')}
-        />
-      </div>
-      <Textarea
-        label='Observação'
-        isInvalid={Boolean(errors.remark?.message)}
-        {...register('remark')}
-        errorMessage={errors.remark?.message}
-      />
 
-      <Divider className='my-2' />
+        <Divider className='my-2' />
 
-      <div className='flex items-center gap-3'>
-        <Button onClick={onCancel} isDisabled={isSubmiting}>
-          Cancelar
-        </Button>
-        <Button type='submit' color='primary' isLoading={isSubmiting}>
-          Confirmar
-        </Button>
-      </div>
-    </form>
+        <div className='flex items-center gap-3'>
+          <Button onClick={onCancel} isDisabled={isSubmiting}>
+            Cancelar
+          </Button>
+          <Button type='submit' color='primary' isLoading={isSubmiting}>
+            Confirmar
+          </Button>
+        </div>
+      </form>
+    </>
   )
 }

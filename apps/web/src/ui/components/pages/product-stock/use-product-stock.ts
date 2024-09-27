@@ -75,7 +75,13 @@ export function useProductStockPage(productDto: ProductDto) {
     refetch()
   }
 
-  async function handleRegisterOutboundInventoryMovementFormSubmit() {
+  function handleRegisterOutboundInventoryMovementFormSubmit(itemsCount: number) {
+    product.reduceStock(itemsCount)
+    for (const updatedBatch of product.updatedBatches) {
+      product.updateBatch(updatedBatch)
+    }
+    product.deleteBatches(product.emptyBatches.map((batch) => batch.id))
+    setProduct(Product.create(product.dto))
     refetch()
   }
 

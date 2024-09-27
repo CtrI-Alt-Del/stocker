@@ -34,7 +34,10 @@ const registerProductFormSchema = z.object({
   code: stringSchema,
   minimumStock: nonZeroIntegerSchema,
   categoryId: idSchema.optional(),
-  model: stringSchema.transform((value) => (value === '' ? undefined : value)).optional(),
+  model: z
+    .string()
+    .transform((value) => (value === '' ? undefined : value))
+    .optional(),
   isActive: booleanSchema.default(true),
 })
 

@@ -27,7 +27,7 @@ export class RegisterOutboundInventoryMovementUseCase {
   }
 
   async execute({ inventoryMovementDto }: Request) {
-    const productId = inventoryMovementDto.productId
+    const productId = inventoryMovementDto.product.id
     const product = await this.productsRepository.findById(productId)
     if (!product) throw new NotFoundError('Produto não existe')
 

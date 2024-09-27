@@ -65,6 +65,7 @@ export class Product extends Entity<ProductProps> {
 
   reduceStock(itemsCount: number): void {
     let stock = itemsCount
+    console.log('this', this.currentStock)
     if (stock > this.currentStock) {
       throw new ConflictError('Estoque insuficiente')
     }
@@ -102,6 +103,10 @@ export class Product extends Entity<ProductProps> {
       return 'average'
     }
     return 'danger'
+  }
+
+  get hasImage(): boolean {
+    return Boolean(this.image)
   }
 
   get costPrice(): Price {
