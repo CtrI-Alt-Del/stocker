@@ -22,6 +22,7 @@ import {
   EllipsisVertical,
   X,
   type LucideProps,
+  Check,
 } from 'lucide-react'
 
 import type { IconName } from '../types'
@@ -50,5 +51,6 @@ export const ICONS: Record<
   supplier: Truck,
   category: Tag,
   view: Eye,
+  check: Check,
   search: Search,
 }

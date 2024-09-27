@@ -1,4 +1,5 @@
 export type IconName =
+  | 'check'
   | 'dashboard'
   | 'inventory'
   | 'record'
