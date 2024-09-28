@@ -1,5 +1,7 @@
 import { NotFoundPage } from "@/ui/components/pages/notfound";
 
-export default function NotFound() {
+const Page = () => {
   return <NotFoundPage />
 }
+
+export default Page 
