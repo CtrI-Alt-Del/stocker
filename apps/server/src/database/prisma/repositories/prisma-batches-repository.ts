@@ -27,11 +27,11 @@ export class PrismaBatchesRepository implements IBatchesRepository {
     }
   }
 
-  async findById(productId: string): Promise<Batch | null> {
+  async findById(batchId: string): Promise<Batch | null> {
     try {
       const prismaBatch = await prisma.batch.findUnique({
         where: {
-          id: productId,
+          id: batchId,
         },
       })
       return prismaBatch ? this.mapper.toDomain(prismaBatch) : null

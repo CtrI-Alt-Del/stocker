@@ -51,7 +51,7 @@ export function useRegisterInboundMovementForm(
 
     const batch = Batch.create({
       code: formData.code,
-      expirationDate: formData.expirationDate,
+      expirationDate: formData.expirationDate?.toDateString(),
       maximumDaysToExpiration: formData.maximumDaysToExipiration,
       itemsCount: formData.itemsCount,
       productId,

@@ -17,7 +17,6 @@ export function useUpdateBatchForm(
   batch: Batch,
   onSubmit: (updatedBatchDto: Partial<BatchDto>) => void,
 ) {
-  console.log(batch)
   const { formState, control, register, handleSubmit } = useForm<UpdateBatchFormData>({
     defaultValues: {
       code: batch.code,
@@ -35,8 +34,9 @@ export function useUpdateBatchForm(
       itemsCount: formData.itemsCount,
       code: formData.code,
       expirationDate: formData.expirationDate
-        ? new Datetime(formData.expirationDate).addDays(1)
+        ? new Datetime(formData.expirationDate).addDays(1).toDateString()
         : undefined,
+      maximumDaysToExpiration: formData.maximumDaysToExipiration,
     }
 
     const response = await batchesService.updateBatch(partialBatchDto, batch.id)

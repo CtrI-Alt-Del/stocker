@@ -49,7 +49,7 @@ export const UpdateBatchForm = ({
             <Input
               type='date'
               label='Validade do lote'
-              defaultValue={value ? new Datetime(new Date()).format('YYYY-MM-DD') : ''}
+              defaultValue={value ? new Datetime(value).format('YYYY-MM-DD') : ''}
               isInvalid={Boolean(errors.expirationDate?.message)}
               onChange={onChange}
               errorMessage={error?.message}

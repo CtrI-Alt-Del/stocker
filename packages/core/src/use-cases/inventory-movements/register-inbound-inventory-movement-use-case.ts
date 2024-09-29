@@ -1,7 +1,7 @@
 import type { IInventoryMovementsRepository } from '../../interfaces/repositories/inventory-movements-repository'
-import type { IBatchesRepository } from '../../interfaces'
+import type { IBatchesRepository, IProductsRepository } from '../../interfaces'
 import type { BatchDto, InventoryMovementDto } from '../../dtos'
-import { ConflictError } from '../../errors'
+import { NotAllowedError, NotFoundError } from '../../errors'
 import { Batch, InventoryMovement } from '../../domain/entities'
 
 type Request = {
@@ -10,20 +10,25 @@ type Request = {
 }
 
 export class RegisterInboundInventoryMovementUseCase {
+  private readonly productsRepository: IProductsRepository
   private readonly batchRepository: IBatchesRepository
   private readonly inventorymovementRepository: IInventoryMovementsRepository
 
   constructor(
+    productsRepository: IProductsRepository,
     batchRepository: IBatchesRepository,
     inventorymovementRepository: IInventoryMovementsRepository,
   ) {
+    this.productsRepository = productsRepository
     this.batchRepository = batchRepository
     this.inventorymovementRepository = inventorymovementRepository
   }
 
   async execute({ batchDto, inventoryMovementDto }: Request) {
     const productId = batchDto.productId
-    if (!productId) throw new ConflictError('Produto não encontrado')
+    const product = await this.productsRepository.findById(productId)
+    if (!product) throw new NotFoundError('Produto não encontrado')
+    if (!product.isActive) throw new NotAllowedError('Produto inativo')
 
     const batch = Batch.create(batchDto)
     await this.batchRepository.add(batch)

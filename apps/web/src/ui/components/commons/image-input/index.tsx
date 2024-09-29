@@ -47,7 +47,7 @@ export const ImageInputComponent = (
     <>
       <Dialog ref={dialogRef} title='Cortando imagem' isLarge>
         {() => (
-          <>
+          <div className='flex items-center flex-col gap-6 w-full pb-3'>
             <Cropper
               ref={cropperRef}
               src={previewImage}
@@ -58,7 +58,7 @@ export const ImageInputComponent = (
             <Button color='primary' onClick={handleImageCrop}>
               Cortar imagem
             </Button>
-          </>
+          </div>
         )}
       </Dialog>
       <label

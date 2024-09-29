@@ -1,4 +1,8 @@
-import { batchesRepository, inventorymovementRepository } from '@/database'
+import {
+  batchesRepository,
+  inventorymovementRepository,
+  productsRepository,
+} from '@/database'
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 import type { BatchDto, InventoryMovementDto } from '@stocker/core/dtos'
 import type { IHttp } from '@stocker/core/interfaces'
@@ -13,6 +17,7 @@ export class RegisterInboundInventoryMovementController {
   async handle(http: IHttp) {
     const body = http.getBody<Body>()
     const useCase = new RegisterInboundInventoryMovementUseCase(
+      productsRepository,
       batchesRepository,
       inventorymovementRepository,
     )

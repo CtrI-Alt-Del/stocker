@@ -13,9 +13,8 @@ export class PrismaBatchesMapper {
       resgisteredAt: prismaBatch.registered_at,
     }
 
-    if (prismaBatch.expiration_date) dto.expirationDate = prismaBatch.expiration_date
-
-    console.log(prismaBatch.maximum_days_to_expiration)
+    if (prismaBatch.expiration_date)
+      dto.expirationDate = prismaBatch.expiration_date.toDateString()
 
     if (prismaBatch.maximum_days_to_expiration)
       dto.maximumDaysToExpiration = prismaBatch.maximum_days_to_expiration
@@ -31,7 +30,7 @@ export class PrismaBatchesMapper {
       code: batchDto.code,
       items_count: batchDto.itemsCount,
       product_id: batchDto.productId,
-      expiration_date: batchDto.expirationDate ?? null,
+      expiration_date: batch.expirationDate ?? null,
       maximum_days_to_expiration: batchDto.maximumDaysToExpiration ?? null,
       registered_at: batch.registeredAt,
     }

@@ -89,17 +89,19 @@ export function useUpdateProductForm({
     let imageUrl = ''
 
     if (formImageFile) {
-      const deleteImageResponse = await fileStorageService.deleteImage(product.image)
+      if (product.image) {
+        const deleteImageResponse = await fileStorageService.deleteImage(product.image)
 
-      if (deleteImageResponse.isFailure) {
-        alert(deleteImageResponse.errorMessage)
-        return
+        if (deleteImageResponse.isFailure) {
+          showError(deleteImageResponse.errorMessage)
+          return
+        }
       }
 
       const uploadImageResponse = await fileStorageService.uploadImage(formImageFile)
 
       if (uploadImageResponse.isFailure) {
-        alert(uploadImageResponse.errorMessage)
+        showError(uploadImageResponse.errorMessage)
         return
       }
 

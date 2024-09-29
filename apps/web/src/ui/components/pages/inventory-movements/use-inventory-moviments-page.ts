@@ -28,13 +28,11 @@ export function useInventoryMovementPage() {
 
   const { data, isFetching } = useCache({
     fetcher: fetchInventoryMovements,
-    key: CACHE.inventoryMovements.key,
+    key: CACHE.productInventoryMovements.key,
     dependencies: [page],
   })
   const movements = data ? data.items : []
   const itemsCount = data ? data.itemsCount : 0
-
-  console.log(data)
 
   return {
     page,

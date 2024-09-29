@@ -5,4 +5,7 @@ export const CACHE = {
   inventoryMovements: {
     key: '/inventory-movements',
   },
+  productInventoryMovements: {
+    key: '/product/inventory-movements',
+  },
 }

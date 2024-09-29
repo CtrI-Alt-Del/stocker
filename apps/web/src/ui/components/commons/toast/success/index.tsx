@@ -9,7 +9,7 @@ export const SuccessToast = ({ message, isVisible, onClose }: ToastProps) => {
   return (
     <AnimatedContainer isVisible={isVisible}>
       <div className='bg-green-500 h-full w-2 absolute inset-y-0 left-0' />
-      <div className='bg-green-100 p-5 flex items-center gap-5 rounded-md'>
+      <div className='bg-green-100 p-6 flex items-center gap-5 rounded-md'>
         <Icon
           name='close'
           className='text-white flex items-center justify-center bg-green-500 rounded-full'

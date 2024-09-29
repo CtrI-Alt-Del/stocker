@@ -19,8 +19,6 @@ export class PrismaInventoryMovementsMapper {
       registeredAt: prismaInventoryMovements.registered_at,
     })
 
-    console.log(inventoryMovement)
-
     return inventoryMovement
   }
 

@@ -29,7 +29,8 @@ export class RegisterOutboundInventoryMovementUseCase {
   async execute({ inventoryMovementDto }: Request) {
     const productId = inventoryMovementDto.product.id
     const product = await this.productsRepository.findById(productId)
-    if (!product) throw new NotFoundError('Produto não existe')
+    if (!product) throw new NotFoundError('Produto não encontrado')
+    if (!product.isActive) throw new NotAllowedError('Produto inativo')
 
     const inventory = InventoryMovement.create(inventoryMovementDto)
 

@@ -65,7 +65,6 @@ export class Product extends Entity<ProductProps> {
 
   reduceStock(itemsCount: number): void {
     let stock = itemsCount
-    console.log('this', this.currentStock)
     if (stock > this.currentStock) {
       throw new ConflictError('Estoque insuficiente')
     }
@@ -80,6 +79,7 @@ export class Product extends Entity<ProductProps> {
 
   appendBatch(batch: Batch) {
     this.props.batches.push(batch)
+    this.sortBatches()
   }
 
   updateBatch(updatedBatch: Batch) {
@@ -87,12 +87,26 @@ export class Product extends Entity<ProductProps> {
       batch.isEqualTo(updatedBatch),
     )
     this.props.batches.splice(batchIndex, 1, updatedBatch)
+    this.sortBatches()
   }
 
   deleteBatches(batchesIds: string[]) {
     this.props.batches = this.props.batches.filter(
       (batch) => !batchesIds.includes(batch.id),
     )
+  }
+
+  private sortBatches() {
+    this.props.batches.sort((a, b) => {
+      console.log(typeof a.expirationDate)
+      console.log(typeof b.expirationDate)
+      const aExpSort = a.expirationDate ? a.expirationDate.getTime() : Infinity
+      const bExpSort = b.expirationDate ? b.expirationDate.getTime() : Infinity
+
+      if (aExpSort !== bExpSort) return aExpSort - bExpSort
+
+      return a.registeredAt.getTime() - b.registeredAt.getTime()
+    })
   }
 
   get stockLevel(): StockLevel {

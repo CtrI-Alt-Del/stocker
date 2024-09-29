@@ -41,6 +41,9 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
         take: PAGINATION.itemsPerPage,
         skip: (page - 1) * PAGINATION.itemsPerPage,
         where: whereCondition,
+        orderBy: {
+          registered_at: 'desc',
+        },
         include: {
           User: {
             select: {
