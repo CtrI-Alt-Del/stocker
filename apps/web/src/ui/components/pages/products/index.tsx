@@ -29,8 +29,8 @@ export const ProductsPage = () => {
 
   return (
     <>
-      <div className='flex justify-between'>
-        <div className='flex-1 max-w-96 space-y-2'>
+      <div className='flex flex-col gap-3 md:flex-row md:gap-0 justify-between'>
+        <div className='flex-1 w-full max-w-96 space-y-2'>
           <h1 className='text-3xl font-black'>Produtos</h1>
           <Search value={filterByNameValue} onSearchChange={handleSearchChange} />
         </div>

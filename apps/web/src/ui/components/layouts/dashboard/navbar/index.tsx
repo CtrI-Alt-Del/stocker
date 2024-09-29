@@ -82,7 +82,6 @@ export const Navbar = () => {
               key='2'
               startContent={<Icon name='record' size={20} />}
               title='Cadastros'
-              fullWidth
               aria-label='Cadastros'
               classNames={{
                 base: 'font-medium text-zinc-500 data-[open=true]:text-zinc-900',

@@ -17,7 +17,7 @@ export const Search = ({ onSearchChange, value }: SearchComponentsProps) => {
       classNames={{
         inputWrapper: ['bg-zinc-100', 'h-12'],
       }}
-      className='w-[40rem] max-w-96'
+      className='w-full max-w-96'
       endContent={<Icon name='search' className='text-zinc-300' />}
       value={value}
       onValueChange={onSearchChange}

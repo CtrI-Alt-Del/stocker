@@ -34,11 +34,16 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
 
   return (
     <div>
-      <div className='flex items-center justify-between'>
+      <div className='flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center justify-between'>
         <div className='flex justify-end flex-col'>
           <h1 className='text-2xl font-semibold'>{product.name}</h1>
-          <small className='uppercase text-base text-zinc-400'>{product.code}</small>
-          <div className='mt-3 flex items-center gap-2'>
+          <small
+            aria-label='Código do produto'
+            className='uppercase text-base text-zinc-400'
+          >
+            {product.code}
+          </small>
+          <div className='mt-2 flex items-center gap-2'>
             <p className='text-zinc-400 text-sm'>Estoque atual: {product.currentStock}</p>
             <span className='size-1 rounded-full bg-zinc-400' />
             <p className='text-zinc-400 text-sm'>
@@ -47,7 +52,7 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
           </div>
         </div>
 
-        <div className='flex flex-row gap-3'>
+        <div className='flex flex-col sm:flex-row gap-1'>
           <Drawer
             trigger={
               <Button color='primary' radius='sm' endContent={<Icon name='inbound' />}>
@@ -92,6 +97,7 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
         aria-label='Abas'
         color='primary'
         variant='underlined'
+        fullWidth
         classNames={{
           tabList:
             'gap-12 mt-6 w-full relative rounded-none p-0 border-b-2 border-divider ',
