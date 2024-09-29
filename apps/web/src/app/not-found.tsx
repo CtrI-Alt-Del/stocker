@@ -1,7 +1,7 @@
-import { Error404 } from '@/ui/components/pages/not-found'
+import { NotFoundPage } from '@/ui/components/pages/not-found'
 
 const Page = () => {
-  return <Error404 />
+  return <NotFoundPage />
 }
 
 export default Page

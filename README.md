@@ -109,7 +109,7 @@ Atualmente, muitas empresas utilizam métodos manuais, como planilhas ou até me
 
 ## Objetivo do produto 🎯
 
-A aplicação tem como objetivo automatizar o controle de estoque, permitindo o gerenciamento de produtos de forma eficiente e acessível. Os usuários poderão adicionar, editar e remover itens do estoque, com controle de permissões para garantir que apenas administradores possam realizar essas ações críticas. A interface intuitiva permite o acompanhamento em tempo real da situação do estoque, melhorando a gestão de inventários e facilitando a reposição de produtos. O sistema será acessível de qualquer lugar, permitindo que os usuários acompanhem e gerenciem o estoque remotamente. 
+A aplicação tem como objetivo automatizar o controle de estoque, permitindo o gerenciamento de produtos de forma eficiente e acessível. Os usuários poderão adicionar, editar e remover itens do estoque, com controle de permissões para garantir que apenas administradores possam realizar essas ações críticas. A interface intuitiva permite o acompanhamento em tempo real da situação do estoque, melhorando a gestão de inventários e facilitando a reposição de produtos. O sistema será acessível de qualquer lugar, permitindo que os usuários acompanhem e gerenciem o estoque remotamente.
 
 ---
 
@@ -153,12 +153,14 @@ Execute o seguinte comando para instalar as dependências necessárias:
 npm install
 ```
 
-### Passo 4: Configurar Variáveis de Ambiente
+### Passo 4: Configurar Variáveis de Ambiente do SERVIDOR e do CLIENTE:
 
 1. **Localize o arquivo `.env.example`** na raiz do seu diretório do projeto. Este arquivo contém exemplos de variáveis de ambiente que você precisa configurar.
 2. **Crie um novo arquivo chamado `.env`** no mesmo diretório que o `.env.example`.
 3. **Copie o conteúdo do `.env.example`** para o novo arquivo `.env`.
 4. **Atualize os valores** no arquivo `.env` de acordo com sua configuração local. Aqui está um exemplo de como o arquivo `.env` pode parecer:
+
+#### Variáveis de Ambiente do SERVIDOR:
 
 ```
 PORT=3333
@@ -169,27 +171,37 @@ SUPABASE_URL=sua_url_supabase
 SUPABASE_KEY=sua_chave_supabase
 ```
 
+#### Variáveis de Ambiente do CLIENTE:
+
+```
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_SERVER_URL=http://localhost:3333
+```
+
 Certifique-se de substituir os valores de espaço reservado pelos seus dados reais.
 
 ### Passo 5: Executar o Projeto
 
-Após configurar as variáveis de ambiente, você pode executar o projeto usando o seguinte comando:
+Após configurar as variáveis de ambiente, você pode executar o projeto usando o seguinte comando na pasta `stocker`:
 
 ```bash
 npm run dev
 ```
 
-Este comando iniciará a aplicação, e você deverá ver uma saída indicando que o servidor está em execução.
+Este comando iniciará a aplicação, e você deverá ver uma saída indicando que a aplicação cliente e servidor está em execução.
 
 ### Passo 6: Acessar a Aplicação
 
-Abra seu navegador e navegue até `http://localhost:3333` (ou a porta que você especificou no arquivo `.env`) para acessar a aplicação.
+Abra seu navegador e navegue até `http://localhost:3000` (ou a porta que você especificou no arquivo `.env`) para acessar a aplicação web.
+Ou abra o navegador e navegue até `http://localhost:3333` (ou a porta que você especificou no arquivo `.env`) para acessar o servidor.
 
 ### Solução de Problemas
 
 - Se você encontrar algum problema, verifique a saída do console para mensagens de erro.
-- Certifique-se de que todas as variáveis de ambiente estão configuradas corretamente no arquivo `.env`.
+- Certifique-se de que todas as variáveis de ambiente estão configuradas corretamente no arquivo `.env` tanto do cliente quanto do servidor.
 - Verifique se seu banco de dados e quaisquer outros serviços estão em execução, caso sua aplicação dependa deles.
+
+**🚧Caso haja algum erro ao executar as dependências do projeto, rode o comando `npm install` na pasta `apps/server` e `apps/web` separadamente e tente executar o projeto novamente.🚧**
 
 ---
 
@@ -214,7 +226,6 @@ Work in progress... 🚧
 ---
 
 ## Requisitos 📒
-
 
 <img src="documentation/images/requirements.png" alt="Tabela contendo todos os requisitos em ordem de prioridade" width="1460" height="920" />
 
