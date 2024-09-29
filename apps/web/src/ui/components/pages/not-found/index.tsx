@@ -1,25 +1,24 @@
-
 'use client'
-import React from 'react'
-import { Image } from '@nextui-org/react'
 
-export const Error404 = () => {
-  return (
-    <div className='flex justify-between'>
-      <div className='flex-1 max-w-96 space-y-2'>
-        <h3>Voltar</h3>
-      </div>
-      <div>
-        <div>
-          <h1>404</h1>
-          <p>EIta Página não encontrada</p>
+import { Button } from '@nextui-org/button'
+import { Link } from '@nextui-org/link'
+import Image from 'next/image'
+
+export const NotFoundPage = () => {
+    return (
+        <div className="flex flex-col items-center justify-center min-h-screen py-2">
+          <Image 
+            src="/images/camel-not-found.png" 
+            alt="Sleeping Camel" 
+            width={300}
+            height={300} 
+            className="w-auto h-62" 
+          />
+          <h1 className="text-6xl font-bold">Página não encontrada!</h1>
+          <p className="mt-5 text-xl">Desculpe, a página que você está procurando não foi encontrada.</p>
+          <Button className="px-6 py-2 mt-5 text-white rounded bg-primary" as={Link} href="/">
+            Voltar para a página inicial
+          </Button>
         </div>
-        <Image
-          width={300}
-          alt='Camelo da Stocker dormindo'
-          src='/documentation/images/logo-error.png'
-        />
-      </div>
-    </div>
-  )
+      )
 }
