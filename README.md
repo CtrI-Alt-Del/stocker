@@ -209,7 +209,7 @@ Ou abra o navegador e navegue até `http://localhost:3333` (ou a porta que você
 
 ### Sprint - 1️⃣
 
-Work in progress... 🚧
+https://github.com/user-attachments/assets/2a9432b4-2785-4214-95e5-3daf1474814f
 
 ### Sprint - 2️⃣
 
