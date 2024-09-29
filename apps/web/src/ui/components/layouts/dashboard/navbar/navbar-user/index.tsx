@@ -10,7 +10,7 @@ export const NavbarUser = () => {
         name='Jason Hughes'
         src='https://i.pravatar.cc/150?u=a042581f4e28026704d'
       />
-      <div className='flex flex-col gap-1 w-24'>
+      <div className='flex flex-col gap-1 w-full md:w-24'>
         <strong className='text-xs truncate'>Hector Bonilha</strong>
         <small className='text-xs truncate'>hecto@gmail.com</small>
       </div>

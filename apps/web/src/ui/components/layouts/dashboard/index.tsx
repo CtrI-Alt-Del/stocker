@@ -1,21 +1,30 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import { useRef, type ReactNode } from 'react'
 
 import { Navbar } from './navbar'
 import { Drawer } from '../../commons/drawer'
 import { IconButton } from '../../commons/icon-button'
+import { useDashboardLayout } from './use-dashboard-layout'
+import type { DrawerRef } from '../../commons/drawer/types'
 
 type DashboardLayoutProps = {
   children: ReactNode
 }
 
 export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+  const drawerRef = useRef<DrawerRef>(null)
+  useDashboardLayout(drawerRef)
+
   return (
     <>
       <div>
         <div className='p-3 md:hidden'>
-          <Drawer trigger={<IconButton name='menu-hamburguer' />} direction='left'>
+          <Drawer
+            ref={drawerRef}
+            trigger={<IconButton name='menu-hamburguer' />}
+            direction='left'
+          >
             {() => <Navbar />}
           </Drawer>
         </div>

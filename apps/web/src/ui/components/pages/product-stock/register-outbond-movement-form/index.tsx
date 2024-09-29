@@ -22,7 +22,7 @@ export const RegisterOutboundInventoryMovementForm = ({
     <>
       <h3 className='text-xl text-zinc-800 font-semibold'>Lançamento de saída</h3>
       <form ref={formRef} onSubmit={handleSubmit} className='space-y-6 mt-6'>
-        <div className='grid grid-cols-2 gap-6'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
           <Input
             type='number'
             label='Quantidade de itens'

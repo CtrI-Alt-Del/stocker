@@ -69,7 +69,10 @@ export const BatchesTable = ({
             {' '}
           </TableColumn>
         </TableHeader>
-        <TableBody items={batches} emptyContent={'Nenhum lote encontrado.'}>
+        <TableBody
+          items={batches}
+          emptyContent='Nenhum lote encontrado para esse produto.'
+        >
           {(batch) => (
             <TableRow key={batch.id}>
               <TableCell>{batch.code}</TableCell>

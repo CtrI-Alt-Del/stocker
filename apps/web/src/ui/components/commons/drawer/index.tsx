@@ -1,6 +1,12 @@
 'use client'
 
-import { type ForwardedRef, forwardRef, useImperativeHandle, type ReactNode } from 'react'
+import {
+  type ForwardedRef,
+  forwardRef,
+  useImperativeHandle,
+  type ReactNode,
+  useEffect,
+} from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import RmDrawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
@@ -13,7 +19,6 @@ import { useBreakpoint } from '@/ui/hooks'
 type DrawerProps = {
   children: (closeDrawer: VoidFunction) => ReactNode
   trigger: ReactNode
-  width?: number
   direction?: 'top' | 'left' | 'right' | 'bottom'
   zIndex?: number
   onOpen?: VoidFunction
@@ -21,15 +26,7 @@ type DrawerProps = {
 }
 
 export const DrawerComponent = (
-  {
-    children,
-    trigger,
-    width,
-    direction = 'right',
-    zIndex = 1,
-    onOpen,
-    onClose,
-  }: DrawerProps,
+  { children, trigger, direction = 'right', zIndex = 1, onOpen, onClose }: DrawerProps,
   ref: ForwardedRef<DrawerRef>,
 ) => {
   const { isOpen, open, close } = useDrawer(onOpen, onClose)
@@ -51,7 +48,7 @@ export const DrawerComponent = (
       <RmDrawer
         open={isOpen}
         onClose={close}
-        size={width ? width : md ? 400 : 700}
+        size={md ? 700 : 375}
         direction={direction}
         zIndex={zIndex}
       >

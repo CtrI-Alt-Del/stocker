@@ -22,7 +22,7 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
 
   return (
     <form onSubmit={handleSubmit} encType='multiform/form-data' className='space-y-6'>
-      <div className='grid grid-cols-2 gap-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <div className='grid grid-cols-1 grid-rows-3 gap-6'>
           <Input
             label='Nome'
@@ -75,7 +75,7 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
         />
       </div>
 
-      <div className='grid grid-cols-2 gap-3'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
         <Input label='Categoria' />
         <div className='flex gap-3'>
           <Input
@@ -101,7 +101,7 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
 
       <Divider className='my-2' />
 
-      <div className='grid grid-cols-2 gap-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <Input
           type='number'
           label='Peso'
@@ -122,7 +122,7 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
         />
       </div>
 
-      <div className='grid grid-cols-2 gap-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <Input
           type='number'
           label='Comprimento'
@@ -145,7 +145,7 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
 
       <Divider className='my-2' />
 
-      <div className='grid grid-cols-2 gap-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <Input label='Setor' />
         <Input
           label='Marca'
@@ -156,7 +156,7 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
         />
       </div>
 
-      <div className='grid grid-cols-2 gap-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <Switch defaultSelected {...register('isActive')}>
           Ativo
         </Switch>
