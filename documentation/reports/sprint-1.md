@@ -102,8 +102,10 @@
 
 ## Gráfico Burndown 📈
 
-<img src="../images/sprint-1-burndown-chart.png" width="1000" height="500" alt="Grágico Burndown da primeira Sprint" />
+![alt text](image.png)
+
+<img src="../images/burndown-chart-sprint-1.png" width="1000" height="500" alt="Grágico Burndown da primeira Sprint" />
 
 ## Slides para apresentação 🎞️
 
-**<a href="../ppt/sprint-1-presentation.pptx" _target="blank" download="sprint-1-apresentacao">Clique para baixar o ppt</a>**
+**<a href="https://www.canva.com/design/DAGR_EjMO4w/i_fj7NzYP-dHIYhJSwVwjQ/view?utm_content=DAGR_EjMO4w&utm_campaign=designshare&utm_medium=link&utm_source=editor" _target="blank" download="sprint-1-apresentacao">Clique para o ppt no Canva</a>**
