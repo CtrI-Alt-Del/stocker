@@ -100,10 +100,14 @@
 ### US10
 - O sistema deve validar se o usuário que está realizando essa ação é um gerente.
 
+### Tasks realizados nessa sprint
+
+Clique [aqui](https://github.com/orgs/CtrI-Alt-Del/projects/4/views/1?filterQuery=iteration%3A%22Sprint+1%22) para acessar as tasks organizadas em uma tabela Kandan.
+
 ## Gráfico Burndown 📈
 
 <img src="../images/burndown-chart-sprint-1.png" width="1000" height="500" alt="Grágico Burndown da primeira Sprint" />
 
 ## Slides para apresentação 🎞️
 
-**<a href="https://www.canva.com/design/DAGR_EjMO4w/i_fj7NzYP-dHIYhJSwVwjQ/view?utm_content=DAGR_EjMO4w&utm_campaign=designshare&utm_medium=link&utm_source=editor" _target="blank" download="sprint-1-apresentacao">Clique para o ppt no Canva</a>**
+**<a href="https://www.canva.com/design/DAGR_EjMO4w/i_fj7NzYP-dHIYhJSwVwjQ/view?utm_content=DAGR_EjMO4w&utm_campaign=designshare&utm_medium=link&utm_source=editor" _target="blank" download="sprint-1-apresentacao">Clique para acessar a apresentação no Canva</a>**
