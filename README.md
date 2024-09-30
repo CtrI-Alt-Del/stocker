@@ -231,8 +231,8 @@ Work in progress... 🚧
 
 ---
 
-<img src="documentation/images/backlog.png" alt="Tabela contendo todos os requisitos em ordem de prioridade" width="2232" height="
-12960" />
+<img src="documentation/images/backlog-part-1.png" alt="Primeira parte da tabela que contém todos as histórias de usuário" width="3040" height="
+4864" />
 
 ---
 
