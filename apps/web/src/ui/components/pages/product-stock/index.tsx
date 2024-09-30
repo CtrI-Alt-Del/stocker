@@ -14,6 +14,7 @@ import { BatchesTable } from './batches-table'
 import { InventoryMovementsTable } from './inventory-movements-table'
 import { Icon } from '../../commons/icon'
 import { AlertDialog } from '../../commons/alert-dialog'
+import { isBuiltin } from 'module'
 
 type ProductStockPageProps = {
   productDto: ProductDto
@@ -21,11 +22,15 @@ type ProductStockPageProps = {
 
 export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
   const {
+    isFetching,
+    page,
+    totalPages,
     product,
     inventoryMovements,
     isDeletingBatches,
     selectedBatchesIds,
     handleBatchUpdate,
+    handlePageChange,
     handleBatchesIdsSelectionChange,
     handleDeleteBatchesButtonClick,
     handleRegisterInboundInventoryMovementFormSubmit,
@@ -37,6 +42,7 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
       <div className='flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center justify-between'>
         <div className='flex justify-end flex-col'>
           <h1 className='text-2xl font-semibold'>{product.name}</h1>
+
           <small
             aria-label='Código do produto'
             className='uppercase text-base text-zinc-400'
@@ -139,7 +145,13 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
           </div>
         </Tab>
         <Tab key='inventory-movements' title='Lançamentos' className='text-lg'>
-          <InventoryMovementsTable inventoryMovements={inventoryMovements} />
+          <InventoryMovementsTable
+            isLoading={isFetching}
+            totalPages={totalPages}
+            page={page}
+            onPageChange={handlePageChange}
+            inventoryMovements={inventoryMovements}
+          />
         </Tab>
       </Tabs>
     </div>
