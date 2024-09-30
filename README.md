@@ -12,6 +12,70 @@ Stocker é uma aplicação que visa facilitar o gerenciamento de estoque, oferec
 
 ---
 
+## Problema do cliente 👔
+
+Atualmente, muitas empresas utilizam métodos manuais, como planilhas ou até mesmo papel, para controlar o estoque. Isso gera uma série de problemas, como a dificuldade de atualização em tempo real, erros manuais, falta de visibilidade sobre a quantidade de produtos disponíveis e problemas com a reposição de itens. Além disso, a ausência de um sistema centralizado impede a análise rápida e precisa das informações do inventário, prejudicando a tomada de decisões.
+
+---
+
+## Objetivo do produto 🎯
+
+A aplicação tem como objetivo automatizar o controle de estoque, permitindo o gerenciamento de produtos de forma eficiente e acessível. Os usuários poderão adicionar, editar e remover itens do estoque, com controle de permissões para garantir que apenas administradores possam realizar essas ações críticas. A interface intuitiva permite o acompanhamento em tempo real da situação do estoque, melhorando a gestão de inventários e facilitando a reposição de produtos. O sistema será acessível de qualquer lugar, permitindo que os usuários acompanhem e gerenciem o estoque remotamente.
+
+---
+
+## Metodologia empregada 💡
+
+Para a confecção do produto foi empregado o framework de [metodologia ágil Scrum](https://aws.amazon.com/pt/what-is/scrum/#:~:text=O%20Scrum%20%C3%A9%20um%20framework,uma%20entrega%20eficiente%20de%20projetos.), que consiste sumariamente dividir o desenvolvimento do projeto em Sprints, um conjunto de tarefas que devem ser executadas e desenvolvidas em um período pré-definido de tempo. Além disso, foi definido o Backlog do Produto, que são todas as funcionalidades que o software deverá ter com base nos requisitos levantados com o cliente. Uma vez aprovado por ele, para selecionar quais seriam as entregas das Sprints do projeto, primeiro foi definido o [MVP](https://rockcontent.com/br/blog/o-que-e-mvp/) de cada Sprint, que é uma versão do produto que prioriza as tarefas que trazem maior entrega de valor para o cliente. Então, a partir disso o Backlog do Produto foi dividido em 4 Backlog de Sprint.
+
+---
+
+## MVP'S 🏆
+
+### Sprint - 1️⃣
+
+https://github.com/user-attachments/assets/2a9432b4-2785-4214-95e5-3daf1474814f
+
+### Sprint - 2️⃣
+
+Work in progress... 🚧
+
+### Sprint - 3️⃣
+
+Work in progress... 🚧
+
+### Sprint - 4️⃣
+
+Work in progress... 🚧
+
+---
+
+## Requisitos 📒
+
+<img src="documentation/images/requirements.png" alt="Tabela contendo todos os requisitos em ordem de prioridade" width="1460" height="920" />
+
+---
+
+<img src="documentation/images/backlog-part-1.png" alt="Primeira parte da tabela que contém todos as histórias de usuário" width="2000" height="
+1850" />
+<img src="documentation/images/backlog-part-2.png" alt="Segunda parte da tabela que contém todos as histórias de usuário" width="2000" height="
+1850" />
+
+
+---
+
+## Relatório e detalhes de cada Sprint 📅
+
+- Sprint 1: [Acessar](https://github.com/CtrI-Alt-Del/stocker/blob/main/documentation/reports/sprint-1.md)
+
+- Sprint 2: Work in progress... 🚧
+
+- Sprint 3: Work in progress... 🚧
+
+- Sprint 4: Work in progress... 🚧
+
+---
+
 ## Tecnologias 🛠️
 
 <div align="center">
@@ -101,24 +165,6 @@ Stocker é uma aplicação que visa facilitar o gerenciamento de estoque, oferec
 
 ---
 
-## Problema do cliente 👔
-
-Atualmente, muitas empresas utilizam métodos manuais, como planilhas ou até mesmo papel, para controlar o estoque. Isso gera uma série de problemas, como a dificuldade de atualização em tempo real, erros manuais, falta de visibilidade sobre a quantidade de produtos disponíveis e problemas com a reposição de itens. Além disso, a ausência de um sistema centralizado impede a análise rápida e precisa das informações do inventário, prejudicando a tomada de decisões.
-
----
-
-## Objetivo do produto 🎯
-
-A aplicação tem como objetivo automatizar o controle de estoque, permitindo o gerenciamento de produtos de forma eficiente e acessível. Os usuários poderão adicionar, editar e remover itens do estoque, com controle de permissões para garantir que apenas administradores possam realizar essas ações críticas. A interface intuitiva permite o acompanhamento em tempo real da situação do estoque, melhorando a gestão de inventários e facilitando a reposição de produtos. O sistema será acessível de qualquer lugar, permitindo que os usuários acompanhem e gerenciem o estoque remotamente.
-
----
-
-## Metodologia empregada 💡
-
-Para a confecção do produto foi empregado o framework de [metodologia ágil Scrum](https://aws.amazon.com/pt/what-is/scrum/#:~:text=O%20Scrum%20%C3%A9%20um%20framework,uma%20entrega%20eficiente%20de%20projetos.), que consiste sumariamente dividir o desenvolvimento do projeto em Sprints, um conjunto de tarefas que devem ser executadas e desenvolvidas em um período pré-definido de tempo. Além disso, foi definido o Backlog do Produto, que são todas as funcionalidades que o software deverá ter com base nos requisitos levantados com o cliente. Uma vez aprovado por ele, para selecionar quais seriam as entregas das Sprints do projeto, primeiro foi definido o [MVP](https://rockcontent.com/br/blog/o-que-e-mvp/) de cada Sprint, que é uma versão do produto que prioriza as tarefas que trazem maior entrega de valor para o cliente. Então, a partir disso o Backlog do Produto foi dividido em 4 Backlog de Sprint.
-
----
-
 ## Como Executar Localmente no Windows 🖥️
 
 ### Pré-requisitos
@@ -202,52 +248,6 @@ Ou abra o navegador e navegue até `http://localhost:3333` (ou a porta que você
 - Verifique se seu banco de dados e quaisquer outros serviços estão em execução, caso sua aplicação dependa deles.
 
 **🚧Caso haja algum erro ao executar as dependências do projeto, rode o comando `npm install` na pasta `apps/server` e `apps/web` separadamente e tente executar o projeto novamente.🚧**
-
----
-
-## MVP'S 🏆
-
-### Sprint - 1️⃣
-
-https://github.com/user-attachments/assets/2a9432b4-2785-4214-95e5-3daf1474814f
-
-### Sprint - 2️⃣
-
-Work in progress... 🚧
-
-### Sprint - 3️⃣
-
-Work in progress... 🚧
-
-### Sprint - 4️⃣
-
-Work in progress... 🚧
-
----
-
-## Requisitos 📒
-
-<img src="documentation/images/requirements.png" alt="Tabela contendo todos os requisitos em ordem de prioridade" width="1460" height="920" />
-
----
-
-<img src="documentation/images/backlog-part-1.png" alt="Primeira parte da tabela que contém todos as histórias de usuário" width="2000" height="
-1850" />
-<img src="documentation/images/backlog-part-2.png" alt="Segunda parte da tabela que contém todos as histórias de usuário" width="2000" height="
-1850" />
-
-
----
-
-## Relatório e detalhes de cada Sprint 📅
-
-- Sprint 1: [Acessar](https://github.com/CtrI-Alt-Del/stocker/blob/main/documentation/reports/sprint-1.md)
-
-- Sprint 2: Work in progress... 🚧
-
-- Sprint 3: Work in progress... 🚧
-
-- Sprint 4: Work in progress... 🚧
 
 ---
 
