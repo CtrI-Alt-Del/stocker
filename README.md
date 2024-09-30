@@ -231,8 +231,11 @@ Work in progress... 🚧
 
 ---
 
-<img src="documentation/images/backlog-part-1.png" alt="Primeira parte da tabela que contém todos as histórias de usuário" width="2150" height="
+<img src="documentation/images/backlog-part-1.png" alt="Primeira parte da tabela que contém todos as histórias de usuário" width="1150" height="
 2864" />
+<img src="documentation/images/backlog-part-2.png" alt="Segunda parte da tabela que contém todos as histórias de usuário" width="1150" height="
+2864" />
+
 
 ---
 
