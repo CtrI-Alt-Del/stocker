@@ -50,17 +50,18 @@ Work in progress... 🚧
 
 ---
 
+## Backlog do produto 📖
+
 ## Requisitos 📒
 
 <img src="documentation/images/requirements.png" alt="Tabela contendo todos os requisitos em ordem de prioridade" width="1460" height="920" />
 
----
+## Histórias de usuário 🃏
 
 <img src="documentation/images/backlog-part-1.png" alt="Primeira parte da tabela que contém todos as histórias de usuário" width="2000" height="
 1850" />
 <img src="documentation/images/backlog-part-2.png" alt="Segunda parte da tabela que contém todos as histórias de usuário" width="2000" height="
 1850" />
-
 
 ---
 
