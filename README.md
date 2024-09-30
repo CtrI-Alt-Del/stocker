@@ -231,17 +231,17 @@ Work in progress... 🚧
 
 ---
 
-<img src="documentation/images/backlog-part-1.png" alt="Primeira parte da tabela que contém todos as histórias de usuário" width="1150" height="
-2864" />
-<img src="documentation/images/backlog-part-2.png" alt="Segunda parte da tabela que contém todos as histórias de usuário" width="1150" height="
-2864" />
+<img src="documentation/images/backlog-part-1.png" alt="Primeira parte da tabela que contém todos as histórias de usuário" width="1200" height="
+2000" />
+<img src="documentation/images/backlog-part-2.png" alt="Segunda parte da tabela que contém todos as histórias de usuário" width="1200" height="
+2000" />
 
 
 ---
 
 ## Relatório e detalhes de cada Sprint 📅
 
-- Sprint 1: Work in progress... 🚧
+- Sprint 1: [Acessar](https://github.com/CtrI-Alt-Del/stocker/blob/main/documentation/reports/sprint-1.md)
 
 - Sprint 2: Work in progress... 🚧
 

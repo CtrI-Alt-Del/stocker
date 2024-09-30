@@ -102,8 +102,6 @@
 
 ## Gráfico Burndown 📈
 
-![alt text](image.png)
-
 <img src="../images/burndown-chart-sprint-1.png" width="1000" height="500" alt="Grágico Burndown da primeira Sprint" />
 
 ## Slides para apresentação 🎞️
