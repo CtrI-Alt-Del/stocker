@@ -13,5 +13,6 @@ export interface IProductsRepository {
   countDangerStockLevel(): Promise<number>
   add(product: Product): Promise<void>
   update(product: Product): Promise<void>
-  deleteMany(productId: string[]): Promise<void>
+  deleteMany(productId: string[]): Promise<void>  
+  findOrderByInventoryMovementsCount(params: { startDate: Date; endDate: Date }): Promise<Product[]>
 }
