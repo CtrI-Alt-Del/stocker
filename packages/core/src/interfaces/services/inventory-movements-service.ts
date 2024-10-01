@@ -14,4 +14,5 @@ export interface IInventoryMovementsService {
   listInventoryMovements(
     params: InventoryMovementsListParams,
   ): Promise<ApiResponse<PaginationResponse<InventoryMovementDto>>>
+  listManyInventoryMovement(page:number): Promise<ApiResponse<PaginationResponse<InventoryMovementDto>>>
 }
