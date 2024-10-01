@@ -8,9 +8,9 @@ export class StockLevelReportUseCase {
   }
 
   async execute() {
-    const safeproductscount = this.productsRepository.countSQLsafe()
-    const averageproductscount = this.productsRepository.countSQLaverage()
-    const dangerproductscount = this.productsRepository.countSQLdanger()
+    const safeproductscount = this.productsRepository.countSafeStockLevel()
+    const averageproductscount = this.productsRepository.countAverageStockLevel()
+    const dangerproductscount = this.productsRepository.countDangerStockLevel()
 
     return {
       safe: safeproductscount,
