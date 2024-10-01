@@ -222,4 +222,28 @@ export class PrismaProductsRepository implements IProductsRepository {
       throw new PrismaError(error)
     }
   }
+
+  async findOrderByInventoryMovementsCount({ startDate, endDate }: { startDate: Date; endDate: Date }): Promise<Product[]> {
+    try {
+      const prismaProducts: any = await prisma.$queryRaw`
+        SELECT p.*, 
+               COUNT(DISTINCT CASE WHEN im.movement_type = 'INBOUND' THEN im.id ELSE NULL END) AS inboundCount,
+               COUNT(DISTINCT CASE WHEN im.movement_type = 'OUTBOUND' THEN im.id ELSE NULL END) AS outboundCount
+        FROM products p
+        LEFT JOIN inventory_movements im ON p.id = im.product_id
+        WHERE im.registered_at BETWEEN ${startDate} AND ${endDate}
+        GROUP BY p.id
+        ORDER BY inboundCount + outboundCount DESC
+      `;
+
+      return prismaProducts.map((prismaProduct: any) => {
+        const product = this.mapper.toDomain(prismaProduct);
+        product.inboundInventoryMovementsCount = prismaProduct.inboundCount;
+        product.outboundInventoryMovementsCount = prismaProduct.outboundCount;
+        return product;
+      });
+    } catch (error) {
+      throw new PrismaError(error);
+    }
+  }
 }
