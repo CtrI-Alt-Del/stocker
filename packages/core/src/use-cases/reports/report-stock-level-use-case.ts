@@ -1,6 +1,6 @@
 import { IProductsRepository } from "../../interfaces";
 
-export class ReportStockLevelUseCase {
+export class StockLevelReportUseCase {
   private readonly productsRepository: IProductsRepository
 
   constructor(productsRepository: IProductsRepository) {
