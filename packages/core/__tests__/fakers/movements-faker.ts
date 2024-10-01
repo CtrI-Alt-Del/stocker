@@ -13,13 +13,13 @@ export class InventoryMovementsFaker {
     productIds?: string[],
   ): InventoryMovementDto {
     const movementType = faker.helpers.arrayElement([
-      "inbound","outbound"
+      "inbound", "outbound"
     ])
 
     return {
       id: faker.string.uuid(),
       movementType: movementType.toString(),
-      itemsCount: faker.number.int({ min: 0, max: 10000 }),
+      itemsCount: faker.number.int({ min: 0, max: 1000 }),
       remark: faker.commerce.productDescription(),
       registeredAt: new Date(),
       responsible: {
@@ -35,10 +35,11 @@ export class InventoryMovementsFaker {
   }
 
   static fakeMany(
-    count = faker.number.int({ min: 1, max: 100 }),
     baseDto?: Partial<InventoryMovementDto>,
     productIds?: string[],
   ) {
+    const count = faker.number.int({ min: 1, max: 100 })
+
     const inventoryMovements = []
     for (let i = 0; i < count; i++) {
       inventoryMovements.push(InventoryMovementsFaker.fake(baseDto, productIds))
@@ -47,11 +48,12 @@ export class InventoryMovementsFaker {
   }
 
   static fakeManyDto(
-    count = faker.number.int({ min: 1, max: 100 }),
 
     baseDto?: Partial<InventoryMovementDto>,
     productIds?: string[],
   ) {
+    const count = faker.number.int({ min: 1, max: 100 })
+
     const inventoryMovementDtos = []
     for (let i = 0; i < count; i++) {
       inventoryMovementDtos.push(InventoryMovementsFaker.fakeDto(baseDto, productIds))

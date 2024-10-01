@@ -14,9 +14,9 @@ export class BatchesFaker {
         ? faker.helpers.arrayElement(productsIds)
         : faker.string.uuid(),
       code: faker.string.uuid(),
-      itemsCount: faker.number.int({ min: 0, max: 10000 }),
+      itemsCount: faker.number.int({ min: 0, max: 1000 }),
       expirationDate: faker.date.future().toString(),
-      maximumDaysToExpiration: faker.number.int({ min: 0, max: 10000 }),
+      maximumDaysToExpiration: faker.number.int({ min: 0, max: 1000 }),
       registeredAt: new Date(),
       ...baseDto,
     }
