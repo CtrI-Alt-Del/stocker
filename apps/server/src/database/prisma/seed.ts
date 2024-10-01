@@ -1,7 +1,12 @@
-import { ProductsFaker } from '@stocker/core/fakers'
+import {
+  BatchesFaker,
+  InventoryMovementsFaker,
+  ProductsFaker,
+} from '@stocker/core/fakers'
 
-import { productsRepository } from '..'
+import { batchesRepository, inventorymovementRepository, productsRepository } from '..'
 import { prisma } from './prisma-client'
+import { faker } from '@faker-js/faker'
 
 const COMPANY_ID = 'eceda392-06df-4ed2-8c90-db6bf1e38830'
 const MANAGER_ID = '29fcf7a0-5ee3-4cb0-b36e-ecc825f1cdaa'
@@ -43,6 +48,23 @@ async function seed() {
     companyId: COMPANY_ID,
   })
   await productsRepository.add(fakeProduct)
+  const fakeBatches = BatchesFaker.fakeMany({
+    productId: PRODUCT_ID,
+  })
+  for (const batch of fakeBatches) {
+    await batchesRepository.add(batch)
+  }
+
+  const fakeInventoryMovements = InventoryMovementsFaker.fakeMany(
+    faker.number.int({ min: 0, max: 100 }),
+    {
+      product: { id: PRODUCT_ID },
+      responsible: {id: MANAGER_ID}
+    },
+  )
+  for (const movement of fakeInventoryMovements) {
+    await inventorymovementRepository.add((movement))
+  }
 }
 
 seed()
