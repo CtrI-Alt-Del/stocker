@@ -1,5 +1,4 @@
 import { Chip } from '@nextui-org/react'
-import { string } from 'zod'
 
 type TagType = {
   type: 'sucess' | 'danger' | 'warning'
