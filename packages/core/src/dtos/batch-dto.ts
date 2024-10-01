@@ -5,5 +5,5 @@ export type BatchDto = {
   productId: string
   expirationDate?: string
   maximumDaysToExpiration?: number | null
-  resgisteredAt?: Date
+  registeredAt?: Date
 }
