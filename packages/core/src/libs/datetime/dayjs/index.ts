@@ -21,11 +21,26 @@ export class DayjsDatetime implements IDatetime {
     return this.date.add(daysCount, 'day').toDate()
   }
 
+  subtractDays(daysCount: number): Date {
+    return this.date.subtract(daysCount, 'day').toDate()
+  }
+  subtractYears(yearsCount: number): Date {
+    return this.date.subtract(yearsCount, 'years').toDate()
+  }
+
   isSameOrBefore(date: Date): boolean {
     return this.date.isSame(date) || this.date.isBefore(date)
   }
 
   isSameOrAfter(date: Date): boolean {
     return this.date.isSame(date) || this.date.isAfter(date)
+  }
+
+  isGreaterThan(date: Date): boolean {
+    return this.date.isAfter(date)
+  }
+
+  isLessThan(date: Date): boolean {
+    return this.date.isBefore(date)
   }
 }

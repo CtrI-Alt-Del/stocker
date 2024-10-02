@@ -6,4 +6,6 @@ export interface IInventoryMovementsRepository {
   findMany(
     params: InventoryMovementsListParams,
   ): Promise<{ inventoryMovements: InventoryMovement[]; count: number }>
+  countInbound(): Promise<number>
+  countOutbound(): Promise<number>
 }

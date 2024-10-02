@@ -78,4 +78,22 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
       throw new PrismaError(error)
     }
   }
+
+  async countInbound(): Promise<number> {
+    try {
+      return await prisma.inventoryMovement.count({ where: { movement_type: 'INBOUND' } })
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
+  async countOutbound(): Promise<number> {
+    try {
+      return await prisma.inventoryMovement.count({
+        where: { movement_type: 'OUTBOUND' },
+      })
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
 }

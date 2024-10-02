@@ -1,11 +1,13 @@
 import type { Product } from '@stocker/core/entities'
 import type { IProductsRepository } from '@stocker/core/interfaces'
 import { PAGINATION } from '@stocker/core/constants'
-
-import { prisma } from '../prisma-client'
-import { PrismaBatchesMapper, PrismaProductMapper } from '../mappers'
-import { PrismaError } from '../prisma-error'
+import { Datetime } from '@stocker/core/libs'
 import type { ProducsStocksListParams, ProductsListParams } from '@stocker/core/types'
+
+import type { PrismaProduct } from '../types'
+import { prisma } from '../prisma-client'
+import { PrismaProductMapper } from '../mappers'
+import { PrismaError } from '../prisma-error'
 
 export class PrismaProductsRepository implements IProductsRepository {
   private readonly mapper: PrismaProductMapper = new PrismaProductMapper()
@@ -93,48 +95,6 @@ export class PrismaProductsRepository implements IProductsRepository {
     }
   }
 
-  async countSafeStockLevel(): Promise<number> {
-    const result = (await prisma.$queryRaw`
-      SELECT COUNT(safe_level_stock_product) count
-      FROM
-        (
-          SELECT P.id, SUM(B.items_count) stock FROM products P
-          JOIN batches B ON B.product_id = P.id
-          GROUP BY P.id
-          HAVING SUM(B.items_count) > P.minimum_stock
-        ) safe_level_stock_product
-    `) as { count: number }[]
-    return Number(result[0]?.count)
-  }
-
-  async countAverageStockLevel(): Promise<number> {
-    const result = (await prisma.$queryRaw`
-      SELECT COUNT(average_level_stock_products)
-      FROM
-        (
-          SELECT P.id, SUM(B.items_count) FROM products P
-          JOIN batches B ON B.product_id = P.id
-          GROUP BY P.id
-          HAVING SUM(B.items_count) > 0 AND SUM(B.items_count) < P.minimum_stock
-        ) average_level_stock_products
-    `) as { count: number }[]
-    return Number(result[0]?.count)
-  }
-
-  async countDangerStockLevel(): Promise<number> {
-    const result = (await prisma.$queryRaw`
-      SELECT COUNT(danger_level_stock_products)
-      FROM
-        (
-          SELECT P.id, SUM(B.items_count) FROM products P
-          JOIN batches B ON B.product_id = P.id
-          GROUP BY P.id
-          HAVING SUM(B.items_count) = 0
-        ) danger_level_stock_products
-  `) as { count: number }[]
-    return Number(result[0]?.count)
-  }
-
   async findManyWithInventoryMovements(params: ProducsStocksListParams): Promise<{
     products: Product[]
     count: number
@@ -160,7 +120,6 @@ export class PrismaProductsRepository implements IProductsRepository {
         FROM products p
         LEFT JOIN inventory_movements im ON p.id = im.product_id
         GROUP BY p.id
-        ORDER BY p.id
         LIMIT ${limit} OFFSET ${offset}
       `
 
@@ -175,6 +134,98 @@ export class PrismaProductsRepository implements IProductsRepository {
     } catch (error) {
       throw new PrismaError(error)
     }
+  }
+
+  async findOrderByInventoryMovementsCount({
+    startDate,
+    endDate,
+  }: { startDate: Date; endDate: Date }): Promise<Product[]> {
+    const formattedStartDate = new Datetime(startDate).format('YYYY-MM-DD')
+    const formattedEndDate = new Datetime(endDate).format('YYYY-MM-DD')
+
+    try {
+      const prismaProducts = (await prisma.$queryRaw`
+        SELECT 
+        P.*, 
+        COUNT(DISTINCT CASE WHEN IM.movement_type = 'INBOUND' THEN IM.id ELSE NULL END) inbound_movements_count,
+        COUNT(DISTINCT CASE WHEN IM.movement_type = 'OUTBOUND' THEN IM.id ELSE NULL END) outbound_movements_count,
+        ARRAY_AGG(JSON_BUILD_OBJECT(
+          'id', B.id,
+          'code', B.code,
+          'expiration_date', B.expiration_date,
+          'items_count', B.items_count,
+          'product_id', B.product_id,
+          'registered_at', B.registered_at
+        )) batches
+      FROM products P
+      LEFT JOIN inventory_movements IM ON P.id = IM.product_id
+      LEFT JOIN batches B ON B.product_id = P.id
+      WHERE DATE(IM.registered_at) BETWEEN DATE(${formattedEndDate}) AND DATE(${formattedStartDate})
+      GROUP BY P.id
+      ORDER BY 
+        COUNT(DISTINCT CASE WHEN IM.movement_type = 'INBOUND' THEN IM.id ELSE NULL END) + 
+        COUNT(DISTINCT CASE WHEN IM.movement_type = 'OUTBOUND' THEN IM.id ELSE NULL END) 
+      DESC
+      `) as PrismaProduct &
+        {
+          inbound_movements_count: number
+          outbound_movements_count: number
+        }[]
+
+      const products = []
+
+      for (const prismaProduct of prismaProducts) {
+        const product = this.mapper.toDomain(prismaProduct as unknown as PrismaProduct)
+        product.inboundInventoryMovementsCount = prismaProduct.inbound_movements_count
+        product.outboundInventoryMovementsCount = prismaProduct.outbound_movements_count
+        products.push(product)
+      }
+      return products
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
+  async countSafeStockLevel(): Promise<number> {
+    const result = (await prisma.$queryRaw`
+      SELECT COUNT(safe_level_stock_product) count
+      FROM
+        (
+          SELECT P.id FROM products P
+          JOIN batches B ON B.product_id = P.id
+          GROUP BY P.id
+          HAVING SUM(B.items_count) > P.minimum_stock
+        ) safe_level_stock_product
+    `) as { count: number }[]
+    return Number(result[0]?.count)
+  }
+
+  async countAverageStockLevel(): Promise<number> {
+    const result = (await prisma.$queryRaw`
+      SELECT COUNT(average_level_stock_products)
+      FROM
+        (
+          SELECT P.id FROM products P
+          JOIN batches B ON B.product_id = P.id
+          GROUP BY P.id
+          HAVING SUM(B.items_count) > 0 AND SUM(B.items_count) < P.minimum_stock
+        ) average_level_stock_products
+    `) as { count: number }[]
+    return Number(result[0]?.count)
+  }
+
+  async countDangerStockLevel(): Promise<number> {
+    const result = (await prisma.$queryRaw`
+      SELECT COUNT(danger_level_stock_products)
+      FROM
+        (
+          SELECT P.id FROM products P
+          LEFT JOIN batches B ON B.product_id = P.id
+          GROUP BY P.id
+          HAVING COALESCE(SUM(items_count), 0) = 0
+        ) danger_level_stock_products
+  `) as { count: number }[]
+    return Number(result[0]?.count)
   }
 
   async count(): Promise<number> {
@@ -226,33 +277,6 @@ export class PrismaProductsRepository implements IProductsRepository {
             in: productsIds,
           },
         },
-      })
-    } catch (error) {
-      throw new PrismaError(error)
-    }
-  }
-
-  async findOrderByInventoryMovementsCount({
-    startDate,
-    endDate,
-  }: { startDate: Date; endDate: Date }): Promise<Product[]> {
-    try {
-      const prismaProducts: any = await prisma.$queryRaw`
-        SELECT p.*, 
-               COUNT(DISTINCT CASE WHEN im.movement_type = 'INBOUND' THEN im.id ELSE NULL END) AS inboundCount,
-               COUNT(DISTINCT CASE WHEN im.movement_type = 'OUTBOUND' THEN im.id ELSE NULL END) AS outboundCount
-        FROM products p
-        LEFT JOIN inventory_movements im ON p.id = im.product_id
-        WHERE im.registered_at BETWEEN ${startDate} AND ${endDate}
-        GROUP BY p.id
-        ORDER BY inboundCount + outboundCount DESC
-      `
-
-      return prismaProducts.map((prismaProduct: any) => {
-        const product = this.mapper.toDomain(prismaProduct)
-        product.inboundInventoryMovementsCount = prismaProduct.inboundCount
-        product.outboundInventoryMovementsCount = prismaProduct.outboundCount
-        return product
       })
     } catch (error) {
       throw new PrismaError(error)
