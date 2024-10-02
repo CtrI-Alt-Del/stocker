@@ -12,16 +12,17 @@ export class InventoryMovementsFaker {
     baseDto?: Partial<InventoryMovementDto>,
     productIds?: string[],
   ): InventoryMovementDto {
-    const movementType = faker.helpers.arrayElement([
-      "inbound", "outbound"
-    ])
+    const movementType = faker.helpers.arrayElement(['inbound', 'outbound'])
 
     return {
       id: faker.string.uuid(),
       movementType: movementType.toString(),
       itemsCount: faker.number.int({ min: 0, max: 10 }),
       remark: faker.commerce.productDescription(),
-      registeredAt: new Date(),
+      registeredAt: faker.date.between({
+        from: new Date(new Date().setMonth(new Date().getMonth() - 12)),
+        to: new Date(),
+      }),
       responsible: {
         id: faker.string.uuid(),
         name: faker.person.fullName(),
@@ -34,10 +35,7 @@ export class InventoryMovementsFaker {
     }
   }
 
-  static fakeMany(
-    baseDto?: Partial<InventoryMovementDto>,
-    productIds?: string[],
-  ) {
+  static fakeMany(baseDto?: Partial<InventoryMovementDto>, productIds?: string[]) {
     const count = faker.number.int({ min: 1, max: 10 })
 
     const inventoryMovements = []
@@ -47,11 +45,7 @@ export class InventoryMovementsFaker {
     return inventoryMovements
   }
 
-  static fakeManyDto(
-
-    baseDto?: Partial<InventoryMovementDto>,
-    productIds?: string[],
-  ) {
+  static fakeManyDto(baseDto?: Partial<InventoryMovementDto>, productIds?: string[]) {
     const count = faker.number.int({ min: 1, max: 10 })
 
     const inventoryMovementDtos = []
