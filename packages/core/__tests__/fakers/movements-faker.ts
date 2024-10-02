@@ -19,7 +19,7 @@ export class InventoryMovementsFaker {
     return {
       id: faker.string.uuid(),
       movementType: movementType.toString(),
-      itemsCount: faker.number.int({ min: 0, max: 1000 }),
+      itemsCount: faker.number.int({ min: 0, max: 10 }),
       remark: faker.commerce.productDescription(),
       registeredAt: new Date(),
       responsible: {
@@ -38,7 +38,7 @@ export class InventoryMovementsFaker {
     baseDto?: Partial<InventoryMovementDto>,
     productIds?: string[],
   ) {
-    const count = faker.number.int({ min: 1, max: 100 })
+    const count = faker.number.int({ min: 1, max: 10 })
 
     const inventoryMovements = []
     for (let i = 0; i < count; i++) {
@@ -52,7 +52,7 @@ export class InventoryMovementsFaker {
     baseDto?: Partial<InventoryMovementDto>,
     productIds?: string[],
   ) {
-    const count = faker.number.int({ min: 1, max: 100 })
+    const count = faker.number.int({ min: 1, max: 10 })
 
     const inventoryMovementDtos = []
     for (let i = 0; i < count; i++) {
