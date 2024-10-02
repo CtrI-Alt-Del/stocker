@@ -1,5 +1,4 @@
-import type { IApiClient,  } from "@stocker/core/interfaces";
-import { IDashboardService } from "../../../../../packages/core/src/interfaces/services/dashboard-services";
+import type { IApiClient, IDashboardService  } from "@stocker/core/interfaces";
 import { StockLevelReportDto } from "@stocker/core/dtos";
 
 export const DashboardService = (apiClient:IApiClient):IDashboardService =>{
