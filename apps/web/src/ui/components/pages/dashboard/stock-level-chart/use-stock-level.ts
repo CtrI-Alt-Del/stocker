@@ -1,7 +1,23 @@
-export function useStockLevelChart(){
-  return { data:[
-    {name: 'Acima', value: 400},
-    {name: 'Abaixo', value: 300},
-    {name: 'Zero', value: 200},
-  ] }
+import { CACHE } from '@/constants'
+import { useApi, useCache } from '@/ui/hooks'
+
+export function useStockLevelChart() {
+  const { dashboardService } = useApi()
+  async function fetchStockLevel() {
+    const response = await dashboardService.getStockLevel()
+    return response.body
+  }
+  const { data, isFetching } = useCache({
+    fetcher: fetchStockLevel,
+    key: CACHE.stockLevel.key,
+  })
+  const stockLevel = data
+    ? [
+      { name: 'Acima do minimo', value: data.safe },
+      { name: 'Abaixo do minimo', value: data.average },
+      { name: 'Esgotado', value: data.danger },
+    ]
+    : null
+  const totalProducts = data ? data.safe + data.average + data.danger : 0
+  return { data: stockLevel, isFetching, totalProducts }
 }
