@@ -8,9 +8,11 @@ export class ReportStockLevelUseCase {
   }
 
   async execute() {
-    const safeproductscount = this.productsRepository.countSafeStockLevel()
-    const averageproductscount = this.productsRepository.countAverageStockLevel()
-    const dangerproductscount = this.productsRepository.countDangerStockLevel()
+    const safeproductscount = await this.productsRepository.countSafeStockLevel()
+    const averageproductscount = await this.productsRepository.countAverageStockLevel()
+    const dangerproductscount = await this.productsRepository.countDangerStockLevel()
+
+    console.log(safeproductscount)
 
     return {
       safe: safeproductscount,
