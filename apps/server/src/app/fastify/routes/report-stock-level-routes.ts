@@ -1,7 +1,7 @@
-import { FastifyInstance } from "fastify"
-import { FastifyHttp } from "../fastify-http"
-import { ReportStockLevelController } from "@/api/controllers/reports"
-import { MostTrendingProductsController } from "@/api/controllers/products"
+import type { FastifyInstance } from 'fastify'
+import { FastifyHttp } from '../fastify-http'
+import { ReportStockLevelController } from '@/api/controllers/reports'
+import { MostTrendingProductsController } from '@/api/controllers/products'
 
 export const ReportsRoutes = async (app: FastifyInstance) => {
   const reportStockLevelController = new ReportStockLevelController()

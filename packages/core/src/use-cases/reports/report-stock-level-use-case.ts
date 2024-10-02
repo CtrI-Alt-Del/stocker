@@ -1,6 +1,6 @@
-import { IProductsRepository } from "../../interfaces";
+import type { IProductsRepository } from '../../interfaces'
 
-export class StockLevelReportUseCase {
+export class ReportStockLevelUseCase {
   private readonly productsRepository: IProductsRepository
 
   constructor(productsRepository: IProductsRepository) {
@@ -15,7 +15,7 @@ export class StockLevelReportUseCase {
     return {
       safe: safeproductscount,
       average: averageproductscount,
-      danger: dangerproductscount
+      danger: dangerproductscount,
     }
   }
 }

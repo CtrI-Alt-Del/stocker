@@ -17,7 +17,7 @@ import {
   ProductsRoutes,
   FileStorageRoutes,
   InventoryMovementRoutes,
-  StockLevelRoutes,
+  ReportsRoutes,
 } from './routes'
 import { ReportStockLevelController } from '@/api/controllers/reports'
 import { BatchesRoutes } from './routes/batches-routes'
@@ -89,6 +89,6 @@ export class FastifyApp implements IServerApp {
     this.app.register(BatchesRoutes, { prefix: '/batches' })
     this.app.register(InventoryMovementRoutes, { prefix: '/inventory-movements' })
     this.app.register(FileStorageRoutes, { prefix: '/file-storage' })
-    this.app.register(StockLevelRoutes, { prefix: '/reports' })
+    this.app.register(ReportsRoutes, { prefix: '/reports' })
   }
 }
