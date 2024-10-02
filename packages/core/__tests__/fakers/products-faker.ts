@@ -20,7 +20,7 @@ export class ProductsFaker {
       length: faker.number.int({ min: 0, max: 100 }),
       brand: faker.company.name(),
       weight: faker.number.int({ min: 0, max: 100 }),
-      minimumStock: faker.number.int({ min: 5, max: 100 }),
+      minimumStock: 100,
       costPrice: faker.number.float({ min: 0, max: 100 }),
       sellingPrice: faker.number.float({ min: 0, max: 100 }),
       uom: faker.string.sample({ min: 1, max: 3 }),

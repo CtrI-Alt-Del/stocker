@@ -16,9 +16,14 @@ const CONNECTION_POOL_SIZE = 3
 
 async function seedDatabase() {
   await resetDatabase()
+
   await createBaseEntities()
+
   await seedMainProduct()
+
   await seedMultipleProducts(50)
+  await seedMultipleProductsWithoutRelatedData(25)
+  await seedMultipleProductsWithMinimumBatches(25)
 }
 
 async function resetDatabase() {
@@ -74,7 +79,32 @@ async function seedMultipleProducts(count: number) {
     await Promise.allSettled(productPromises)
   }
 }
-
+async function seedMultipleProductsWithoutRelatedData(count: number) {
+  const productPromises = []
+  for (let i = 0; i < count; i++) {
+    const newProduct = createFakeProduct()
+    productPromises.push(productsRepository.add(newProduct))
+    if (productPromises.length >= CONNECTION_POOL_SIZE) {
+      await Promise.allSettled(productPromises)
+    }
+  }
+  if (productPromises.length > 0) {
+    await Promise.allSettled(productPromises)
+  }
+}
+async function seedMultipleProductsWithMinimumBatches(count: number) {
+  const productPromises = []
+  for (let i = 0; i < count; i++) {
+    const newProduct = createFakeProduct()
+    productPromises.push(seedProductWithMinimumData(newProduct))
+    if (productPromises.length >= CONNECTION_POOL_SIZE) {
+      await Promise.allSettled(productPromises)
+    }
+  }
+  if (productPromises.length > 0) {
+    await Promise.allSettled(productPromises)
+  }
+}
 function createFakeProduct() {
   return ProductsFaker.fake({
     id: faker.string.uuid(),
@@ -91,9 +121,12 @@ async function seedProductAndRelatedData(product: any) {
     seedInventoryMovementsForProduct(product.id),
   ])
 }
-
+async function seedProductWithMinimumData(product: any) {
+  await productsRepository.add(product)
+  await Promise.all([seedMinimumBatchesForProduct(product.id, 9)])
+}
 async function seedBatchesForProduct(productId: string) {
-  const fakeBatches = BatchesFaker.fakeMany({ productId })
+  const fakeBatches = BatchesFaker.fakeMany(20, { productId })
   const batchPromises = fakeBatches.map((batch) => batchesRepository.add(batch))
   await Promise.all(batchPromises)
 }
@@ -107,6 +140,11 @@ async function seedInventoryMovementsForProduct(productId: string) {
     inventorymovementRepository.add(movement),
   )
   await Promise.all(movementPromises)
+}
+async function seedMinimumBatchesForProduct(productId: string, count: number) {
+  const fakeBatch = BatchesFaker.fakeMany(count, { productId })
+  const batchPromises = fakeBatch.map((batch) => batchesRepository.add(batch))
+  await Promise.all(batchPromises)
 }
 
 seedDatabase()

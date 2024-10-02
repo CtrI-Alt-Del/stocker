@@ -14,7 +14,7 @@ export class BatchesFaker {
         ? faker.helpers.arrayElement(productsIds)
         : faker.string.uuid(),
       code: faker.string.uuid(),
-      itemsCount: faker.number.int({ min: 0, max: 1000 }),
+      itemsCount: 10,
       expirationDate: faker.date.future().toString(),
       maximumDaysToExpiration: faker.number.int({ min: 0, max: 1000 }),
       registeredAt: new Date(),
@@ -22,8 +22,10 @@ export class BatchesFaker {
     }
   }
 
-  static fakeMany(baseDto?: Partial<BatchDto>, productsIds?: string[]) {
-    const count = faker.number.int({ min: 1, max: 100 })
+  static fakeMany(count?: number, baseDto?: Partial<BatchDto>, productsIds?: string[]) {
+    if (!count) {
+      count = 20
+    }
 
     const batches = []
     for (let i = 0; i < count; i++) {
@@ -32,9 +34,14 @@ export class BatchesFaker {
     return batches
   }
 
-  static fakeManyDto(baseDto?: Partial<BatchDto>, productsIds?: string[]) {
-    const count = faker.number.int({ min: 1, max: 100 })
-
+  static fakeManyDto(
+    count?: number,
+    baseDto?: Partial<BatchDto>,
+    productsIds?: string[],
+  ) {
+    if (!count) {
+      count = 20
+    }
     const batchDtos = []
     for (let i = 0; i < count; i++) {
       batchDtos.push(BatchesFaker.fakeDto(baseDto, productsIds))
