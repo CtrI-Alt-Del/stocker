@@ -94,36 +94,45 @@ export class PrismaProductsRepository implements IProductsRepository {
   }
 
   async countSafeStockLevel(): Promise<number> {
-    const result = await prisma.$queryRaw`
-      SELECT COUNT(*) count, SUM(B.items_count) stock FROM products P
-      JOIN batches B JOIN B.product_id = P.id
-      GROUP BY P.id
-      HAVING stock > P.minimum_stock
-    `
-    console.log(result)
-    return 0
+    const result = (await prisma.$queryRaw`
+      SELECT COUNT(safe_level_stock_product) count
+      FROM
+        (
+          SELECT P.id, SUM(B.items_count) stock FROM products P
+          JOIN batches B ON B.product_id = P.id
+          GROUP BY P.id
+          HAVING SUM(B.items_count) > P.minimum_stock
+        ) safe_level_stock_product
+    `) as { count: number }[]
+    return Number(result[0]?.count)
   }
 
   async countAverageStockLevel(): Promise<number> {
-    const result = await prisma.$queryRaw`
-      SELECT COUNT(*) count, SUM(B.items_count) stock FROM products P
-      JOIN batches B JOIN B.product_id = P.id
-      GROUP BY P.id
-      HAVING stock > 0 AND stock <= P.minimum_stock
-    `
-    console.log(result)
-    return 0
+    const result = (await prisma.$queryRaw`
+      SELECT COUNT(average_level_stock_products)
+      FROM
+        (
+          SELECT P.id, SUM(B.items_count) FROM products P
+          JOIN batches B ON B.product_id = P.id
+          GROUP BY P.id
+          HAVING SUM(B.items_count) > 0 AND SUM(B.items_count) < P.minimum_stock
+        ) average_level_stock_products
+    `) as { count: number }[]
+    return Number(result[0]?.count)
   }
 
   async countDangerStockLevel(): Promise<number> {
-    const result = await prisma.$queryRaw`
-    SELECT COUNT(*) count, SUM(B.items_count) stock FROM products P
-    JOIN batches B JOIN B.product_id = P.id
-    GROUP BY P.id
-    HAVING stock == 0
-  `
-    console.log(result)
-    return 0
+    const result = (await prisma.$queryRaw`
+      SELECT COUNT(danger_level_stock_products)
+      FROM
+        (
+          SELECT P.id, SUM(B.items_count) FROM products P
+          JOIN batches B ON B.product_id = P.id
+          GROUP BY P.id
+          HAVING SUM(B.items_count) = 0
+        ) danger_level_stock_products
+  `) as { count: number }[]
+    return Number(result[0]?.count)
   }
 
   async findManyWithInventoryMovements(params: ProducsStocksListParams): Promise<{
@@ -223,7 +232,10 @@ export class PrismaProductsRepository implements IProductsRepository {
     }
   }
 
-  async findOrderByInventoryMovementsCount({ startDate, endDate }: { startDate: Date; endDate: Date }): Promise<Product[]> {
+  async findOrderByInventoryMovementsCount({
+    startDate,
+    endDate,
+  }: { startDate: Date; endDate: Date }): Promise<Product[]> {
     try {
       const prismaProducts: any = await prisma.$queryRaw`
         SELECT p.*, 
@@ -234,16 +246,16 @@ export class PrismaProductsRepository implements IProductsRepository {
         WHERE im.registered_at BETWEEN ${startDate} AND ${endDate}
         GROUP BY p.id
         ORDER BY inboundCount + outboundCount DESC
-      `;
+      `
 
       return prismaProducts.map((prismaProduct: any) => {
-        const product = this.mapper.toDomain(prismaProduct);
-        product.inboundInventoryMovementsCount = prismaProduct.inboundCount;
-        product.outboundInventoryMovementsCount = prismaProduct.outboundCount;
-        return product;
-      });
+        const product = this.mapper.toDomain(prismaProduct)
+        product.inboundInventoryMovementsCount = prismaProduct.inboundCount
+        product.outboundInventoryMovementsCount = prismaProduct.outboundCount
+        return product
+      })
     } catch (error) {
-      throw new PrismaError(error);
+      throw new PrismaError(error)
     }
   }
 }
