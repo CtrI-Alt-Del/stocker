@@ -8,7 +8,10 @@ export const CACHE = {
   productInventoryMovements: {
     key: '/product/inventory-movements',
   },
-  stockLevel:{
-    key: '/reports/stock-level'
-  }
+  mostTrendingProducts: {
+    key: '/reports/most-trending-products',
+  },
+  stockLevel: {
+    key: '/reports/stock-level',
+  },
 }

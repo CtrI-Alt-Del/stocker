@@ -1,7 +1,7 @@
-import { InventoryMovementDto } from '@stocker/core/dtos'
-import { InventoryMovement, Batch } from '@stocker/core/entities'
+import type { InventoryMovementDto } from '@stocker/core/dtos'
+import type { InventoryMovement, Batch } from '@stocker/core/entities'
 import type { IApiClient, IInventoryMovementsService } from '@stocker/core/interfaces'
-import { PaginationResponse } from '@stocker/core/responses'
+import type { PaginationResponse } from '@stocker/core/responses'
 
 export const InventoryMovementsService = (
   apiClient: IApiClient,
@@ -26,7 +26,7 @@ export const InventoryMovementsService = (
         '/inventory-movements',
       )
     },
-    async listManyInventoryMovement(page:number) {
+    async listManyInventoryMovement(page: number) {
       apiClient.setParam('page', String(page))
       return await apiClient.get<PaginationResponse<InventoryMovementDto>>(
         '/inventory-movements',

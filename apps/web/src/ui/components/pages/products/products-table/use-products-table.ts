@@ -1,8 +1,6 @@
 import { type RefObject, useState } from 'react'
 import type { Selection } from '@nextui-org/react'
 
-import type { ProductDto } from '@stocker/core/dtos'
-
 import type { DrawerRef } from '@/ui/components/commons/drawer/types'
 import type { Product } from '@stocker/core/entities'
 

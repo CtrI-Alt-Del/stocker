@@ -1,3 +1,5 @@
+'use client'
+
 import { Cell, Pie, PieChart, Tooltip } from 'recharts'
 import { useStockLevelChart } from './use-stock-level'
 import { ExternalLink } from 'lucide-react'
@@ -65,7 +67,7 @@ export const StockLevelChart = () => {
                   {chartData.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
-                      fill={COLORS[entry.name] || '#808080'} 
+                      fill={COLORS[entry.name] || '#808080'}
                       opacity={activeIndex === index ? 0.7 : 1}
                     />
                   ))}
@@ -98,7 +100,10 @@ export const StockLevelChart = () => {
         <div className='flex flex-col justify-center items-center space-y-2'>
           {Object.keys(COLORS).map((key) => (
             <div key={key} className='flex items-center gap-1'>
-              <span className='w-3 h-3 rounded-full' style={{ backgroundColor: COLORS[key] }}></span>
+              <span
+                className='w-3 h-3 rounded-full'
+                style={{ backgroundColor: COLORS[key] }}
+              ></span>
               <span className='text-sm w-16'>{key}</span>
             </div>
           ))}

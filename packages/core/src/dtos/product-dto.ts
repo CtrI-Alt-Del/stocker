@@ -20,4 +20,6 @@ export type ProductDto = {
   model?: string | null
   categoryId?: string | null
   batches?: BatchDto[]
+  inboundInventoryMovementsCount?: number
+  outboundInventoryMovementsCount?: number
 }
