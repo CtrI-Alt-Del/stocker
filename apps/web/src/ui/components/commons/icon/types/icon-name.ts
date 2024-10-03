@@ -1,4 +1,8 @@
 export type IconName =
+  | 'square-user-round'
+  | 'arrow-big-down-dash'
+  | 'arrow-big-up-dash'
+  | 'package'
   | 'check'
   | 'dashboard'
   | 'inventory'
