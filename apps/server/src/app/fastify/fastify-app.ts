@@ -16,10 +16,9 @@ import { ENV } from '@/constants'
 import {
   ProductsRoutes,
   FileStorageRoutes,
-  InventoryMovementRoutes,
+  InventoryMovementsRoutes,
   ReportsRoutes,
 } from './routes'
-import { ReportStockLevelController } from '@/api/controllers/reports'
 import { BatchesRoutes } from './routes/batches-routes'
 
 export class FastifyApp implements IServerApp {
@@ -87,7 +86,7 @@ export class FastifyApp implements IServerApp {
   private registerRoutes() {
     this.app.register(ProductsRoutes, { prefix: '/products' })
     this.app.register(BatchesRoutes, { prefix: '/batches' })
-    this.app.register(InventoryMovementRoutes, { prefix: '/inventory-movements' })
+    this.app.register(InventoryMovementsRoutes, { prefix: '/inventory-movements' })
     this.app.register(FileStorageRoutes, { prefix: '/file-storage' })
     this.app.register(ReportsRoutes, { prefix: '/reports' })
   }

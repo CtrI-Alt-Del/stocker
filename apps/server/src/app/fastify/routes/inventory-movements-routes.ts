@@ -3,10 +3,10 @@ import { FastifyHttp } from '../fastify-http'
 import {
   ListInventoryMovementsController,
   RegisterInboundInventoryMovementController,
-} from '@/api/controllers/inventory-movement'
-import { RegisterOutboundInventoryMovementController } from '@/api/controllers/inventory-movement'
+} from '@/api/controllers/inventory-movements'
+import { RegisterOutboundInventoryMovementController } from '@/api/controllers/inventory-movements'
 
-export const InventoryMovementRoutes = async (app: FastifyInstance) => {
+export const InventoryMovementsRoutes = async (app: FastifyInstance) => {
   const listInventoryMovementsController = new ListInventoryMovementsController()
   const registerInboundInventoryMovementController =
     new RegisterInboundInventoryMovementController()
