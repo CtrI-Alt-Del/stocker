@@ -1,4 +1,5 @@
 export type IconName =
+  | 'archive'
   | 'square-user-round'
   | 'arrow-big-down-dash'
   | 'arrow-big-up-dash'

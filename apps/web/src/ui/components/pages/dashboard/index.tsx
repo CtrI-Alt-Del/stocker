@@ -10,9 +10,15 @@ export const DashboardPage = () => {
         </div>
         <div className='w-full flex items-center  gap-10 flex-col lg:flex-row '>
           <SummaryCard
-            text='Lotes no Estoque'
+            text='Produtos no Estoque'
             value={640}
             icon='package'
+            url='/bananinha'
+          />
+          <SummaryCard
+            text='Lotes no Estoque'
+            value={640}
+            icon='archive'
             url='/bananinha'
           />
           <SummaryCard
@@ -25,12 +31,6 @@ export const DashboardPage = () => {
             text='Lançamentos de saída'
             value={640}
             icon='arrow-big-up-dash'
-            url='/bananinha'
-          />
-          <SummaryCard
-            text='Funcionários'
-            value={640}
-            icon='square-user-round'
             url='/bananinha'
           />
         </div>
