@@ -1,11 +1,13 @@
 'use client'
 
-import { StockLevelChart } from "./stock-level-chart"
+import { StockLevelChart } from './stock-level-chart'
 
 export const DashboardPage = () => {
   return (
     <>
-      <StockLevelChart/>
+      <div className='flex justify-start items-start '>
+        <StockLevelChart />
+      </div>
       <div>Dashboard</div>
     </>
   )
