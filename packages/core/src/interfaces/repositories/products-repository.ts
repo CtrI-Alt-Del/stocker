@@ -4,7 +4,7 @@ import type { ProducsStocksListParams, ProductsListParams } from '../../types'
 export interface IProductsRepository {
   findById(productId: string): Promise<Product | null>
   findMany(params: ProductsListParams): Promise<Product[]>
-  findManyWithInventoryMovements(
+  findManyWithInventoryMovementsCount(
     params: ProducsStocksListParams,
   ): Promise<{ products: Product[]; count: number }>
   count(): Promise<number>
