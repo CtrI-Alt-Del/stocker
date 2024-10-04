@@ -1,5 +1,11 @@
 import { CACHE } from '@/constants'
-import { useApi, useCache, useToast, useUrlParamDate } from '@/ui/hooks'
+import {
+  useApi,
+  useCache,
+  useToast,
+  useUrlParamDate,
+  useUrlParamNumber,
+} from '@/ui/hooks'
 import { Product } from '@stocker/core/entities'
 import { Datetime } from '@stocker/core/libs'
 import { useEffect, useState } from 'react'
@@ -17,6 +23,7 @@ export function useMostTrendingProductsTable() {
     'most-trending-products-end-date',
     DEFAULT_END_DATE.getDate(),
   )
+  const [page, setPage] = useUrlParamNumber('most-trending-products-page', 1)
   const [datesDifference, setDatesDifference] = useState('')
   const { showError } = useToast()
 
@@ -24,6 +31,7 @@ export function useMostTrendingProductsTable() {
     const response = await reportsService.reportMostTrendingProducts({
       startDate,
       endDate,
+      page,
     })
 
     if (response.isFailure) {
@@ -43,13 +51,18 @@ export function useMostTrendingProductsTable() {
     setEndDate(date)
   }
 
+  function handlePageChange(page: number) {
+    setPage(page)
+  }
+
   const { data, isFetching } = useCache({
     fetcher: fetchProducts,
     key: CACHE.mostTrendingProducts.key,
-    dependencies: [startDate, endDate],
+    dependencies: [startDate, endDate, page],
   })
 
-  const products = data?.map(Product.create) ?? []
+  const products = data?.items?.map(Product.create) ?? []
+  const itemsCount = data?.itemsCount ?? 0
   const startDatetime = new Datetime(new Datetime(startDate).addDays(1))
   const endDatetime = new Datetime(endDate)
 
@@ -94,13 +107,18 @@ export function useMostTrendingProductsTable() {
     handleDatesDifferenceInDays()
   }, [startDatetime, endDatetime])
 
+  console.log({ itemsCount })
+
   return {
     products,
     isFetching,
     startDate: startDatetime,
     endDate: endDatetime,
     datesDifference,
+    page,
+    totalPages: Math.ceil(itemsCount / 5),
     handleStartDateChange,
     handleEndDateChange,
+    handlePageChange,
   }
 }

@@ -18,5 +18,5 @@ export interface IProductsRepository {
     page?: number
     startDate: Date
     endDate: Date
-  }): Promise<Product[]>
+  }): Promise<{ products: Product[]; count: number }>
 }

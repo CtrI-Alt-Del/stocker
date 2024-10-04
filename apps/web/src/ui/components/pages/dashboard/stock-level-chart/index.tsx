@@ -9,9 +9,6 @@ import { Icon } from '@/ui/components/commons/icon'
 import { StockLevelChartToolTip } from './tooltip'
 import { useStockLevelChart } from './use-stock-level'
 
-const CHART_WIDTH = 300
-const CHART_HEIGHT = 300
-
 const COLORS: Record<string, string> = {
   'Acima do minimo': '#17C964',
   'Abaixo do minimo': '#F5A524',
@@ -33,22 +30,22 @@ export const StockLevelChart = () => {
   const chartData = data || []
 
   return (
-    <div className='max-w-md rounded-lg shadow p-5 h-full'>
+    <div className='max-w-lg rounded-lg shadow p-5 w-full h-full'>
       <div className='flex justify-between items-center'>
         <h1 className='text-xl font-bold'>Nível do Estoque</h1>
         <Link href='/'>
           <Icon name='link' className='size-5 text-zinc-400' />
         </Link>
       </div>
-      <div className='flex flex-row'>
-        <div className='flex justify-center items-center relative'>
-          <div style={{ width: CHART_WIDTH, height: CHART_HEIGHT }}>
+      <div className='flex flex-col w-full'>
+        <div className='flex justify-center items-center relative flex-1'>
+          <div className='w-full' style={{ height: 300 }}>
             {isFetching ? (
               <div className='flex justify-center items-center w-full h-full'>
                 <Loading />
               </div>
             ) : (
-              <PieChart width={CHART_WIDTH} height={CHART_HEIGHT}>
+              <PieChart width={360} height={300}>
                 <Pie
                   data={chartData}
                   dataKey='value'
@@ -69,8 +66,8 @@ export const StockLevelChart = () => {
                   ))}
                 </Pie>
                 <text
-                  x={CHART_WIDTH / 2}
-                  y={CHART_HEIGHT / 2 - 10}
+                  x={360 / 2}
+                  y={300 / 2 - 10}
                   textAnchor='middle'
                   dominantBaseline='middle'
                   fontSize='30'
@@ -79,8 +76,8 @@ export const StockLevelChart = () => {
                   {totalProducts}
                 </text>
                 <text
-                  x={CHART_WIDTH / 2}
-                  y={CHART_HEIGHT / 2 + 20}
+                  x={360 / 2}
+                  y={300 / 2 + 20}
                   textAnchor='middle'
                   dominantBaseline='middle'
                   fontSize='18'
@@ -93,14 +90,14 @@ export const StockLevelChart = () => {
             )}
           </div>
         </div>
-        <div className='flex flex-col justify-center items-center space-y-2'>
+        <div className='flex flex-col w-full space-y-2 md:ml-4'>
           {Object.keys(COLORS).map((key) => (
             <div key={key} className='flex items-center gap-1'>
               <span
                 className='w-3 h-3 rounded-full'
                 style={{ backgroundColor: COLORS[key] }}
               />
-              <span className='text-sm w-16'>{key}</span>
+              <span className='text-sm'>{key}</span>
             </div>
           ))}
         </div>

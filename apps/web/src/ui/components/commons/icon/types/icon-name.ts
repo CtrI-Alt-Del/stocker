@@ -1,4 +1,9 @@
 export type IconName =
+  | 'archive'
+  | 'square-user-round'
+  | 'arrow-big-down-dash'
+  | 'arrow-big-up-dash'
+  | 'package'
   | 'check'
   | 'dashboard'
   | 'inventory'
@@ -9,6 +14,7 @@ export type IconName =
   | 'arrow-down'
   | 'arrow-up-down'
   | 'product'
+  | 'batch'
   | 'category'
   | 'location'
   | 'employee'

@@ -1,13 +1,16 @@
+import type { Sql } from '@prisma/client/runtime/library'
+import { Prisma } from '@prisma/client'
+
 import type { Product } from '@stocker/core/entities'
 import type { IProductsRepository } from '@stocker/core/interfaces'
 import { PAGINATION } from '@stocker/core/constants'
 import { Datetime } from '@stocker/core/libs'
 import type { ProducsStocksListParams, ProductsListParams } from '@stocker/core/types'
 
-import type { PrismaProduct } from '../types'
 import { prisma } from '../prisma-client'
-import { PrismaProductMapper } from '../mappers'
 import { PrismaError } from '../prisma-error'
+import type { PrismaProduct } from '../types'
+import { PrismaProductMapper } from '../mappers'
 
 export class PrismaProductsRepository implements IProductsRepository {
   private readonly mapper: PrismaProductMapper = new PrismaProductMapper()
@@ -95,42 +98,52 @@ export class PrismaProductsRepository implements IProductsRepository {
     }
   }
 
-  async findManyWithInventoryMovements(params: ProducsStocksListParams): Promise<{
+  async findManyWithInventoryMovements({ page }: ProducsStocksListParams): Promise<{
     products: Product[]
     count: number
   }> {
     try {
-      const offset = (params.page - 1) * PAGINATION.itemsPerPage
-      const limit = PAGINATION.itemsPerPage
+      let paginationSql: Sql = Prisma.sql``
 
-      const prismaProducts: any = await prisma.$queryRaw`
-        SELECT p.*,
-              ARRAY_AGG(
-               JSON_BUILD_OBJECT(
-                  'id', b.id,
-                  'code', b.code,
-                  'expiration_date', b.expiration_date,
-                  'items_count', b.items_count,
-                  'product_id', b.product_id,
-                  'registered_at', b.registered_at,
-                )
-              ) AS batchItemsJson
-        'inboundCount', COUNT(DISTINCT CASE WHEN im.movement_type = 'INBOUND' THEN im.id ELSE NULL END),
-        'outboundCount', COUNT(DISTINCT CASE WHEN im.movement_type = 'OUTBOUND' THEN im.id ELSE NULL END),
-        FROM products p
-        LEFT JOIN inventory_movements im ON p.id = im.product_id
-        GROUP BY p.id
-        LIMIT ${limit} OFFSET ${offset}
-      `
+      if (page) {
+        const offset = (page - 1) * PAGINATION.itemsPerPage
+        const limit = PAGINATION.itemsPerPage
+        paginationSql = Prisma.sql`LIMIT ${limit} OFFSET ${offset}`
+      }
 
-      const products = prismaProducts.map((prismaProduct: any) => {
-        const product = this.mapper.toDomain(prismaProduct)
-        product.inboundInventoryMovementsCount = prismaProduct[prismaProduct.id]
-        product.outboundInventoryMovementsCount = prismaProduct[prismaProduct.id]
-        return product
-      })
-      const count: any = await prisma.$queryRaw`SELECT COUNT(*) FROM products`
-      return { products, count: Number(count[0]?.count || 0) }
+      const prismaProducts: any = (await prisma.$queryRaw`
+        SELECT 
+          P.name,
+          ARRAY_AGG(
+            JSON_BUILD_OBJECT(
+              'id', B.id,
+              'code', B.code,
+              'expiration_date', B.expiration_date,
+              'items_count', B.items_count,
+              'product_id', B.product_id,
+              'registered_at', B.registered_at,
+            )
+          ) batches
+          COUNT(DISTINCT CASE WHEN IM.movement_type = 'INBOUND' THEN IM.id ELSE NULL END) inbound_inventory_movements_count,
+          COUNT(DISTINCT CASE WHEN IM.movement_type = 'OUTBOUND' THEN IM.id ELSE NULL END) outbound_inventory_movements_count,
+        FROM products P
+        LEFT JOIN inventory_movements IM ON IM.product_id =  P.id
+        LEFT JOIN batches B ON B.product_id = P.id
+        GROUP BY P.id
+        ${paginationSql}
+      `) as PrismaProduct &
+        {
+          inbound_inventory_movements_count: number
+          outbound_inventory_movements_count: number
+        }[]
+
+      // const products = prismaProducts.map((prismaProduct: any) => {
+      //   const product = this.mapper.toDomain(prismaProduct)
+      //   product.inboundInventoryMovementsCount = prismaProduct[prismaProduct.id]
+      //   product.outboundInventoryMovementsCount = prismaProduct[prismaProduct.id]
+      //   return product
+      // })
+      return { products: [], count: 0 }
     } catch (error) {
       throw new PrismaError(error)
     }
@@ -139,12 +152,22 @@ export class PrismaProductsRepository implements IProductsRepository {
   async findOrderByInventoryMovementsCount({
     startDate,
     endDate,
-  }: { startDate: Date; endDate: Date }): Promise<Product[]> {
+    page,
+  }: { startDate: Date; endDate: Date; page?: number }) {
     const formattedStartDate = new Datetime(startDate).format('YYYY-MM-DD')
     const formattedEndDate = new Datetime(endDate).format('YYYY-MM-DD')
 
-    try {
-      const prismaProducts = (await prisma.$queryRaw`
+    let paginationSql: Sql = Prisma.sql``
+
+    console.log({ page })
+
+    if (page) {
+      const itemsPerPage = 5
+      const offset = (page - 1) * itemsPerPage
+      paginationSql = Prisma.sql`LIMIT ${itemsPerPage} OFFSET ${offset}`
+    }
+
+    const productsSql = Prisma.sql`
         SELECT 
           P.*, 
           COUNT(DISTINCT CASE WHEN IM.movement_type = 'INBOUND' THEN IM.id ELSE NULL END) inbound_movements_count,
@@ -166,12 +189,22 @@ export class PrismaProductsRepository implements IProductsRepository {
         ORDER BY 
           COUNT(DISTINCT CASE WHEN IM.movement_type = 'OUTBOUND' THEN IM.id ELSE NULL END) 
         DESC
-        LIMIT 5
+    `
+
+    try {
+      const prismaProducts = (await prisma.$queryRaw`
+        ${productsSql}
+        ${paginationSql}
       `) as PrismaProduct &
         {
           inbound_movements_count: number
           outbound_movements_count: number
         }[]
+      const prismaProductsCount = (await prisma.$queryRaw`
+         SELECT COUNT(most_trending_products) FROM (${productsSql}) most_trending_products
+        `) as {
+        count: number
+      }[]
 
       const products = []
 
@@ -185,7 +218,8 @@ export class PrismaProductsRepository implements IProductsRepository {
         )
         products.push(product)
       }
-      return products
+
+      return { products, count: Number(prismaProductsCount[0]?.count) ?? 0 }
     } catch (error) {
       throw new PrismaError(error)
     }

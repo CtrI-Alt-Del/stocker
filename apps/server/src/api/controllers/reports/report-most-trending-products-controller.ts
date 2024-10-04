@@ -6,18 +6,20 @@ import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 type Query = {
   startDate?: string
   endDate?: string
+  page?: string
 }
 
 export class ReportMostTrendingProductsController {
   async handle(http: IHttp) {
-    const { startDate, endDate } = http.getQueryParams<Query>()
+    const { startDate, endDate, page } = http.getQueryParams<Query>()
     const useCase = new ReportMostTrendingProductsUseCase(productsRepository)
 
-    const products = await useCase.execute({
+    const response = await useCase.execute({
       startDate: startDate ? new Date(startDate) : undefined,
       endDate: endDate ? new Date(endDate) : undefined,
+      page: page ? Number(page) : 1,
     })
 
-    return http.send(products, HTTP_STATUS_CODE.ok)
+    return http.send(response, HTTP_STATUS_CODE.ok)
   }
 }

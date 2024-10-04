@@ -1,11 +1,12 @@
 'use client'
 
-import { Input, Spinner } from '@nextui-org/react'
+import { Input, Pagination } from '@nextui-org/react'
 
+import { Datetime } from '@stocker/core/libs'
+
+import { Loading } from '@/ui/components/commons/loading'
 import { useMostTrendingProductsTable } from './use-most-trending-products-table'
 import { ProductRow } from './produc-row'
-import { Datetime } from '@stocker/core/libs'
-import { Loading } from '@/ui/components/commons/loading'
 
 export const MostTrendingProductsTable = () => {
   const {
@@ -14,14 +15,19 @@ export const MostTrendingProductsTable = () => {
     startDate,
     endDate,
     datesDifference,
+    page,
+    totalPages,
+    handlePageChange,
     handleEndDateChange,
     handleStartDateChange,
   } = useMostTrendingProductsTable()
 
   return (
-    <div className='w-full shadow p-6'>
-      <div className='flex items-center justify-between'>
-        <h2 className='text-gray-800 text-xl font-bold'>Produtos com maior demanda</h2>
+    <div className='w-full shadow px-6 py-3'>
+      <div className='flex items-center justify-between w-full'>
+        <h2 className='text-gray-800 text-xl font-bold capitalize'>
+          Produtos com maior demanda
+        </h2>
         <div className='flex items-center gap-3'>
           <Input
             type='date'
@@ -57,7 +63,7 @@ export const MostTrendingProductsTable = () => {
                 <ProductRow
                   key={product.id}
                   id={product.id}
-                  position={index + 1}
+                  position={index + 1 + 5 * (page - 1)}
                   image={product.image}
                   name={product.name}
                   currentStock={product.currentStock}
@@ -70,6 +76,17 @@ export const MostTrendingProductsTable = () => {
               <p className='text-lg font-semibold'>Nenhum produto encontrado</p>
             )}
           </div>
+          {totalPages > 1 && (
+            <div className='mt-3'>
+              <Pagination
+                aria-label='paginação'
+                showControls
+                page={page}
+                total={totalPages}
+                onChange={handlePageChange}
+              />
+            </div>
+          )}
         </>
       )}
     </div>

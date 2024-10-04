@@ -1,6 +1,7 @@
 import type { IApiClient, IReportsService } from '@stocker/core/interfaces'
 import type { ProductDto, StockLevelReportDto } from '@stocker/core/dtos'
 import type { MostTrendingProductsListParams } from '@stocker/core/types'
+import type { PaginationResponse } from '@stocker/core/responses'
 
 export const ReportsService = (apiClient: IApiClient): IReportsService => {
   return {
@@ -10,12 +11,15 @@ export const ReportsService = (apiClient: IApiClient): IReportsService => {
     async reportMostTrendingProducts({
       startDate,
       endDate,
+      page,
     }: MostTrendingProductsListParams) {
-      // apiClient.setParam('page', String(page))
+      if (page) apiClient.setParam('page', page ? String(page) : '1')
       if (startDate) apiClient.setParam('startDate', String(startDate))
       if (endDate) apiClient.setParam('endDate', String(endDate))
 
-      return await apiClient.get<ProductDto[]>('/reports/most-trending-products')
+      return await apiClient.get<PaginationResponse<ProductDto>>(
+        '/reports/most-trending-products',
+      )
     },
   }
 }

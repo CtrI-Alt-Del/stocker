@@ -1,4 +1,4 @@
-import { TooltipProps } from 'recharts'
+import type { TooltipProps } from 'recharts'
 interface PayLoadItem {
   name: string
   value: number
