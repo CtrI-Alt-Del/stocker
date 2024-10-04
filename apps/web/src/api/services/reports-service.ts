@@ -8,14 +8,14 @@ export const ReportsService = (apiClient: IApiClient): IReportsService => {
       return await apiClient.get<StockLevelReportDto>('/reports/stock-level')
     },
     async reportMostTrendingProducts({
-      page,
       startDate,
       endDate,
     }: MostTrendingProductsListParams) {
-      apiClient.setParam('page', String(page))
-      apiClient.setParam('startDate', String(startDate))
-      apiClient.setParam('endDate', String(endDate))
-      return await apiClient.get<ProductDto>('/reports/most-trending-products')
+      // apiClient.setParam('page', String(page))
+      if (startDate) apiClient.setParam('startDate', String(startDate))
+      if (endDate) apiClient.setParam('endDate', String(endDate))
+
+      return await apiClient.get<ProductDto[]>('/reports/most-trending-products')
     },
   }
 }

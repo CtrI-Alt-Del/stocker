@@ -1,5 +1,4 @@
 import type { IProductsRepository } from '../../interfaces'
-import type { Product } from '../../domain/entities'
 import { Datetime } from '../../libs'
 import { ValidationError } from '../../errors'
 
@@ -8,16 +7,14 @@ type Request = {
   endDate?: Date
 }
 
-type Response = {
-  products: Product[]
-}
-
 export class ReportMostTrendingProductsUseCase {
   constructor(private readonly productsRepository: IProductsRepository) {}
 
-  async execute({ startDate, endDate }: Request): Promise<Response> {
-    if (startDate && endDate && new Datetime(startDate).isLessThan(endDate)) {
-      throw new ValidationError('Data de início não pode ser menor que a data final')
+  async execute({ startDate, endDate }: Request) {
+    console.log(startDate)
+    console.log(endDate)
+    if (startDate && endDate && new Datetime(startDate).isGreaterThan(endDate)) {
+      throw new ValidationError('Data de início não pode ser maior que a data final')
     }
 
     if (!startDate || !endDate) {
@@ -31,6 +28,6 @@ export class ReportMostTrendingProductsUseCase {
       endDate,
     })
 
-    return { products }
+    return products.map((product) => product.dto)
   }
 }

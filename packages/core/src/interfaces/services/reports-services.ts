@@ -6,5 +6,5 @@ export interface IReportsService {
   reportStockLevel(): Promise<ApiResponse<StockLevelReportDto>>
   reportMostTrendingProducts(
     params: MostTrendingProductsListParams,
-  ): Promise<ApiResponse<ProductDto>>
+  ): Promise<ApiResponse<ProductDto[]>>
 }

@@ -1,17 +1,13 @@
 'use client'
 
-import { Cell, Pie, PieChart, Tooltip } from 'recharts'
-import { useStockLevelChart } from './use-stock-level'
-import { ExternalLink } from 'lucide-react'
-import Link from 'next/link'
-import { StockLevelChartToolTip } from './tooltip'
 import { useState } from 'react'
-import { Spinner } from '@nextui-org/react'
+import { Cell, Pie, PieChart, Tooltip } from 'recharts'
+import Link from 'next/link'
 
-type ChartData = {
-  name: string
-  value: number
-}
+import { Loading } from '@/ui/components/commons/loading'
+import { Icon } from '@/ui/components/commons/icon'
+import { StockLevelChartToolTip } from './tooltip'
+import { useStockLevelChart } from './use-stock-level'
 
 const CHART_WIDTH = 300
 const CHART_HEIGHT = 300
@@ -26,11 +22,11 @@ export const StockLevelChart = () => {
   const { isFetching, data, totalProducts } = useStockLevelChart()
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
-  const onPieEnter = (data: ChartData, index: number) => {
+  const handlePieMouseEnter = (index: number) => {
     setActiveIndex(index)
   }
 
-  const onPieLeave = () => {
+  const handlePieMouseLeave = () => {
     setActiveIndex(null)
   }
 
@@ -39,9 +35,9 @@ export const StockLevelChart = () => {
   return (
     <div className='max-w-md rounded-lg shadow p-5 h-full'>
       <div className='flex justify-between items-center'>
-        <h1 className='text-2xl font-bold'>Nível do Estoque</h1>
+        <h1 className='text-xl font-bold'>Nível do Estoque</h1>
         <Link href='/'>
-          <ExternalLink className='size-5 text-zinc-400' />
+          <Icon name='link' className='size-5 text-zinc-400' />
         </Link>
       </div>
       <div className='flex flex-row'>
@@ -49,7 +45,7 @@ export const StockLevelChart = () => {
           <div style={{ width: CHART_WIDTH, height: CHART_HEIGHT }}>
             {isFetching ? (
               <div className='flex justify-center items-center w-full h-full'>
-                <Spinner size='lg' label='Carregando...' color='primary' />
+                <Loading />
               </div>
             ) : (
               <PieChart width={CHART_WIDTH} height={CHART_HEIGHT}>
@@ -61,12 +57,12 @@ export const StockLevelChart = () => {
                   innerRadius={90}
                   outerRadius={120}
                   className='focus:outline-none'
-                  onMouseEnter={onPieEnter}
-                  onMouseLeave={onPieLeave}
+                  onMouseEnter={handlePieMouseEnter}
+                  onMouseLeave={handlePieMouseLeave}
                 >
                   {chartData.map((entry, index) => (
                     <Cell
-                      key={`cell-${index}`}
+                      key={`cell-${index + 1}`}
                       fill={COLORS[entry.name] || '#808080'}
                       opacity={activeIndex === index ? 0.7 : 1}
                     />
@@ -103,7 +99,7 @@ export const StockLevelChart = () => {
               <span
                 className='w-3 h-3 rounded-full'
                 style={{ backgroundColor: COLORS[key] }}
-              ></span>
+              />
               <span className='text-sm w-16'>{key}</span>
             </div>
           ))}

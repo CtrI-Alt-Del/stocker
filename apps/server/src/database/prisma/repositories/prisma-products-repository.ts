@@ -146,26 +146,27 @@ export class PrismaProductsRepository implements IProductsRepository {
     try {
       const prismaProducts = (await prisma.$queryRaw`
         SELECT 
-        P.*, 
-        COUNT(DISTINCT CASE WHEN IM.movement_type = 'INBOUND' THEN IM.id ELSE NULL END) inbound_movements_count,
-        COUNT(DISTINCT CASE WHEN IM.movement_type = 'OUTBOUND' THEN IM.id ELSE NULL END) outbound_movements_count,
-        ARRAY_AGG(JSON_BUILD_OBJECT(
-          'id', B.id,
-          'code', B.code,
-          'expiration_date', B.expiration_date,
-          'items_count', B.items_count,
-          'product_id', B.product_id,
-          'registered_at', B.registered_at
-        )) batches
-      FROM products P
-      LEFT JOIN inventory_movements IM ON P.id = IM.product_id
-      LEFT JOIN batches B ON B.product_id = P.id
-      WHERE DATE(IM.registered_at) BETWEEN DATE(${formattedEndDate}) AND DATE(${formattedStartDate})
-      GROUP BY P.id
-      ORDER BY 
-        COUNT(DISTINCT CASE WHEN IM.movement_type = 'INBOUND' THEN IM.id ELSE NULL END) + 
-        COUNT(DISTINCT CASE WHEN IM.movement_type = 'OUTBOUND' THEN IM.id ELSE NULL END) 
-      DESC
+          P.*, 
+          COUNT(DISTINCT CASE WHEN IM.movement_type = 'INBOUND' THEN IM.id ELSE NULL END) inbound_movements_count,
+          COUNT(DISTINCT CASE WHEN IM.movement_type = 'OUTBOUND' THEN IM.id ELSE NULL END) outbound_movements_count,
+          ARRAY_AGG(JSON_BUILD_OBJECT(
+            'id', B.id,
+            'code', B.code,
+            'expiration_date', B.expiration_date,
+            'items_count', B.items_count,
+            'product_id', B.product_id,
+            'registered_at', B.registered_at
+          )) batches
+        FROM products P
+        LEFT JOIN inventory_movements IM ON P.id = IM.product_id
+        LEFT JOIN batches B ON B.product_id = P.id
+        WHERE  DATE(IM.registered_at) BETWEEN DATE(${formattedStartDate}) AND DATE(${formattedEndDate})
+        GROUP BY P.id
+        HAVING COUNT(DISTINCT CASE WHEN IM.movement_type = 'OUTBOUND' THEN IM.id ELSE NULL END) > 0
+        ORDER BY 
+          COUNT(DISTINCT CASE WHEN IM.movement_type = 'OUTBOUND' THEN IM.id ELSE NULL END) 
+        DESC
+        LIMIT 5
       `) as PrismaProduct &
         {
           inbound_movements_count: number
@@ -176,8 +177,12 @@ export class PrismaProductsRepository implements IProductsRepository {
 
       for (const prismaProduct of prismaProducts) {
         const product = this.mapper.toDomain(prismaProduct as unknown as PrismaProduct)
-        product.inboundInventoryMovementsCount = prismaProduct.inbound_movements_count
-        product.outboundInventoryMovementsCount = prismaProduct.outbound_movements_count
+        product.inboundInventoryMovementsCount = Number(
+          prismaProduct.inbound_movements_count,
+        )
+        product.outboundInventoryMovementsCount = Number(
+          prismaProduct.outbound_movements_count,
+        )
         products.push(product)
       }
       return products

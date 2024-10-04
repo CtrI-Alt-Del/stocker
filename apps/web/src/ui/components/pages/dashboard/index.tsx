@@ -1,11 +1,13 @@
+import { MostTrendingProductsTable } from './most-trending-products-table'
 import { StockLevelChart } from './stock-level-chart'
 
 export const DashboardPage = () => {
   return (
     <>
-      <h1>Dashboard</h1>
-      <div className='flex justify-start items-start '>
+      <h1 className='text-2xl text-zinc-800 font-semibold'>Dashboard</h1>
+      <div className='flex gap-6 mt-3'>
         <StockLevelChart />
+        <MostTrendingProductsTable />
       </div>
     </>
   )

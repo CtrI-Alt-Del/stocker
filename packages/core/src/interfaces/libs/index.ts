@@ -1,1 +1,1 @@
-export type {IDatetime } from './datetime'
+export type { IDatetime } from './datetime'

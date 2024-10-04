@@ -17,6 +17,7 @@ export type IconName =
   | 'notification'
   | 'inbound'
   | 'outbound'
+  | 'link'
   | 'ellipses'
   | 'menu-hamburguer'
   | 'close'

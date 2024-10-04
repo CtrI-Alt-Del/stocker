@@ -1,5 +1,4 @@
 export type MostTrendingProductsListParams = {
-  page: number
-  startDate: Date
-  endDate: Date
+  startDate: Date | null
+  endDate: Date | null
 }
