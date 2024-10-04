@@ -159,8 +159,6 @@ export class PrismaProductsRepository implements IProductsRepository {
 
     let paginationSql: Sql = Prisma.sql``
 
-    console.log({ page })
-
     if (page) {
       const itemsPerPage = 5
       const offset = (page - 1) * itemsPerPage
@@ -218,6 +216,8 @@ export class PrismaProductsRepository implements IProductsRepository {
         )
         products.push(product)
       }
+
+      console.log(prismaProductsCount)
 
       return { products, count: Number(prismaProductsCount[0]?.count) ?? 0 }
     } catch (error) {

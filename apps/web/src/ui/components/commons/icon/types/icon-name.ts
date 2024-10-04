@@ -7,6 +7,7 @@ export type IconName =
   | 'check'
   | 'dashboard'
   | 'inventory'
+  | 'download'
   | 'record'
   | 'edit'
   | 'view'

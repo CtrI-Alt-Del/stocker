@@ -21,12 +21,13 @@ import {
   Menu,
   ExternalLink,
   EllipsisVertical,
+  Download,
   X,
-  type LucideProps,
   Check,
   Package,
   SquareUserRound,
   Archive,
+  type LucideProps,
 } from 'lucide-react'
 
 import type { IconName } from '../types'
@@ -35,17 +36,18 @@ export const ICONS: Record<
   IconName,
   ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>
 > = {
-  archive: Archive,
   'square-user-round': SquareUserRound,
   'arrow-big-up-dash': ArrowBigUpDash,
   'arrow-big-down-dash': ArrowBigDownDash,
-  package: Package,
   'arrow-down': ChevronDown,
   'arrow-up': ChevronUp,
   'arrow-up-down': ArrowUpDown,
   'menu-hamburguer': Menu,
+  archive: Archive,
+  package: Package,
   dashboard: ChartBarStacked,
   ellipses: EllipsisVertical,
+  download: Download,
   close: X,
   link: ExternalLink,
   batch: Box,

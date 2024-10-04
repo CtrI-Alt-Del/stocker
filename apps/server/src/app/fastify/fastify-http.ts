@@ -19,6 +19,10 @@ export class FastifyHttp implements IHttp {
     return this.reply.redirect(route)
   }
 
+  setHeader(key: string, value: string): void {
+    this.reply.header(key, value)
+  }
+
   getBody<Body>(): Body {
     return this.request.body as Body
   }
