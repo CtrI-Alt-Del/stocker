@@ -18,7 +18,7 @@ export class ExportInventoryToCsvFileController {
       page: page,
     })
 
-    http.setHeader('Content-Disposition', 'attachment; filename="inventory.csv"')
+    http.setHeader('Content-Disposition', 'attachment; filename="inventory.xlsx"')
     return http.send(csvBuffer, HTTP_STATUS_CODE.ok)
   }
 }
