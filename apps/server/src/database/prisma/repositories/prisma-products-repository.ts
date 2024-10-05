@@ -104,13 +104,13 @@ export class PrismaProductsRepository implements IProductsRepository {
   }> {
     try {
       let paginationSql: Sql = Prisma.sql``
-  
+
       if (page) {
         const offset = (page - 1) * PAGINATION.itemsPerPage
         const limit = PAGINATION.itemsPerPage
         paginationSql = Prisma.sql`LIMIT ${limit} OFFSET ${offset}`
       }
-  
+
       const prismaProductsSql = Prisma.sql`
         SELECT
           P.*,
@@ -122,21 +122,17 @@ export class PrismaProductsRepository implements IProductsRepository {
               'items_count', B.items_count,
               'product_id', B.product_id,
               'registered_at', B.registered_at
-            )
-          ) AS batches,
-          COUNT(DISTINCT CASE WHEN IM.movement_type = 'INBOUND' THEN IM.id ELSE NULL END) AS inbound_inventory_movements_count,
-          COUNT(DISTINCT CASE WHEN IM.movement_type = 'OUTBOUND' THEN IM.id ELSE NULL END) AS outbound_inventory_movements_count
+              )
+            ) batches,
+          COUNT(DISTINCT CASE WHEN IM.movement_type = 'INBOUND' THEN IM.id ELSE NULL END) inbound_inventory_movements_count,
+          COUNT(DISTINCT CASE WHEN IM.movement_type = 'OUTBOUND' THEN IM.id ELSE NULL END) outbound_inventory_movements_count
         FROM products P
         LEFT JOIN inventory_movements IM ON IM.product_id = P.id
         LEFT JOIN batches B ON B.product_id = P.id
         GROUP BY P.id
-        ${paginationSql}
       `
-  
-      const prismaProducts: (PrismaProduct & {
-        inbound_inventory_movements_count: bigint
-        outbound_inventory_movements_count: bigint
-      })[] = await prisma.$queryRaw`
+
+      const prismaProducts = (await prisma.$queryRaw`
         ${prismaProductsSql}
         ${paginationSql}
       `) as PrismaProduct &
@@ -161,17 +157,14 @@ export class PrismaProductsRepository implements IProductsRepository {
         )
         return product
       })
-  
-      const count = await this.count()
-  
-      return { products, count }
+      return {
+        products,
+        count: prismaProductsCount[0]?.count ? Number(prismaProductsCount[0]?.count) : 0,
+      }
     } catch (error) {
-      console.error("Erro em findManyWithInventoryMovementsCount:", error)
       throw new PrismaError(error)
     }
   }
-  
-  
 
   async findOrderByInventoryMovementsCount({
     startDate,
