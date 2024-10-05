@@ -15,7 +15,7 @@ export class ExportInventoryToCsvFileUseCase {
   }
 
   async execute({ page }: Request) {
-    const products = await this.productsRepository.findManyWithInventoryMovements({
+    const products = await this.productsRepository.findManyWithInventoryMovementsCount({
       page: page,
     })
 
