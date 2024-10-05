@@ -4,12 +4,14 @@ import {
   ExportInventoryToCsvFileController,
   ExportMostTrendingProductsToCsvFileController,
   ReportMostTrendingProductsController,
+  ReportInventoryController,
   ReportStockLevelController,
 } from '@/api/controllers/reports'
 
 export const ReportsRoutes = async (app: FastifyInstance) => {
   const reportStockLevelController = new ReportStockLevelController()
   const reportMostTrendingProductsController = new ReportMostTrendingProductsController()
+  const reportInventoryController = new ReportInventoryController()
   const exportMostTrendingProductsToCsvFileController =
     new ExportMostTrendingProductsToCsvFileController()
   const exportInventoryToCsvFileController = new ExportInventoryToCsvFileController()
@@ -17,6 +19,11 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
   app.get('/stock-level', async (request, response) => {
     const http = new FastifyHttp(request, response)
     return reportStockLevelController.handle(http)
+  })
+
+  app.get('/inventory', async (request, response) => {
+    const http = new FastifyHttp(request, response)
+    return reportInventoryController.handle(http)
   })
 
   app.get('/most-trending-products', async (request, response) => {

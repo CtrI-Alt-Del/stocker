@@ -98,7 +98,7 @@ export class PrismaProductsRepository implements IProductsRepository {
     }
   }
 
-  async findManyWithInventoryMovements({ page }: ProducsStocksListParams): Promise<{
+  async findManyWithInventoryMovementsCount({ page }: ProducsStocksListParams): Promise<{
     products: Product[]
     count: number
   }> {
@@ -126,10 +126,16 @@ export class PrismaProductsRepository implements IProductsRepository {
           ) batches,
           COUNT(DISTINCT CASE WHEN IM.movement_type = 'INBOUND' THEN IM.id ELSE NULL END) inbound_inventory_movements_count,
           COUNT(DISTINCT CASE WHEN IM.movement_type = 'OUTBOUND' THEN IM.id ELSE NULL END) outbound_inventory_movements_count
+          COUNT(DISTINCT CASE WHEN IM.movement_type = 'OUTBOUND' THEN IM.id ELSE NULL END) outbound_inventory_movements_count
         FROM products P
+        LEFT JOIN inventory_movements IM ON IM.product_id = P.id
         LEFT JOIN inventory_movements IM ON IM.product_id = P.id
         LEFT JOIN batches B ON B.product_id = P.id
         GROUP BY P.id
+      `
+
+      const prismaProducts = (await prisma.$queryRaw`
+        ${prismaProductsSql}
         ${paginationSql}
       `) as PrismaProduct & {
         inbound_inventory_movements_count: number
