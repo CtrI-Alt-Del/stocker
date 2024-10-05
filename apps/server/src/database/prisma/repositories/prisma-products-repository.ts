@@ -104,13 +104,13 @@ export class PrismaProductsRepository implements IProductsRepository {
   }> {
     try {
       let paginationSql: Sql = Prisma.sql``
-
+  
       if (page) {
         const offset = (page - 1) * PAGINATION.itemsPerPage
         const limit = PAGINATION.itemsPerPage
         paginationSql = Prisma.sql`LIMIT ${limit} OFFSET ${offset}`
       }
-
+  
       const prismaProducts: any = (await prisma.$queryRaw`
         SELECT 
           P.name,
@@ -121,33 +121,35 @@ export class PrismaProductsRepository implements IProductsRepository {
               'expiration_date', B.expiration_date,
               'items_count', B.items_count,
               'product_id', B.product_id,
-              'registered_at', B.registered_at,
+              'registered_at', B.registered_at
             )
-          ) batches
+          ) batches,
           COUNT(DISTINCT CASE WHEN IM.movement_type = 'INBOUND' THEN IM.id ELSE NULL END) inbound_inventory_movements_count,
-          COUNT(DISTINCT CASE WHEN IM.movement_type = 'OUTBOUND' THEN IM.id ELSE NULL END) outbound_inventory_movements_count,
+          COUNT(DISTINCT CASE WHEN IM.movement_type = 'OUTBOUND' THEN IM.id ELSE NULL END) outbound_inventory_movements_count
         FROM products P
-        LEFT JOIN inventory_movements IM ON IM.product_id =  P.id
+        LEFT JOIN inventory_movements IM ON IM.product_id = P.id
         LEFT JOIN batches B ON B.product_id = P.id
         GROUP BY P.id
         ${paginationSql}
-      `) as PrismaProduct &
-        {
-          inbound_inventory_movements_count: number
-          outbound_inventory_movements_count: number
-        }[]
-
-      // const products = prismaProducts.map((prismaProduct: any) => {
-      //   const product = this.mapper.toDomain(prismaProduct)
-      //   product.inboundInventoryMovementsCount = prismaProduct[prismaProduct.id]
-      //   product.outboundInventoryMovementsCount = prismaProduct[prismaProduct.id]
-      //   return product
-      // })
-      return { products: [], count: 0 }
+      `) as PrismaProduct & {
+        inbound_inventory_movements_count: number
+        outbound_inventory_movements_count: number
+      }[]
+  
+      const products = prismaProducts.map((prismaProduct: any) => {
+        const product = this.mapper.toDomain(prismaProduct)
+        product.inboundInventoryMovementsCount = Number(prismaProduct.inbound_inventory_movements_count)
+        product.outboundInventoryMovementsCount = Number(prismaProduct.outbound_inventory_movements_count)
+        return product
+      })
+      const count = await this.count()
+  
+      return { products, count }
     } catch (error) {
       throw new PrismaError(error)
     }
   }
+  
 
   async findOrderByInventoryMovementsCount({
     startDate,
