@@ -113,7 +113,7 @@ export class PrismaProductsRepository implements IProductsRepository {
 
       const prismaProductsSql = Prisma.sql`
         SELECT
-          P.id,
+          P.*,
           ARRAY_AGG(
             JSON_BUILD_OBJECT(
               'id', B.id,
@@ -141,16 +141,20 @@ export class PrismaProductsRepository implements IProductsRepository {
           outbound_inventory_movements_count: number
         }[]
 
-      const prismaProductsCount = await prisma.$queryRaw`
+      const prismaProductsCount = (await prisma.$queryRaw`
        SELECT COUNT(products_stocks) FROM (${prismaProductsSql}) products_stocks
-      ` as {
+      `) as {
         count: number
       }[]
 
       const products = prismaProducts.map((prismaProduct) => {
         const product = this.mapper.toDomain(prismaProduct as unknown as PrismaProduct)
-        product.inboundInventoryMovementsCount = Number(prismaProduct.inbound_inventory_movements_count)
-        product.outboundInventoryMovementsCount = Number(prismaProduct.outbound_inventory_movements_count)
+        product.inboundInventoryMovementsCount = Number(
+          prismaProduct.inbound_inventory_movements_count,
+        )
+        product.outboundInventoryMovementsCount = Number(
+          prismaProduct.outbound_inventory_movements_count,
+        )
         return product
       })
       return {
