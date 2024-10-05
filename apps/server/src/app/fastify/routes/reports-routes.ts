@@ -1,6 +1,7 @@
 import type { FastifyInstance } from 'fastify'
 import { FastifyHttp } from '../fastify-http'
 import {
+  ExportInventoryToCsvFileController,
   ExportMostTrendingProductsToCsvFileController,
   ReportMostTrendingProductsController,
   ReportStockLevelController,
@@ -11,6 +12,7 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
   const reportMostTrendingProductsController = new ReportMostTrendingProductsController()
   const exportMostTrendingProductsToCsvFileController =
     new ExportMostTrendingProductsToCsvFileController()
+  const exportInventoryToCsvFileController = new ExportInventoryToCsvFileController()
 
   app.get('/stock-level', async (request, response) => {
     const http = new FastifyHttp(request, response)
@@ -26,4 +28,11 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
     const http = new FastifyHttp(request, response)
     return exportMostTrendingProductsToCsvFileController.handle(http)
   })
+
+  app.get('/inventory/csv', async (request, response) => {
+    const http = new FastifyHttp(request, response)
+    return exportInventoryToCsvFileController.handle(http)
+  })
+
+  
 }
