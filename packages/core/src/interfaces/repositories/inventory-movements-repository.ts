@@ -1,5 +1,5 @@
 import type { InventoryMovement } from '../../domain/entities'
-import type { InventoryMovementsListParams } from '../../types'
+import type { FindByDateRangeParams, InventoryMovementsListParams } from '../../types'
 
 export interface IInventoryMovementsRepository {
   add(inventoryMovement: InventoryMovement): Promise<void>
@@ -8,4 +8,7 @@ export interface IInventoryMovementsRepository {
   ): Promise<{ inventoryMovements: InventoryMovement[]; count: number }>
   countInbound(): Promise<number>
   countOutbound(): Promise<number>
+  findByDateRange(
+    params: FindByDateRangeParams,
+  ): Promise<InventoryMovement[]>
 }
