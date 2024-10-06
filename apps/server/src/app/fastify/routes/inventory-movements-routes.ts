@@ -3,8 +3,9 @@ import { FastifyHttp } from '../fastify-http'
 import {
   ListInventoryMovementsController,
   RegisterInboundInventoryMovementController,
+  RegisterOutboundInventoryMovementController,
+  ReportAnnualOutboundInventorymovementsController
 } from '@/api/controllers/inventory-movements'
-import { RegisterOutboundInventoryMovementController } from '@/api/controllers/inventory-movements'
 
 export const InventoryMovementsRoutes = async (app: FastifyInstance) => {
   const listInventoryMovementsController = new ListInventoryMovementsController()
@@ -12,6 +13,8 @@ export const InventoryMovementsRoutes = async (app: FastifyInstance) => {
     new RegisterInboundInventoryMovementController()
   const registerOutboundInventoryMovementController =
     new RegisterOutboundInventoryMovementController()
+  const reportAnnualOutboundInventorymovementsController =
+    new ReportAnnualOutboundInventorymovementsController()
 
   app.get('/', async (request, response) => {
     const http = new FastifyHttp(request, response)
@@ -26,5 +29,10 @@ export const InventoryMovementsRoutes = async (app: FastifyInstance) => {
   app.post('/outbound', async (request, response) => {
     const http = new FastifyHttp(request, response)
     return registerOutboundInventoryMovementController.handle(http)
+  })
+
+  app.get('/reports/annual-outbound-inventory-movements', async (request, response) => {
+    const http = new FastifyHttp(request, response)
+    return reportAnnualOutboundInventorymovementsController.handle(http)
   })
 }
