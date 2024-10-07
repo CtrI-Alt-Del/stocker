@@ -1,10 +1,5 @@
-// export const StocksPage = () => {
-//   return <>
-//     <h1>Ola</h1>
-//     </>
-// }
-
 'use client'
+
 import {
   Pagination,
   Spinner,
@@ -16,32 +11,18 @@ import {
   TableRow,
 } from '@nextui-org/react'
 
-import type { Product } from '@stocker/core/entities'
+import { useStocks } from './use-stocks'
 
+export const StocksPage = () => {
+  // Use this hook to get the data you need to make the table
+  // const {} = useStocks()
 
-type StocksPageProps = {
-  page: number
-  isLoading: boolean
-  products: Product[]
-  selectedProductsIds?: string[]
-  totalPages: number
-  onProductsSelectionChange: (productsIds: string[]) => void
-  onPageChange: (page: number) => void
-}
-export const StocksPage = ({
-  page,
-  isLoading,
-  products,
-  selectedProductsIds,
-  totalPages,
-  onProductsSelectionChange,
-  onPageChange,
-}: StocksPageProps) => {
   return (
     <>
-      <Table
+      {/* <Table
         aria-label='Tabela de Inventário'
-        shadow='none'selectionMode='multiple'
+        shadow='none'
+        selectionMode='multiple'
         selectedKeys={selectedProductsIds}
         onSelectionChange={(selection) =>
           onProductsSelectionChange(Array.from(selection) as string[])
@@ -94,20 +75,20 @@ export const StocksPage = ({
           {(product) => (
             <TableRow key={product.id}>
               <TableCell key='product'>{product.name}</TableCell>
-              <TableCell key='batch'>
-                {product.batchesCount}
-              </TableCell>
+              <TableCell key='batch'>{product.batchesCount}</TableCell>
               <TableCell key='inbound' className='font-semibold'>
                 {product.inboundInventoryMovementsCount}
               </TableCell>
-              <TableCell key='outbound'>{product.outboundInventoryMovementsCount}</TableCell>
+              <TableCell key='outbound'>
+                {product.outboundInventoryMovementsCount}
+              </TableCell>
               <TableCell key='stock'>{product.stockLevel}</TableCell>
               <TableCell key='min-stock'>{product.minimumStock}</TableCell>
               <TableCell key='status'>{product.isActive}</TableCell>
             </TableRow>
           )}
         </TableBody>
-      </Table>
+      </Table> */}
     </>
   )
 }
