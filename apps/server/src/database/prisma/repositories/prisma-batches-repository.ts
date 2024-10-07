@@ -83,4 +83,12 @@ export class PrismaBatchesRepository implements IBatchesRepository {
       throw new PrismaError(error)
     }
   }
+
+  async count(): Promise<number> {
+    throw new Error('Method not implemented.')
+  }
+
+  async countItems(): Promise<number> {
+    throw new Error('Method not implemented.')
+  }
 }

@@ -1,5 +1,5 @@
-import { Product } from "../../domain/entities"
-import { IProductsRepository, ICsvProvider } from "../../interfaces" 
+import type { Product } from '../../domain/entities'
+import type { IProductsRepository, ICsvProvider } from '../../interfaces'
 
 type Request = {
   page: number
@@ -29,28 +29,29 @@ export class ExportInventoryToCsvFileUseCase {
       { header: 'Nível de estoque', key: 'stockLevel' },
     ])
 
-    this.csvProvider.addRows(products.products.map((product: Product) => {
-      let stockLevel = ''
+    this.csvProvider.addRows(
+      products.products.map((product: Product) => {
+        let stockLevel = ''
 
-      switch (product.stockLevel) {
-        case 'safe':
-          stockLevel = 'ideal'
-          break
-        case 'average':
-          stockLevel = 'em baixa'
-          break
-        default:
-          stockLevel = 'esgotado'
-      }
+        switch (product.stockLevel) {
+          case 'safe':
+            stockLevel = 'ideal'
+            break
+          case 'average':
+            stockLevel = 'em baixa'
+            break
+          default:
+            stockLevel = 'esgotado'
+        }
 
-      return {
-        name: product.name,
-        batchQuantity: product.batchesCount,
-        entryTransactions: product.inboundInventoryMovementsCount,
-        exitTransactions: product.outboundInventoryMovementsCount,
-        currentStock: product.currentStock,
-        minimumStock: product.minimumStock,
-        stockLevel: stockLevel,
+        return {
+          name: product.name,
+          batchQuantity: product.batchesCount,
+          entryTransactions: product.inboundInventoryMovementsCount,
+          exitTransactions: product.outboundInventoryMovementsCount,
+          currentStock: product.currentStock,
+          minimumStock: product.minimumStock,
+          stockLevel: stockLevel,
         }
       }),
     )
@@ -58,5 +59,4 @@ export class ExportInventoryToCsvFileUseCase {
     const csvContent = this.csvProvider.getXlsxFileBuffer()
     return csvContent
   }
-
 }

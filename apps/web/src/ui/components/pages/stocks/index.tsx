@@ -11,22 +11,19 @@ import {
   TableRow,
 } from '@nextui-org/react'
 
-import { useStocks } from './use-stocks'
+import type { Product } from '@stocker/core/entities'
+import { useStocksPage } from './use-stocks-page'
+import { Tag } from '../../commons/tag'
 
 export const StocksPage = () => {
-  // Use this hook to get the data you need to make the table
-  // const {} = useStocks()
+  const { handlePageChange } = useStocksPage()
 
   return (
     <>
-      {/* <Table
+      <Table
         aria-label='Tabela de Inventário'
         shadow='none'
         selectionMode='multiple'
-        selectedKeys={selectedProductsIds}
-        onSelectionChange={(selection) =>
-          onProductsSelectionChange(Array.from(selection) as string[])
-        }
         topContentPlacement='outside'
         bottomContentPlacement='outside'
         bottomContent={
@@ -37,7 +34,7 @@ export const StocksPage = () => {
                 showControls
                 page={page}
                 total={totalPages}
-                onChange={onPageChange}
+                onChange={handlePageChange}
               />
             </div>
           ) : null
@@ -84,11 +81,11 @@ export const StocksPage = () => {
               </TableCell>
               <TableCell key='stock'>{product.stockLevel}</TableCell>
               <TableCell key='min-stock'>{product.minimumStock}</TableCell>
-              <TableCell key='status'>{product.isActive}</TableCell>
+              <TableCell key='status'></TableCell>
             </TableRow>
           )}
         </TableBody>
-      </Table> */}
+      </Table>
     </>
   )
 }
