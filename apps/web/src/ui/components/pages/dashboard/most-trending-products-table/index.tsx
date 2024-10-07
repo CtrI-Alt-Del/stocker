@@ -4,11 +4,11 @@ import { Input, Link, Pagination } from '@nextui-org/react'
 
 import { Datetime } from '@stocker/core/libs'
 
-import { Loading } from '@/ui/components/commons/loading'
-import { useMostTrendingProductsTable } from './use-most-trending-products-table'
-import { ProductRow } from './produc-row'
-import { Icon } from '@/ui/components/commons/icon'
 import { ENV } from '@/constants'
+import { Icon } from '@/ui/components/commons/icon'
+import { Loading } from '@/ui/components/commons/loading'
+import { ProductRow } from './produc-row'
+import { useMostTrendingProductsTable } from './use-most-trending-products-table'
 
 export const MostTrendingProductsTable = () => {
   const {
@@ -26,7 +26,7 @@ export const MostTrendingProductsTable = () => {
 
   return (
     <div className='w-full shadow px-6 py-3'>
-      <div className='flex items-center justify-between w-full'>
+      <div className='flex flex-col md:flex-row   md:items-center justify-between w-full'>
         <div className='flex items-center gap-3'>
           <Link
             href={`${ENV.serverUrl}/reports/most-trending-products/csv?startDate=${startDate.format('YYYY-MM-DD')}&endDate=${endDate.format('YYYY-MM-DD')}`}
@@ -35,10 +35,12 @@ export const MostTrendingProductsTable = () => {
           >
             <Icon name='download' size={20} />
           </Link>
-          <h2 className='text-gray-800 text-xl font-bold'>Produtos com Maior Demanda</h2>
+          <h2 className='text-gray-800 text-lg md:text-xl  font-bold '>
+            Produtos com Maior Demanda
+          </h2>
         </div>
 
-        <div className='flex items-center gap-3'>
+        <div className='flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-3 md:mt-0'>
           <Input
             type='date'
             size='sm'
@@ -69,7 +71,7 @@ export const MostTrendingProductsTable = () => {
         </div>
       ) : (
         <>
-          <div className='space-y-3 mt-6'>
+          <div className='space-y-3 mt-6 overflow-x-auto'>
             {products.length > 0 ? (
               products.map((product, index) => (
                 <ProductRow
@@ -91,6 +93,7 @@ export const MostTrendingProductsTable = () => {
           {totalPages > 1 && (
             <div className='mt-3'>
               <Pagination
+                className='w-full flex justify-start'
                 aria-label='paginação'
                 showControls
                 page={page}
