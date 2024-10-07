@@ -1,14 +1,15 @@
 import { MostTrendingProductsTable } from './most-trending-products-table'
 import { StockLevelChart } from './stock-level-chart'
+import { SummaryCards } from './summary-cards'
 
 export const DashboardPage = () => {
   return (
-    <>
-      <h1 className='text-2xl text-zinc-800 font-semibold'>Dashboard</h1>
-      <div className='grid grid-cols-[0.5fr_1fr] gap-6 mt-3'>
+    <div className='  space-y-6'>
+      <div className='grid grid-cols-1 lg:grid-cols-[0.6fr_1fr] gap-8 '>
         <StockLevelChart />
         <MostTrendingProductsTable />
       </div>
-    </>
+      <SummaryCards />
+    </div>
   )
 }

@@ -8,6 +8,9 @@ export const ReportsService = (apiClient: IApiClient): IReportsService => {
     async reportStockLevel() {
       return await apiClient.get<StockLevelReportDto>('/reports/stock-level')
     },
+    async reportSummary() {
+      return await apiClient.get<any>('/reports/inventory-summary')
+    },
     async reportMostTrendingProducts({
       startDate,
       endDate,
