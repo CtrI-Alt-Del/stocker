@@ -1,40 +1,15 @@
+import { MostTrendingProductsTable } from './most-trending-products-table'
 import { StockLevelChart } from './stock-level-chart'
-import { SummaryCard } from './summary-cards'
+import { SummaryCards } from './summary-cards'
 
 export const DashboardPage = () => {
   return (
-    <>
-      <div className='space-y-2'>
-        <div className='flex justify-start items-start '>
-          <StockLevelChart />
-        </div>
-        <div className='w-full flex items-center  gap-10 flex-col lg:flex-row '>
-          <SummaryCard
-            text='Produtos no Estoque'
-            value={640}
-            icon='package'
-            url='/bananinha'
-          />
-          <SummaryCard
-            text='Lotes no Estoque'
-            value={640}
-            icon='archive'
-            url='/bananinha'
-          />
-          <SummaryCard
-            text='Lançamentos de entrada'
-            value={640}
-            icon='arrow-big-down-dash'
-            url='/bananinha'
-          />
-          <SummaryCard
-            text='Lançamentos de saída'
-            value={640}
-            icon='arrow-big-up-dash'
-            url='/bananinha'
-          />
-        </div>
+    <div className='  space-y-6'>
+      <div className='grid grid-cols-1 lg:grid-cols-[0.6fr_1fr] gap-8 '>
+        <StockLevelChart />
+        <MostTrendingProductsTable />
       </div>
-    </>
+      <SummaryCards />
+    </div>
   )
 }

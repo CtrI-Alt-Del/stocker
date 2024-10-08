@@ -33,16 +33,56 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
     }
   }
 
-  async findMany({ page, productId }: InventoryMovementsListParams) {
+  async findMany({
+    page,
+    startDate,
+    endDate,
+    movementType,
+    productId,
+  }: InventoryMovementsListParams) {
     try {
       const whereCondition = productId !== 'all' ? { product_id: productId } : undefined
-
       const count = await prisma.inventoryMovement.count({ where: whereCondition })
 
+      let paginationParams = {}
+
+      if (page) {
+        paginationParams = {
+          take: PAGINATION.itemsPerPage,
+          skip: (page - 1) * PAGINATION.itemsPerPage,
+        }
+      }
+
+      let dateRangeParams = {}
+
+      if (startDate && endDate) {
+        dateRangeParams = {
+          registered_at: {
+            gte: startDate,
+            lte: endDate,
+          },
+        }
+      }
+
+      let movementTypeFilter = {}
+      if (movementType) {
+        movementTypeFilter = {
+          movementType: movementType === 'inbound' ? 'INBOUND' : 'OUTBOUND',
+        }
+      }
+
+      let productIdFilter = {}
+      if (productId) {
+        productIdFilter = { product_id: productId }
+      }
+
       const prismaInventoryMovements = await prisma.inventoryMovement.findMany({
-        take: PAGINATION.itemsPerPage,
-        skip: (page - 1) * PAGINATION.itemsPerPage,
-        where: whereCondition,
+        ...paginationParams,
+        ...dateRangeParams,
+        where: {
+          ...productIdFilter,
+          ...movementTypeFilter,
+        },
         orderBy: {
           registered_at: 'desc',
         },
@@ -60,17 +100,44 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
         },
       })
 
-      const inventoryMovements = prismaInventoryMovements.map((inventoryMovement) => {
-        return this.mapper.toDomain(inventoryMovement)
-      })
+      const inventoryMovements = prismaInventoryMovements.map(this.mapper.toDomain)
 
       return {
         inventoryMovements,
-        count,
+        count: page ? count : inventoryMovements.length,
       }
     } catch (error) {
       throw new PrismaError(error)
     }
+  }
+
+  async findAllByDateRange(
+    startDate: Date,
+    endDate: Date,
+    productId?: string,
+  ): Promise<InventoryMovement[]> {
+    const prismaInventoryMovements = await prisma.inventoryMovement.findMany({
+      where: {
+        registered_at: {
+          gte: startDate,
+          lte: endDate,
+        },
+      },
+      include: {
+        User: {
+          select: {
+            name: true,
+          },
+        },
+        Product: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    })
+
+    return prismaInventoryMovements.map(this.mapper.toDomain)
   }
 
   async count(): Promise<number> {
@@ -82,21 +149,11 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
   }
 
   async countInbound(): Promise<number> {
-    try {
-      return await prisma.inventoryMovement.count({ where: { movement_type: 'INBOUND' } })
-    } catch (error) {
-      throw new PrismaError(error)
-    }
+    throw new Error('Method not implemented.')
   }
 
   async countOutbound(): Promise<number> {
-    try {
-      return await prisma.inventoryMovement.count({
-        where: { movement_type: 'OUTBOUND' },
-      })
-    } catch (error) {
-      throw new PrismaError(error)
-    }
+    throw new Error('Method not implemented.')
   }
 
   async findByDateRange({ startDate, endDate, productId }: FindByDateRangeParams): Promise<InventoryMovement[]> {

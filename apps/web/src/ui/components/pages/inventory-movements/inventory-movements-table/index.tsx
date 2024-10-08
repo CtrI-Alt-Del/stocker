@@ -38,7 +38,7 @@ export const InventoryMovementsTable = ({
           totalPages > 1 ? (
             <div className='flex w-full justify-start'>
               <Pagination
-                aria-label='pagination'
+                aria-label='paginação'
                 showControls
                 page={page}
                 total={totalPages}

@@ -9,4 +9,8 @@ export interface IDatetime {
   isLessThan(date: Date): boolean
   isSameOrBefore(date: Date): boolean
   isSameOrAfter(date: Date): boolean
+  differenceInDays(date: Date): number
+  differenceInMonths(date: Date): number
+  differenceInYears(date: Date): number
+  getDate(): Date
 }

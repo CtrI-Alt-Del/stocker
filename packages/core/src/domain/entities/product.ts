@@ -52,8 +52,8 @@ export class Product extends Entity<ProductProps> {
         batches: dto.batches ? dto.batches.map(Batch.create) : [],
         batchesWithoutStockIds: [],
         companyId: dto.companyId,
-        inboundInventoryMovementsCount: 0,
-        outboundInventoryMovementsCount: 0,
+        inboundInventoryMovementsCount: dto.inboundInventoryMovementsCount ?? 0,
+        outboundInventoryMovementsCount: dto.outboundInventoryMovementsCount ?? 0,
       },
       dto.id,
     )
@@ -98,8 +98,6 @@ export class Product extends Entity<ProductProps> {
 
   private sortBatches() {
     this.props.batches.sort((a, b) => {
-      console.log(typeof a.expirationDate)
-      console.log(typeof b.expirationDate)
       const aExpSort = a.expirationDate ? a.expirationDate.getTime() : Infinity
       const bExpSort = b.expirationDate ? b.expirationDate.getTime() : Infinity
 
@@ -243,6 +241,8 @@ export class Product extends Entity<ProductProps> {
       minimumStock: this.props.minimumStock,
       categoryId: this.props.categoryId,
       companyId: this.props.companyId,
+      inboundInventoryMovementsCount: this.props.inboundInventoryMovementsCount,
+      outboundInventoryMovementsCount: this.props.outboundInventoryMovementsCount,
       batches: this.props.batches.map((batch) => batch.dto),
     }
   }

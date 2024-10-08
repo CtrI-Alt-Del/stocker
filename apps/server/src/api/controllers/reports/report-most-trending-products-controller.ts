@@ -3,21 +3,23 @@ import { productsRepository } from '@/database'
 import type { IHttp } from '@stocker/core/interfaces'
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 
-export class MostTrendingProductsController {
+type Query = {
+  startDate?: string
+  endDate?: string
+  page?: string
+}
+
+export class ReportMostTrendingProductsController {
   async handle(http: IHttp) {
-    const { startDate, endDate } = http.getQueryParams<{
-      startDate?: string
-      endDate?: string
-    }>()
+    const { startDate, endDate, page } = http.getQueryParams<Query>()
     const useCase = new ReportMostTrendingProductsUseCase(productsRepository)
-    const result = await useCase.execute({
+
+    const response = await useCase.execute({
       startDate: startDate ? new Date(startDate) : undefined,
       endDate: endDate ? new Date(endDate) : undefined,
+      page: page ? Number(page) : 1,
     })
 
-    return http.send(
-      { products: result.products.map((product) => product.dto) },
-      HTTP_STATUS_CODE.ok,
-    )
+    return http.send(response, HTTP_STATUS_CODE.ok)
   }
 }

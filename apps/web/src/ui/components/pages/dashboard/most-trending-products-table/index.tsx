@@ -1,89 +1,109 @@
 'use client'
 
-import { Input, Pagination, Table } from '@nextui-org/react'
+import { Input, Link, Pagination } from '@nextui-org/react'
+
+import { Datetime } from '@stocker/core/libs'
+
+import { ENV } from '@/constants'
+import { Icon } from '@/ui/components/commons/icon'
+import { Loading } from '@/ui/components/commons/loading'
+import { ProductRow } from './produc-row'
+import { useMostTrendingProductsTable } from './use-most-trending-products-table'
 
 export const MostTrendingProductsTable = () => {
+  const {
+    products,
+    isFetching,
+    startDate,
+    endDate,
+    datesDifference,
+    page,
+    totalPages,
+    handlePageChange,
+    handleEndDateChange,
+    handleStartDateChange,
+  } = useMostTrendingProductsTable()
+
   return (
-    <div>
-      <div>
-        <h2>Produtos com maior demanda</h2>
-        <Input type='date' />
+    <div className='w-full shadow px-6 py-3'>
+      <div className='flex flex-col md:flex-row   md:items-center justify-between w-full'>
+        <div className='flex items-center gap-3'>
+          <Link
+            href={`${ENV.serverUrl}/reports/most-trending-products/csv?startDate=${startDate.format('YYYY-MM-DD')}&endDate=${endDate.format('YYYY-MM-DD')}`}
+            aria-label='Exportar para arquivo csv'
+            className='text-zinc-400'
+          >
+            <Icon name='download' size={20} />
+          </Link>
+          <h2 className='text-gray-800 text-lg md:text-xl  font-bold '>
+            Produtos com Maior Demanda
+          </h2>
+        </div>
+
+        <div className='flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-3 md:mt-0'>
+          <Input
+            type='date'
+            size='sm'
+            value={startDate.format('YYYY-MM-DD')}
+            label='data inicial'
+            onChange={({ target }) =>
+              handleStartDateChange(new Datetime(new Date(target.value)).addDays(1))
+            }
+          />
+          <Input
+            type='date'
+            size='sm'
+            value={endDate.format('YYYY-MM-DD')}
+            label='data final'
+            onChange={({ target }) =>
+              handleEndDateChange(new Datetime(new Date(target.value)).addDays(1))
+            }
+          />
+          <p className='whitespace-nowrap capitalize text-xs text-zinc-700'>
+            {datesDifference}
+          </p>
+        </div>
       </div>
-      <Table
-        arial-label='Tabela de produtos'
-        shadow='none'
-        selectionMode='multiple'
-        bottomContentPlacement='outside'
-        bottomContent={
-          2 > 1 ? (
-            <div className='flex w-full justify-start '>
+
+      {isFetching ? (
+        <div className='grid place-content-center w-full h-full'>
+          <Loading />
+        </div>
+      ) : (
+        <>
+          <div className='space-y-3 mt-6 overflow-x-auto'>
+            {products.length > 0 ? (
+              products.map((product, index) => (
+                <ProductRow
+                  key={product.id}
+                  id={product.id}
+                  position={index + 1 + 5 * (page - 1)}
+                  image={product.image}
+                  name={product.name}
+                  currentStock={product.currentStock}
+                  movementsCount={product.outboundInventoryMovementsCount}
+                  minimumStock={product.minimumStock}
+                  stockLevel={product.stockLevel}
+                />
+              ))
+            ) : (
+              <p className='text-lg font-semibold'>Nenhum produto encontrado</p>
+            )}
+          </div>
+          {totalPages > 1 && (
+            <div className='mt-3'>
               <Pagination
+                className='w-full flex justify-start'
                 aria-label='paginação'
                 showControls
                 page={page}
                 total={totalPages}
-                onChange={onPageChange}
+                onChange={handlePageChange}
               />
             </div>
-          ) : null
-        }
-      >
-        <TableHeader>
-          <TableColumn key='name'>NOME</TableColumn>
-          <TableColumn key='code'>CODIGO</TableColumn>
-          <TableColumn key='price'>PREÇO</TableColumn>
-          <TableColumn key='minimumStock'>ESTOQUE MINIMO</TableColumn>
-          <TableColumn key='supplier'>FORNECEDOR</TableColumn>
-          <TableColumn key='status'>STATUS</TableColumn>
-          <TableColumn key='option'>{null}</TableColumn>
-        </TableHeader>
-        <TableBody
-          items={products}
-          isLoading={isLoading}
-          loadingContent={<Spinner color='primary' />}
-          aria-label='conteúdo da tabela'
-          emptyContent={'Nenhum produto criado.'}
-        >
-          {(product) => (
-            <TableRow key={product.id}>
-              <TableCell key='name'>
-                <div className='flex items-center gap-2'>
-                  <Avatar
-                    src={product.image !== '' ? product.image : IMAGE_PLACEHOLDER}
-                    alt={product.name}
-                    size='md'
-                  />
-                  <p className='font-bold'>{product.name}</p>
-                </div>
-              </TableCell>
-              <TableCell key='code'>{product.code}</TableCell>
-              <TableCell key='price'>{product.costPrice.brl}</TableCell>
-              <TableCell key='minimumStock'>{product.minimumStock}</TableCell>
-              <TableCell key='supplier'>Gabriel Fernandez SRC</TableCell>
-              <TableCell key='status'>
-                {product.isActive ? (
-                  <Tag type='sucess'>Ativo</Tag>
-                ) : (
-                  <Tag type='danger'>Desativo</Tag>
-                )}
-              </TableCell>
-              <TableCell key='option'>
-                <Tooltip aria-content='Editar produto'>
-                  <IconButton
-                    name='view'
-                    tooltip='Editar produto'
-                    className='size-6 text-zinc-500'
-                    onClick={() => handleEditProductButtonClick(product)}
-                  />
-                </Tooltip>
-                <Link href={`${ROUTES.inventory.stocks}/${product.id}`}>
-                  <Icon name='stock' className='size-6 text-zinc-500' />
-                </Link>
-              </TableCell>
-            </TableRow>
           )}
-        </TableBody>
-      </Table>
+        </>
+      )}
     </div>
   )
 }

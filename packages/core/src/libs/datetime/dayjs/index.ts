@@ -9,7 +9,7 @@ dayjs.extend(utc)
 export class DayjsDatetime implements IDatetime {
   private date: dayjs.Dayjs
 
-  constructor(date: Date) {
+  constructor(date: Date = new Date()) {
     this.date = dayjs(date)
   }
 
@@ -42,5 +42,21 @@ export class DayjsDatetime implements IDatetime {
 
   isLessThan(date: Date): boolean {
     return this.date.isBefore(date)
+  }
+
+  differenceInDays(date: Date): number {
+    return this.date.diff(date, 'days')
+  }
+
+  differenceInMonths(date: Date): number {
+    return this.date.diff(date, 'months')
+  }
+
+  differenceInYears(date: Date): number {
+    return this.date.diff(date, 'years')
+  }
+
+  getDate(): Date {
+    return this.date.toDate()
   }
 }

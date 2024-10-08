@@ -1,36 +1,39 @@
-import { Icon } from '@/ui/components/commons/icon'
-import { IconName } from '@/ui/components/commons/icon/types'
-import { ExternalLink, Package } from 'lucide-react'
-import Link from 'next/link'
+import { NextApiClient } from '@/api/next/clients'
+import { ReportsService } from '@/api/services'
+import { Card } from '@/ui/components/commons/card'
+import { useApi } from '@/ui/hooks'
 
-type SummaryCardProps = {
-  text: string
-  value: string | number
-  icon: IconName
-  url: string
-}
-
-export const SummaryCard = ({ text, value, icon, url }: SummaryCardProps) => {
+export const SummaryCards = async () => {
+  // const nextApiClient = NextApiClient()
+  // const reportsService = ReportsService(nextApiClient)
+  // const data = await reportsService.reportSummary()
   return (
     <>
-      <div className='flex-grow flex-shrink w-full'>
-        <div className=' max-w-full h-28 shadow-md flex justify-between rounded-lg  p-4'>
-          <div className='flex items-center gap-6 justify-start h-full'>
-            <Icon
-              name={icon}
-              className='size-14 bg-default-200 text-foreground-500 rounded-lg p-2'
-            />
-            <div className='flex flex-col flex-1 '>
-              <h1 className='text-default-400 flex text-md font-medium'>{text}</h1>
-              <h1 className='text-default-700 text-4xl font-medium'>{value}</h1>
-            </div>
-          </div>
-          <div className=''>
-            <Link href={url}>
-              <ExternalLink className='text-default-400 size-5 ml-2' />
-            </Link>
-          </div>
-        </div>
+      <div className='flex justify-center  items-center gap-6  flex-1 flex-col lg:flex-row   '>
+        <Card
+          title='Produtos no Estoque'
+          value={640}
+          href='/records/products'
+          icon='package'
+        />
+        <Card
+          title='Lotes no Estoque'
+          value={640}
+          href='/inventory/stocks'
+          icon='archive'
+        />
+        <Card
+          title='Lançamentos de Entrada'
+          value={640}
+          href='/?movement_type=inbound'
+          icon='arrow-big-down-dash'
+        />
+        <Card
+          title='Lançamenots de Saída'
+          value={640}
+          href='/?movement_type=outbound'
+          icon='arrow-big-up-dash'
+        />
       </div>
     </>
   )

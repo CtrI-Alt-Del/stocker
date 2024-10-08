@@ -14,4 +14,7 @@ export const CACHE = {
   stockLevel: {
     key: '/reports/stock-level',
   },
+  inventory: {
+    key: '/inventory',
+  },
 }

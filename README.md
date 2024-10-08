@@ -14,7 +14,7 @@ Stocker é uma aplicação que visa facilitar o gerenciamento de estoque, oferec
 
 ## Problema do cliente 👔
 
-Atualmente, muitas empresas utilizam métodos manuais, como planilhas ou até mesmo papel, para controlar o estoque. Isso gera uma série de problemas, como a dificuldade de atualização em tempo real, erros manuais, falta de visibilidade sobre a quantidade de produtos disponíveis e problemas com a reposição de itens. Além disso, a ausência de um sistema centralizado impede a análise rápida e precisa das informações do inventário, prejudicando a tomada de decisões.
+Atualmente, muitas empresas enfrentam desafios significativos no gerenciamento de estoque devido ao uso de métodos manuais, como planilhas ou papel. Esses métodos antiquados resultam em problemas como dificuldade de atualização em tempo real, erros manuais, falta de visibilidade sobre a quantidade de produtos disponíveis e dificuldades na reposição de itens. A ausência de um sistema centralizado também impede a análise rápida e precisa das informações do inventário, o que pode prejudicar a tomada de decisões estratégicas. A complexidade e a falta de eficiência desses métodos manuais podem levar a perdas financeiras e a uma má reputação da empresa. Portanto, é crucial para as empresas modernizar seus processos de gerenciamento de estoque e adotar soluções tecnológicas mais eficientes e confiáveis.
 
 ---
 
@@ -67,7 +67,7 @@ Work in progress... 🚧
 
 ## Relatório e detalhes de cada Sprint 📅
 
-- Sprint 1: [Acessar](https://github.com/CtrI-Alt-Del/stocker/blob/main/documentation/reports/sprint-1.md)
+- Sprint 1: [Acessar](https://github.com/CtrI-Alt-Del/stocker/blob/main/documentation/sprints_reports/sprint-1.md)
 
 - Sprint 2: Work in progress... 🚧
 
