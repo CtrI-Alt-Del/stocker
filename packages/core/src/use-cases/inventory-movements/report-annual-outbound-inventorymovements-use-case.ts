@@ -6,7 +6,7 @@ import type {
   IInventoryMovementsRepository,
   IProductsRepository,
 } from '../../interfaces'
-import dayjs from 'dayjs'
+
 
 type Request = {
   productId?: string
@@ -37,7 +37,7 @@ export class ReportAnnualOutboundInventorymovementsUseCase {
         productId,
       });
 
-      const formattedMovements = this.formatByMonth(inventoryMovements);
+      const formattedMovements = this.formatByLast12Months(inventoryMovements);
       
       return { months: formattedMovements }
       
@@ -47,32 +47,46 @@ export class ReportAnnualOutboundInventorymovementsUseCase {
     }
   }
 
-  private formatByMonth(inventoryMovements: InventoryMovement[]) {
-    const months = [
-      { name: 'january', label: 'janeiro', inboundMovementsCount: 0, outboundMovementsCount: 0 },
-      { name: 'february', label: 'fevereiro', inboundMovementsCount: 0, outboundMovementsCount: 0 },
-      { name: 'march', label: 'março', inboundMovementsCount: 0, outboundMovementsCount: 0 },
-      { name: 'april', label: 'abril', inboundMovementsCount: 0, outboundMovementsCount: 0 },
-      { name: 'may', label: 'maio', inboundMovementsCount: 0, outboundMovementsCount: 0 },
-      { name: 'june', label: 'junho', inboundMovementsCount: 0, outboundMovementsCount: 0 },
-      { name: 'july', label: 'julho', inboundMovementsCount: 0, outboundMovementsCount: 0 },
-      { name: 'august', label: 'agosto', inboundMovementsCount: 0, outboundMovementsCount: 0 },
-      { name: 'september', label: 'setembro', inboundMovementsCount: 0, outboundMovementsCount: 0 },
-      { name: 'october', label: 'outubro', inboundMovementsCount: 0, outboundMovementsCount: 0 },
-      { name: 'november', label: 'novembro', inboundMovementsCount: 0, outboundMovementsCount: 0 },
-      { name: 'december', label: 'dezembro', inboundMovementsCount: 0, outboundMovementsCount: 0 },
-    ];
+  private formatByLast12Months(inventoryMovements: InventoryMovement[]) {
+    // Obtém o mês e ano atuais
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+
+    const months: { name: string, label: string, year: number, inboundMovementsCount: number, outboundMovementsCount: number }[] = [];
+
+    for (let i = 0; i < 12; i++) {
+      const monthDate = new Date(currentYear, currentMonth - i);
+      const monthName = monthDate.toLocaleString('default', { month: 'long' });
+      const label = monthDate.toLocaleString('pt-BR', { month: 'long' });
+      months.push({
+        name: monthName,
+        label: label,
+        year: monthDate.getFullYear(),
+        inboundMovementsCount: 0,
+        outboundMovementsCount: 0,
+      });
+    }
 
     inventoryMovements.forEach((movement) => {
-      const monthIndex = dayjs(movement.registeredAt).month();
-      if(months[monthIndex]) {
-        if (movement.movementType === 'inbound') {
-          months[monthIndex].inboundMovementsCount += movement.itemsCount;
-        } else if (movement.movementType === 'outbound') {
-          months[monthIndex].outboundMovementsCount += movement.itemsCount;
-        }
+      const movementDate = new Date(movement.registeredAt);
+      const movementMonth = movementDate.getMonth();
+      const movementYear = movementDate.getFullYear();
+
+      const monthIndex = months.findIndex(
+        (month) => month.year === movementYear && new Date(movementYear, movementMonth).toLocaleString('default', { month: 'long' }) === month.name
+      );
+
+      if (monthIndex !== -1 && months[monthIndex]) {
+          if (movement.movementType === 'inbound') {
+            months[monthIndex].inboundMovementsCount += movement.itemsCount;
+          } else if (movement.movementType === 'outbound') {
+            months[monthIndex].outboundMovementsCount += movement.itemsCount;
+          }
       }
     });
-    return months;
+
+    return months
   }
 }
+  
