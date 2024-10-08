@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify'
+
 import { FastifyHttp } from '../fastify-http'
 import {
   ExportInventoryToCsvFileController,
@@ -7,8 +8,8 @@ import {
   ReportInventoryController,
   ReportStockLevelController,
   ReportWeeklyInventoryMovementsController,
+  ReportAnnualInventorymovementsController,
 } from '@/api/controllers/reports'
-import { ReportAnnualOutboundInventorymovementsController } from '@/api/controllers/inventory-movements'
 
 export const ReportsRoutes = async (app: FastifyInstance) => {
   const reportStockLevelController = new ReportStockLevelController()
@@ -19,8 +20,8 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
   const exportInventoryToCsvFileController = new ExportInventoryToCsvFileController()
   const reportWeeklyInventoryMovementsController =
     new ReportWeeklyInventoryMovementsController()
-  const reportAnnualOutboundInventorymovementsController =
-    new ReportAnnualOutboundInventorymovementsController()
+  const reportAnnualInventorymovementsController =
+    new ReportAnnualInventorymovementsController()
 
   app.get('/stock-level', async (request, response) => {
     const http = new FastifyHttp(request, response)
@@ -54,6 +55,6 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
 
   app.get('/inventory-movements/annual', async (request, response) => {
     const http = new FastifyHttp(request, response)
-    return reportAnnualOutboundInventorymovementsController.handle(http)
+    return reportAnnualInventorymovementsController.handle(http)
   })
 }
