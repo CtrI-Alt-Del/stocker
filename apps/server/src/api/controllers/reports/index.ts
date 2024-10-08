@@ -3,3 +3,4 @@ export { ReportMostTrendingProductsController } from './report-most-trending-pro
 export { ReportInventoryController } from './report-inventory-controller'
 export { ExportMostTrendingProductsToCsvFileController } from './export-most-trending-products-to-csv-file-controller'
 export { ExportInventoryToCsvFileController } from './export-inventory-to-csv-file-controller'
+export { ReportWeeklyInventoryMovementsController } from './report-weekly-inventory-movements-controller'

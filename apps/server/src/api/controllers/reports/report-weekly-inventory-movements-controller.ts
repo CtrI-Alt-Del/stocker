@@ -8,7 +8,7 @@ type QueryParams = {
   productId?: string
 }
 
-export class ReportStockLevelController {
+export class ReportWeeklyInventoryMovementsController {
   async handle(http: IHttp) {
     const { productId } = http.getQueryParams<QueryParams>()
 
