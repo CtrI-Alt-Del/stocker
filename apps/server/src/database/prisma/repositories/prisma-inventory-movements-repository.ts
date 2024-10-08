@@ -1,6 +1,8 @@
 import type { InventoryMovement } from '@stocker/core/entities'
 import type { IInventoryMovementsRepository } from '@stocker/core/interfaces'
-import type { InventoryMovementsListParams } from '@stocker/core/types'
+import type { InventoryMovementsListParams, FindByDateRangeParams } from '@stocker/core/types'
+ 
+import { Datetime } from '@stocker/core/libs'
 import { PAGINATION } from '@stocker/core/constants'
 
 import { prisma } from '../prisma-client'
@@ -153,4 +155,32 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
   async countOutbound(): Promise<number> {
     throw new Error('Method not implemented.')
   }
+
+  async findByDateRange({ startDate, endDate, productId }: FindByDateRangeParams): Promise<InventoryMovement[]> {
+    try {
+      const start = startDate || new Datetime(new Date()).subtractYears(1);
+      const end = endDate || new Date();
+  
+      const prismaInventoryMovements = await prisma.inventoryMovement.findMany({
+        where: {
+          registered_at: {
+            gte: start,
+            lte: end,
+          },
+          product_id: productId || undefined,
+        },
+      });
+      
+      const inventoryMovements = prismaInventoryMovements.map((inventoryMovement) => {
+        return this.mapper.toDomain(inventoryMovement)
+      })
+      return inventoryMovements
+
+    } catch (error) {
+      console.error('Error when searching for inventory movements by date range:', error);
+      throw error;
+    }
+  }
+  
+  
 }
