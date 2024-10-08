@@ -20,7 +20,7 @@ export const Card = ({ title, value, icon, href }: CardProps) => {
               className='size-12 bg-default-200 text-foreground-500 rounded-lg p-2'
             />
             <div className='flex flex-col flex-1'>
-              <h2 className='text-default-400 flex text-md font-medium'>{title}</h2>
+              <h2 className='text-default-400 flex text-sm font-medium'>{title}</h2>
               <span className='text-default-700 text-2xl font-medium'>{value}</span>
             </div>
           </div>

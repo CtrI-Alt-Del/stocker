@@ -1,4 +1,8 @@
-import type { ProductDto, StockLevelReportDto } from '../../dtos'
+import type {
+  ProductDto,
+  StockLevelReportDto,
+  WeeklyInventoryMovementsDto,
+} from '../../dtos'
 import type { ApiResponse, PaginationResponse } from '../../responses'
 import type { ProducsStocksListParams } from '../../types'
 import type { MostTrendingProductsListParams } from '../../types/most-trending-products-list-params'
@@ -12,4 +16,7 @@ export interface IReportsService {
   reportInventory(
     params: ProducsStocksListParams,
   ): Promise<ApiResponse<PaginationResponse<ProductDto>>>
+  reportWeeklyInventoryMovements(
+    productId?: string,
+  ): Promise<ApiResponse<WeeklyInventoryMovementsDto>>
 }
