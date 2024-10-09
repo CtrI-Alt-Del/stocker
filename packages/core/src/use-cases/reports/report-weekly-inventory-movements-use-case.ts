@@ -6,7 +6,7 @@ type Request = {
   productId?: string
 }
 
-const WEEKDAYS = ['seg', 'ter', 'qua', 'qui', 'ter', 'sáb', 'sex']
+const WEEKDAYS = ['dom', 'seg', 'ter', 'qua', 'qui', 'ter', 'sáb', 'sex']
 
 export class ReportWeeklyInventoryMovementsUseCase {
   private readonly inventoryMovementsRepository: IInventoryMovementsRepository
@@ -35,17 +35,19 @@ export class ReportWeeklyInventoryMovementsUseCase {
         productId,
       })
 
-    const currentDate = new Datetime(startDate)
+    let currentDate = new Datetime(endDate)
 
     const data: WeeklyInventoryMovementsDto[] = []
 
     for (let index = 1; index <= 7; index++) {
-      const weekday = WEEKDAYS[startDate.getDay()]
+      const weekday = WEEKDAYS[currentDate.getDate().getDay()]
       if (!weekday) return
 
       const inboundInventoryMovementsCount = inboundInventoryMovements.reduce(
         (count, inventoryMovement) => {
-          if (inventoryMovement.registeredAt.getDay() === startDate.getDay()) {
+          if (
+            inventoryMovement.registeredAt.getDay() === currentDate.getDate().getDay()
+          ) {
             return count + 1
           }
           return count
@@ -55,7 +57,9 @@ export class ReportWeeklyInventoryMovementsUseCase {
 
       const outboundInventoryMovementsCount = outboundInventoryMovements.reduce(
         (count, inventoryMovement) => {
-          if (inventoryMovement.registeredAt.getDay() === startDate.getDay()) {
+          if (
+            inventoryMovement.registeredAt.getDay() === currentDate.getDate().getDay()
+          ) {
             return count + 1
           }
           return count
@@ -63,13 +67,13 @@ export class ReportWeeklyInventoryMovementsUseCase {
         0,
       )
 
-      data.push({
+      data.unshift({
         weekday,
         inboundInventoryMovementsCount,
         outboundInventoryMovementsCount,
       })
 
-      currentDate.addDays(1)
+      currentDate = new Datetime(currentDate.subtractDays(1))
     }
 
     return data

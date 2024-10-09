@@ -1,6 +1,7 @@
 import { MostTrendingProductsTable } from './most-trending-products-table'
 import { StockLevelChart } from './stock-level-chart'
 import { SummaryCards } from './summary-cards'
+import { WeeklyInventoryMovementsChart } from './weekly-inventory-movements-chart'
 
 export const DashboardPage = () => {
   return (
@@ -10,6 +11,9 @@ export const DashboardPage = () => {
         <MostTrendingProductsTable />
       </div>
       <SummaryCards />
+      <div className='grid grid-cols-2'>
+        <WeeklyInventoryMovementsChart />
+      </div>
     </div>
   )
 }

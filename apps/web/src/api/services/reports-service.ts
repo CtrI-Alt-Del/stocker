@@ -1,5 +1,9 @@
 import type { IApiClient, IReportsService } from '@stocker/core/interfaces'
-import type { ProductDto, StockLevelReportDto } from '@stocker/core/dtos'
+import type {
+  ProductDto,
+  StockLevelReportDto,
+  WeeklyInventoryMovementsDto,
+} from '@stocker/core/dtos'
 import type { MostTrendingProductsListParams } from '@stocker/core/types'
 import type { PaginationResponse } from '@stocker/core/responses'
 
@@ -22,6 +26,14 @@ export const ReportsService = (apiClient: IApiClient): IReportsService => {
 
       return await apiClient.get<PaginationResponse<ProductDto>>(
         '/reports/most-trending-products',
+      )
+    },
+
+    async reportWeeklyInventoryMovements(productId?: string) {
+      if (productId) apiClient.setParam('productId', productId)
+
+      return await apiClient.get<WeeklyInventoryMovementsDto>(
+        '/inventory-movements/annual',
       )
     },
   }
