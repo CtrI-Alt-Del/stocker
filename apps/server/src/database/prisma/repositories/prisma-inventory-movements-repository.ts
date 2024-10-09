@@ -148,12 +148,34 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
     }
   }
 
+  async countItems(): Promise<number> {
+    try {
+      const result = await prisma.batch.groupBy({
+        by: ['id'],
+        _sum: {
+          items_count: true,
+        },
+      })
+      return Number(result[0]?._sum)
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
   async countInbound(): Promise<number> {
-    throw new Error('Method not implemented.')
+    try {
+      return await prisma.inventoryMovement.count({ where: { movement_type: 'INBOUND' } })
+    } catch (error) {
+      throw new PrismaError(error)
+    }
   }
 
   async countOutbound(): Promise<number> {
-    throw new Error('Method not implemented.')
+    try {
+      return await prisma.inventoryMovement.count({ where: { movement_type: 'OUTBOUND' } })
+    } catch (error) {
+      throw new PrismaError(error)
+    }
   }
 
   async findByDateRange({ startDate, endDate, productId }: FindByDateRangeParams): Promise<InventoryMovement[]> {
