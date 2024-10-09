@@ -10,7 +10,7 @@ export class ReportInventorySummaryUseCase {
   async execute() {
     const [batchescount, itemscount, inboundinventorymovementscount, outboundinventorymovementscount] = await Promise.all([
       this.batchesRepository.count(),
-      this.inventoryMovementsRepository.countItems(),
+      this.batchesRepository.countItems(),
       this.inventoryMovementsRepository.countInbound(),
       this.inventoryMovementsRepository.countOutbound(),
     ])

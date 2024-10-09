@@ -100,7 +100,7 @@ export class PrismaBatchesRepository implements IBatchesRepository {
           items_count: true,
         },
       })
-      return Number(result[0]?._sum)
+      return result.reduce((sum, item) => sum + (item._sum.items_count || 0), 0)
     } catch (error) {
       throw new PrismaError(error)
     }
