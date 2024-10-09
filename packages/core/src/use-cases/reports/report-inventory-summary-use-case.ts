@@ -1,12 +1,5 @@
 import { IBatchesRepository, IInventoryMovementsRepository } from "../../interfaces"
 
-
-
-
-
-
-
-
 export class ReportInventorySummaryUseCase {
   private readonly batchesRepository: IBatchesRepository
   private readonly inventoryMovementsRepository: IInventoryMovementsRepository

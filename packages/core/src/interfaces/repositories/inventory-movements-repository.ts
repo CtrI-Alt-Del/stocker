@@ -6,6 +6,7 @@ export interface IInventoryMovementsRepository {
   findMany(
     params: InventoryMovementsListParams,
   ): Promise<{ inventoryMovements: InventoryMovement[]; count: number }>
+  countItems(): Promise<number>
   countInbound(): Promise<number>
   countOutbound(): Promise<number>
   findByDateRange(

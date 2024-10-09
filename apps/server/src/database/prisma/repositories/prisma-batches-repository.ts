@@ -85,10 +85,24 @@ export class PrismaBatchesRepository implements IBatchesRepository {
   }
 
   async count(): Promise<number> {
-    throw new Error('Method not implemented.')
+    try {
+      return prisma.batch.count()
+    } catch (error) {
+      throw new PrismaError(error)
+    }
   }
 
   async countItems(): Promise<number> {
-    throw new Error('Method not implemented.')
+    try {
+      const result = await prisma.batch.groupBy({
+        by: ['id'],
+        _sum: {
+          items_count: true,
+        },
+      })
+      return Number(result[0]?._sum)
+    } catch (error) {
+      throw new PrismaError(error)
+    }
   }
 }
