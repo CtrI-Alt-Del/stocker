@@ -20,7 +20,7 @@ export class ReportAnnualOutboundInventorymovementsUseCase {
 
     const formattedMovements = this.formatByLast12Months(inventoryMovements)
 
-    return { months: formattedMovements }
+    return formattedMovements
   }
 
   private formatByLast12Months(inventoryMovements: InventoryMovement[]) {
@@ -30,8 +30,7 @@ export class ReportAnnualOutboundInventorymovementsUseCase {
     const currentYear = currentDate.getFullYear()
 
     const months: {
-      name: string
-      label: string
+      month: string
       year: number
       inboundMovementsCount: number
       outboundMovementsCount: number
@@ -39,11 +38,9 @@ export class ReportAnnualOutboundInventorymovementsUseCase {
 
     for (let i = 0; i < 12; i++) {
       const monthDate = new Date(currentYear, currentMonth - i)
-      const monthName = monthDate.toLocaleString('default', { month: 'long' })
-      const label = monthDate.toLocaleString('pt-BR', { month: 'long' })
+      const monthName = monthDate.toLocaleString('pt-BR', { month: 'long' })
       months.push({
-        name: monthName,
-        label: label,
+        month: monthName,
         year: monthDate.getFullYear(),
         inboundMovementsCount: 0,
         outboundMovementsCount: 0,
@@ -58,9 +55,9 @@ export class ReportAnnualOutboundInventorymovementsUseCase {
       const monthIndex = months.findIndex(
         (month) =>
           month.year === movementYear &&
-          new Date(movementYear, movementMonth).toLocaleString('default', {
+          new Date(movementYear, movementMonth).toLocaleString('pt-BR', {
             month: 'long',
-          }) === month.name,
+          }) === month.month,
       )
 
       if (monthIndex !== -1 && months[monthIndex]) {
