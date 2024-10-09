@@ -55,7 +55,7 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
   })
 
 
-  app.get('/reports/inventory-summary', async (request, response) => {
+  app.get('/inventory-summary', async (request, response) => {
     const http = new FastifyHttp(request, response)
     return reportInventorySummaryController.handle(http)
   })
