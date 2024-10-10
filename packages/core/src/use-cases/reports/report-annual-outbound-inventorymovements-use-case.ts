@@ -24,7 +24,6 @@ export class ReportAnnualOutboundInventorymovementsUseCase {
   }
 
   private formatByLast12Months(inventoryMovements: InventoryMovement[]) {
-    // Obtém o mês e ano atuais
     const currentDate = new Date()
     const currentMonth = currentDate.getMonth()
     const currentYear = currentDate.getFullYear()
@@ -68,7 +67,6 @@ export class ReportAnnualOutboundInventorymovementsUseCase {
         }
       }
     })
-
     return months
   }
 }
