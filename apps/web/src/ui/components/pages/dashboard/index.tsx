@@ -1,3 +1,4 @@
+import { AnualInventoryMovementsChart } from './anual-inventory-movements-chart'
 import { MostTrendingProductsTable } from './most-trending-products-table'
 import { StockLevelChart } from './stock-level-chart'
 import { SummaryCards } from './summary-cards'
@@ -13,6 +14,7 @@ export const DashboardPage = () => {
       <SummaryCards />
       <div className='grid grid-cols-2'>
         <WeeklyInventoryMovementsChart />
+        <AnualInventoryMovementsChart/>
       </div>
     </div>
   )

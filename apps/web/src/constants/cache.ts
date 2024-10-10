@@ -8,6 +8,9 @@ export const CACHE = {
   weeklyInventoryMovements: {
     key: '/weekly-inventory-movements',
   },
+  anualInventoryMovements: {
+    key: '/anual-inventory-movements',
+  },
   productInventoryMovements: {
     key: '/product/inventory-movements',
   },

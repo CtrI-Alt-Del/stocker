@@ -1,3 +1,4 @@
+
 'use client'
 
 import {
@@ -12,7 +13,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 
-export const WeeklyInventoryMovementsChart = () => {
+export const AnualInventoryMovementsChart = () => {
   const data = [
     {
       name: 'Page A',
