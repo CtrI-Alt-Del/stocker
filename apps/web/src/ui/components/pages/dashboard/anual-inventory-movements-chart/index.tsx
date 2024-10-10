@@ -1,93 +1,102 @@
-
 'use client'
 
 import {
-  BarChart,
-  Bar,
-  Rectangle,
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
 } from 'recharts'
+import { useAnualInventoryMovementChar } from './use-anual-inventory-movements'
+import { Spinner } from '@nextui-org/react'
+import { AnualInventoryMovementChartToolTip } from './anual-chart-tooltip'
 
 export const AnualInventoryMovementsChart = () => {
-  const data = [
-    {
-      name: 'Page A',
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: 'Page B',
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: 'Page C',
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: 'Page D',
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: 'Page E',
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: 'Page F',
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: 'Page G',
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-  ]
+  const { AnualMovements, isFetching } = useAnualInventoryMovementChar()
+  const data =
+    AnualMovements.map((movement) => ({
+      ...movement,
+      month: movement.month.charAt(0).toUpperCase() + movement.month.slice(1, 3),
+    })) || []
 
   return (
-    <ResponsiveContainer width={300} height={300}>
-      <BarChart
-        width={500}
-        height={300}
-        data={data}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
-        <CartesianGrid strokeDasharray='3 3' />
-        <XAxis dataKey='name' />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar
-          dataKey='pv'
-          fill='#8884d8'
-          activeBar={<Rectangle fill='pink' stroke='blue' />}
-        />
-        <Bar
-          dataKey='uv'
-          fill='#82ca9d'
-          activeBar={<Rectangle fill='gold' stroke='purple' />}
-        />
-      </BarChart>
-    </ResponsiveContainer>
+    <div>
+      {isFetching ? (
+        <div>
+          <Spinner
+            className='flex flex-1 h-80  shadow-lg'
+            size='lg'
+            label='Carregando...'
+          />
+        </div>
+      ) : (
+        <>
+          <ResponsiveContainer width='100%' height={320} className='shadow-lg '>
+            <LineChart
+              data={data}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid  vertical={false} />
+              <XAxis
+                tickLine={false}
+                axisLine={false}
+                dataKey='month'
+                stroke='#71717A'
+                tick={{ fill: '#888888' }}
+                padding={{ left: 40, right: 40 }}
+              />
+              <YAxis
+                type='number'
+                width={70}
+                padding={{ top: 40, bottom: 40 }}
+                strokeWidth={0}
+                stroke='#71717A'
+                tick={{ fill: '#888888' }}
+                tickLine={false}
+                axisLine={false}
+              />
+              <Legend
+                verticalAlign='top'
+                align='right'
+                iconType='circle'
+                formatter={(value) => (
+                  <span className='text-[#71717A] text-medium'>{value}</span>
+                )}
+              />
+              <Tooltip content={<AnualInventoryMovementChartToolTip/>}/>
+              <Line
+                type='monotone'
+                dataKey='inboundMovementsCount'
+                stroke='#F6C679'
+                strokeOpacity={0.6}
+                strokeWidth={3}
+                activeDot={{ r: 8, opacity: 0.6 }}
+                dot={{ r: 4, opacity: 0.6 }}
+                name='Entrada'
+                fill='#F6C679'
+              />
+              <Line
+                dataKey='outboundMovementsCount'
+                name='Saída'
+                type='monotone'
+                stroke='#F5A524'
+                fill='#F5A524'
+                strokeWidth={3}
+                dot={{ r: 4 }}
+                activeDot={{ r: 8 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </>
+      )}
+    </div>
   )
 }

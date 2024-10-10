@@ -6,15 +6,15 @@ import { WeeklyInventoryMovementsChart } from './weekly-inventory-movements-char
 
 export const DashboardPage = () => {
   return (
-    <div className='  space-y-6'>
+    <div className='  space-y-4'>
       <div className='grid grid-cols-1 lg:grid-cols-[0.6fr_1fr] gap-8 '>
         <StockLevelChart />
         <MostTrendingProductsTable />
       </div>
       <SummaryCards />
       <div className='grid grid-cols-2'>
+        <AnualInventoryMovementsChart />
         <WeeklyInventoryMovementsChart />
-        <AnualInventoryMovementsChart/>
       </div>
     </div>
   )
