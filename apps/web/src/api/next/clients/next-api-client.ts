@@ -14,7 +14,6 @@ export const NextApiClient = (cacheConfig?: CacheConfig): IApiClient => {
 
   return {
     async get<ResponseBody>(url: string, body: unknown) {
-      console.log(`${baseUrl}${addUrlParams(url, params)}`)
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
         method: 'GET',
         headers,
