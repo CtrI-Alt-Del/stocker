@@ -29,6 +29,10 @@ export const ReportsService = (apiClient: IApiClient): IReportsService => {
       )
     },
 
+    async reportInventory() {
+      return await apiClient.get<PaginationResponse<ProductDto>>('/reports/inventory')
+    },
+
     async reportWeeklyInventoryMovements(productId?: string) {
       if (productId) apiClient.setParam('productId', productId)
 
