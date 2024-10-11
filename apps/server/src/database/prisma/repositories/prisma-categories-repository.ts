@@ -3,6 +3,8 @@ import type { ICategoriesRepository } from '@stocker/core/interfaces'
 import { PrismaCategoriesMapper } from '../mappers'
 import { PrismaError } from '../prisma-error'
 import { prisma } from '../prisma-client'
+import { CategoriesListParams } from '@stocker/core/types'
+import { PAGINATION } from '@stocker/core/constants'
 
 export class PrismaCategoriesRepository implements ICategoriesRepository {
   private readonly mapper: PrismaCategoriesMapper = new PrismaCategoriesMapper()
@@ -19,6 +21,64 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
           company_id: prismaCategory.company_id,
         },
       })
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
+  async findById(categoryId: string): Promise<Category | null> {
+    try {
+      const prismaCategory = await prisma.category.findUnique({ where: { id: categoryId } })
+      
+      if (!prismaCategory) return null
+
+      return this.mapper.toDomain(prismaCategory)
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
+  async findMany({ page }: CategoriesListParams): Promise<Category[]> {
+    try {
+      const prismaCategories = await prisma.category.findMany({
+        take: PAGINATION.itemsPerPage,
+        skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,
+      })
+
+      return prismaCategories.map(this.mapper.toDomain)
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
+  async count(): Promise<number> {
+    try {
+      const count = await prisma.category.count()
+      return count
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
+  async update(category: Category): Promise<void> {
+    try {
+      const prismaCategory = this.mapper.toPrisma(category)
+      await prisma.category.update({
+        data: {
+          name: prismaCategory.name,
+          parent_category_id: prismaCategory.parent_category_id,
+          company_id: prismaCategory.company_id,
+        },
+        where: { id: prismaCategory.id },
+      })
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
+  async deleteById(categoryId: string): Promise<void> {
+    try {
+      await prisma.category.delete({ where: { id: categoryId } })
     } catch (error) {
       throw new PrismaError(error)
     }
