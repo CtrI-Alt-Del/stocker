@@ -10,9 +10,9 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { useAnualInventoryMovementChar } from './use-anual-inventory-movements'
+import { useAnualInventoryMovementChar } from './use-annual-inventory-movements'
 import { Button, Spinner } from '@nextui-org/react'
-import { AnualInventoryMovementChartToolTip } from './anual-chart-tooltip'
+import { AnualInventoryMovementChartToolTip } from './annual-chart-tooltip'
 import { useState } from 'react'
 import { Gem } from 'lucide-react'
 import { InventoryMovementsTable } from '../../product-stock/inventory-movements-table'
@@ -26,17 +26,13 @@ export const AnualInventoryMovementsChart = () => {
     useAnualInventoryMovementChar()
   const { page, products, handlePageChange, totalPages, handleUpdateProduct } =
     useProductsPage()
-  const data =
-    AnualMovements.map((movement) => ({
-      ...movement,
-      month: movement.month.charAt(0).toUpperCase() + movement.month.slice(1, 3),
-    })) || []
+  const data = AnualMovements || []
   return (
     <div>
       {isFetching ? (
-        <div>
+        <div className='min-h-80'>
           <Spinner
-            className='flex flex-1 h-80  shadow-lg'
+            className='flex flex-1 min-h-80  shadow-lg'
             size='lg'
             label='Carregando...'
           />
@@ -50,14 +46,14 @@ export const AnualInventoryMovementsChart = () => {
                 <h1 className='text-zinc-400'>Produto selecionado: {productName}</h1>
               )}
             </div>
-            <div className='space-x-3'>
+            <div className='space-x-3 flex flex-row'>
               {productId && (
                 <Button
                   color='primary'
                   className='text-white'
                   onClick={() => handleProductIDChange('')}
                 >
-                  Retirar filtros
+                  Remover filtros
                 </Button>
               )}
               <Dialog
@@ -86,7 +82,7 @@ export const AnualInventoryMovementsChart = () => {
             </div>
           </div>
 
-          <ResponsiveContainer width='100%' height={320} className='shadow-lg '>
+          <ResponsiveContainer width='100%' className='shadow-lg max-h-80 '>
             <LineChart
               data={data}
               margin={{

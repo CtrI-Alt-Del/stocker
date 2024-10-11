@@ -41,7 +41,10 @@ export function useAnualInventoryMovementChar() {
     dependencies: [productId],
   })
 
-  const AnualMovements = data ? data : []
+  const AnualMovements = data ? data.map((movement) => ({
+    ...movement,
+    month: movement.month.charAt(0).toUpperCase() + movement.month.slice(1,3)
+  })) : []
   return {
     productName: productData?.name || "",
     productId,
