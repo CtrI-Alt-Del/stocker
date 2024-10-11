@@ -5,6 +5,7 @@ import {
   BatchesService,
   ReportsService,
 } from '@/api/services'
+import { CategoriesService } from '@/api/services/categories-service'
 import { InventoryMovementsService } from '@/api/services/inventory-movements-service'
 import { ENV } from '@/constants'
 
@@ -18,5 +19,6 @@ export function useApi() {
     productsService: ProductsService(nextApiClient),
     batchesService: BatchesService(nextApiClient),
     fileStorageService: FileStorageService(nextApiClient),
+    categoriesService: CategoriesService(nextApiClient),
   }
 }
