@@ -67,6 +67,6 @@ export class ReportAnnualOutboundInventorymovementsUseCase {
         }
       }
     })
-    return months
+    return months.reverse()
   }
 }
