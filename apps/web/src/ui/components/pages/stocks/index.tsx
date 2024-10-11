@@ -1,6 +1,8 @@
 'use client'
 
 import {
+  Button,
+  Link,
   Pagination,
   Spinner,
   Table,
@@ -11,21 +13,27 @@ import {
   TableRow,
 } from '@nextui-org/react'
 
-import type { Product } from '@stocker/core/entities'
 import { useStocksPage } from './use-stocks-page'
 import { Tag } from '../../commons/tag'
+import { ExportCsvLink } from './export-csv-link'
+import { Icon } from '../../commons/icon'
 
 export const StocksPage = () => {
-  const { 
-    handlePageChange,
-    page,
-    fetchProducts,
-    isFetching,
-    products,
-    totalPages } = useStocksPage()
+  const { handlePageChange, page, isFetching, products, totalPages } = useStocksPage()
 
   return (
     <>
+      <div className='flex flex-col sm:flex-row gap-1'>
+        <div>
+          <Link
+            as={ExportCsvLink}
+            aria-label='Exportar para arquivo csv'
+            className='text-zinc-400'
+          >
+            <Icon name='download' size={20} />
+          </Link>
+        </div>
+      </div>
       <Table
         aria-label='Tabela de Inventário'
         shadow='none'
