@@ -34,10 +34,11 @@ type ProductsTableProps = {
   isLoading: boolean
   products: Product[]
   totalPages: number
-  selectedProductsIds?: string[]
+  selectedProductsIds?: string[] | string
   onUpdateProduct: VoidFunction
-  onProductsSelectionChange: (productsIds: string[]) => void
+  onProductsSelectionChange: (productsIds: string[] | string) => void
   onPageChange: (page: number) => void
+  selectionMode?: 'single' | 'multiple'
 }
 
 export const ProductsTable = ({
@@ -49,6 +50,7 @@ export const ProductsTable = ({
   onProductsSelectionChange,
   onUpdateProduct,
   onPageChange,
+  selectionMode,
 }: ProductsTableProps) => {
   const drawerRef = useRef<DrawerRef>(null)
   const {
@@ -71,7 +73,7 @@ export const ProductsTable = ({
       <Table
         arial-label='Tabela de produtos'
         shadow='none'
-        selectionMode='multiple'
+        selectionMode={selectionMode ? selectionMode : 'multiple'}
         selectedKeys={selectedProductsIds}
         onSelectionChange={(selection) =>
           onProductsSelectionChange(Array.from(selection) as string[])

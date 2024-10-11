@@ -11,17 +11,26 @@ import {
   YAxis,
 } from 'recharts'
 import { useAnualInventoryMovementChar } from './use-anual-inventory-movements'
-import { Spinner } from '@nextui-org/react'
+import { Button, Spinner } from '@nextui-org/react'
 import { AnualInventoryMovementChartToolTip } from './anual-chart-tooltip'
+import { useState } from 'react'
+import { Gem } from 'lucide-react'
+import { InventoryMovementsTable } from '../../product-stock/inventory-movements-table'
+import { ProductsTable } from '../../products/products-table'
+import { useProductsPage } from '../../products/use-products-page'
+import { Icon } from '@/ui/components/commons/icon'
+import { Dialog } from '@/ui/components/commons/dialog'
 
 export const AnualInventoryMovementsChart = () => {
-  const { AnualMovements, isFetching } = useAnualInventoryMovementChar()
+  const { AnualMovements, isFetching, handleProductIDChange, productId, productName } =
+    useAnualInventoryMovementChar()
+  const { page, products, handlePageChange, totalPages, handleUpdateProduct } =
+    useProductsPage()
   const data =
     AnualMovements.map((movement) => ({
       ...movement,
       month: movement.month.charAt(0).toUpperCase() + movement.month.slice(1, 3),
     })) || []
-
   return (
     <div>
       {isFetching ? (
@@ -34,6 +43,49 @@ export const AnualInventoryMovementsChart = () => {
         </div>
       ) : (
         <>
+          <div className='flex justify-between p-5 items-center'>
+            <div>
+              <h2 className='font-bold text-xl   '>Lançamentos de Estoque anual</h2>
+              {productName && (
+                <h1 className='text-zinc-400'>Produto selecionado: {productName}</h1>
+              )}
+            </div>
+            <div className='space-x-3'>
+              {productId && (
+                <Button
+                  color='primary'
+                  className='text-white'
+                  onClick={() => handleProductIDChange('')}
+                >
+                  Retirar filtros
+                </Button>
+              )}
+              <Dialog
+                size='5xl'
+                title='Selecione o produto'
+                trigger={
+                  <Button color='primary' className='text-white'>
+                    Produtos
+                  </Button>
+                }
+              >
+                {() => (
+                  <ProductsTable
+                    selectionMode='single'
+                    page={page}
+                    products={products}
+                    onPageChange={handlePageChange}
+                    onUpdateProduct={handleUpdateProduct}
+                    totalPages={totalPages}
+                    isLoading={isFetching}
+                    onProductsSelectionChange={handleProductIDChange}
+                    selectedProductsIds={productId}
+                  />
+                )}
+              </Dialog>
+            </div>
+          </div>
+
           <ResponsiveContainer width='100%' height={320} className='shadow-lg '>
             <LineChart
               data={data}
@@ -44,7 +96,7 @@ export const AnualInventoryMovementsChart = () => {
                 bottom: 5,
               }}
             >
-              <CartesianGrid  vertical={false} />
+              <CartesianGrid vertical={false} />
               <XAxis
                 tickLine={false}
                 axisLine={false}
@@ -64,6 +116,7 @@ export const AnualInventoryMovementsChart = () => {
                 axisLine={false}
               />
               <Legend
+                wrapperStyle={{ paddingBottom: '20px' }}
                 verticalAlign='top'
                 align='right'
                 iconType='circle'
@@ -71,7 +124,7 @@ export const AnualInventoryMovementsChart = () => {
                   <span className='text-[#71717A] text-medium'>{value}</span>
                 )}
               />
-              <Tooltip content={<AnualInventoryMovementChartToolTip/>}/>
+              <Tooltip content={<AnualInventoryMovementChartToolTip />} />
               <Line
                 type='monotone'
                 dataKey='inboundMovementsCount'
