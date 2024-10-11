@@ -1,4 +1,5 @@
 import type { IProductsRepository } from '../../interfaces'
+import { PaginationResponse } from '../../responses'
 
 type Request = {
   page: number
@@ -14,9 +15,9 @@ export class ReportInventorysUseCase {
     const { products, count } =
       await this.productsRepository.findManyWithInventoryMovementsCount({ page })
 
-    return {
+    return new PaginationResponse({
       items: products.map((product) => product.dto),
-      totalCount: count,
-    }
+      itemsCount: count,
+    })
   }
 }

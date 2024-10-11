@@ -20,13 +20,22 @@ type DrawerProps = {
   children: (closeDrawer: VoidFunction) => ReactNode
   trigger: ReactNode
   direction?: 'top' | 'left' | 'right' | 'bottom'
+  width?: number
   zIndex?: number
   onOpen?: VoidFunction
   onClose?: VoidFunction
 }
 
 export const DrawerComponent = (
-  { children, trigger, direction = 'right', zIndex = 1, onOpen, onClose }: DrawerProps,
+  {
+    children,
+    trigger,
+    direction = 'right',
+    zIndex = 1,
+    width,
+    onOpen,
+    onClose,
+  }: DrawerProps,
   ref: ForwardedRef<DrawerRef>,
 ) => {
   const { isOpen, open, close } = useDrawer(onOpen, onClose)
@@ -48,7 +57,7 @@ export const DrawerComponent = (
       <RmDrawer
         open={isOpen}
         onClose={close}
-        size={700}
+        size={width ?? 700}
         direction={direction}
         zIndex={zIndex}
       >

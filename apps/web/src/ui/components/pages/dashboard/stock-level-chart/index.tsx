@@ -20,9 +20,9 @@ export const StockLevelChart = () => {
   const { isFetching, data, totalProducts } = useStockLevelChart()
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
-const handlePieMouseEnter = (_: any, index: number) => {
-  setActiveIndex(index);
-};
+  const handlePieMouseEnter = (_: any, index: number) => {
+    setActiveIndex(index)
+  }
 
   const handlePieMouseLeave = () => {
     setActiveIndex(null)
@@ -33,20 +33,23 @@ const handlePieMouseEnter = (_: any, index: number) => {
   return (
     <div className='max-w-lg rounded-lg shadow p-5 w-full h-full'>
       <div className='flex justify-between items-center'>
-        <h1 className='text-xl font-bold'>Nível do Estoque</h1>
+        <h2 className='text-xl font-bold'>Nível do Estoque</h2>
         <Link href='/inventory/stocks'>
           <Icon name='link' className='size-5 text-zinc-400' />
         </Link>
       </div>
       <div className='flex flex-col w-full '>
         <div className='flex justify-center items-center relative flex-1'>
-          <div className='w-full flex justify-center items-center' style={{ height: 300 }}>
+          <div
+            className='w-full flex justify-center items-center'
+            style={{ height: 300 }}
+          >
             {isFetching ? (
               <div className='flex justify-center items-center w-full h-full'>
-                <Spinner size='lg' label='Carregando...'/>
+                <Spinner size='lg' label='Carregando...' />
               </div>
             ) : (
-              <PieChart width={360}   height={300}>
+              <PieChart width={360} height={300}>
                 <Pie
                   data={chartData}
                   dataKey='value'

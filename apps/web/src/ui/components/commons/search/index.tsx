@@ -2,7 +2,7 @@ import { Input } from '@nextui-org/react'
 
 import { Icon } from '../icon'
 
-interface SearchComponentsProps {
+type SearchComponentsProps = {
   value?: string
   onSearchChange?: (value: string) => void
 }

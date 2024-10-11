@@ -1,6 +1,12 @@
 'use client'
 
-import { type ForwardedRef, forwardRef, type ReactNode, useImperativeHandle } from 'react'
+import {
+  type ForwardedRef,
+  forwardRef,
+  type ReactNode,
+  useEffect,
+  useImperativeHandle,
+} from 'react'
 import {
   Modal,
   ModalBody,
@@ -16,11 +22,11 @@ type DialogProps = {
   title: string
   children: (closeDialog: VoidFunction) => ReactNode
   trigger?: ReactNode
-  isLarge?: boolean
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | 'full'
 }
 
 const DialogComponent = (
-  { title, children, trigger, isLarge }: DialogProps,
+  { title, children, trigger, size }: DialogProps,
   ref: ForwardedRef<DialogRef>,
 ) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -36,10 +42,23 @@ const DialogComponent = (
     [onClose, onOpen],
   )
 
+  useEffect(() =>{
+    if(isOpen){
+      document.body.classList.add('overflow-x-hidden')
+    }else{
+      document.body.classList.remove('overflow-x-hidden')
+    }
+  })
   return (
     <>
-      <Modal size={isLarge ? '2xl' : 'md'} isOpen={isOpen} onClose={onClose}>
-        <ModalContent className='z-50'>
+      <Modal
+        size={size ? size : 'md'}
+        isOpen={isOpen}
+        scrollBehavior='inside'
+        classNames={{ body: 'overflow-x-hidden' }}
+        onClose={onClose}
+      >
+        <ModalContent className='z-50 max-w-3/4'>
           <ModalHeader>{title}</ModalHeader>
           <ModalBody>{children(onClose)}</ModalBody>
         </ModalContent>

@@ -1,6 +1,8 @@
+import { Button } from '@nextui-org/react'
+
 import { Drawer } from '../../commons/drawer'
 import { Search } from '../../commons/search'
-import { Button } from '../../commons/button'
+import { RegisterCategoryForm } from './register-category-form'
 
 export const CategoriesPage = () => {
   return (
@@ -19,9 +21,8 @@ export const CategoriesPage = () => {
           }
         >
           {(closeDrawer) => (
-            <RegisterProductForm
+            <RegisterCategoryForm
               onSubmit={async () => {
-                await handleRegisterProductFormSubmit()
                 closeDrawer()
               }}
               onCancel={closeDrawer}

@@ -45,7 +45,7 @@ export const ImageInputComponent = (
 
   return (
     <>
-      <Dialog ref={dialogRef} title='Cortando imagem' isLarge>
+      <Dialog ref={dialogRef} title='Cortando imagem' >
         {() => (
           <div className='flex items-center flex-col gap-6 w-full pb-3'>
             <Cropper

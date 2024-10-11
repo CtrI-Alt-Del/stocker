@@ -107,7 +107,6 @@ export function useMostTrendingProductsTable() {
     handleDatesDifferenceInDays()
   }, [startDatetime, endDatetime])
 
-
   return {
     products,
     isFetching,

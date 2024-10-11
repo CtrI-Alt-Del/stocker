@@ -95,11 +95,6 @@ export const StocksPage = () => {
                   <Tag type='danger'>Esgotado</Tag>
                 )}
               </TableCell>
-              {/* <TableCell key='status'>
-                  <Tag type='sucess'>Ideal</Tag>
-                  <Tag type='warning'>Baixo</Tag>
-                  <Tag type='danger'>Esgotado</Tag>
-              </TableCell> */}
             </TableRow>
           )}
         </TableBody>

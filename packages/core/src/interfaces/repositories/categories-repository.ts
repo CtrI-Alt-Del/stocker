@@ -1,9 +1,11 @@
 import type { Category } from '@prisma/client'
+import type { CategoriesListParams } from '../../types'
 
 export interface ICategoriesRepository {
   findById(categoryId: string): Promise<Category | null>
-  findMany(): Promise<Category[]>
+  findMany(params: CategoriesListParams): Promise<Category[]>
+  add(category: Category): Promise<void>
   count(): Promise<number>
-  update(Category: Category): Promise<void>
-  deleteById(CategoryId: string): Promise<Category | null>
+  update(category: Category): Promise<void>
+  deleteById(categoryId: string): Promise<Category | null>
 }

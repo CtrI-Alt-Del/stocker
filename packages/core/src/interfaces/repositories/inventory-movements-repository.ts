@@ -9,7 +9,5 @@ export interface IInventoryMovementsRepository {
   countItems(): Promise<number>
   countInbound(): Promise<number>
   countOutbound(): Promise<number>
-  findByDateRange(
-    params: FindByDateRangeParams,
-  ): Promise<InventoryMovement[]>
+  findByDateRange(params: FindByDateRangeParams): Promise<InventoryMovement[]>
 }
