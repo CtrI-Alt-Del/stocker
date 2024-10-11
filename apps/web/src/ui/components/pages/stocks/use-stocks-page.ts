@@ -1,3 +1,4 @@
+import { ReportsService } from "@/api/services"
 import { CACHE } from "@/constants"
 import { useApi, useCache, useToast } from "@/ui/hooks"
 import { PAGINATION } from "@stocker/core/constants"
@@ -5,13 +6,13 @@ import { Product } from "@stocker/core/entities"
 import { useQueryState, parseAsInteger } from "nuqs"
 
 export function useStocksPage() {
-  const { productsService } = useApi()
+  const { reportsService } = useApi()
   const { showError } = useToast()
   const [pageState, setPage] = useQueryState('page', parseAsInteger)
   const page = pageState ?? 1
 
   async function fetchProducts() {
-    const response = await productsService.listProducts({ page })
+    const response = await reportsService.reportInventory({ page })
 
     if (response.isFailure) {
       showError(response.errorMessage)

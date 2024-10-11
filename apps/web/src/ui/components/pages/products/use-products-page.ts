@@ -1,22 +1,26 @@
-import { parseAsInteger, useQueryState } from 'nuqs'
-
-import { useApi, useCache, useToast, useUrlParamNumber } from '@/ui/hooks'
+import {
+  useApi,
+  useCache,
+  useToast,
+  useUrlParamNumber,
+  useUrlParamString,
+} from '@/ui/hooks'
 import { CACHE } from '@/constants'
 import { PAGINATION } from '@stocker/core/constants'
 import { useState } from 'react'
 import { Product } from '@stocker/core/entities'
 
 export function useProductsPage() {
-  const { productsService, reportsService } = useApi()
+  const { productsService } = useApi()
   const { showSuccess, showError } = useToast()
   const [selectedProductsIds, setSelectedProductsIds] = useState<string[]>([])
   const [page, setPage] = useUrlParamNumber('page', 1)
-  const [filterByNameValueState, setFilterByNameValue] = useQueryState('name')
+  const [filterByNameValueState, setFilterByNameValue] = useUrlParamString('name')
   const [isDeleting, setIsDeleting] = useState(false)
   const filterByNameValue = filterByNameValueState ?? ''
 
   async function fetchProducts() {
-    const response = await reportsService.reportInventory({ page })
+    const response = await productsService.listProducts({ page })
 
     if (response.isFailure) {
       showError(response.errorMessage)
@@ -71,6 +75,8 @@ export function useProductsPage() {
   function handleProductsSelectionChange(productsIds: string[]) {
     setSelectedProductsIds(productsIds)
   }
+
+  console.log({ itemsCount })
 
   return {
     page,

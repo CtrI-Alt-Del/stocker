@@ -23,6 +23,7 @@ export const NextApiClient = (cacheConfig?: CacheConfig): IApiClient => {
       params = {}
       const data = await response.json()
 
+
       if (!response.ok) {
         return handleApiError<ResponseBody>(data, response.status)
       }

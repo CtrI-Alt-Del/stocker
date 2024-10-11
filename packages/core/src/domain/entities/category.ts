@@ -1,4 +1,4 @@
-import type { RegisterCategoryDTO } from '../../dtos/category-dto'
+import type { CategoryDto } from '../../dtos/category-dto'
 import { Entity } from '../abstracts'
 
 type CategoryProps = {
@@ -7,7 +7,7 @@ type CategoryProps = {
 }
 
 export class Category extends Entity<CategoryProps> {
-  static create(dto: RegisterCategoryDTO) {
+  static create(dto: CategoryDto) {
     return new Category(
       {
         name: dto.name,
@@ -15,5 +15,17 @@ export class Category extends Entity<CategoryProps> {
       },
       dto.id,
     )
+  }
+
+  get name(): string {
+    return this.name
+  }
+
+  get dto() {
+    return {
+      id: this.id,
+      name: this.name,
+      parentCategoryId: this.props.parentCategoryId,
+    }
   }
 }
