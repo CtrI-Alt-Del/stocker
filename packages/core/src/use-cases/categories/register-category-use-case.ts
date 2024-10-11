@@ -1,6 +1,11 @@
-import type { Category } from '../../domain/entities/category'
-import type { RegisterCategoryDTO } from '../../dtos/category-dto'
+import { Category } from '../../domain/entities/category'
+import type { CategoryDto } from '../../dtos'
+import { ConflictError } from '../../errors'
 import type { ICategoriesRepository } from '../../interfaces/repositories/categories-repository'
+
+type Request = {
+  categoryDto: CategoryDto
+}
 
 export class RegisterCategoryUseCase {
   private readonly categoryRepository: ICategoriesRepository
@@ -9,9 +14,14 @@ export class RegisterCategoryUseCase {
     this.categoryRepository = categoryRepository
   }
 
-  async execute(data: RegisterCategoryDTO): Promise<Category> {
-    const category = new Category.create(data)
-    const savedCategory = await this.categoryRepository.add(category)
-    return savedCategory
+  async execute({ categoryDto }: Request) {
+    if (categoryDto.id) {
+      const category = await this.categoryRepository.findById(categoryDto.id)
+      if (category) throw new ConflictError('Categoria já existente')
+    }
+
+    const category = Category.create(categoryDto)
+    await this.categoryRepository.add(category)
+    return category.id
   }
 }
