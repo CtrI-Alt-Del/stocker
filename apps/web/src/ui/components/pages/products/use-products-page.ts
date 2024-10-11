@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { Product } from '@stocker/core/entities'
 
 export function useProductsPage() {
-  const { productsService, reportsService } = useApi()
+  const { productsService } = useApi()
   const { showSuccess, showError } = useToast()
   const [selectedProductsIds, setSelectedProductsIds] = useState<string[]>([])
   const [page, setPage] = useUrlParamNumber('page', 1)
@@ -16,7 +16,7 @@ export function useProductsPage() {
   const filterByNameValue = filterByNameValueState ?? ''
 
   async function fetchProducts() {
-    const response = await reportsService.reportInventory({ page })
+    const response = await productsService.listProducts({ page })
 
     if (response.isFailure) {
       showError(response.errorMessage)
@@ -39,6 +39,8 @@ export function useProductsPage() {
     key: CACHE.productsList.key,
     dependencies: [page],
   })
+
+  console.log(data)
 
   const products = data ? data.items.map(Product.create) : []
   const itemsCount = data ? data.itemsCount : 0
