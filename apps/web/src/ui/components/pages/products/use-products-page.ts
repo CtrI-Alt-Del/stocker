@@ -44,7 +44,6 @@ export function useProductsPage() {
     dependencies: [page],
   })
 
-  console.log(data)
 
   const products = data ? data.items.map(Product.create) : []
   const itemsCount = data ? data.itemsCount : 0
@@ -77,8 +76,6 @@ export function useProductsPage() {
   function handleProductsSelectionChange(productsIds: string[]) {
     setSelectedProductsIds(productsIds)
   }
-
-  console.log({ itemsCount })
 
   return {
     page,

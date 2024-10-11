@@ -36,9 +36,8 @@ export const ReportsService = (apiClient: IApiClient): IReportsService => {
 
     async reportWeeklyInventoryMovements(productId?: string) {
       if (productId) apiClient.setParam('productId', productId)
-
-      return await apiClient.get<WeeklyInventoryMovementsDto>(
-        'reports/inventory-movements/weekly',
+      return await apiClient.get<WeeklyInventoryMovementsDto[]>(
+        '/reports/inventory-movements/weekly',
       )
     },
     async reportAnualInventoryMovements(productID?: string) {

@@ -15,7 +15,6 @@ export const ProductsService = (apiClient: IApiClient): IProductsService => {
 
     async listProducts({ page }) {
       apiClient.setParam('page', String(page))
-      console.log('OPA')
       return await apiClient.get<PaginationResponse<ProductDto>>('/products')
     },
 
