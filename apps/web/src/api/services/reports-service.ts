@@ -38,15 +38,15 @@ export const ReportsService = (apiClient: IApiClient): IReportsService => {
       if (productId) apiClient.setParam('productId', productId)
 
       return await apiClient.get<WeeklyInventoryMovementsDto>(
-        '/inventory-movements/weekly',
+        'reports/inventory-movements/weekly',
       )
     },
     async reportAnualInventoryMovements(productID?: string) {
       if (productID) {
         apiClient.setParam('productId', productID)
       }
-      return await apiClient.get<AnnualInventoryMovementsDto>(
-        '/inventory-movements/annual',
+      return await apiClient.get<AnnualInventoryMovementsDto[]>(
+        '/reports/inventory-movements/annual',
       )
     },
   }
