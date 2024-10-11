@@ -1,4 +1,5 @@
 export type IconName =
+  | 'settings-2'
   | 'archive'
   | 'square-user-round'
   | 'arrow-big-down-dash'
