@@ -4,6 +4,7 @@ import { Entity } from '../abstracts'
 type CategoryProps = {
   name: string
   parentCategoryId?: string
+  companyId: string
 }
 
 export class Category extends Entity<CategoryProps> {
@@ -12,6 +13,7 @@ export class Category extends Entity<CategoryProps> {
       {
         name: dto.name,
         parentCategoryId: dto.parentCategoryId,
+        companyId: dto.companyId,
       },
       dto.id,
     )
@@ -26,6 +28,7 @@ export class Category extends Entity<CategoryProps> {
       id: this.id,
       name: this.name,
       parentCategoryId: this.props.parentCategoryId,
+      companyId: this.props.companyId,
     }
   }
 }
