@@ -18,6 +18,7 @@ import {
   FileStorageRoutes,
   InventoryMovementsRoutes,
   ReportsRoutes,
+  CategoriesRoutes,
 } from './routes'
 import { BatchesRoutes } from './routes/batches-routes'
 
@@ -89,5 +90,6 @@ export class FastifyApp implements IServerApp {
     this.app.register(InventoryMovementsRoutes, { prefix: '/inventory-movements' })
     this.app.register(FileStorageRoutes, { prefix: '/file-storage' })
     this.app.register(ReportsRoutes, { prefix: '/reports' })
+    this.app.register(CategoriesRoutes, { prefix: '/categories' })
   }
 }
