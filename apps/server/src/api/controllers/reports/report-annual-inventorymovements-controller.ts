@@ -10,7 +10,6 @@ export class ReportAnnualInventorymovementsController {
 
     const useCase = new ReportAnnualOutboundInventorymovementsUseCase(
       inventorymovementRepository,
-      productsRepository,
     )
     const result = await useCase.execute({
       productId: queryParams.productId,
