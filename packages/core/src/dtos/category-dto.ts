@@ -1,4 +1,4 @@
-export type RegisterCategoryDTO = {
+export type CategoryDto = {
   id?: string
   name: string
   parentCategoryId?: string

@@ -64,6 +64,8 @@ export const ProductsTable = ({
     onProductsSelectionChange,
   })
 
+  console.log({ totalPages })
+
   return (
     <>
       <Table

@@ -14,8 +14,8 @@ export class ListProductsController {
     const pageNumber = parseInt(page || '1', 10)
 
     const useCase = new ListProductsUseCase(productsRepository)
-    const products = await useCase.execute({ page: pageNumber })
+    const response = await useCase.execute({ page: pageNumber })
 
-    return http.send(products, HTTP_STATUS_CODE.ok)
+    return http.send(response, HTTP_STATUS_CODE.ok)
   }
 }

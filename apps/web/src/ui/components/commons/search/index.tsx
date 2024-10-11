@@ -2,9 +2,9 @@ import { Input } from '@nextui-org/react'
 
 import { Icon } from '../icon'
 
-interface SearchComponentsProps {
-  onSearchChange: (value: string) => void
-  value: string
+type SearchComponentsProps = {
+  value?: string
+  onSearchChange?: (value: string) => void
 }
 
 export const Search = ({ onSearchChange, value }: SearchComponentsProps) => {

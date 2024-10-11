@@ -1,13 +1,12 @@
 import type { IApiClient, IReportsService } from '@stocker/core/interfaces'
 import type {
+  AnnualInventoryMovementsDto,
   ProductDto,
   StockLevelReportDto,
   WeeklyInventoryMovementsDto,
 } from '@stocker/core/dtos'
 import type { MostTrendingProductsListParams } from '@stocker/core/types'
 import type { PaginationResponse } from '@stocker/core/responses'
-import { AnnualInventoryMovementsDto } from '../../../../../packages/core/src/dtos/annual-inventory-movements-dto'
-import { cache } from 'react'
 
 export const ReportsService = (apiClient: IApiClient): IReportsService => {
   return {
@@ -39,7 +38,7 @@ export const ReportsService = (apiClient: IApiClient): IReportsService => {
       if (productId) apiClient.setParam('productId', productId)
 
       return await apiClient.get<WeeklyInventoryMovementsDto>(
-        'reports/inventory-movements/weekly',
+        '/inventory-movements/weekly',
       )
     },
     async reportAnualInventoryMovements(productID?: string) {
@@ -47,7 +46,7 @@ export const ReportsService = (apiClient: IApiClient): IReportsService => {
         apiClient.setParam('productId', productID)
       }
       return await apiClient.get<AnnualInventoryMovementsDto>(
-        '/reports/inventory-movements/annual',
+        '/inventory-movements/annual',
       )
     },
   }
