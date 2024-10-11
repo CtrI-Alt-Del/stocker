@@ -6,7 +6,7 @@ type Request = {
   productId?: string
 }
 
-const WEEKDAYS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb']
+const WEEKDAYS = ['dom', 'seg', 'ter', 'qua', 'qui', 'ter', 'sáb', 'sex']
 
 export class ReportWeeklyInventoryMovementsUseCase {
   private readonly inventoryMovementsRepository: IInventoryMovementsRepository
