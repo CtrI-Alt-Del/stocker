@@ -1,4 +1,4 @@
-import type { Category } from '@prisma/client'
+import type { Category } from '../../domain/entities'
 import type { CategoriesListParams } from '../../types'
 
 export interface ICategoriesRepository {
@@ -7,5 +7,5 @@ export interface ICategoriesRepository {
   add(category: Category): Promise<void>
   count(): Promise<number>
   update(category: Category): Promise<void>
-  deleteById(categoryId: string): Promise<Category | null>
+  deleteById(categoryId: string): Promise<void>
 }
