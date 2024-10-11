@@ -22,5 +22,5 @@ export interface IReportsService {
   ): Promise<ApiResponse<WeeklyInventoryMovementsDto>>
   reportAnualInventoryMovements(
     productID?: string,
-  ): Promise<ApiResponse<AnnualInventoryMovementsDto>>
+  ): Promise<ApiResponse<AnnualInventoryMovementsDto[]>>
 }
