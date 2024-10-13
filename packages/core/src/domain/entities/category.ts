@@ -20,7 +20,7 @@ export class Category extends Entity<CategoryProps> {
   }
 
   get name(): string {
-    return this.name
+    return this.props.name
   }
 
   get dto() {
