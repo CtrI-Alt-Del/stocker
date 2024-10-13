@@ -2,8 +2,8 @@ import type { IInventoryMovementsRepository } from '../../interfaces'
 import { PaginationResponse } from '../../responses'
 
 type Request = {
-  page: number
-  productId: string
+  page?: number
+  productId?: string
 }
 
 export class ListInventoryMovementsUseCase {
