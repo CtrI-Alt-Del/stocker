@@ -46,7 +46,7 @@ export const AnualInventoryMovementsChart = () => {
                 <h1 className='text-zinc-400'>Produto selecionado: {productName}</h1>
               )}
             </div>
-            <div className='space-x-3 flex flex-row'>
+            <div className='gap-3 flex flex-col sm:flex-row'>
               {productId && (
                 <Button
                   color='primary'

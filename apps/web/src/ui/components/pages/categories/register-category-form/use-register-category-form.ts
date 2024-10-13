@@ -15,7 +15,14 @@ const registerCategoryFormSchema = z.object({
 
 type RegisterCategoryFormData = z.infer<typeof registerCategoryFormSchema>
 
-export function useRegisterCategoryForm(onSubmit: VoidFunction) {
+type useRegisterCategoryFormProps = {
+  onSubmit: VoidFunction
+  parentCategoryId?: string
+}
+export function useRegisterCategoryForm({
+  onSubmit,
+  parentCategoryId,
+}: useRegisterCategoryFormProps) {
   const { control, formState, reset, register, handleSubmit } =
     useForm<RegisterCategoryFormData>({
       resolver: zodResolver(registerCategoryFormSchema),
@@ -24,7 +31,11 @@ export function useRegisterCategoryForm(onSubmit: VoidFunction) {
   const { categoriesService } = useApi()
 
   async function handleFormSubmit({ name }: RegisterCategoryFormData) {
-    const category = Category.create({ name })
+    const category = Category.create({
+      name,
+      parentCategoryId: parentCategoryId ? parentCategoryId : undefined,
+      companyId: 'eceda392-06df-4ed2-8c90-db6bf1e38830',
+    })
     const response = await categoriesService.registerCategory(category)
 
     if (response.isFailure) {

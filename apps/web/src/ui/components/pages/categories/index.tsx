@@ -1,3 +1,4 @@
+"use client"
 import { Button } from '@nextui-org/react'
 
 import { Drawer } from '../../commons/drawer'
@@ -8,7 +9,7 @@ export const CategoriesPage = () => {
   return (
     <div>
       <div className='flex-1 w-full max-w-96 space-y-2'>
-        <h1 className='text-3xl font-black'>Produtos</h1>
+        <h1 className='text-3xl font-black'>Categorias</h1>
         <Search />
       </div>
 
@@ -16,7 +17,7 @@ export const CategoriesPage = () => {
         <Drawer
           trigger={
             <Button variant='solid' color='primary' radius='sm'>
-              Adicionar produto
+              Adiocionar categoria
             </Button>
           }
         >
