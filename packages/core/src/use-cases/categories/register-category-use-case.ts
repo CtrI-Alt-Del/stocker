@@ -15,11 +15,6 @@ export class RegisterCategoryUseCase {
   }
 
   async execute({ categoryDto }: Request) {
-    if (categoryDto.id) {
-      const category = await this.categoryRepository.findById(categoryDto.id)
-      if (category) throw new ConflictError('Categoria já existente')
-    }
-
     const category = Category.create(categoryDto)
     await this.categoryRepository.add(category)
     return category.id
