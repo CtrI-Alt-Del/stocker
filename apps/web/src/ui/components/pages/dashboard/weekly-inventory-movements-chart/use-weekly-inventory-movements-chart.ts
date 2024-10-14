@@ -36,7 +36,6 @@ export function useWeeklyInventoryMovementsChart() {
     key: CACHE.productsList.key,
     dependencies: [productId],
   })
-  console.log(data)
   return {
     weeklyMovements: data,
     productId,

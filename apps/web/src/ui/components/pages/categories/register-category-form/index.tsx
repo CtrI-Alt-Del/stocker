@@ -1,5 +1,3 @@
-'use client'
-
 import { Button, Input } from '@nextui-org/react'
 
 import { useRegisterCategoryForm } from './use-register-category-form'
@@ -13,8 +11,9 @@ export const RegisterCategoryForm = ({
   onSubmit,
   onCancel,
 }: RegisterCategoryFormProps) => {
-  const { errors, isSubmiting, registerField, handleSubmit } =
-    useRegisterCategoryForm(onSubmit)
+  const { errors, isSubmiting, registerField, handleSubmit } = useRegisterCategoryForm({
+    onSubmit
+  })
 
   return (
     <div>
