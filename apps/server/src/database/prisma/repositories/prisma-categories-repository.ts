@@ -3,7 +3,7 @@ import type { ICategoriesRepository } from '@stocker/core/interfaces'
 import { PrismaCategoriesMapper } from '../mappers'
 import { PrismaError } from '../prisma-error'
 import { prisma } from '../prisma-client'
-import { CategoriesListParams } from '@stocker/core/types'
+import type { CategoriesListParams } from '@stocker/core/types'
 import { PAGINATION } from '@stocker/core/constants'
 
 export class PrismaCategoriesRepository implements ICategoriesRepository {
@@ -83,4 +83,43 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
       throw new PrismaError(error)
     }
   }
+
+  async deleteMany(categoryIds: string[]): Promise<void> {
+    try {
+      const categories = await prisma.category.findMany({
+        where: {
+          id: {
+            in: categoryIds,
+          },
+        },
+        include: {
+          subCategories: true,
+        },
+      });
+  
+      const childCategoryIds = categories
+        .flatMap(category => category.subCategories.map(subCategorie => subCategorie.id))
+        .filter(id => !categoryIds.includes(id));
+      if (childCategoryIds.length > 0) {
+        await prisma.category.deleteMany({
+          where: {
+            id: {
+              in: childCategoryIds,
+            },
+          },
+        });
+      }
+  
+      await prisma.category.deleteMany({
+        where: {
+          id: {
+            in: categoryIds,
+          },
+        },
+      });
+    } catch (error) {
+      throw new PrismaError(error);
+    }
+  }
+  
 }
