@@ -1,9 +1,12 @@
+
 "use client"
+
 import { Button } from '@nextui-org/react'
 
 import { Drawer } from '../../commons/drawer'
 import { Search } from '../../commons/search'
 import { RegisterCategoryForm } from './register-category-form'
+import { CategoriesAccordion } from './categories-accordion'
 
 export const CategoriesPage = () => {
   return (
@@ -31,6 +34,7 @@ export const CategoriesPage = () => {
           )}
         </Drawer>
       </div>
+      <CategoriesAccordion /> 
     </div>
   )
 }
