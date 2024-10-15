@@ -3,7 +3,7 @@ import type { ICategoriesRepository } from '@stocker/core/interfaces'
 import { PrismaCategoriesMapper } from '../mappers'
 import { PrismaError } from '../prisma-error'
 import { prisma } from '../prisma-client'
-import { CategoriesListParams } from '@stocker/core/types'
+import type { CategoriesListParams } from '@stocker/core/types'
 import { PAGINATION } from '@stocker/core/constants'
 
 export class PrismaCategoriesRepository implements ICategoriesRepository {
@@ -78,9 +78,38 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
 
   async deleteById(categoryId: string): Promise<void> {
     try {
-      await prisma.category.delete({ where: { id: categoryId } })
+      const category = await prisma.category.findUnique({
+        where: {
+          id: categoryId,
+        },
+        include: {
+          subCategories: true,
+        },
+      });
+  
+      if (!category) {
+        throw new PrismaError('Categoria não encontrada');
+      }
+  
+      if (category.subCategories.length > 0) {
+        const subCategoryIds = category.subCategories.map(subCategory => subCategory.id);
+        await prisma.category.deleteMany({
+          where: {
+            id: {
+              in: subCategoryIds,
+            },
+          },
+        });
+      }
+  
+      await prisma.category.delete({
+        where: {
+          id: categoryId,
+        },
+      });
     } catch (error) {
-      throw new PrismaError(error)
+      throw new PrismaError(error);
     }
   }
-}
+  
+}  
