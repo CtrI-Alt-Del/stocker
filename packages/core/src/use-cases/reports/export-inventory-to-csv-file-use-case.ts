@@ -1,9 +1,6 @@
+import { INVENTORY_CSV_FILE_COLUMNS } from '../../constants'
 import type { Product } from '../../domain/entities'
 import type { IProductsRepository, ICsvProvider } from '../../interfaces'
-
-type Request = {
-  page: number
-}
 
 export class ExportInventoryToCsvFileUseCase {
   private readonly productsRepository: IProductsRepository
@@ -14,20 +11,10 @@ export class ExportInventoryToCsvFileUseCase {
     this.csvProvider = csvProvider
   }
 
-  async execute({ page }: Request) {
-    const products = await this.productsRepository.findManyWithInventoryMovementsCount({
-      page: page,
-    })
+  async execute() {
+    const products = await this.productsRepository.findManyWithInventoryMovementsCount({})
 
-    this.csvProvider.addColumns([
-      { header: 'Nome', key: 'name' },
-      { header: 'Qtd. de lotes', key: 'batchQuantity' },
-      { header: 'Qtd. de lançamentos de entrada', key: 'entryTransactions' },
-      { header: 'Qtd. de lançamentos de saída', key: 'exitTransactions' },
-      { header: 'Estoque atual', key: 'currentStock' },
-      { header: 'Estoque mínimo', key: 'minimumStock' },
-      { header: 'Nível de estoque', key: 'stockLevel' },
-    ])
+    this.csvProvider.addColumns(INVENTORY_CSV_FILE_COLUMNS)
 
     this.csvProvider.addRows(
       products.products.map((product: Product) => {
