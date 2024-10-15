@@ -14,9 +14,8 @@ export class UpdateBatchUseCase {
   }
 
   async execute({ batchDto, batchId }: Request) {
-    console.log({ batchId })
     const batch = await this.batchesRepository.findById(batchId)
-    console.log({ batch })
+
     if (!batch) {
       throw new NotFoundError('Lote não encontrado')
     }
