@@ -1,10 +1,16 @@
 import { PAGINATION } from '../../../src/constants'
-import type { Product } from '../../../src/domain/entities'
+import type { InventoryMovement, Product } from '../../../src/domain/entities'
 import type { IProductsRepository } from '../../../src/interfaces'
-import type { ProductsListParams, ProducsStocksListParams } from '../../../src/types'
+import { Datetime } from '../../../src/libs'
+import type {
+  ProductsListParams,
+  ProducsStocksListParams,
+  MostTrendingProductsListParams,
+} from '../../../src/types'
 
 export class ProductsRepositoryMock implements IProductsRepository {
   products: Product[] = []
+  inventoryMovements: InventoryMovement[] = []
 
   async findById(productId: string): Promise<Product | null> {
     return this.products.find((product) => product.id === productId) ?? null
@@ -20,11 +26,98 @@ export class ProductsRepositoryMock implements IProductsRepository {
     }
   }
 
-  findManyWithInventoryMovementsCount(
-    params: ProducsStocksListParams,
-  ): Promise<{ products: Product[]; count: number }> {
-    throw new Error('Method not implemented.')
+  async findManyWithInventoryMovementsCount({ page }: ProducsStocksListParams) {
+    const allProducts = this.products
+
+    let products = this.products.map((product) => {
+      const inboundInventoryMovementsCount = this.inventoryMovements.reduce(
+        (total, inventoryMovement) => {
+          if (inventoryMovement.product.id === product.id) {
+            return total + 1
+          }
+          return total
+        },
+        0,
+      )
+      const outboundInventoryMovementsCount = this.inventoryMovements.reduce(
+        (total, inventoryMovement) => {
+          if (inventoryMovement.product.id === product.id) {
+            return total + 1
+          }
+          return total
+        },
+        0,
+      )
+      product.inboundInventoryMovementsCount = inboundInventoryMovementsCount
+      product.outboundInventoryMovementsCount = outboundInventoryMovementsCount
+      return product
+    })
+
+    if (page) {
+      const startIndex = (page - 1) * PAGINATION.itemsPerPage
+      products = products.slice(startIndex, startIndex + PAGINATION.itemsPerPage)
+    }
+
+    return {
+      products,
+      count: allProducts.length,
+    }
   }
+
+  async findOrderByInventoryMovementsCount({
+    page,
+    startDate,
+    endDate,
+  }: MostTrendingProductsListParams) {
+    let products = this.products
+    let inventoryMovements = this.inventoryMovements
+
+    if (page) {
+      const startIndex = (page - 1) * PAGINATION.itemsPerPage
+      products = this.products.slice(startIndex, startIndex + PAGINATION.itemsPerPage)
+    }
+
+    if (startDate && endDate) {
+      inventoryMovements = this.inventoryMovements.filter((movement) => {
+        const registeredAt = new Datetime(movement.registeredAt)
+        return (
+          movement.movementType === 'outbound' &&
+          registeredAt.isBetween(startDate, endDate)
+        )
+      })
+    }
+
+    const inventoryMovementsProductsIds = inventoryMovements.map(
+      (movement) => movement.product.id,
+    )
+
+    products = products.filter((product) =>
+      inventoryMovementsProductsIds.includes(product.id),
+    )
+
+    products.sort((productA, productB) => {
+      const productACount = inventoryMovements.reduce((total, inventoryMovement) => {
+        if (inventoryMovement.product.id === productA.id) {
+          return total + 1
+        }
+        return total
+      }, 0)
+      const productBCount = inventoryMovements.reduce((total, inventoryMovement) => {
+        if (inventoryMovement.product.id === productB.id) {
+          return total + 1
+        }
+        return total
+      }, 0)
+
+      return productBCount - productACount
+    })
+
+    return {
+      products,
+      count: products.length,
+    }
+  }
+
   count(): Promise<number> {
     throw new Error('Method not implemented.')
   }
@@ -52,13 +145,5 @@ export class ProductsRepositoryMock implements IProductsRepository {
     this.products = this.products.filter(
       (currentProduct) => !productIds.includes(currentProduct.id),
     )
-  }
-
-  findOrderByInventoryMovementsCount(params: {
-    page?: number
-    startDate: Date
-    endDate: Date
-  }): Promise<{ products: Product[]; count: number }> {
-    throw new Error('Method not implemented.')
   }
 }

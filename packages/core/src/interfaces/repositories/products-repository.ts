@@ -1,5 +1,9 @@
 import type { Product } from '../../domain/entities'
-import type { ProducsStocksListParams, ProductsListParams } from '../../types'
+import type {
+  MostTrendingProductsListParams,
+  ProducsStocksListParams,
+  ProductsListParams,
+} from '../../types'
 
 export interface IProductsRepository {
   findById(productId: string): Promise<Product | null>
@@ -14,10 +18,7 @@ export interface IProductsRepository {
   add(product: Product): Promise<void>
   update(product: Product): Promise<void>
   deleteMany(productId: string[]): Promise<void>
-  findOrderByInventoryMovementsCount(params: {
-    page?: number
-    categoryId?: string
-    startDate: Date
-    endDate: Date
-  }): Promise<{ products: Product[]; count: number }>
+  findOrderByInventoryMovementsCount(
+    params: MostTrendingProductsListParams,
+  ): Promise<{ products: Product[]; count: number }>
 }

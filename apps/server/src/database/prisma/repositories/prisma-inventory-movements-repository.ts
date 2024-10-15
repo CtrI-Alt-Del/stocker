@@ -36,6 +36,26 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
     }
   }
 
+  async addMany(inventoryMovements: InventoryMovement[]): Promise<void> {
+    try {
+      const prismaInventoryMovements = inventoryMovements.map(this.mapper.toPrisma)
+
+      await prisma.inventoryMovement.createMany({
+        data: prismaInventoryMovements.map((prismaInventoryMovement) => ({
+          id: prismaInventoryMovement.id,
+          items_count: prismaInventoryMovement.items_count,
+          registered_at: prismaInventoryMovement.registered_at,
+          movement_type: prismaInventoryMovement.movement_type,
+          product_id: prismaInventoryMovement.product_id,
+          user_id: prismaInventoryMovement.user_id,
+          remark: prismaInventoryMovement.remark,
+        })),
+      })
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
   async findMany({
     page,
     startDate,
@@ -175,7 +195,9 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
 
   async countOutbound(): Promise<number> {
     try {
-      return await prisma.inventoryMovement.count({ where: { movement_type: 'OUTBOUND' } })
+      return await prisma.inventoryMovement.count({
+        where: { movement_type: 'OUTBOUND' },
+      })
     } catch (error) {
       throw new PrismaError(error)
     }

@@ -3,10 +3,11 @@ import type { IInventoryMovementsRepository } from '../../interfaces'
 import { Datetime } from '../../libs'
 
 type Request = {
+  endDate?: Date
   productId?: string
 }
 
-const WEEKDAYS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom']
+const WEEKDAYS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb']
 
 export class ReportWeeklyInventoryMovementsUseCase {
   private readonly inventoryMovementsRepository: IInventoryMovementsRepository
@@ -15,8 +16,7 @@ export class ReportWeeklyInventoryMovementsUseCase {
     this.inventoryMovementsRepository = inventoryMovementsRepository
   }
 
-  async execute({ productId }: Request) {
-    const endDate = new Date()
+  async execute({ endDate = new Date(), productId }: Request) {
     const startDate = new Datetime(endDate).subtractDays(8)
 
     const { inventoryMovements: inboundInventoryMovements } =

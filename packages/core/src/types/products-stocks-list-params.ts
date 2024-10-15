@@ -1,8 +1,6 @@
-import type { InventoryMovementType } from './inventory-movement-type'
+import type { StockLevel } from './stock-level'
 
 export type ProducsStocksListParams = {
   page?: number
-  startDate?: Date
-  endDate?: Date
-  movementType?: InventoryMovementType
+  stockLevel?: StockLevel
 }

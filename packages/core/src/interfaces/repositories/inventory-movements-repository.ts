@@ -3,6 +3,7 @@ import type { FindByDateRangeParams, InventoryMovementsListParams } from '../../
 
 export interface IInventoryMovementsRepository {
   add(inventoryMovement: InventoryMovement): Promise<void>
+  addMany(inventoryMovements: InventoryMovement[]): Promise<void>
   findMany(
     params: InventoryMovementsListParams,
   ): Promise<{ inventoryMovements: InventoryMovement[]; count: number }>

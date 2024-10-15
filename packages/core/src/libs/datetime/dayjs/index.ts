@@ -3,8 +3,10 @@ import utc from 'dayjs/plugin/utc'
 
 import type { DateFormat } from '../types'
 import type { IDatetime } from '../../../interfaces'
+import isBetween from 'dayjs/plugin/isBetween'
 
 dayjs.extend(utc)
+dayjs.extend(isBetween)
 
 export class DayjsDatetime implements IDatetime {
   private date: dayjs.Dayjs
@@ -21,13 +23,22 @@ export class DayjsDatetime implements IDatetime {
     return this.date.add(daysCount, 'day').toDate()
   }
 
+  addMonths(monthsCount: number): Date {
+    return this.date.add(monthsCount, 'months').toDate()
+  }
+
   addYears(yearsCount: number): Date {
-    return this.date.add(yearsCount, 'day').toDate()
+    return this.date.add(yearsCount, 'years').toDate()
   }
 
   subtractDays(daysCount: number): Date {
     return this.date.subtract(daysCount, 'day').toDate()
   }
+
+  subtractMonths(monthsCount: number): Date {
+    return this.date.subtract(monthsCount, 'months').toDate()
+  }
+
   subtractYears(yearsCount: number): Date {
     return this.date.subtract(yearsCount, 'years').toDate()
   }
@@ -46,6 +57,10 @@ export class DayjsDatetime implements IDatetime {
 
   isLessThan(date: Date): boolean {
     return this.date.isBefore(date)
+  }
+
+  isBetween(startDate: Date, endDate: Date): boolean {
+    return this.date.isBetween(startDate, endDate, null, '[]')
   }
 
   differenceInDays(date: Date): number {

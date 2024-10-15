@@ -1,9 +1,9 @@
 import type { IHttp } from '@stocker/core/interfaces'
-import type {  InventoryMovementDto } from '@stocker/core/dtos'
+import type { InventoryMovementDto } from '@stocker/core/dtos'
 import { RegisterOutboundInventoryMovementUseCase } from '@stocker/core/use-cases'
 import {
   batchesRepository,
-  inventorymovementRepository,
+  inventoryMovementsRepository,
   productsRepository,
 } from '@/database'
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
@@ -14,7 +14,7 @@ export class RegisterOutboundInventoryMovementController {
     const useCase = new RegisterOutboundInventoryMovementUseCase(
       batchesRepository,
       productsRepository,
-      inventorymovementRepository,
+      inventoryMovementsRepository,
     )
 
     await useCase.execute({
