@@ -1,4 +1,4 @@
-import type { ICsvProvider, IProductsRepository } from '../../interfaces'
+import type { IProductsRepository } from '../../interfaces'
 import { Datetime } from '../../libs'
 import { ValidationError } from '../../errors'
 import { PaginationResponse } from '../../responses'
