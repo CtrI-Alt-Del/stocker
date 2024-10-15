@@ -1,6 +1,7 @@
 import type { ICsvProvider, IProductsRepository } from '../../interfaces'
 import { Datetime } from '../../libs'
 import { ValidationError } from '../../errors'
+import { MOST_TRENDING_PRODUCTS_CSV_FILE_COLUMNS } from '../../constants'
 
 type Request = {
   startDate?: Date
@@ -31,17 +32,7 @@ export class ExportMostTrendingProductsToCsvFileUseCase {
       },
     )
 
-    this.csvProvider.addColumns([
-      { header: 'Posição', key: 'position' },
-      { header: 'Nome', key: 'name' },
-      { header: 'Estoque atual', key: 'currentStock' },
-      { header: 'Estoque mínimo', key: 'minimumStock' },
-      { header: 'Nível de estoque', key: 'stockLevel' },
-      {
-        header: 'Qtd. de lançamentos estoque de saída',
-        key: 'outboundInventoryMovementsCount',
-      },
-    ])
+    this.csvProvider.addColumns(MOST_TRENDING_PRODUCTS_CSV_FILE_COLUMNS)
 
     this.csvProvider.addRows(
       products.map((product, index) => {
