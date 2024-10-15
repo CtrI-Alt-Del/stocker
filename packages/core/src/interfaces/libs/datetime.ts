@@ -3,6 +3,7 @@ import type { DateFormat } from '../../libs/datetime/types'
 export interface IDatetime {
   format(dateFormat: DateFormat): string
   addDays(daysCount: number): Date
+  addYears(yearsCount: number): Date
   subtractDays(daysCount: number): Date
   subtractYears(yearsCount: number): Date
   isGreaterThan(date: Date): boolean
