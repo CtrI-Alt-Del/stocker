@@ -7,5 +7,5 @@ export interface ICategoriesRepository {
   add(category: Category): Promise<void>
   count(): Promise<number>
   update(category: Category): Promise<void>
-  deleteMany(categoryIds: string[]): Promise<void>
+  deleteById(categoryId: string): Promise<void>
 }

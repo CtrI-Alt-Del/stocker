@@ -78,43 +78,33 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
 
   async deleteById(categoryId: string): Promise<void> {
     try {
-      await prisma.category.delete({ where: { id: categoryId } })
-    } catch (error) {
-      throw new PrismaError(error)
-    }
-  }
-
-  async deleteMany(categoryIds: string[]): Promise<void> {
-    try {
-      const categories = await prisma.category.findMany({
+      const category = await prisma.category.findUnique({
         where: {
-          id: {
-            in: categoryIds,
-          },
+          id: categoryId,
         },
         include: {
           subCategories: true,
         },
       });
   
-      const childCategoryIds = categories
-        .flatMap(category => category.subCategories.map(subCategorie => subCategorie.id))
-        .filter(id => !categoryIds.includes(id));
-      if (childCategoryIds.length > 0) {
+      if (!category) {
+        throw new PrismaError('Categoria não encontrada');
+      }
+  
+      if (category.subCategories.length > 0) {
+        const subCategoryIds = category.subCategories.map(subCategory => subCategory.id);
         await prisma.category.deleteMany({
           where: {
             id: {
-              in: childCategoryIds,
+              in: subCategoryIds,
             },
           },
         });
       }
   
-      await prisma.category.deleteMany({
+      await prisma.category.delete({
         where: {
-          id: {
-            in: categoryIds,
-          },
+          id: categoryId,
         },
       });
     } catch (error) {
@@ -122,4 +112,4 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
     }
   }
   
-}
+}  

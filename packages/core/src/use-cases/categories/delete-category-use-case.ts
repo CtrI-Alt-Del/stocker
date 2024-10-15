@@ -1,7 +1,7 @@
 import type { ICategoriesRepository } from '../../interfaces'
 
 type Request = {
-    categoryIds: string[]
+    categoryId: string
 }
 
 export class DeleteCategoryUseCase {
@@ -11,7 +11,7 @@ export class DeleteCategoryUseCase {
     this.categoriesRepository = categoriesRepository
   }
 
-  async execute({ categoryIds }: Request) {
-    await this.categoriesRepository.deleteMany(categoryIds)
+  async execute({ categoryId }: Request) {
+    await this.categoriesRepository.deleteById(categoryId)
   }
 }
