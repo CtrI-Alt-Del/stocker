@@ -1,3 +1,4 @@
+import { NotFoundError } from '../../errors'
 import type { IFileStorageProvider, IProductsRepository } from '../../interfaces'
 
 type Request = {
@@ -19,7 +20,7 @@ export class DeleteProductsUseCase {
   async execute({ productsIds }: Request) {
     for (const productId of productsIds) {
       const product = await this.productsRepository.findById(productId)
-      if (!product) return
+      if (!product) throw new NotFoundError('Produto não encontrado')
 
       if (product.hasImage) {
         await this.fileStorageProvider.delete(product.image)
