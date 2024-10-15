@@ -6,7 +6,7 @@ export class FileStorageProviderMock implements IFileStorageProvider {
   async upload(fileBuffer: Buffer): Promise<string> {
     this.storegedFileBuffer = fileBuffer
 
-    return ''
+    return 'url from file storage'
   }
 
   async delete(fileId: string): Promise<void> {
