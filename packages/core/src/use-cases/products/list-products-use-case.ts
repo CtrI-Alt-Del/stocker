@@ -12,13 +12,11 @@ export class ListProductsUseCase {
   }
 
   async execute({ page }: Request) {
-    const products = await this.productsRepository.findMany({ page })
-
-    const productsCount = await this.productsRepository.count()
+    const { products, count } = await this.productsRepository.findMany({ page })
 
     return new PaginationResponse({
       items: products.map((product) => product.dto),
-      itemsCount: productsCount,
+      itemsCount: count,
     })
   }
 }

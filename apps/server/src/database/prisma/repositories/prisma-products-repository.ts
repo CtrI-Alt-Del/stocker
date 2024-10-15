@@ -73,7 +73,7 @@ export class PrismaProductsRepository implements IProductsRepository {
     }
   }
 
-  async findMany({ page }: ProductsListParams): Promise<Product[]> {
+  async findMany({ page }: ProductsListParams) {
     try {
       const prismaProducts = await prisma.product.findMany({
         take: PAGINATION.itemsPerPage,
@@ -92,7 +92,14 @@ export class PrismaProductsRepository implements IProductsRepository {
         },
       })
 
-      return prismaProducts.map((prismaProduct) => this.mapper.toDomain(prismaProduct))
+      const count = await prisma.product.count()
+
+      return {
+        products: prismaProducts.map((prismaProduct) =>
+          this.mapper.toDomain(prismaProduct),
+        ),
+        count,
+      }
     } catch (error) {
       throw new PrismaError(error)
     }

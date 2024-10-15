@@ -1,5 +1,5 @@
 import type { IProductsRepository } from '../../interfaces'
-import { NotFoundError } from '../../errors'
+import { NotAllowedError, NotFoundError } from '../../errors'
 
 type Request = {
   productId: string
@@ -13,8 +13,13 @@ export class GetProductUseCase {
 
   async execute({ productId }: Request) {
     const product = await this.productsRepository.findById(productId)
+
     if (!product) {
       throw new NotFoundError('Produto não encontrado')
+    }
+
+    if (!product.isActive) {
+      throw new NotAllowedError('Produto inativo')
     }
 
     return product.dto

@@ -3,7 +3,7 @@ export type BatchDto = {
   code: string
   itemsCount: number
   productId: string
-  expirationDate?: string
   maximumDaysToExpiration?: number | null
+  expirationDate?: Date
   registeredAt?: Date
 }

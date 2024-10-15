@@ -21,6 +21,10 @@ export class DayjsDatetime implements IDatetime {
     return this.date.add(daysCount, 'day').toDate()
   }
 
+  addYears(yearsCount: number): Date {
+    return this.date.add(yearsCount, 'day').toDate()
+  }
+
   subtractDays(daysCount: number): Date {
     return this.date.subtract(daysCount, 'day').toDate()
   }

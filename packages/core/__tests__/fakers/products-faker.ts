@@ -26,6 +26,8 @@ export class ProductsFaker {
       uom: faker.string.sample({ min: 1, max: 3 }),
       categoryId: faker.string.uuid(),
       companyId: faker.string.uuid(),
+      inboundInventoryMovementsCount: faker.number.int({ min: 0, max: 500 }),
+      outboundInventoryMovementsCount: faker.number.int({ min: 0, max: 500 }),
       isActive: true,
       batches: [],
       ...baseDto,

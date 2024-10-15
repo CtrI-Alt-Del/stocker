@@ -4,7 +4,7 @@ import {
   ProductsFaker,
 } from '@stocker/core/fakers'
 
-import { batchesRepository, inventorymovementRepository, productsRepository } from '..'
+import { batchesRepository, inventoryMovementsRepository, productsRepository } from '..'
 import { prisma } from './prisma-client'
 import { fakerPT_BR as faker } from '@faker-js/faker'
 
@@ -132,14 +132,16 @@ async function seedBatchesForProduct(productId: string) {
 }
 
 async function seedInventoryMovementsForProduct(productId: string) {
-  const fakeMovements = InventoryMovementsFaker.fakeMany({
+  const count = faker.number.int({ min: 1, max: 10 })
+
+  const fakeMovements = InventoryMovementsFaker.fakeMany(count, {
     product: { id: productId },
     responsible: { id: MANAGER_ID },
   })
-  const movementPromises = fakeMovements.map((movement) =>
-    inventorymovementRepository.add(movement),
+  const promises = fakeMovements.map((movement) =>
+    inventoryMovementsRepository.add(movement),
   )
-  await Promise.all(movementPromises)
+  await Promise.all(promises)
 }
 async function seedMinimumBatchesForProduct(productId: string, count: number) {
   const fakeBatch = BatchesFaker.fakeMany(count, { productId })
