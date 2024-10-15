@@ -15,18 +15,18 @@ import { NotAllowedError, NotFoundError } from '../../../errors'
 
 let productsRepository: ProductsRepositoryMock
 let batchesRepository: BatchesRepositoryMock
-let inventoryMovementRepository: InventoryMovementsRepositoryMock
+let inventoryMovementsRepository: InventoryMovementsRepositoryMock
 let useCase: RegisterOutboundInventoryMovementUseCase
 
 describe('Register outbound inventory movement use case', () => {
   beforeEach(() => {
     productsRepository = new ProductsRepositoryMock()
     batchesRepository = new BatchesRepositoryMock()
-    inventoryMovementRepository = new InventoryMovementsRepositoryMock()
+    inventoryMovementsRepository = new InventoryMovementsRepositoryMock()
     useCase = new RegisterOutboundInventoryMovementUseCase(
       batchesRepository,
       productsRepository,
-      inventoryMovementRepository,
+      inventoryMovementsRepository,
     )
   })
 
@@ -47,7 +47,7 @@ describe('Register outbound inventory movement use case', () => {
     useCase = new RegisterOutboundInventoryMovementUseCase(
       batchesRepository,
       productsRepository,
-      inventoryMovementRepository,
+      inventoryMovementsRepository,
     )
     const fakeInventoryMovementDto = InventoryMovementsFaker.fakeDto({
       product: { id: fakeProduct.id },
@@ -73,7 +73,7 @@ describe('Register outbound inventory movement use case', () => {
     useCase = new RegisterOutboundInventoryMovementUseCase(
       batchesRepository,
       productsRepository,
-      inventoryMovementRepository,
+      inventoryMovementsRepository,
     )
     const fakeInventoryMovementDto = InventoryMovementsFaker.fakeDto({
       itemsCount: 5,
@@ -100,7 +100,7 @@ describe('Register outbound inventory movement use case', () => {
     useCase = new RegisterOutboundInventoryMovementUseCase(
       batchesRepository,
       productsRepository,
-      inventoryMovementRepository,
+      inventoryMovementsRepository,
     )
     const fakeInventoryMovementDto = InventoryMovementsFaker.fakeDto({
       itemsCount: 10,
@@ -122,12 +122,12 @@ describe('Register outbound inventory movement use case', () => {
     await productsRepository.add(fakeProduct)
     await batchesRepository.add(fakeBatch)
 
-    expect(inventoryMovementRepository.inventoryMovements).toHaveLength(0)
+    expect(inventoryMovementsRepository.inventoryMovements).toHaveLength(0)
 
     useCase = new RegisterOutboundInventoryMovementUseCase(
       batchesRepository,
       productsRepository,
-      inventoryMovementRepository,
+      inventoryMovementsRepository,
     )
     const fakeInventoryMovementDto = InventoryMovementsFaker.fakeDto({
       itemsCount: 10,
@@ -138,8 +138,8 @@ describe('Register outbound inventory movement use case', () => {
       inventoryMovementDto: fakeInventoryMovementDto,
     })
 
-    expect(inventoryMovementRepository.inventoryMovements).toHaveLength(1)
-    expect(inventoryMovementRepository.inventoryMovements[0]?.dto).toEqual(
+    expect(inventoryMovementsRepository.inventoryMovements).toHaveLength(1)
+    expect(inventoryMovementsRepository.inventoryMovements[0]?.dto).toEqual(
       fakeInventoryMovementDto,
     )
   })

@@ -1,6 +1,6 @@
 import {
   batchesRepository,
-  inventorymovementRepository,
+  inventoryMovementsRepository,
   productsRepository,
 } from '@/database'
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
@@ -19,7 +19,7 @@ export class RegisterInboundInventoryMovementController {
     const useCase = new RegisterInboundInventoryMovementUseCase(
       productsRepository,
       batchesRepository,
-      inventorymovementRepository,
+      inventoryMovementsRepository,
     )
     await useCase.execute({
       batchDto: body.batch,

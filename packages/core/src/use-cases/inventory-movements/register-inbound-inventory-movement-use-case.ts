@@ -12,16 +12,16 @@ type Request = {
 export class RegisterInboundInventoryMovementUseCase {
   private readonly productsRepository: IProductsRepository
   private readonly batchRepository: IBatchesRepository
-  private readonly inventoryMovementRepository: IInventoryMovementsRepository
+  private readonly inventoryMovementsRepository: IInventoryMovementsRepository
 
   constructor(
     productsRepository: IProductsRepository,
     batchRepository: IBatchesRepository,
-    inventoryMovementRepository: IInventoryMovementsRepository,
+    inventoryMovementsRepository: IInventoryMovementsRepository,
   ) {
     this.productsRepository = productsRepository
     this.batchRepository = batchRepository
-    this.inventoryMovementRepository = inventoryMovementRepository
+    this.inventoryMovementsRepository = inventoryMovementsRepository
   }
 
   async execute({ batchDto, inventoryMovementDto }: Request) {
@@ -34,6 +34,6 @@ export class RegisterInboundInventoryMovementUseCase {
     await this.batchRepository.add(batch)
 
     const movement = InventoryMovement.create(inventoryMovementDto)
-    await this.inventoryMovementRepository.add(movement)
+    await this.inventoryMovementsRepository.add(movement)
   }
 }
