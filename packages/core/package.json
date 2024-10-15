@@ -1,5 +1,8 @@
 {
   "name": "@stocker/core",
+  "scripts": {
+    "test:watch": "vitest --watch"
+  },
   "devDependencies": {
     "@stocker/typescript-config": "*"
   },
