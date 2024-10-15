@@ -21,7 +21,7 @@ export class Batch extends Entity<BatchProps> {
         itemsCount: dto.itemsCount,
         productId: dto.productId,
         hasUpdatedStock: false,
-        registeredAt: new Date(),
+        registeredAt: dto.registeredAt ?? new Date(),
       },
       dto.id,
     )
@@ -71,9 +71,10 @@ export class Batch extends Entity<BatchProps> {
       code: this.props.code,
       itemsCount: this.itemsCount,
       productId: this.props.productId,
+      registeredAt: this.props.registeredAt,
     }
 
-    if (this.expirationDate) dto.expirationDate = this.expirationDate.toDateString()
+    if (this.expirationDate) dto.expirationDate = this.expirationDate
 
     if (this.maximumDaysToExpiration)
       dto.maximumDaysToExpiration = this.maximumDaysToExpiration
