@@ -36,12 +36,18 @@ export class RegisterOutboundInventoryMovementUseCase {
     const inventory = InventoryMovement.create(inventoryMovementDto)
 
     product.reduceStock(inventory.itemsCount)
-    const updatedbatches = product.updatedBatches
 
-    await this.batchRepository.updateManyItemsCount(updatedbatches)
+    const updatedbatches = product.updatedBatches
+    if (updatedbatches.length) {
+      await this.batchRepository.updateManyItemsCount(updatedbatches)
+    }
+
     const emptyBatches = product.emptyBatches
-    const emptybatchesId = emptyBatches.map((batch) => batch.id)
-    await this.batchRepository.deleteMany(emptybatchesId)
+    if (emptyBatches.length) {
+      const emptyBatchesId = emptyBatches.map((batch) => batch.id)
+      await this.batchRepository.deleteMany(emptyBatchesId)
+    }
+
     await this.inventorymovementRepository.add(inventory)
   }
 }
