@@ -33,7 +33,7 @@ describe('Delete products use case', () => {
     expect(productsRepository.products).toHaveLength(0)
   })
 
-  it('should delete products that does not exist', async () => {
+  it('should not delete products that do not exist', async () => {
     const fakeProducts = ProductsFaker.fakeMany(5)
 
     for (const fakeProduct of fakeProducts) {
@@ -48,5 +48,22 @@ describe('Delete products use case', () => {
         ],
       })
     }).rejects.toThrowError(NotFoundError)
+  })
+
+  it('should delete product image if any', async () => {
+    const productImage = Buffer.from('product image')
+    const fakeProduct = ProductsFaker.fake({ image: productImage.toString() })
+
+    await fileStorageProvider.upload(productImage)
+
+    expect(fileStorageProvider.storegedFileBuffer).toEqual(productImage)
+
+    await productsRepository.add(fakeProduct)
+
+    await useCase.execute({
+      productsIds: [fakeProduct.id],
+    })
+
+    expect(fileStorageProvider.storegedFileBuffer).toBeNull()
   })
 })
