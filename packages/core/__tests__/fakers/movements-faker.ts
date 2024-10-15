@@ -35,22 +35,20 @@ export class InventoryMovementsFaker {
     }
   }
 
-  static fakeMany(baseDto?: Partial<InventoryMovementDto>, productIds?: string[]) {
-    const count = faker.number.int({ min: 1, max: 10 })
-
-    const inventoryMovements = []
+  static fakeMany(count = 10, baseDto?: Partial<InventoryMovementDto>) {
+    const fakeInventoryMovements = []
     for (let i = 0; i < count; i++) {
-      inventoryMovements.push(InventoryMovementsFaker.fake(baseDto, productIds))
+      fakeInventoryMovements.push(InventoryMovementsFaker.fake(baseDto))
     }
-    return inventoryMovements
+    return fakeInventoryMovements
   }
 
-  static fakeManyDto(baseDto?: Partial<InventoryMovementDto>, productIds?: string[]) {
+  static fakeManyDto(baseDto?: Partial<InventoryMovementDto>) {
     const count = faker.number.int({ min: 1, max: 10 })
 
     const inventoryMovementDtos = []
     for (let i = 0; i < count; i++) {
-      inventoryMovementDtos.push(InventoryMovementsFaker.fakeDto(baseDto, productIds))
+      inventoryMovementDtos.push(InventoryMovementsFaker.fakeDto(baseDto))
     }
     return inventoryMovementDtos
   }
