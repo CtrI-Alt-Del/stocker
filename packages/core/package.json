@@ -1,6 +1,7 @@
 {
   "name": "@stocker/core",
   "scripts": {
+    "test": "vitest",
     "test:watch": "vitest --watch"
   },
   "devDependencies": {

@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "build": "turbo build --filter=@stocker/web",
-    "dev": "turbo dev"
+    "dev": "turbo dev",
+    "test": "turbo test"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
