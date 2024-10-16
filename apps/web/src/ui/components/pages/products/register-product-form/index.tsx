@@ -10,6 +10,7 @@ import type { ImageInputRef } from '@/ui/components/commons/image-input/types'
 import { Drawer } from '@/ui/components/commons/drawer'
 import { useCategoryInput } from './category-input-component/use-category-input'
 import { CategoryInputComponent } from './category-input-component'
+import { SelectComponent } from '@/ui/components/commons/select-component'
 
 type RegisterProductFormProps = {
   onCancel: VoidFunction
@@ -87,7 +88,7 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
         />
       </div>
 
-      <div className='grid grid-cols-1 md:grid-cols-1 gap-3'>
+      <div className='grid  grid-cols-2 gap-3'>
         <Controller
           name='categoryId'
           control={control}
@@ -95,13 +96,11 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
             <div className='w-full '>
               <Drawer
                 trigger={
-                  <Button
-                    size='md'
-                    className='w-full'
-                    color={errors.categoryId ? 'danger' : 'default'}
-                  >
-                    {selectedCategoryName ? selectedCategoryName : 'Selecione categoria'}
-                  </Button>
+                    <SelectComponent size='full'>
+                      {selectedCategoryName
+                        ? selectedCategoryName
+                        : 'Selecione categoria'}
+                    </SelectComponent>
                 }
                 zIndex={99999}
               >

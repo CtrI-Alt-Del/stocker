@@ -140,9 +140,6 @@ export const ProductsTable = ({
                     onClick={() => handleEditProductButtonClick(product)}
                   />
                 </Tooltip>
-                <Link href={`${ROUTES.inventory.stocks}/${product.id}`}>
-                  <Icon name='stock' className='size-6 text-zinc-500' />
-                </Link>
               </TableCell>
             </TableRow>
           )}

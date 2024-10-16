@@ -2,6 +2,7 @@ import { Accordion, AccordionItem, Button, Pagination, Spinner } from '@nextui-o
 import { Icon } from '@/ui/components/commons/icon'
 import { CategoryDto } from '@stocker/core/dtos'
 import { SquarePiIcon } from 'lucide-react'
+import { Product } from '@stocker/core/entities'
 
 type CategoryInputProps = {
   handleSelectCategoryChange: (categoryId: string, categoryName: string) => void

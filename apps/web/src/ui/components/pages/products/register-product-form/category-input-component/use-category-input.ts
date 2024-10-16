@@ -1,8 +1,10 @@
 import { CACHE } from '@/constants'
 import { useApi, useCache, useToast, useUrlParamNumber } from '@/ui/hooks'
-import { useState } from 'react'
+import { ProductDto } from '@stocker/core/dtos'
+import { Product } from '@stocker/core/entities'
+import { useEffect, useState } from 'react'
 
-export function useCategoryInput() {
+export function useCategoryInput(productDto?: ProductDto) {
   const { categoriesService } = useApi()
   const { showError } = useToast()
   const [page, setPage] = useUrlParamNumber('categoryPage', 1)
@@ -23,9 +25,18 @@ export function useCategoryInput() {
     key: CACHE.categories.key,
     dependencies: [page],
   })
+  useEffect(() => {
+    if (productDto && data) {
+      const category = data.items.find(
+        (category) => category.id === productDto.categoryId,
+      )
+      if (category) {
+        setSelectedCategoryName(category.name || '')
+      }
+    }
+  }, [productDto, data])
   function handlePageChange(page: number) {
     setPage(page)
-
   }
   const categories = data
     ? data.items.filter((category) => category.parentCategoryId !== null)
@@ -38,6 +49,6 @@ export function useCategoryInput() {
     handleCategoryPageChange: handlePageChange,
     categories,
     selectedCategoryName,
-    handleSelectCategoryNameChange
+    handleSelectCategoryNameChange,
   }
 }

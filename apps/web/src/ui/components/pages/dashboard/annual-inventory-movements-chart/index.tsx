@@ -20,6 +20,7 @@ import { ProductsTable } from '../../products/products-table'
 import { useProductsPage } from '../../products/use-products-page'
 import { Icon } from '@/ui/components/commons/icon'
 import { Dialog } from '@/ui/components/commons/dialog'
+import { SelectComponent } from '@/ui/components/commons/select-component'
 
 export const AnualInventoryMovementsChart = () => {
   const { AnualMovements, isFetching, handleProductIDChange, productId, productName } =
@@ -39,30 +40,28 @@ export const AnualInventoryMovementsChart = () => {
         </div>
       ) : (
         <>
-          <div className='flex justify-between p-5 items-center'>
-            <div>
-              <h2 className='font-bold text-xl   '>Lançamentos de Estoque anual</h2>
-              {productName && (
-                <h1 className='text-zinc-400'>Produto selecionado: {productName}</h1>
-              )}
-            </div>
+          <div className='flex justify-between flex-col md:flex-row p-5 items-center'>
+            <h2 className='font-bold text-xl   '>Lançamentos de Estoque anual</h2>
             <div className='gap-3 flex flex-col sm:flex-row'>
               {productId && (
                 <Button
-                  color='primary'
-                  className='text-white'
+                  color='default'
+                  size='md'
+                  variant='flat'
+                  className='justify-between items-center flex max-w-48   text-default-600 '
                   onClick={() => handleProductIDChange('')}
                 >
-                  Remover filtros
+                  Remover Filtros
+                  <Icon name='close' className='size-4' />
                 </Button>
               )}
               <Dialog
                 size='5xl'
                 title='Selecione o produto'
                 trigger={
-                  <Button color='primary' className='text-white'>
-                    Produtos
-                  </Button>
+                  <SelectComponent onClick={() => { }}>
+                    {productName ? productName : 'Selecione o produto'}
+                  </SelectComponent>
                 }
               >
                 {() => (
