@@ -1,4 +1,5 @@
 export type IconName =
+  | 'plus'
   | 'settings-2'
   | 'archive'
   | 'square-user-round'

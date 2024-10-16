@@ -23,4 +23,7 @@ export const CACHE = {
   inventory: {
     key: '/inventory',
   },
+  categories: {
+    key: "/categories",
+  }
 }
