@@ -29,6 +29,7 @@ import {
   Archive,
   type LucideProps,
   Settings2,
+  Plus,
 } from 'lucide-react'
 
 import type { IconName } from '../types'
@@ -38,6 +39,7 @@ export const ICONS: Record<
   ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>
 > = {
   "settings-2": Settings2,
+  plus:Plus,
   'square-user-round': SquareUserRound,
   'arrow-big-up-dash': ArrowBigUpDash,
   'arrow-big-down-dash': ArrowBigDownDash,

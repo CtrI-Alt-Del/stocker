@@ -31,4 +31,8 @@ export class Category extends Entity<CategoryProps> {
       companyId: this.props.companyId,
     }
   }
+
+  update(partialDto: Partial<CategoryDto>): Category {
+    return Category.create({ ...this.dto, ...partialDto })
+  }
 }

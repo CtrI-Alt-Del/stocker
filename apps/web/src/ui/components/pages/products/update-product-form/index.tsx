@@ -9,6 +9,10 @@ import type { Product } from '@stocker/core/entities'
 import { ImageInput } from '@/ui/components/commons/image-input'
 import type { ImageInputRef } from '@/ui/components/commons/image-input/types'
 import { useUpdateProductForm } from './use-update-product-form'
+import { useCategoryInput } from '../register-product-form/category-input-component/use-category-input'
+import { Drawer } from '@/ui/components/commons/drawer'
+import { SelectComponent } from '@/ui/components/commons/select-component'
+import { CategoryInputComponent } from '../register-product-form/category-input-component'
 
 type RegisterProductFormProps = {
   product: Product
@@ -36,7 +40,15 @@ export const UpdateProductForm = ({
     onSubmit,
     onCancel,
   })
-
+  const {
+    categories,
+    isCategoryLoading,
+    categoryPages,
+    totalCategoryPages,
+    handleSelectCategoryNameChange,
+    handleCategoryPageChange,
+    selectedCategoryName,
+  } = useCategoryInput(product.dto)
   return (
     <form onSubmit={handleSubmit} encType='multiform/form-data' className='space-y-6'>
       <div className='grid grid-cols-2 gap-6'>
@@ -97,7 +109,42 @@ export const UpdateProductForm = ({
       </div>
 
       <div className='grid grid-cols-2 gap-3'>
-        <Input label='Categoria' />
+        <Controller
+          name='categoryId'
+          control={control}
+          render={({ field: { onChange } }) => (
+            <div className='w-full'>
+              <Drawer
+                trigger={
+                  <SelectComponent size='full'>
+                    {selectedCategoryName
+                      ? selectedCategoryName
+                      : 'Selecione a categoria'}
+                  </SelectComponent>
+                }
+                zIndex={99999}
+              >
+                {(closeDrawer) => (
+                  <CategoryInputComponent
+                    handleCategoryPageChange={handleCategoryPageChange}
+                    totalCategoryPages={totalCategoryPages}
+                    categoryPages={categoryPages}
+                    categories={categories}
+                    isCategoryLoading={isCategoryLoading}
+                    handleSelectCategoryChange={(
+                      categoryId: string,
+                      categoryName: string,
+                    ) => {
+                      onChange(categoryId)
+                      handleSelectCategoryNameChange(categoryName)
+                      closeDrawer()
+                    }}
+                  />
+                )}
+              </Drawer>
+            </div>
+          )}
+        />
         <div className='flex gap-3'>
           <Input
             type='number'

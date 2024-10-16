@@ -7,6 +7,10 @@ import { Button, Divider, Input, Switch, Textarea } from '@nextui-org/react'
 import { useRegisterProductForm } from './use-register-product-form'
 import { ImageInput } from '@/ui/components/commons/image-input'
 import type { ImageInputRef } from '@/ui/components/commons/image-input/types'
+import { Drawer } from '@/ui/components/commons/drawer'
+import { useCategoryInput } from './category-input-component/use-category-input'
+import { CategoryInputComponent } from './category-input-component'
+import { SelectComponent } from '@/ui/components/commons/select-component'
 
 type RegisterProductFormProps = {
   onCancel: VoidFunction
@@ -15,6 +19,15 @@ type RegisterProductFormProps = {
 
 export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormProps) => {
   const imageInputRef = useRef<ImageInputRef>(null)
+  const {
+    categories,
+    isCategoryLoading,
+    categoryPages,
+    totalCategoryPages,
+    handleSelectCategoryNameChange,
+    handleCategoryPageChange,
+    selectedCategoryName,
+  } = useCategoryInput()
   const { control, errors, isSubmiting, register, handleSubmit } = useRegisterProductForm(
     onSubmit,
     imageInputRef,
@@ -75,8 +88,46 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
         />
       </div>
 
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
-        <Input label='Categoria' />
+      <div className='grid  grid-cols-2 gap-3'>
+        <Controller
+          name='categoryId'
+          control={control}
+          render={({ field: { onChange } }) => (
+            <div className='w-full '>
+              <Drawer
+                trigger={
+                    <SelectComponent size='full'>
+                      {selectedCategoryName
+                        ? selectedCategoryName
+                        : 'Selecione categoria'}
+                    </SelectComponent>
+                }
+                zIndex={99999}
+              >
+                {(closeDrawer) => (
+                  <CategoryInputComponent
+                    handleSelectCategoryChange={(
+                      categoryId: string,
+                      categoryName: string,
+                    ) => {
+                      onChange(categoryId)
+                      handleSelectCategoryNameChange(categoryName)
+                      closeDrawer()
+                    }}
+                    handleCategoryPageChange={handleCategoryPageChange}
+                    totalCategoryPages={totalCategoryPages}
+                    categoryPages={categoryPages}
+                    categories={categories}
+                    isCategoryLoading={isCategoryLoading}
+                  />
+                )}
+              </Drawer>
+              {errors.categoryId && (
+                <p className='text-red-600 text-sm'>{errors.categoryId?.message}</p>
+              )}
+            </div>
+          )}
+        />
         <div className='flex gap-3'>
           <Input
             type='number'

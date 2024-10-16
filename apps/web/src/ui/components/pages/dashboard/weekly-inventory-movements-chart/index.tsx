@@ -17,6 +17,8 @@ import { Button, Spinner } from '@nextui-org/react'
 import { useProductsPage } from '../../products/use-products-page'
 import { Dialog } from '@/ui/components/commons/dialog'
 import { ProductsTable } from '../../products/products-table'
+import { SelectComponent } from '@/ui/components/commons/select-component'
+import { Icon } from '@/ui/components/commons/icon'
 
 export const WeeklyInventoryMovementsChart = () => {
   const { weeklyMovements, isFetching, handleProductIdChange, productId, productName } =
@@ -37,30 +39,28 @@ export const WeeklyInventoryMovementsChart = () => {
         </div>
       ) : (
         <>
-          <div className='flex justify-between p-5 items-center'>
-            <div>
-              <h2 className='font-bold text-xl'>Lançamentos de Estoque semanal</h2>
-              {productName && (
-                <h2 className='text-zinc-400'>Produto selecionado: {productName}</h2>
-              )}
-            </div>
+          <div className='flex justify-between p-5 items-center flex-col sm:flex-row'>
+            <h2 className='font-bold text-xl'>Lançamentos de Estoque semanal</h2>
             <div className='gap-3 flex flex-col sm:flex-row'>
               {productId && (
                 <Button
-                  color='primary'
-                  className='text-white'
+                  color='default'
+                  size='md'
+                  variant='flat'
+                  className='justify-between items-center flex    text-default-600 '
                   onClick={() => handleProductIdChange('')}
                 >
                   Remover Filtros
+                  <Icon name='close' className='size-4' />
                 </Button>
               )}
               <Dialog
                 size='5xl'
                 title='Selecione o produto'
                 trigger={
-                  <Button color='primary' className='text-white'>
-                    Produtos
-                  </Button>
+                  <SelectComponent onClick={() => { }}>
+                    {productName ? productName : 'Selecione o produto'}
+                  </SelectComponent>
                 }
               >
                 {() => (
@@ -80,7 +80,7 @@ export const WeeklyInventoryMovementsChart = () => {
             </div>
           </div>
 
-          <ResponsiveContainer width='100%'  className='shadow-lg max-h-80'>
+          <ResponsiveContainer width='100%' className='shadow-lg max-h-80'>
             <BarChart
               data={data}
               margin={{
