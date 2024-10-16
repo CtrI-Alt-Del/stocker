@@ -17,13 +17,19 @@ import { useStocksPage } from './use-stocks-page'
 import { Tag } from '../../commons/tag'
 import { ExportCsvLink } from './export-csv-link'
 import { Icon } from '../../commons/icon'
+import { ROUTES } from '@/constants/routes'
+import { Search } from '../../commons/search'
 
 export const StocksPage = () => {
-  const { handlePageChange, page, isFetching, products, totalPages } = useStocksPage()
+  const { handlePageChange, page, isFetching, filterByNameValue, handleSearchChange, products, totalPages } = useStocksPage()
 
   return (
     <>
-      <div className='flex flex-col sm:flex-row gap-1'>
+      <div className='flex-1 w-full max-w-96 space-y-2 mb-3'>
+        <h1 className='text-3xl font-black'>Inventário</h1>
+      </div>
+      <div className='flex flex-col sm:flex-row gap-1 justify-between'>
+      <Search value={filterByNameValue} onSearchChange={handleSearchChange} />
         <div>
           <Link
             as={ExportCsvLink}
@@ -84,7 +90,12 @@ export const StocksPage = () => {
         >
           {(product) => (
             <TableRow key={product.id}>
-              <TableCell key='product'>{product.name}</TableCell>
+              <TableCell key='product' className='flex flex-col sm:flex-row gap-1'>
+                <Link href={`${ROUTES.inventory.stocks}/${product.id}`}>
+                  <Icon name='stock' className='size-6 text-zinc-500 mr-1' />
+                </Link>
+                {product.name}
+              </TableCell>
               <TableCell key='batch'>{product.batchesCount}</TableCell>
               <TableCell key='inbound' className='font-semibold'>
                 {product.inboundInventoryMovementsCount}
