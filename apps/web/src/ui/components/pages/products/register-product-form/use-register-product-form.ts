@@ -33,7 +33,7 @@ const registerProductFormSchema = z.object({
   brand: stringSchema,
   code: stringSchema,
   minimumStock: nonZeroIntegerSchema,
-  categoryId: idSchema.optional(),
+  categoryId: idSchema,
   model: z
     .string()
     .transform((value) => (value === '' ? undefined : value))
