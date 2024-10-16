@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 import { nextui } from "@nextui-org/react";
+import { DEFAULT_CIPHERS } from "tls";
 
 export default {
   content: [
@@ -26,7 +27,10 @@ export default {
             DEFAULT: '#18181b',
           },
           success: {
-            DEFAULT: '#17C964'
+            DEFAULT: '#17C964',
+          },
+          transparent : {
+            DEFAULT: '#FAFAFA'
           }
         },
       },
