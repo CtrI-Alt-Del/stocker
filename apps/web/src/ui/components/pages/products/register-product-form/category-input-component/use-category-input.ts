@@ -21,20 +21,22 @@ export function useCategoryInput() {
   const { data, isFetching, refetch } = useCache({
     fetcher: fetchCategories,
     key: CACHE.categories.key,
+    dependencies: [page],
   })
   function handlePageChange(page: number) {
     setPage(page)
+
   }
   const categories = data
     ? data.items.filter((category) => category.parentCategoryId !== null)
     : []
   const itemsCount = data ? data.itemsCount : 0
   return {
+    isCategoryLoading: isFetching,
     totalCategoryPages: Math.ceil(itemsCount / 10),
     categoryPages: page,
     handleCategoryPageChange: handlePageChange,
     categories,
-    isFetching,
     selectedCategoryName,
     handleSelectCategoryNameChange
   }

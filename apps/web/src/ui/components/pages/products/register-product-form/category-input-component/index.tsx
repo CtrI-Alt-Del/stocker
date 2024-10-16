@@ -1,6 +1,7 @@
-import { Accordion, AccordionItem, Button, Pagination } from '@nextui-org/react'
+import { Accordion, AccordionItem, Button, Pagination, Spinner } from '@nextui-org/react'
 import { Icon } from '@/ui/components/commons/icon'
 import { CategoryDto } from '@stocker/core/dtos'
+import { SquarePiIcon } from 'lucide-react'
 
 type CategoryInputProps = {
   handleSelectCategoryChange: (categoryId: string, categoryName: string) => void
@@ -8,6 +9,7 @@ type CategoryInputProps = {
   handleCategoryPageChange: (page: number) => void
   totalCategoryPages: number
   categories: CategoryDto[] | []
+  isCategoryLoading: boolean
 }
 export const CategoryInputComponent = ({
   handleSelectCategoryChange,
@@ -15,8 +17,11 @@ export const CategoryInputComponent = ({
   handleCategoryPageChange,
   totalCategoryPages,
   categories,
+  isCategoryLoading,
 }: CategoryInputProps) => {
-  return (
+  return isCategoryLoading ? (
+    <Spinner label='Carregando...' className='w-full h-full mx-auto' />
+  ) : (
     <div className='space-y-2'>
       <Accordion>
         {categories.map((category) => (

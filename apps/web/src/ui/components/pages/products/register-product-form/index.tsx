@@ -20,6 +20,7 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
   const imageInputRef = useRef<ImageInputRef>(null)
   const {
     categories,
+    isCategoryLoading,
     categoryPages,
     totalCategoryPages,
     handleSelectCategoryNameChange,
@@ -90,7 +91,7 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
         <Controller
           name='categoryId'
           control={control}
-          render={({ field: { onChange }  }) => (
+          render={({ field: { onChange } }) => (
             <div className='w-full '>
               <Drawer
                 trigger={
@@ -118,10 +119,13 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
                     totalCategoryPages={totalCategoryPages}
                     categoryPages={categoryPages}
                     categories={categories}
+                    isCategoryLoading={isCategoryLoading}
                   />
                 )}
               </Drawer>
-              {errors.categoryId && <p className='text-red-600 text-sm'>{errors.categoryId?.message}</p>}
+              {errors.categoryId && (
+                <p className='text-red-600 text-sm'>{errors.categoryId?.message}</p>
+              )}
             </div>
           )}
         />
