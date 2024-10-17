@@ -7,17 +7,19 @@ type Query = {
   startDate?: string
   endDate?: string
   page?: string
+  categoryId?: string
 }
 
 export class ReportMostTrendingProductsController {
   async handle(http: IHttp) {
-    const { startDate, endDate, page } = http.getQueryParams<Query>()
+    const { startDate, endDate, page, categoryId } = http.getQueryParams<Query>()
     const useCase = new ReportMostTrendingProductsUseCase(productsRepository)
 
     const response = await useCase.execute({
       startDate: startDate ? new Date(startDate) : undefined,
       endDate: endDate ? new Date(endDate) : undefined,
       page: page ? Number(page) : 1,
+      categoryId,
     })
 
     return http.send(response, HTTP_STATUS_CODE.ok)
