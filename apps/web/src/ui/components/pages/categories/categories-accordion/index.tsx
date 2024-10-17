@@ -42,7 +42,6 @@ export const CategoriesAccordion = () => {
     duration-150
   `;
 
-  //banana
   function toggleAnimation(categoryId: string) {
     setIsOpen(prev => ({
       ...prev,
