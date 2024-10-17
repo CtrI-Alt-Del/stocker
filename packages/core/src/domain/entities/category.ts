@@ -5,6 +5,7 @@ type CategoryProps = {
   name: string
   parentCategoryId?: string
   companyId: string
+  subCategories: Category[]
 }
 
 export class Category extends Entity<CategoryProps> {
@@ -14,6 +15,7 @@ export class Category extends Entity<CategoryProps> {
         name: dto.name,
         parentCategoryId: dto.parentCategoryId,
         companyId: dto.companyId,
+        subCategories: [],
       },
       dto.id,
     )
@@ -29,10 +31,11 @@ export class Category extends Entity<CategoryProps> {
       name: this.name,
       parentCategoryId: this.props.parentCategoryId,
       companyId: this.props.companyId,
+      subCategories: this.props.subCategories,
     }
   }
 
-  update(partialDto: Partial<CategoryDto>): Category {
-    return Category.create({ ...this.dto, ...partialDto })
-  }
+  // update(partialDto: Partial<CategoryDto>): Category {
+  //   // return Category.create({ ...this.dto, ...partialDto })
+  // }
 }
