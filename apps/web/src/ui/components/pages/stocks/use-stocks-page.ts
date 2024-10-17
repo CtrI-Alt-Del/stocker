@@ -1,6 +1,6 @@
 import { ReportsService } from "@/api/services"
 import { CACHE } from "@/constants"
-import { useApi, useCache, useToast } from "@/ui/hooks"
+import { useApi, useCache, useToast, useUrlParamString } from "@/ui/hooks"
 import { PAGINATION } from "@stocker/core/constants"
 import { Product } from "@stocker/core/entities"
 import { useQueryState, parseAsInteger } from "nuqs"
@@ -10,6 +10,8 @@ export function useStocksPage() {
   const { showError } = useToast()
   const [pageState, setPage] = useQueryState('page', parseAsInteger)
   const page = pageState ?? 1
+  const [filterByNameValueState, setFilterByNameValue] = useUrlParamString('product')
+  const filterByNameValue = filterByNameValueState ?? ''
 
   async function fetchProducts() {
     const response = await reportsService.reportInventory({ page })
@@ -35,6 +37,9 @@ export function useStocksPage() {
     setPage(page)
   }
 
+  function handleSearchChange(value: string) {
+    setFilterByNameValue(value ?? '')
+  }
 
 
   return {
@@ -43,6 +48,8 @@ export function useStocksPage() {
     fetchProducts,
     isFetching,
     products,
+    filterByNameValue,
+    handleSearchChange,
     totalPages: Math.ceil(itemsCount / PAGINATION.itemsPerPage),
   }
   

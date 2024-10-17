@@ -1,8 +1,6 @@
-'use client'
-
+import { Icon } from '@/ui/components/commons/icon'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import { Button } from '@nextui-org/react'
-import { Pencil, Plus, Trash2 } from 'lucide-react'
 
 type Category = {
   id: string
@@ -38,14 +36,14 @@ export const CategoriesAccordion = () => {
             disableIndicatorAnimation
             indicator={
               <div className='flex space-x-2'>
-                <Button className='bg-[#FAFAFA] h-14 w-14 min-w-14 '>
-                  <Plus />
+                <Button size='sm' className='bg-transparent h-10 min-w-10'>
+                  <Icon name='plus' size={18} />
                 </Button>
-                <Button className='bg-[#FAFAFA] h-14 w-14 min-w-14 '>
-                  <Pencil />
+                <Button size='sm' className='bg-transparent h-10 min-w-10'>
+                  <Icon name='pencil' size={18} />
                 </Button>
-                <Button className='bg-[#FAFAFA] h-14 w-14 min-w-14 '>
-                  <Trash2 />
+                <Button size='sm' className='bg-transparent h-10 min-w-10'>
+                  <Icon name='trash' size={18} />
                 </Button>
               </div>
             }
@@ -53,7 +51,20 @@ export const CategoriesAccordion = () => {
             <div>
               {category.subcategories.length > 0 ? (
                 category.subcategories.map((subcategory) => (
-                  <p key={subcategory.id}>{subcategory.name}</p>
+                  <div key={category.id}>
+                    <span className='' key={subcategory.id}>
+                      {subcategory.name}
+                    </span>
+                    <Button size='sm' className='bg-transparent h-10 min-w-10'>
+                      <Icon name='plus' size={18} />
+                    </Button>
+                    <Button size='sm' className='bg-transparent h-10 min-w-10'>
+                      <Icon name='pencil' size={18} />
+                    </Button>
+                    <Button size='sm' className='bg-transparent h-10 min-w-10'>
+                      <Icon name='trash' size={18} />
+                    </Button>
+                  </div>
                 ))
               ) : (
                 <p>Sem subcategorias</p>
