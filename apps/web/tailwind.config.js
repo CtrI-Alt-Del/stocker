@@ -29,7 +29,7 @@ export default {
           success: {
             DEFAULT: '#17C964',
           },
-          transparent : {
+          transparent: {
             DEFAULT: '#FAFAFA'
           }
         },
