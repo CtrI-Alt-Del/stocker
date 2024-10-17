@@ -25,17 +25,17 @@ export class Category extends Entity<CategoryProps> {
     return this.props.name
   }
 
-  get dto() {
+  get dto(): CategoryDto {
     return {
       id: this.id,
       name: this.name,
       parentCategoryId: this.props.parentCategoryId,
       companyId: this.props.companyId,
-      subCategories: this.props.subCategories,
+      subCategories: this.props.subCategories.map((subCategory) => subCategory.dto),
     }
   }
 
-  // update(partialDto: Partial<CategoryDto>): Category {
-  //   // return Category.create({ ...this.dto, ...partialDto })
-  // }
+  update(partialDto: Partial<CategoryDto>): Category {
+    return Category.create({ ...this.dto, ...partialDto })
+  }
 }
