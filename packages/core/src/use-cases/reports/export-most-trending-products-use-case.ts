@@ -6,6 +6,7 @@ import { MOST_TRENDING_PRODUCTS_CSV_FILE_COLUMNS } from '../../constants'
 type Request = {
   startDate?: Date
   endDate?: Date
+  categoryId?: string
 }
 
 export class ExportMostTrendingProductsToCsvFileUseCase {
@@ -14,7 +15,7 @@ export class ExportMostTrendingProductsToCsvFileUseCase {
     private readonly csvProvider: ICsvProvider,
   ) {}
 
-  async execute({ startDate, endDate }: Request) {
+  async execute({ startDate, endDate, categoryId }: Request) {
     if (startDate && endDate && new Datetime(startDate).isGreaterThan(endDate)) {
       throw new ValidationError('Data de início não pode ser maior que a data final')
     }
@@ -29,6 +30,7 @@ export class ExportMostTrendingProductsToCsvFileUseCase {
       {
         startDate,
         endDate,
+        categoryId,
       },
     )
 
