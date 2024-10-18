@@ -6,9 +6,11 @@ import { Drawer } from '@/ui/components/commons/drawer'
 import { RegisterCategoryForm } from '../register-category-form'
 import { CategoryDto } from '@stocker/core/dtos'
 import { AlertDialog } from '@/ui/components/commons/alert-dialog'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { UpdateCategoryForm } from '../update-category-form'
+import { useCategoriesAccordion } from './use-categories-accordion'
+import { DrawerRef } from '@/ui/components/commons/drawer/types'
 
 type CategoryAccordionProps = {
   categories: CategoryDto[]
@@ -40,6 +42,25 @@ export const CategoriesAccordion = ({
     }))
   }
 
+  const drawerRef = useRef<DrawerRef>(null)
+  const registerDrawerRef = useRef<DrawerRef>(null)
+  const {
+    categoryBeingEditted,
+    handleEditCategoryButtonClick,
+    handleUpdateCategoryFormSubmit,
+    handleCancelEditting,
+    handleDrawerClose,
+    parentCategoryId,
+    handleRegisterSubCategoryFormSubmit,
+    handleRegisterSubCategoryButtonClick,
+  } = useCategoriesAccordion({
+    registerDrawerRef,
+    onRegisterSubCategory: handleRegisterCategory,
+    categories,
+    drawerRef,
+    onUpdateCategory: handleUpdateCategory,
+  })
+
   return (
     <div>
       {isFetching ? (
@@ -51,9 +72,7 @@ export const CategoriesAccordion = ({
           <Accordion selectionMode='multiple'>
             {categories.map((category) => (
               <AccordionItem
-                onKeyUp={(e) => e.stopPropagation()}
                 key={category.id}
-                onKeyDown={(e) => e.stopPropagation()}
                 aria-label={category.name}
                 startContent={
                   <motion.div
@@ -70,45 +89,22 @@ export const CategoriesAccordion = ({
                     <p>{category.name}</p>
                     <div className='flex space-x-2'>
                       <div className='flex space-x-2 m-0'>
-                        <Drawer
-                          trigger={
-                            <Button
-                              size='sm'
-                              className='bg-transparent hover:bg-primary hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
-                            >
-                              <Icon name='plus' size={18} />
-                            </Button>
+                        <Button
+                          size='sm'
+                          className='bg-transparent hover:bg-primary hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
+                          onClick={() =>
+                            handleRegisterSubCategoryButtonClick(category.id || '')
                           }
                         >
-                          {(closeDrawer) => (
-                            <RegisterCategoryForm
-                              parentCategoryId={category.id}
-                              onSubmit={async () => {
-                                await handleRegisterCategory
-                                closeDrawer()
-                              }}
-                              onCancel={closeDrawer}
-                            />
-                          )}
-                        </Drawer>
-                        <Drawer
-                          trigger={
-                            <Button
-                              size='sm'
-                              className='bg-transparent hover:bg-primary hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
-                            >
-                              <Icon name='pencil' size={18} />
-                            </Button>
-                          }
+                          <Icon name='plus' size={18} />
+                        </Button>
+                        <Button
+                          size='sm'
+                          onClick={() => handleEditCategoryButtonClick(category)}
+                          className='bg-transparent hover:bg-primary hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
                         >
-                          {(closeDrawer) => (
-                            <UpdateCategoryForm
-                              category={category}
-                              onSubmit={handleUpdateCategory}
-                              onCancel={closeDrawer}
-                            />
-                          )}
-                        </Drawer>
+                          <Icon name='pencil' size={18} />
+                        </Button>
                         <AlertDialog
                           trigger={
                             <Button
@@ -139,24 +135,13 @@ export const CategoriesAccordion = ({
                       >
                         <p>{subcategory.name}</p>
                         <div className='flex gap-2'>
-                          <Drawer
-                            trigger={
-                              <Button
-                                size='sm'
-                                className='bg-transparent hover:bg-primary hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
-                              >
-                                <Icon name='pencil' size={18} />
-                              </Button>
-                            }
+                          <Button
+                            size='sm'
+                            className='bg-transparent hover:bg-primary hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
+                            onClick={() => handleEditCategoryButtonClick(subcategory)}
                           >
-                            {(closeDrawer) => (
-                              <UpdateCategoryForm
-                                category={subcategory}
-                                onSubmit={handleUpdateCategory}
-                                onCancel={closeDrawer}
-                              />
-                            )}
-                          </Drawer>
+                            <Icon name='pencil' size={18} />
+                          </Button>
                           <AlertDialog
                             trigger={
                               <Button
@@ -182,9 +167,33 @@ export const CategoriesAccordion = ({
               </AccordionItem>
             ))}
           </Accordion>
-          <Pagination page={page} onChange={handlePageChange} total={totalItems} />
+          {totalItems > 1 && (
+            <Pagination page={page} onChange={handlePageChange} total={totalItems} />
+          )}
         </div>
       )}
+      <Drawer ref={drawerRef} trigger={null} onClose={handleDrawerClose}>
+        {() =>
+          categoryBeingEditted && (
+            <UpdateCategoryForm
+              category={categoryBeingEditted}
+              onSubmit={handleUpdateCategoryFormSubmit}
+              onCancel={handleCancelEditting}
+            />
+          )
+        }
+      </Drawer>
+      <Drawer ref={registerDrawerRef} trigger={null} onClose={handleDrawerClose}>
+        {() =>
+          parentCategoryId && (
+            <RegisterCategoryForm
+              parentCategoryId={parentCategoryId}
+              onSubmit={handleRegisterSubCategoryFormSubmit}
+              onCancel={handleCancelEditting}
+            />
+          )
+        }
+      </Drawer>
     </div>
   )
 }
