@@ -1,11 +1,12 @@
 import { Button, Input } from '@nextui-org/react'
 
 import { useRegisterCategoryForm } from './use-register-category-form'
+import { CategoryDto } from '@stocker/core/dtos'
 
 type RegisterCategoryFormProps = {
   onCancel: VoidFunction
   onSubmit: VoidFunction
-  parentCategoryId?:string
+  parentCategoryId?: string
 }
 
 export const RegisterCategoryForm = ({

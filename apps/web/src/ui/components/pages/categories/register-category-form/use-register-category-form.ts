@@ -8,6 +8,7 @@ import { z } from 'zod'
 import { nameSchema } from '@stocker/validation/schemas'
 import { useApi, useToast } from '@/ui/hooks'
 import { Category } from '@stocker/core/entities'
+import { CategoryDto } from '@stocker/core/dtos'
 
 const registerCategoryFormSchema = z.object({
   name: nameSchema,
@@ -37,29 +38,6 @@ export function useRegisterCategoryForm({
       companyId: 'eceda392-06df-4ed2-8c90-db6bf1e38830',
       subCategories: [],
     })
-    // if (parentCategoryId) {
-    //   const parentCategoryResponse = await categoriesService.getCategory(parentCategoryId)
-    //
-    //   if (parentCategoryResponse.isFailure) {
-    //     showError(parentCategoryResponse.errorMessage)
-    //     return
-    //   }
-    //   const parentCategory = parentCategoryResponse.body
-    //   parentCategory.subCategories.push(category.dto)
-    //   const updateResponse = await categoriesService.updateCategory(
-    //     parentCategory,
-    //     parentCategoryId,
-    //   )
-    //   if (updateResponse.isFailure) {
-    //     showError(updateResponse.errorMessage)
-    //     return
-    //   }
-    //   if (updateResponse.isSuccess) {
-    //     showSuccess('Subcategoria criada com sucesso')
-    //     reset()
-    //     onSubmit()
-    //   }
-    // } else {
     const response = await categoriesService.registerCategory(category)
     if (response.isFailure) {
       showError(response.errorMessage)

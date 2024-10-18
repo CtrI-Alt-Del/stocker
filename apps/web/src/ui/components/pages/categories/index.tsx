@@ -8,7 +8,16 @@ import { CategoriesAccordion } from './categories-accordion'
 import { useCategoryPage } from './use-categories-page'
 
 export const CategoriesPage = () => {
-  const { categories, totalPages, page, handlePageChange, isFetching,handleDeleteCategory,handleUpdateCategory} = useCategoryPage()
+  const {
+    categories,
+    totalPages,
+    page,
+    handlePageChange,
+    isFetching,
+    handleDeleteCategory,
+    handleUpdateCategory,
+    handleRegisterCategory,
+  } = useCategoryPage()
   return (
     <div>
       <div className='flex flex-col gap-3 md:flex-row md:gap-0 justify-between'>
@@ -28,6 +37,7 @@ export const CategoriesPage = () => {
             {(closeDrawer) => (
               <RegisterCategoryForm
                 onSubmit={async () => {
+                  await handleRegisterCategory()
                   closeDrawer()
                 }}
                 onCancel={closeDrawer}
@@ -38,6 +48,7 @@ export const CategoriesPage = () => {
       </div>
       <div className='mt-4'>
         <CategoriesAccordion
+          handleRegisterCategory={handleRegisterCategory}
           handleUpdateCategory={handleUpdateCategory}
           handleDeleteCategory={handleDeleteCategory}
           categories={categories}
