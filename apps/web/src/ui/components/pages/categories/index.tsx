@@ -5,8 +5,10 @@ import { Drawer } from '../../commons/drawer'
 import { Search } from '../../commons/search'
 import { RegisterCategoryForm } from './register-category-form'
 import { CategoriesAccordion } from './categories-accordion'
+import { useCategoryPage } from './use-categories-page'
 
 export const CategoriesPage = () => {
+  const { categories, totalPages, page, handlePageChange, isFetching,handleDeleteCategory,handleUpdateCategory} = useCategoryPage()
   return (
     <div>
       <div className='flex flex-col gap-3 md:flex-row md:gap-0 justify-between'>
@@ -35,7 +37,15 @@ export const CategoriesPage = () => {
         </div>
       </div>
       <div className='mt-4'>
-        <CategoriesAccordion  />
+        <CategoriesAccordion
+          handleUpdateCategory={handleUpdateCategory}
+          handleDeleteCategory={handleDeleteCategory}
+          categories={categories}
+          isFetching={isFetching}
+          totalItems={totalPages}
+          page={page}
+          handlePageChange={handlePageChange}
+        />
       </div>
     </div>
   )
