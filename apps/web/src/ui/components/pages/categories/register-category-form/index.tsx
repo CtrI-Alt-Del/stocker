@@ -21,7 +21,7 @@ export const RegisterCategoryForm = ({
 
   return (
     <div>
-      <h2 className='text-xl font-bold'>Cadastrar categoria</h2>
+      <h2 className='text-xl font-bold'>{parentCategoryId ? "Cadastrar Subcategoria" : "Cadastrar Categoria"} </h2>
       <form
         onSubmit={handleSubmit}
         encType='multiform/form-data'
