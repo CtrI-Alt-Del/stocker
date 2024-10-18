@@ -24,6 +24,9 @@ export function useCategoryPage() {
   function handleUpdateCategory(){
     refetch()
   }
+  function handleRegisterCategory(){
+    refetch()
+  }
   async function handleDeleteCategory(categoryId: string) {
     const response = await categoriesService.deleteCategory(categoryId)
     if (response.isFailure) {
@@ -44,6 +47,7 @@ export function useCategoryPage() {
     handlePageChange,
     totalPages: Math.ceil(totalItems / 10),
     page,
+    handleRegisterCategory,
     categories,
     isFetching,
     handleUpdateCategory,

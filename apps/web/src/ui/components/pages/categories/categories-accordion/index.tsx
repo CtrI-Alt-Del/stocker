@@ -17,6 +17,7 @@ type CategoryAccordionProps = {
   handlePageChange: (page: number) => void
   handleUpdateCategory: VoidFunction
   handleDeleteCategory: (categoryId: string) => void
+  handleRegisterCategory: VoidFunction
   isFetching: boolean
 }
 
@@ -27,6 +28,7 @@ export const CategoriesAccordion = ({
   handleUpdateCategory,
   handlePageChange,
   isFetching,
+  handleRegisterCategory,
   handleDeleteCategory,
 }: CategoryAccordionProps) => {
   const [expandedItems, setExpandedItems] = useState<{ [key: string]: boolean }>({})
@@ -49,6 +51,7 @@ export const CategoriesAccordion = ({
           <Accordion selectionMode='multiple'>
             {categories.map((category) => (
               <AccordionItem
+                onKeyUp={(e) => e.stopPropagation()}
                 key={category.id}
                 onKeyDown={(e) => e.stopPropagation()}
                 aria-label={category.name}
@@ -81,6 +84,7 @@ export const CategoriesAccordion = ({
                             <RegisterCategoryForm
                               parentCategoryId={category.id}
                               onSubmit={async () => {
+                                await handleRegisterCategory
                                 closeDrawer()
                               }}
                               onCancel={closeDrawer}
@@ -135,7 +139,16 @@ export const CategoriesAccordion = ({
                       >
                         <p>{subcategory.name}</p>
                         <div className='flex gap-2'>
-                          <Drawer trigger={<Button size='sm'>Edit</Button>}>
+                          <Drawer
+                            trigger={
+                              <Button
+                                size='sm'
+                                className='bg-transparent hover:bg-primary hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
+                              >
+                                <Icon name='pencil' size={18} />
+                              </Button>
+                            }
+                          >
                             {(closeDrawer) => (
                               <UpdateCategoryForm
                                 category={subcategory}
