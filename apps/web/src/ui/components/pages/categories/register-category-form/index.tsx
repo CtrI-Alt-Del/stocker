@@ -5,14 +5,17 @@ import { useRegisterCategoryForm } from './use-register-category-form'
 type RegisterCategoryFormProps = {
   onCancel: VoidFunction
   onSubmit: VoidFunction
+  parentCategoryId?:string
 }
 
 export const RegisterCategoryForm = ({
   onSubmit,
+  parentCategoryId,
   onCancel,
 }: RegisterCategoryFormProps) => {
   const { errors, isSubmiting, registerField, handleSubmit } = useRegisterCategoryForm({
-    onSubmit
+    onSubmit,
+    parentCategoryId,
   })
 
   return (
