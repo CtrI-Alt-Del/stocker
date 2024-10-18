@@ -1,27 +1,29 @@
 import { Button, Input } from '@nextui-org/react'
-
-import { useRegisterCategoryForm } from './use-register-category-form'
+import { useUpdateCateryForm } from './use-update-category-form'
+import { Category } from '@stocker/core/entities'
 import { CategoryDto } from '@stocker/core/dtos'
 
 type RegisterCategoryFormProps = {
   onCancel: VoidFunction
   onSubmit: VoidFunction
-  parentCategoryId?: string
+  category: CategoryDto
 }
 
-export const RegisterCategoryForm = ({
+export const UpdateCategoryForm = ({
   onSubmit,
-  parentCategoryId,
+  category,
   onCancel,
 }: RegisterCategoryFormProps) => {
-  const { errors, isSubmiting, registerField, handleSubmit } = useRegisterCategoryForm({
-    onSubmit,
-    parentCategoryId,
-  })
+  const { control, errors, isDirty, isSubmiting, register, handleSubmit } =
+    useUpdateCateryForm({
+      onSubmit,
+      onCancel,
+      category,
+    })
 
   return (
     <div>
-      <h2 className='text-xl font-bold'>{parentCategoryId ? "Cadastrar Subcategoria" : "Cadastrar Categoria"} </h2>
+      <h2 className='text-xl font-bold'>{category.parentCategoryId ? "Atualizar Subcategoria" : "Atualizar Categoria"}</h2>
       <form
         onSubmit={handleSubmit}
         encType='multiform/form-data'
@@ -32,14 +34,14 @@ export const RegisterCategoryForm = ({
           isRequired
           isInvalid={Boolean(errors.name)}
           errorMessage={errors.name?.message}
-          {...registerField('name')}
+          {...register('name')}
         />
 
         <div className='flex items-center gap-3'>
           <Button onClick={onCancel} isDisabled={isSubmiting}>
             Cancelar
           </Button>
-          <Button type='submit' color='primary' isLoading={isSubmiting}>
+          <Button type='submit' color='primary' isDisabled={!isDirty} isLoading={isSubmiting}>
             Confirmar
           </Button>
         </div>

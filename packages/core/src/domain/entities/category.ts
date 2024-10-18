@@ -5,15 +5,17 @@ type CategoryProps = {
   name: string
   parentCategoryId?: string
   companyId: string
+  subCategories: Category[]
 }
 
 export class Category extends Entity<CategoryProps> {
-  static create(dto: CategoryDto) {
+  static create(dto: CategoryDto): Category {
     return new Category(
       {
         name: dto.name,
         parentCategoryId: dto.parentCategoryId,
         companyId: dto.companyId,
+        subCategories: dto.subCategories.map(Category.create),
       },
       dto.id,
     )
@@ -23,12 +25,13 @@ export class Category extends Entity<CategoryProps> {
     return this.props.name
   }
 
-  get dto() {
+  get dto(): CategoryDto {
     return {
       id: this.id,
       name: this.name,
       parentCategoryId: this.props.parentCategoryId,
       companyId: this.props.companyId,
+      subCategories: this.props.subCategories.map((subCategory) => subCategory.dto),
     }
   }
 

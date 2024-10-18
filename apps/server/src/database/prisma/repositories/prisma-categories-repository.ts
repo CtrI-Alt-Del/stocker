@@ -28,8 +28,13 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
 
   async findById(categoryId: string): Promise<Category | null> {
     try {
-      const prismaCategory = await prisma.category.findUnique({ where: { id: categoryId } })
-      
+      const prismaCategory = await prisma.category.findUnique({
+        where: { id: categoryId },
+        include: {
+          subCategories: true,
+        },
+      })
+
       if (!prismaCategory) return null
 
       return this.mapper.toDomain(prismaCategory)
@@ -43,7 +48,14 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
       const prismaCategories = await prisma.category.findMany({
         take: PAGINATION.itemsPerPage,
         skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,
+        include: {
+          subCategories: true,
+        },
+        where: {
+          parent_category_id: null,
+        },
       })
+      console.log(prismaCategories)
 
       return prismaCategories.map(this.mapper.toDomain)
     } catch (error) {
@@ -85,31 +97,30 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
         include: {
           subCategories: true,
         },
-      });
-  
+      })
+
       if (!category) {
-        throw new PrismaError('Categoria não encontrada');
+        throw new PrismaError('Repository Error: Category not found')
       }
-  
+
       if (category.subCategories.length > 0) {
-        const subCategoryIds = category.subCategories.map(subCategory => subCategory.id);
+        const subCategoryIds = category.subCategories.map((subCategory) => subCategory.id)
         await prisma.category.deleteMany({
           where: {
             id: {
               in: subCategoryIds,
             },
           },
-        });
+        })
       }
-  
+
       await prisma.category.delete({
         where: {
           id: categoryId,
         },
-      });
+      })
     } catch (error) {
-      throw new PrismaError(error);
+      throw new PrismaError(error)
     }
   }
-  
-}  
+}

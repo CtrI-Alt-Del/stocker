@@ -96,11 +96,9 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
             <div className='w-full '>
               <Drawer
                 trigger={
-                    <SelectComponent size='full'>
-                      {selectedCategoryName
-                        ? selectedCategoryName
-                        : 'Selecione categoria'}
-                    </SelectComponent>
+                  <SelectComponent size='full'>
+                    {selectedCategoryName ? selectedCategoryName : 'Selecione categoria'}
+                  </SelectComponent>
                 }
                 zIndex={99999}
               >

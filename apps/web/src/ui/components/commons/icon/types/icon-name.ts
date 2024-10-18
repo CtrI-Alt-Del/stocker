@@ -13,6 +13,8 @@ export type IconName =
   | 'record'
   | 'edit'
   | 'view'
+  | 'trash'
+  | 'pencil'
   | 'arrow-up'
   | 'arrow-down'
   | 'arrow-up-down'

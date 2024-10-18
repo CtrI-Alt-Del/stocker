@@ -36,7 +36,7 @@ type ProductsTableProps = {
   totalPages: number
   selectedProductsIds?: string[] | string
   onUpdateProduct: VoidFunction
-  onProductsSelectionChange: (productsIds: string[] | string) => void
+  onProductsSelectionChange: (productsIds: string[]) => void
   onPageChange: (page: number) => void
   selectionMode?: 'single' | 'multiple'
 }
@@ -65,7 +65,6 @@ export const ProductsTable = ({
     onUpdateProduct,
     onProductsSelectionChange,
   })
-
 
   return (
     <>

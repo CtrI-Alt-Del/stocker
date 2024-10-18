@@ -177,7 +177,8 @@ export class PrismaProductsRepository implements IProductsRepository {
     startDate,
     endDate,
     page,
-  }: { startDate: Date; endDate: Date; page?: number }) {
+    categoryId,
+  }: { startDate: Date; endDate: Date; page?: number; categoryId?: string }) {
     const formattedStartDate = new Datetime(startDate).format('YYYY-MM-DD')
     const formattedEndDate = new Datetime(endDate).format('YYYY-MM-DD')
 
@@ -205,7 +206,7 @@ export class PrismaProductsRepository implements IProductsRepository {
         FROM products P
         LEFT JOIN inventory_movements IM ON P.id = IM.product_id
         LEFT JOIN batches B ON B.product_id = P.id
-        WHERE  DATE(IM.registered_at) BETWEEN DATE(${formattedStartDate}) AND DATE(${formattedEndDate})
+        WHERE  DATE(IM.registered_at) BETWEEN DATE(${formattedStartDate}) AND (${categoryId ? `AND P.category_id = ${categoryId}` : ''}) AND DATE(${formattedEndDate})
         GROUP BY P.id
         HAVING COUNT(DISTINCT CASE WHEN IM.movement_type = 'OUTBOUND' THEN IM.id ELSE NULL END) > 0
         ORDER BY 

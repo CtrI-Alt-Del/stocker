@@ -3,4 +3,5 @@ export type CategoryDto = {
   name: string
   parentCategoryId?: string
   companyId: string
+  subCategories: CategoryDto[]
 }

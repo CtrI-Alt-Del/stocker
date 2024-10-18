@@ -2,9 +2,10 @@ import {
   BatchesFaker,
   InventoryMovementsFaker,
   ProductsFaker,
+  CategoriesFaker
 } from '@stocker/core/fakers'
 
-import { batchesRepository, inventoryMovementsRepository, productsRepository } from '..'
+import { batchesRepository, categoriesRepository, inventoryMovementsRepository, productsRepository} from '..'
 import { prisma } from './prisma-client'
 import { fakerPT_BR as faker } from '@faker-js/faker'
 
@@ -16,14 +17,20 @@ const CONNECTION_POOL_SIZE = 3
 
 async function seedDatabase() {
   await resetDatabase()
-
+console.log("Cheguei aqui 1")
   await createBaseEntities()
 
+  console.log("Cheguei aqui 2")
   await seedMainProduct()
-
-  await seedMultipleProducts(50)
+  console.log("Cheguei aqui 3")
+  const categories = await createManyFakeCategory(20)
+  console.log("Cheguei aqui 4")
+  await seedMultipleProducts(50, categories)
+  console.log("Cheguei aqui 5")
   await seedMultipleProductsWithoutRelatedData(25)
+  console.log("Cheguei aqui 6")
   await seedMultipleProductsWithMinimumBatches(25)
+  console.log("manocu neininha")
 }
 
 async function resetDatabase() {
@@ -62,11 +69,12 @@ async function seedMainProduct() {
   await productsRepository.add(mainProduct)
 }
 
-async function seedMultipleProducts(count: number) {
+async function seedMultipleProducts(count: number, categories: string[]) {
   const productPromises = []
 
   for (let i = 0; i < count; i++) {
-    const newProduct = createFakeProduct()
+    const index = faker.number.int({min: 0, max: categories.length -1})
+    const newProduct = createFakeProduct(categories[index])
     productPromises.push(seedProductAndRelatedData(newProduct))
 
     if (productPromises.length >= CONNECTION_POOL_SIZE) {
@@ -79,6 +87,28 @@ async function seedMultipleProducts(count: number) {
     await Promise.allSettled(productPromises)
   }
 }
+
+async function createManyFakeCategory(number: number) {
+  const categoryPromises = []
+  const categoryIds = []
+
+  for (let index = 0; index < number; index++) {
+    const newCategory = createFakeCategory()
+    categoryIds.push(newCategory.id)
+    categoryPromises.push(categoriesRepository.add(newCategory))
+    if (categoryPromises.length >= CONNECTION_POOL_SIZE) {
+      await Promise.allSettled(categoryPromises)
+      categoryPromises.length = 0
+    }
+    
+  }
+
+  if (categoryPromises.length > 0) {
+    await Promise.allSettled(categoryPromises)
+  }
+  return categoryIds
+}
+
 async function seedMultipleProductsWithoutRelatedData(count: number) {
   const productPromises = []
   for (let i = 0; i < count; i++) {
@@ -105,11 +135,17 @@ async function seedMultipleProductsWithMinimumBatches(count: number) {
     await Promise.allSettled(productPromises)
   }
 }
-function createFakeProduct() {
+function createFakeProduct(categoryId?: string) {
   return ProductsFaker.fake({
     id: faker.string.uuid(),
-    categoryId: CATEGORY_ID,
+    categoryId: categoryId ? categoryId : CATEGORY_ID,
     companyId: COMPANY_ID,
+  })
+}
+function createFakeCategory(){
+  return CategoriesFaker.fake({
+    id:faker.string.uuid(), 
+    companyId: COMPANY_ID
   })
 }
 

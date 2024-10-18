@@ -7,12 +7,13 @@ type Request = {
   startDate?: Date
   endDate?: Date
   page: number
+  categoryId?: string
 }
 
 export class ReportMostTrendingProductsUseCase {
   constructor(private readonly productsRepository: IProductsRepository) {}
 
-  async execute({ startDate, endDate, page }: Request) {
+  async execute({ startDate, endDate, page, categoryId }: Request) {
     if (startDate && endDate && new Datetime(startDate).isGreaterThan(endDate)) {
       throw new ValidationError('Data de início não pode ser maior que a data final')
     }
@@ -28,6 +29,7 @@ export class ReportMostTrendingProductsUseCase {
         startDate,
         endDate,
         page,
+        categoryId,
       })
 
     return new PaginationResponse({

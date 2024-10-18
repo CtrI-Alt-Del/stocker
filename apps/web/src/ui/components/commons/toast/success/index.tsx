@@ -18,7 +18,7 @@ export const SuccessToast = ({ message, isVisible, onClose }: ToastProps) => {
           <p className='text-md font-semibold'>Sucesso</p>
           <strong className='font-medium text-sm text-zinc-600'>{message}</strong>
         </div>
-        <IconButton name='close' onClick={onClose} />
+        <IconButton name='close' className='bg-green-100' onClick={onClose}  />
       </div>
     </AnimatedContainer>
   )

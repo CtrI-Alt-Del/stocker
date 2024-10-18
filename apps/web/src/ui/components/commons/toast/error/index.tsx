@@ -18,7 +18,7 @@ export const ErrorToast = ({ isVisible, message, onClose }: ToastProps) => {
           <p className='text-md font-semibold'>Erro</p>
           <strong className='font-medium text-sm text-zinc-600'>{message}</strong>
         </div>
-        <IconButton name='close' onClick={onClose} />
+        <IconButton name='close' className='bg-red-100' onClick={onClose} />
       </div>
     </AnimatedContainer>
   )
