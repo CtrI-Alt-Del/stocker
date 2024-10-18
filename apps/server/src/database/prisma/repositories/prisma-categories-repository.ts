@@ -29,7 +29,7 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
   async findById(categoryId: string): Promise<Category | null> {
     try {
       const prismaCategory = await prisma.category.findUnique({
-        where: { id: categoryId, parent_category_id: null },
+        where: { id: categoryId },
         include: {
           subCategories: true,
         },
@@ -100,7 +100,7 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
       })
 
       if (!category) {
-        throw new PrismaError('Categoria não encontrada')
+        throw new PrismaError('Repository Error: Category not found')
       }
 
       if (category.subCategories.length > 0) {
