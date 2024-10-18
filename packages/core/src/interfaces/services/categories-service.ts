@@ -14,5 +14,5 @@ export interface ICategoriesService {
     categoryId: string,
   ): Promise<ApiResponse<void>>
   updateBatch(batchDto: Partial<BatchDto>, batchId: string): Promise<ApiResponse<void>>
-  deleteCategory(categorysIds: string[]): Promise<ApiResponse<void>>
+  deleteCategory(categorysIds: string ):Promise<ApiResponse<void>>
 }
