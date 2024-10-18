@@ -26,8 +26,8 @@ export const CategoriesService = (apiClient: IApiClient): ICategoriesService => 
       return await apiClient.put(`/categories/batch/${batchId}`, batchDto)
     },
 
-    async deleteCategory(categoriesIds: string[]) {
-      return await apiClient.delete('/categories', { categoriesIds })
+    async deleteCategory(categoriesId: string) {
+      return await apiClient.delete(`/categories/${categoriesId}`)
     },
   }
 }
