@@ -9,13 +9,13 @@ type CategoryProps = {
 }
 
 export class Category extends Entity<CategoryProps> {
-  static create(dto: CategoryDto) {
+  static create(dto: CategoryDto): Category {
     return new Category(
       {
         name: dto.name,
         parentCategoryId: dto.parentCategoryId,
         companyId: dto.companyId,
-        subCategories: [],
+        subCategories: dto.subCategories.map(Category.create),
       },
       dto.id,
     )
