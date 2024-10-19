@@ -40,7 +40,7 @@ export function useCategoryPage() {
     }
   }
   const categories = data
-    ? data.items.filter((category) => category.parentCategoryId !== null)
+    ? data.items
     : []
   const totalItems = data ? data.itemsCount : 0
   return {

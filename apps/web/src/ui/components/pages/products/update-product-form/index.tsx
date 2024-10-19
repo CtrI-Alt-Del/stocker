@@ -116,11 +116,7 @@ export const UpdateProductForm = ({
             <div className='w-full'>
               <Drawer
                 trigger={
-                  <SelectComponent size='full'>
-                    {selectedCategoryName
-                      ? selectedCategoryName
-                      : 'Selecione a categoria'}
-                  </SelectComponent>
+                  <SelectComponent size='full'>{selectedCategoryName}</SelectComponent>
                 }
                 zIndex={99999}
               >

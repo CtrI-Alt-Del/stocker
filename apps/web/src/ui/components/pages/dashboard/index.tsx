@@ -3,6 +3,7 @@ import { MostTrendingProductsTable } from './most-trending-products-table'
 import { StockLevelChart } from './stock-level-chart'
 import { SummaryCards } from './summary-cards'
 import { WeeklyInventoryMovementsChart } from './weekly-inventory-movements-chart'
+import { CategoriesFaker } from '@stocker/core/fakers'
 
 export const DashboardPage = () => {
   return (
@@ -15,7 +16,7 @@ export const DashboardPage = () => {
       <div className='grid grid-cols-1 lg:grid-cols-2 '>
         <AnualInventoryMovementsChart />
         <WeeklyInventoryMovementsChart />
-        <div className='h-24'/>
+        <div className='h-24' />
       </div>
     </div>
   )

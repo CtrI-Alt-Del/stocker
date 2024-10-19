@@ -23,7 +23,7 @@ export const UpdateCategoryForm = ({
 
   return (
     <div>
-      <h2 className='text-xl font-bold'>Cadastrar categoria</h2>
+      <h2 className='text-xl font-bold'>{category.parentCategoryId ? "Atualizar Subcategoria" : "Atualizar Categoria"}</h2>
       <form
         onSubmit={handleSubmit}
         encType='multiform/form-data'
