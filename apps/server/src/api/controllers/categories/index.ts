@@ -1,4 +1,5 @@
 export { RegisterCategoryController } from './register-category-controller'
+export { GetCategoryController } from './get-category-controller'
 export { ListCategoryController } from './list-category-controller'
-export { DeleteCategoyController } from './delete-categoy-controller'
+export { DeleteCategoryController } from './delete-category-controller'
 export { UpdateCategoryController } from './update-category-controller'

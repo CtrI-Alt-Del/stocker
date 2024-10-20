@@ -14,7 +14,6 @@ export class ListCategoryUseCase {
 
   async execute({ page }: Request) {
     const categories = await this.categoriesRepository.findMany({ page })
-
     const categoriesCount = await this.categoriesRepository.count()
 
     return new PaginationResponse({
