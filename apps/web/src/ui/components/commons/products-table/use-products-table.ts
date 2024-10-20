@@ -7,8 +7,8 @@ import type { Product } from '@stocker/core/entities'
 type UseProductsTableProps = {
   products: Product[]
   drawerRef: RefObject<DrawerRef>
-  onUpdateProduct: VoidFunction
-  onProductsSelectionChange: (productsIds: string[]) => void
+  onUpdateProduct?: VoidFunction
+  onProductsSelectionChange?: (productsIds: string[]) => void
 }
 
 export const useProductsTable = ({
@@ -36,10 +36,12 @@ export const useProductsTable = ({
   function handleUpdateProductFormSubmit() {
     setProductBeingEditting(null)
     drawerRef.current?.close()
-    onUpdateProduct()
+    if (onUpdateProduct) onUpdateProduct()
   }
 
   function handleSelectionChange(selection: Selection) {
+    if (!onProductsSelectionChange) return
+
     if (selection === 'all') {
       onProductsSelectionChange(products.map((product) => product.id))
     }

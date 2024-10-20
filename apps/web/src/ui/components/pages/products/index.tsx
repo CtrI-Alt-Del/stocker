@@ -2,7 +2,7 @@
 
 import { Button } from '@nextui-org/react'
 
-import { ProductsTable } from './products-table'
+import { ProductsTable } from '../../commons/products-table'
 
 import { Drawer } from '../../commons/drawer'
 import { RegisterProductForm } from './register-product-form'

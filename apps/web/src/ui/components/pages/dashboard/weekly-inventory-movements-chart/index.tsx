@@ -11,21 +11,16 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts'
-import { useWeeklyInventoryMovementsChart } from './use-weekly-inventory-movements-chart'
-import { WeeklyInventoryMovementsChartTooltip } from './weekly-chart-tooltip'
 import { Button, Spinner } from '@nextui-org/react'
-import { useProductsPage } from '../../products/use-products-page'
-import { Dialog } from '@/ui/components/commons/dialog'
-import { ProductsTable } from '../../products/products-table'
-import { SelectComponent } from '@/ui/components/commons/select-component'
+
 import { Icon } from '@/ui/components/commons/icon'
+import { ProductSelect } from '@/ui/components/commons/product-select'
+import { WeeklyInventoryMovementsChartTooltip } from './weekly-chart-tooltip'
+import { useWeeklyInventoryMovementsChart } from './use-weekly-inventory-movements-chart'
 
 export const WeeklyInventoryMovementsChart = () => {
-  const { weeklyMovements, isFetching, handleProductIdChange, productId, productName } =
+  const { data, isFetching, productId, handleProductIdChange } =
     useWeeklyInventoryMovementsChart()
-  const data = weeklyMovements || []
-  const { page, products, handlePageChange, totalPages, handleUpdateProduct } =
-    useProductsPage()
 
   return (
     <div>
@@ -40,7 +35,7 @@ export const WeeklyInventoryMovementsChart = () => {
       ) : (
         <>
           <div className='flex justify-between p-5 items-center flex-col sm:flex-row'>
-            <h2 className='font-bold text-xl'>Lançamentos de Estoque semanal</h2>
+            <h2 className='font-bold text-lg'>Lançamentos de Estoque semanal</h2>
             <div className='gap-3 flex flex-col sm:flex-row'>
               {productId && (
                 <Button
@@ -54,29 +49,10 @@ export const WeeklyInventoryMovementsChart = () => {
                   <Icon name='close' className='size-4' />
                 </Button>
               )}
-              <Dialog
-                size='5xl'
-                title='Selecione o produto'
-                trigger={
-                  <SelectComponent onClick={() => { }}>
-                    {productName ? productName : 'Selecione o produto'}
-                  </SelectComponent>
-                }
-              >
-                {() => (
-                  <ProductsTable
-                    selectionMode='single'
-                    page={page}
-                    products={products}
-                    onPageChange={handlePageChange}
-                    totalPages={totalPages}
-                    onUpdateProduct={handleUpdateProduct}
-                    isLoading={isFetching}
-                    onProductsSelectionChange={handleProductIdChange}
-                    selectedProductsIds={productId}
-                  />
-                )}
-              </Dialog>
+              <ProductSelect
+                productId={productId}
+                onSelectChange={handleProductIdChange}
+              />
             </div>
           </div>
 

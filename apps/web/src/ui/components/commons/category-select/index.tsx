@@ -2,7 +2,7 @@ import { Accordion, AccordionItem, Button, Pagination, Spinner } from '@nextui-o
 import { motion } from 'framer-motion'
 
 import { Icon } from '@/ui/components/commons/icon'
-import { SelectComponent } from '@/ui/components/commons/select-component'
+import { Select } from '@/ui/components/commons/select'
 import { Dialog } from '../dialog'
 import { useCategorySelect } from './use-category-select'
 
@@ -35,9 +35,9 @@ export const CategorySelect = ({
         title='Selecione uma categoria ou subcategoria'
         size='2xl'
         trigger={
-          <SelectComponent className='w-full'>
+          <Select className='w-full'>
             {selectedCategoryName ? selectedCategoryName : 'Selecione categoria'}
-          </SelectComponent>
+          </Select>
         }
       >
         {(closeDrawer) => (

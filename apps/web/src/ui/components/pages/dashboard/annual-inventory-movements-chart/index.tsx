@@ -10,24 +10,17 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { useAnualInventoryMovementChar } from './use-annual-inventory-movements'
 import { Button, Spinner } from '@nextui-org/react'
-import { AnualInventoryMovementChartToolTip } from './annual-chart-tooltip'
-import { useState } from 'react'
-import { Gem } from 'lucide-react'
-import { InventoryMovementsTable } from '../../product-stock/inventory-movements-table'
-import { ProductsTable } from '../../products/products-table'
-import { useProductsPage } from '../../products/use-products-page'
+
 import { Icon } from '@/ui/components/commons/icon'
-import { Dialog } from '@/ui/components/commons/dialog'
-import { SelectComponent } from '@/ui/components/commons/select-component'
+import { useAnnualInventoryMovementChart } from './use-annual-inventory-movements-chart'
+import { AnualInventoryMovementChartToolTip } from './annual-chart-tooltip'
+import { ProductSelect } from '@/ui/components/commons/product-select'
 
 export const AnualInventoryMovementsChart = () => {
-  const { AnualMovements, isFetching, handleProductIDChange, productId, productName } =
-    useAnualInventoryMovementChar()
-  const { page, products, handlePageChange, totalPages, handleUpdateProduct } =
-    useProductsPage()
-  const data = AnualMovements || []
+  const { data, isFetching, productId, handleProductIdChange } =
+    useAnnualInventoryMovementChart()
+
   return (
     <div>
       {isFetching ? (
@@ -41,43 +34,24 @@ export const AnualInventoryMovementsChart = () => {
       ) : (
         <>
           <div className='flex justify-between flex-col md:flex-row p-5 items-center'>
-            <h2 className='font-bold text-xl   '>Lançamentos de Estoque anual</h2>
+            <h2 className='font-bold text-lg'>Lançamentos de Estoque anual</h2>
             <div className='gap-3 flex flex-col sm:flex-row'>
               {productId && (
                 <Button
                   color='default'
                   size='md'
                   variant='flat'
-                  className='justify-between items-center flex max-w-48   text-default-600 '
-                  onClick={() => handleProductIDChange('')}
+                  className='justify-between items-center flex max-w-48 text-xs'
+                  onClick={() => handleProductIdChange('')}
                 >
                   Remover Filtros
                   <Icon name='close' className='size-4' />
                 </Button>
               )}
-              <Dialog
-                size='5xl'
-                title='Selecione o produto'
-                trigger={
-                  <SelectComponent onClick={() => { }}>
-                    {productName ? productName : 'Selecione o produto'}
-                  </SelectComponent>
-                }
-              >
-                {() => (
-                  <ProductsTable
-                    selectionMode='single'
-                    page={page}
-                    products={products}
-                    onPageChange={handlePageChange}
-                    onUpdateProduct={handleUpdateProduct}
-                    totalPages={totalPages}
-                    isLoading={isFetching}
-                    onProductsSelectionChange={handleProductIDChange}
-                    selectedProductsIds={productId}
-                  />
-                )}
-              </Dialog>
+              <ProductSelect
+                productId={productId}
+                onSelectChange={handleProductIdChange}
+              />
             </div>
           </div>
 

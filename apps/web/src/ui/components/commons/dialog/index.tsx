@@ -42,20 +42,13 @@ const DialogComponent = (
     [onClose, onOpen],
   )
 
-  useEffect(() =>{
-    if(isOpen){
-      document.body.classList.add('overflow-x-hidden')
-    }else{
-      document.body.classList.remove('overflow-x-hidden')
-    }
-  })
   return (
     <>
       <Modal
         size={size ? size : 'md'}
         isOpen={isOpen}
         scrollBehavior='inside'
-        classNames={{ body: 'overflow-x-hidden' }}
+        classNames={{ wrapper: 'overflow-x-hidden' }}
         onClose={onClose}
       >
         <ModalContent className='z-50 max-w-3/4'>

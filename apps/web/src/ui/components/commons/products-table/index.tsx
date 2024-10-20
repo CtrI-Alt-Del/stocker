@@ -22,11 +22,10 @@ import { Tag } from '@/ui/components/commons/tag'
 import { Drawer } from '@/ui/components/commons/drawer'
 import { IconButton } from '@/ui/components/commons/icon-button'
 import type { DrawerRef } from '@/ui/components/commons/drawer/types'
-import { Icon } from '@/ui/components/commons/icon'
 
 import { IMAGE_PLACEHOLDER, ROUTES } from '@/constants'
 
-import { UpdateProductForm } from '../update-product-form'
+import { UpdateProductForm } from '../../pages/products/update-product-form'
 import { useProductsTable } from './use-products-table'
 
 type ProductsTableProps = {
@@ -34,11 +33,11 @@ type ProductsTableProps = {
   isLoading: boolean
   products: Product[]
   totalPages: number
-  selectedProductsIds?: string[] | string
-  onUpdateProduct: VoidFunction
-  onProductsSelectionChange: (productsIds: string[]) => void
-  onPageChange: (page: number) => void
+  selectedProductsIds?: string[]
   selectionMode?: 'single' | 'multiple'
+  onUpdateProduct?: VoidFunction
+  onProductsSelectionChange?: (productsIds: string[]) => void
+  onPageChange?: (page: number) => void
 }
 
 export const ProductsTable = ({
@@ -47,10 +46,10 @@ export const ProductsTable = ({
   products,
   totalPages,
   selectedProductsIds,
+  selectionMode,
   onProductsSelectionChange,
   onUpdateProduct,
   onPageChange,
-  selectionMode,
 }: ProductsTableProps) => {
   const drawerRef = useRef<DrawerRef>(null)
   const {
@@ -59,6 +58,7 @@ export const ProductsTable = ({
     handleUpdateProductFormSubmit,
     handleCancelEditting,
     handleDrawerClose,
+    handleSelectionChange,
   } = useProductsTable({
     products,
     drawerRef,
@@ -73,9 +73,7 @@ export const ProductsTable = ({
         shadow='none'
         selectionMode={selectionMode ? selectionMode : 'multiple'}
         selectedKeys={selectedProductsIds}
-        onSelectionChange={(selection) =>
-          onProductsSelectionChange(Array.from(selection) as string[])
-        }
+        onSelectionChange={handleSelectionChange}
         bottomContentPlacement='outside'
         bottomContent={
           totalPages > 1 ? (

@@ -3,8 +3,9 @@ import { useApi, useCache, useToast, useUrlParamString } from '@/ui/hooks'
 
 export function useWeeklyInventoryMovementsChart() {
   const [productId, setProductId] = useUrlParamString('weekly-inventory-product', '')
-  const { reportsService, productsService } = useApi()
-  const { showError, showSuccess } = useToast()
+  const { reportsService } = useApi()
+  const { showError } = useToast()
+
   async function fetchWeeklyInventoryMovements() {
     const response = await reportsService.reportWeeklyInventoryMovements(productId)
     if (response.isFailure) {
@@ -13,34 +14,20 @@ export function useWeeklyInventoryMovementsChart() {
     return response.body
   }
 
-  const { data, isFetching, refetch } = useCache({
+  const { data, isFetching } = useCache({
     fetcher: fetchWeeklyInventoryMovements,
     key: CACHE.weeklyInventoryMovements.key,
-    dependencies: [productId],
+    dependencies: [productId ?? undefined],
   })
-  function handleProductIdChange(id: string) {
-    setProductId(id ? id : '')
-    if (id) {
-      refetch()
-    }
+
+  function handleProductIdChange(productId: string) {
+    setProductId(productId)
   }
-  async function fetchProduct() {
-    const response = await productsService.getProduct(productId)
-    if (response.isFailure) {
-      showError(response.errorMessage)
-    }
-    return response.body
-  }
-  const { data: productData } = useCache({
-    fetcher: fetchProduct,
-    key: CACHE.productsList.key,
-    dependencies: [productId],
-  })
+
   return {
-    weeklyMovements: data,
+    data: data ?? [],
     productId,
-    handleProductIdChange,
-    productName: productData?.name || '',
     isFetching,
+    handleProductIdChange,
   }
 }
