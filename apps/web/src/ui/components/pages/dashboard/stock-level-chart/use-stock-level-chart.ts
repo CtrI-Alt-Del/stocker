@@ -1,5 +1,6 @@
 import { CACHE } from '@/constants'
 import { useApi, useCache } from '@/ui/hooks'
+import { StockLevelReport } from '@stocker/core/structs'
 
 export function useStockLevelChart() {
   const { reportsService } = useApi()
@@ -14,14 +15,19 @@ export function useStockLevelChart() {
     key: CACHE.stockLevel.key,
   })
 
+  const stockLevelReport = data ? StockLevelReport.create(data) : null
+
   const stockLevel = data
     ? [
-        { name: 'Acima do minimo', value: data.safe },
-        { name: 'Abaixo do minimo', value: data.average },
-        { name: 'Esgotado', value: data.danger },
+        { name: 'Acima do minimo', value: stockLevelReport?.safe },
+        { name: 'Abaixo do minimo', value: stockLevelReport?.average },
+        { name: 'Esgotado', value: stockLevelReport?.danger },
       ]
     : null
-  const totalProducts = data ? data.safe + data.average + data.danger : 0
 
-  return { data: stockLevel, isFetching, totalProducts }
+  return {
+    data: stockLevel,
+    stockLevelReport,
+    isFetching,
+  }
 }

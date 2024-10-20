@@ -2,13 +2,12 @@
 
 import { useState } from 'react'
 import { Cell, Pie, PieChart, Tooltip } from 'recharts'
+import { Progress, Spinner, Tooltip as Label } from '@nextui-org/react'
 import Link from 'next/link'
 
-import { Loading } from '@/ui/components/commons/loading'
 import { Icon } from '@/ui/components/commons/icon'
 import { StockLevelChartToolTip } from './tooltip'
-import { useStockLevelChart } from './use-stock-level'
-import { Spinner } from '@nextui-org/react'
+import { useStockLevelChart } from './use-stock-level-chart'
 
 const COLORS: Record<string, string> = {
   'Acima do minimo': '#17C964',
@@ -17,7 +16,7 @@ const COLORS: Record<string, string> = {
 }
 
 export const StockLevelChart = () => {
-  const { isFetching, data, totalProducts } = useStockLevelChart()
+  const { isFetching, data, stockLevelReport } = useStockLevelChart()
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
   const handlePieMouseEnter = (_: any, index: number) => {
@@ -77,7 +76,7 @@ export const StockLevelChart = () => {
                   fontSize='30'
                   fontWeight='bold'
                 >
-                  {totalProducts}
+                  {stockLevelReport?.total}
                 </text>
                 <text
                   x={360 / 2}
@@ -95,15 +94,36 @@ export const StockLevelChart = () => {
           </div>
         </div>
         <div className='flex flex-col w-full space-y-2 md:ml-4'>
-          {Object.keys(COLORS).map((key) => (
-            <div key={key} className='flex items-center gap-1'>
-              <span
-                className='w-3 h-3 rounded-full'
-                style={{ backgroundColor: COLORS[key] }}
-              />
-              <span className='text-lg'>{key}</span>
-            </div>
-          ))}
+          {Object.keys(COLORS).map((key) => {
+            const percentage =
+              key === 'Acima do minimo'
+                ? stockLevelReport?.safePercentage
+                : key === 'Esgotado'
+                  ? stockLevelReport?.dangerPercentage
+                  : stockLevelReport?.averagePercentage
+
+            return (
+              <div key={key}>
+                <div className='flex items-center gap-2'>
+                  <span
+                    className='block w-3 h-3 rounded-full'
+                    style={{ backgroundColor: COLORS[key] }}
+                  />
+                  <span className='text-md'>{key}</span>
+                </div>
+                <Label content={`${percentage}%`}>
+                  <Progress
+                    aria-label='Porcentagem'
+                    value={percentage}
+                    classNames={{
+                      base: 'mt-2 w-11/12',
+                      indicator: `bg-[${COLORS[key]?.replaceAll("'", '')}]`,
+                    }}
+                  />
+                </Label>
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>
