@@ -10,13 +10,13 @@ import {
   TableRow,
 } from '@nextui-org/react'
 
-import type { InventoryMovementDto } from '@stocker/core/dtos'
+import type { InventoryMovement } from '@stocker/core/entities'
 import { Datetime } from '@stocker/core/libs'
 
 type InventoryMovementsTableProps = {
   page: number
   isLoading: boolean
-  movements: InventoryMovementDto[]
+  movements: InventoryMovement[]
   totalPages: number
   onPageChange: (page: number) => void
 }
@@ -77,15 +77,19 @@ export const InventoryMovementsTable = ({
           {(item) => (
             <TableRow key={item.id}>
               <TableCell key='product'>{item.product.name}</TableCell>
-              <TableCell key='date'>
+              <TableCell key='date' className='w-40'>
                 {new Datetime(item.registeredAt).format('DD/MM/YYYY HH:mm')}
               </TableCell>
               <TableCell key='movement-type' className='font-semibold'>
                 {item.movementType === 'inbound' ? 'Entrada' : 'Saída'}
               </TableCell>
               <TableCell key='quantity'>{item.itemsCount}</TableCell>
-              <TableCell key='employee'>{item.responsible.name}</TableCell>
-              <TableCell key='remark'>{item.remark}</TableCell>
+              <TableCell key='employee' className='w-32'>
+                {item.responsible.name}
+              </TableCell>
+              <TableCell key='remark' className='w-96'>
+                {item.remark}
+              </TableCell>
             </TableRow>
           )}
         </TableBody>

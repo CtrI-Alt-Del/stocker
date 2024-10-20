@@ -1,6 +1,7 @@
 import { CACHE } from '@/constants'
 import { useApi, useCache, useToast } from '@/ui/hooks'
 import { PAGINATION } from '@stocker/core/constants'
+import { InventoryMovement } from '@stocker/core/entities'
 import { parseAsInteger, useQueryState } from 'nuqs'
 
 export function useInventoryMovementPage() {
@@ -12,7 +13,6 @@ export function useInventoryMovementPage() {
   async function fetchInventoryMovements() {
     const response = await inventoryMovementService.listInventoryMovements({
       page,
-      productId: 'all',
     })
     if (response.isFailure) {
       response.throwError()
@@ -31,7 +31,8 @@ export function useInventoryMovementPage() {
     key: CACHE.productInventoryMovements.key,
     dependencies: [page],
   })
-  const movements = data ? data.items : []
+  console.log(data)
+  const movements = data ? data.items.map(InventoryMovement.create) : []
   const itemsCount = data ? data.itemsCount : 0
 
   return {

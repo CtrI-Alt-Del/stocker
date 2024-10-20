@@ -64,7 +64,7 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
     productId,
   }: InventoryMovementsListParams) {
     try {
-      const whereCondition = productId !== 'all' ? { product_id: productId } : undefined
+      const whereCondition = productId ? { product_id: productId } : undefined
       const count = await prisma.inventoryMovement.count({ where: whereCondition })
 
       let paginationParams = {}
