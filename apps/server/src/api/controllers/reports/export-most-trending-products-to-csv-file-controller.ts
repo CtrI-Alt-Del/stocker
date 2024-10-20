@@ -8,11 +8,12 @@ import { productsRepository } from '@/database'
 type Query = {
   startDate?: string
   endDate?: string
+  categoryId?: string
 }
 
 export class ExportMostTrendingProductsToCsvFileController {
   async handle(http: IHttp) {
-    const { startDate, endDate } = http.getQueryParams<Query>()
+    const { startDate, endDate, categoryId } = http.getQueryParams<Query>()
 
     const csvProvider = new CsvProvider()
     const useCase = new ExportMostTrendingProductsToCsvFileUseCase(
@@ -23,6 +24,7 @@ export class ExportMostTrendingProductsToCsvFileController {
     const csvBuffer = await useCase.execute({
       startDate: startDate ? new Date(startDate) : undefined,
       endDate: endDate ? new Date(endDate) : undefined,
+      categoryId,
     })
 
     http.setHeader(

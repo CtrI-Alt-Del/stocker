@@ -12,12 +12,15 @@ export class ExportInventoryToCsvFileUseCase {
   }
 
   async execute() {
-    const products = await this.productsRepository.findManyWithInventoryMovementsCount({})
+    const { products } =
+      await this.productsRepository.findManyWithInventoryMovementsCount({})
+
+    const csvProducts = products.filter((product) => product.isActive)
 
     this.csvProvider.addColumns(INVENTORY_CSV_FILE_COLUMNS)
 
     this.csvProvider.addRows(
-      products.products.map((product: Product) => {
+      csvProducts.map((product: Product) => {
         let stockLevel = ''
 
         switch (product.stockLevel) {

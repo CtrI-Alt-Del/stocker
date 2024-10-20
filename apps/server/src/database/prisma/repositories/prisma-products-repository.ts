@@ -136,6 +136,7 @@ export class PrismaProductsRepository implements IProductsRepository {
         FROM products P
         LEFT JOIN inventory_movements IM ON IM.product_id = P.id
         LEFT JOIN batches B ON B.product_id = P.id
+        WHERE P.is_active = true
         GROUP BY P.id
       `
 
@@ -212,6 +213,7 @@ export class PrismaProductsRepository implements IProductsRepository {
         LEFT JOIN inventory_movements IM ON P.id = IM.product_id
         LEFT JOIN batches B ON B.product_id = P.id
         WHERE 
+          P.is_active = true AND
           ${categorySql}
           DATE(IM.registered_at) BETWEEN DATE(${formattedStartDate}) AND DATE(${formattedEndDate})
         GROUP BY P.id
@@ -264,6 +266,7 @@ export class PrismaProductsRepository implements IProductsRepository {
         (
           SELECT P.id FROM products P
           JOIN batches B ON B.product_id = P.id
+          WHERE P.is_active = true
           GROUP BY P.id
           HAVING SUM(B.items_count) > P.minimum_stock
         ) safe_level_stock_product
@@ -278,6 +281,7 @@ export class PrismaProductsRepository implements IProductsRepository {
         (
           SELECT P.id FROM products P
           JOIN batches B ON B.product_id = P.id
+          WHERE P.is_active = true
           GROUP BY P.id
           HAVING SUM(B.items_count) > 0 AND SUM(B.items_count) < P.minimum_stock
         ) average_level_stock_products
@@ -292,6 +296,7 @@ export class PrismaProductsRepository implements IProductsRepository {
         (
           SELECT P.id FROM products P
           LEFT JOIN batches B ON B.product_id = P.id
+          WHERE P.is_active = true
           GROUP BY P.id
           HAVING COALESCE(SUM(items_count), 0) = 0
         ) danger_level_stock_products

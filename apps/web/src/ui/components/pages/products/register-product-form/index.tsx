@@ -184,7 +184,7 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
         <Button onClick={onCancel} isDisabled={isSubmiting}>
           Cancelar
         </Button>
-        <Button type='submit' color='primary' isLoading={isSubmiting}>
+        <Button type='submit' color='primary' isLoading={true}>
           Confirmar
         </Button>
       </div>

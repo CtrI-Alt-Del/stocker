@@ -8,7 +8,7 @@ export class ReportStockLevelUseCase {
   }
 
   async execute() {
-    const [safeproductscount, averageproductscount, dangerproductscount] =
+    const [safeProductsCount, averageProductsCount, dangerProductsCount] =
       await Promise.all([
         this.productsRepository.countSafeStockLevel(),
         this.productsRepository.countAverageStockLevel(),
@@ -16,9 +16,9 @@ export class ReportStockLevelUseCase {
       ])
 
     return {
-      safe: safeproductscount,
-      average: averageproductscount,
-      danger: dangerproductscount,
+      safe: safeProductsCount,
+      average: averageProductsCount,
+      danger: dangerProductsCount,
     }
   }
 }

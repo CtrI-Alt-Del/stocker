@@ -32,7 +32,7 @@ export const MostTrendingProductsTable = () => {
       <div className='flex flex-col w-full'>
         <div className='flex items-center gap-2'>
           <Link
-            href={`${ENV.serverUrl}/reports/most-trending-products/csv?startDate=${startDate.format('YYYY-MM-DD')}&endDate=${endDate.format('YYYY-MM-DD')}`}
+            href={`${ENV.serverUrl}/reports/most-trending-products/csv?startDate=${startDate.format('YYYY-MM-DD')}&endDate=${endDate.format('YYYY-MM-DD')}${categoryId ? `&categoryId=${categoryId}` : ''}`}
             aria-label='Exportar para arquivo csv'
             className='text-zinc-400'
           >
@@ -42,7 +42,7 @@ export const MostTrendingProductsTable = () => {
         </div>
 
         <div className='flex flex-col items-start md:flex-row gap-6 mt-3'>
-          <div className='flex flex-col md:flex-row md:items-center gap-1'>
+          <div className='flex flex-col gap-1'>
             <CategorySelect
               defeaultCategoryId={categoryId}
               onSelectChange={handleCategoryChange}
