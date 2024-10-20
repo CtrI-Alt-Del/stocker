@@ -41,8 +41,8 @@ export const MostTrendingProductsTable = () => {
           <h2 className='text-gray-800 text-lg font-bold'>Produtos com maior demanda</h2>
         </div>
 
-        <div className='flex gap-6 mt-3'>
-          <div className='flex flex-col'>
+        <div className='flex flex-col items-start md:flex-row gap-6 mt-3'>
+          <div className='flex flex-col md:flex-row md:items-center gap-1'>
             <CategorySelect
               defeaultCategoryId={categoryId}
               onSelectChange={handleCategoryChange}
@@ -60,7 +60,7 @@ export const MostTrendingProductsTable = () => {
             )}
           </div>
           <div>
-            <div className='flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-3 md:mt-0'>
+            <div className='flex items-start gap-3 mt-2 md:mt-0'>
               <Input
                 type='date'
                 size='sm'
@@ -93,7 +93,7 @@ export const MostTrendingProductsTable = () => {
         </div>
       ) : (
         <>
-          <div className='space-y-3 mt-3 overflow-x-auto'>
+          <div className='space-y-3 mt-6 overflow-x-auto'>
             {products.length > 0 ? (
               products.map((product, index) => (
                 <ProductRow

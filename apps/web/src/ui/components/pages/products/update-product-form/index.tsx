@@ -106,6 +106,7 @@ export const UpdateProductForm = ({
               <CategorySelect
                 defeaultCategoryId={product.categoryId ?? undefined}
                 onSelectChange={onChange}
+                className='w-full'
               />
               {errors.categoryId && (
                 <div className='text-red-500'>{errors.categoryId.message}</div>

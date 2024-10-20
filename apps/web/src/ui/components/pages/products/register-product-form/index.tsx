@@ -82,7 +82,7 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
           control={control}
           render={({ field: { onChange } }) => (
             <div className='w-full '>
-              <CategorySelect onSelectChange={onChange} />
+              <CategorySelect onSelectChange={onChange} className='w-full' />
               {errors.categoryId && (
                 <p className='text-red-600 text-sm'>{errors.categoryId?.message}</p>
               )}

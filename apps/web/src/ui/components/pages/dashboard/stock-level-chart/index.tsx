@@ -102,22 +102,31 @@ export const StockLevelChart = () => {
                   ? stockLevelReport?.dangerPercentage
                   : stockLevelReport?.averagePercentage
 
+            const progressColor =
+              key === 'Acima do minimo'
+                ? 'success'
+                : key === 'Esgotado'
+                  ? 'danger'
+                  : 'warning'
+
+            const color = COLORS[key]
+
             return (
               <div key={key}>
                 <div className='flex items-center gap-2'>
                   <span
                     className='block w-3 h-3 rounded-full'
-                    style={{ backgroundColor: COLORS[key] }}
+                    style={{ backgroundColor: color }}
                   />
                   <span className='text-md'>{key}</span>
                 </div>
                 <Label content={`${percentage}%`}>
                   <Progress
+                    color={progressColor}
                     aria-label='Porcentagem'
                     value={percentage}
                     classNames={{
                       base: 'mt-2 w-11/12',
-                      indicator: `bg-[${COLORS[key]?.replaceAll("'", '')}]`,
                     }}
                   />
                 </Label>

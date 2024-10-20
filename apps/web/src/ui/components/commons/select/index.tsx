@@ -16,7 +16,7 @@ export const Select = ({ children, className, onClick }: SelectProps) => {
       color='default'
       variant='flat'
       className={twMerge(
-        'flex justify-between items-center text-default-600 text-ellipsis h-14',
+        'flex justify-between items-center bg-gray-100 text-ellipsis h-14',
         className,
       )}
     >
