@@ -40,7 +40,7 @@ export const UpdateProductForm = ({
 
   return (
     <form onSubmit={handleSubmit} encType='multiform/form-data' className='space-y-6'>
-      <div className='grid grid-cols-2 gap-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <div className='grid grid-cols-1 grid-rows-3 gap-6'>
           <Input
             label='Nome'
@@ -86,7 +86,7 @@ export const UpdateProductForm = ({
         {...register('description')}
       />
 
-      <div className='grid grid-cols-2 gap-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <Input label='Fornecedor' />
         <Input
           label='Unidade'
@@ -97,7 +97,7 @@ export const UpdateProductForm = ({
         />
       </div>
 
-      <div className='grid grid-cols-2 gap-3'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
         <Controller
           name='categoryId'
           control={control}
@@ -138,7 +138,7 @@ export const UpdateProductForm = ({
 
       <Divider className='my-2' />
 
-      <div className='grid grid-cols-2 gap-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <Input
           type='number'
           label='Peso'
@@ -159,7 +159,7 @@ export const UpdateProductForm = ({
         />
       </div>
 
-      <div className='grid grid-cols-2 gap-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <Input
           type='number'
           label='Comprimento'
@@ -182,7 +182,7 @@ export const UpdateProductForm = ({
 
       <Divider className='my-2' />
 
-      <div className='grid grid-cols-2 gap-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <Input label='Setor' />
         <Input
           label='Marca'
@@ -193,7 +193,7 @@ export const UpdateProductForm = ({
         />
       </div>
 
-      <div className='grid grid-cols-2 gap-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <Switch defaultSelected={product.isActive} {...register('isActive')}>
           Ativo
         </Switch>

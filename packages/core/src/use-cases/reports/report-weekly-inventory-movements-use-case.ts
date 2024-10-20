@@ -1,5 +1,6 @@
 import type { WeeklyInventoryMovementsDto } from '../../dtos/weekly-inventory-movements-dto'
-import type { IInventoryMovementsRepository } from '../../interfaces'
+import { NotAllowedError, NotFoundError } from '../../errors'
+import type { IInventoryMovementsRepository, IProductsRepository } from '../../interfaces'
 import { Datetime } from '../../libs'
 
 type Request = {
@@ -11,12 +12,23 @@ const WEEKDAYS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb']
 
 export class ReportWeeklyInventoryMovementsUseCase {
   private readonly inventoryMovementsRepository: IInventoryMovementsRepository
+  private readonly productsRepository: IProductsRepository
 
-  constructor(inventoryMovementsRepository: IInventoryMovementsRepository) {
+  constructor(
+    inventoryMovementsRepository: IInventoryMovementsRepository,
+    productsRepository: IProductsRepository,
+  ) {
     this.inventoryMovementsRepository = inventoryMovementsRepository
+    this.productsRepository = productsRepository
   }
 
   async execute({ endDate = new Date(), productId }: Request) {
+    if (productId) {
+      const product = await this.productsRepository.findById(productId)
+      if (!product) throw new NotFoundError('Produto não encontrado')
+      if (product.isInactive) throw new NotAllowedError('Produto inativo')
+    }
+
     const startDate = new Datetime(endDate).subtractDays(8)
 
     const { inventoryMovements: inboundInventoryMovements } =

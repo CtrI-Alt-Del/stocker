@@ -6,10 +6,8 @@ import {
   Accordion,
   Navbar as NavbarRoot,
   NavbarBrand,
-  NavbarMenu,
   NavbarContent,
   NavbarItem,
-  NavbarMenuToggle,
 } from '@nextui-org/react'
 
 import { Icon } from '@/ui/components/commons/icon'
@@ -24,7 +22,7 @@ export const Navbar = () => {
   return (
     <NavbarRoot
       classNames={{
-        base: 'relative block h-full bg-transparent',
+        base: 'relative block h-full bg-white md:bg-transparent',
         wrapper: 'block h-full p-0',
       }}
     >

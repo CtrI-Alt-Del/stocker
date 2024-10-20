@@ -57,7 +57,7 @@ export const DrawerComponent = (
       <RmDrawer
         open={isOpen}
         onClose={close}
-        size={width ?? 700}
+        size={md ? width ?? 700 : 370}
         direction={direction}
         zIndex={zIndex}
       >

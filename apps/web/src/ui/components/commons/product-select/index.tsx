@@ -24,7 +24,7 @@ export const ProductSelect = ({ productId, onSelectChange }: ProductSelectProps)
       size='5xl'
       title='Selecione o produto'
       trigger={
-        <Select className='h-10 w-48'>
+        <Select className='h-10 w-52'>
           {productName ? productName : 'Selecione o produto'}
         </Select>
       }

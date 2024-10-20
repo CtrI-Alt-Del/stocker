@@ -58,7 +58,9 @@ export function useProductSelect(
     dependencies: [page],
   })
 
-  const products = productsData ? productsData.items.map(Product.create) : []
+  const products = productsData
+    ? productsData.items.map(Product.create).filter((product) => product.isActive)
+    : []
   const itemsCount = productsData ? productsData.itemsCount : 0
 
   return {

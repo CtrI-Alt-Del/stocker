@@ -60,6 +60,7 @@ export const CategorySelect = ({
                   }
                   key={category.id}
                   title={category.name}
+                  disableIndicatorAnimation
                   startContent={
                     <motion.div
                       initial={{ rotate: 0 }}
@@ -71,12 +72,12 @@ export const CategorySelect = ({
                   }
                   onClick={() => handleAccordionClick(category.id)}
                 >
-                  <div className='flex gap-2 flex-col sm:ml-4 ml-0'>
+                  <div className='flex gap-1 flex-col sm:ml-4 ml-0 -translate-y-3'>
                     {category.subCategories.length > 0 ? (
                       category.subCategories.map((subCategory) => (
                         <div
                           key={subCategory.id}
-                          className='flex flex-1 justify-between items-center'
+                          className='flex flex-1 justify-between items-center ml-6'
                         >
                           <p>{subCategory.name}</p>
                           <Button

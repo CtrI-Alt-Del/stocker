@@ -33,25 +33,23 @@ export const AnualInventoryMovementsChart = () => {
         </div>
       ) : (
         <>
-          <div className='flex justify-between flex-col md:flex-row p-5 items-center'>
-            <h2 className='font-bold text-lg'>Lançamentos de Estoque anual</h2>
-            <div className='gap-3 flex flex-col sm:flex-row'>
-              {productId && (
-                <Button
-                  color='default'
-                  size='md'
-                  variant='flat'
-                  className='justify-between items-center flex max-w-48 text-xs'
-                  onClick={() => handleProductIdChange('')}
-                >
-                  Remover Filtros
-                  <Icon name='close' className='size-4' />
-                </Button>
-              )}
+          <div className='flex justify-between flex-col md:flex-row p-5 items-center translate-y-3'>
+            <h2 className='font-bold text-lg'>Lançamentos de estoque anual</h2>
+            <div className='gap-3 flex flex-col items-end mt-3 md:mt-0'>
               <ProductSelect
                 productId={productId}
                 onSelectChange={handleProductIdChange}
               />
+              {productId && (
+                <button
+                  type='button'
+                  className='items-center gap-1 flex max-w-48 text-xs text-gray-700'
+                  onClick={() => handleProductIdChange('')}
+                >
+                  Remover filtro
+                  <Icon name='close' className='size-4' />
+                </button>
+              )}
             </div>
           </div>
 

@@ -1,7 +1,8 @@
 import type { InventoryMovement } from '@stocker/core/entities'
 
-import type { IInventoryMovementsRepository } from '../../interfaces'
+import type { IInventoryMovementsRepository, IProductsRepository } from '../../interfaces'
 import { Datetime } from '../../libs'
+import { NotAllowedError, NotFoundError } from '../../errors'
 
 type Request = {
   productId?: string
@@ -10,12 +11,23 @@ type Request = {
 
 export class ReportAnnualOutboundInventoryMovementsUseCase {
   private readonly inventoryMovementsRepository: IInventoryMovementsRepository
+  private readonly productsRepository: IProductsRepository
 
-  constructor(inventoryMovementsRepository: IInventoryMovementsRepository) {
+  constructor(
+    inventoryMovementsRepository: IInventoryMovementsRepository,
+    productsRepository: IProductsRepository,
+  ) {
     this.inventoryMovementsRepository = inventoryMovementsRepository
+    this.productsRepository = productsRepository
   }
 
   async execute({ productId, currentDate = new Date() }: Request) {
+    if (productId) {
+      const product = await this.productsRepository.findById(productId)
+      if (!product) throw new NotFoundError('Produto não encontrado')
+      if (product.isInactive) throw new NotAllowedError('Produto inativo')
+    }
+
     const { inventoryMovements } = await this.inventoryMovementsRepository.findMany({
       productId,
       startDate: new Datetime(currentDate).subtractYears(1),

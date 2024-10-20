@@ -107,17 +107,20 @@ export const ProductsTable = ({
         >
           {(product) => (
             <TableRow key={product.id}>
-              <TableCell key='name'>
+              <TableCell key='name' className='w-80'>
                 <div className='flex items-center gap-2'>
                   <Avatar
                     src={product.image !== '' ? product.image : IMAGE_PLACEHOLDER}
                     alt={product.name}
                     size='md'
+                    className='size-8'
                   />
-                  <p className='font-bold'>{product.name}</p>
+                  <p className='font-bold truncate'>{product.name}</p>
                 </div>
               </TableCell>
-              <TableCell key='code'>{product.code}</TableCell>
+              <TableCell key='code' className='w-48'>
+                {product.code}
+              </TableCell>
               <TableCell key='price'>{product.costPrice.brl}</TableCell>
               <TableCell key='minimumStock'>{product.minimumStock}</TableCell>
               <TableCell key='supplier'>Gabriel Fernandez SRC</TableCell>
