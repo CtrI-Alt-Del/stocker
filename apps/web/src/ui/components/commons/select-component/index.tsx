@@ -1,28 +1,31 @@
 import { Button } from '@nextui-org/react'
+import { twMerge } from 'tailwind-merge'
+
 import { Icon } from '../icon'
 
 type SelectComponentProps = {
   children: string
+  className?: string
   onClick?: VoidFunction
-  size?: 'full' | 'lg'
 }
 
-export const SelectComponent = ({ children, onClick, size }: SelectComponentProps) => {
-  // Determine the size class based on the size prop
-  const sizeClass = size === 'full' ? 'w-full h-full' : ''
-
+export const SelectComponent = ({
+  children,
+  className,
+  onClick,
+}: SelectComponentProps) => {
   return (
     <Button
       onClick={onClick}
       color='default'
       variant='flat'
-      className={`flex justify-between items-center text-default-600 ${sizeClass}`}
+      className={twMerge(
+        'flex justify-between items-center text-default-600 text-ellipsis h-14 -translate-y-1',
+        className,
+      )}
     >
-      <p className='truncate whitespace-nowrap overflow-hidden text-ellipsis min-w-0'>
-        {children}
-      </p>
+      <span className='truncate whitespace-nowrap overflow-hidden'>{children}</span>
       <Icon name='arrow-down' />
     </Button>
   )
 }
-

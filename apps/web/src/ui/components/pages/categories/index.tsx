@@ -1,10 +1,11 @@
 'use client'
+
 import { Button } from '@nextui-org/react'
 
 import { Drawer } from '../../commons/drawer'
 import { Search } from '../../commons/search'
 import { RegisterCategoryForm } from './register-category-form'
-import { CategoriesAccordion } from './categories-accordion'
+import { CategoriesList } from './categories-list'
 import { useCategoryPage } from './use-categories-page'
 
 export const CategoriesPage = () => {
@@ -12,12 +13,13 @@ export const CategoriesPage = () => {
     categories,
     totalPages,
     page,
-    handlePageChange,
     isFetching,
+    handlePageChange,
     handleDeleteCategory,
     handleUpdateCategory,
     handleRegisterCategory,
   } = useCategoryPage()
+  
   return (
     <div>
       <div className='flex flex-col gap-3 md:flex-row md:gap-0 justify-between'>
@@ -47,14 +49,14 @@ export const CategoriesPage = () => {
         </div>
       </div>
       <div className='mt-4'>
-        <CategoriesAccordion
-          handleRegisterCategory={handleRegisterCategory}
-          handleUpdateCategory={handleUpdateCategory}
-          handleDeleteCategory={handleDeleteCategory}
+        <CategoriesList
+          page={page}
           categories={categories}
           isFetching={isFetching}
           totalItems={totalPages}
-          page={page}
+          handleRegisterCategory={handleRegisterCategory}
+          handleUpdateCategory={handleUpdateCategory}
+          handleDeleteCategory={handleDeleteCategory}
           handlePageChange={handlePageChange}
         />
       </div>

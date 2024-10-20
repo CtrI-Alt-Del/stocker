@@ -1,29 +1,31 @@
 import { Button, Input } from '@nextui-org/react'
+
+import type { Category } from '@stocker/core/entities'
+
 import { useUpdateCateryForm } from './use-update-category-form'
-import { Category } from '@stocker/core/entities'
-import { CategoryDto } from '@stocker/core/dtos'
 
 type RegisterCategoryFormProps = {
   onCancel: VoidFunction
   onSubmit: VoidFunction
-  category: CategoryDto
+  category: Category
 }
 
 export const UpdateCategoryForm = ({
-  onSubmit,
   category,
+  onSubmit,
   onCancel,
 }: RegisterCategoryFormProps) => {
-  const { control, errors, isDirty, isSubmiting, register, handleSubmit } =
-    useUpdateCateryForm({
-      onSubmit,
-      onCancel,
-      category,
-    })
+  const { errors, isDirty, isSubmiting, register, handleSubmit } = useUpdateCateryForm({
+    onSubmit,
+    onCancel,
+    category,
+  })
 
   return (
     <div>
-      <h2 className='text-xl font-bold'>{category.parentCategoryId ? "Atualizar Subcategoria" : "Atualizar Categoria"}</h2>
+      <h2 className='text-xl font-bold'>
+        {category.hasParentCategory ? 'Atualizar Subcategoria' : 'Atualizar Categoria'}
+      </h2>
       <form
         onSubmit={handleSubmit}
         encType='multiform/form-data'
@@ -41,7 +43,12 @@ export const UpdateCategoryForm = ({
           <Button onClick={onCancel} isDisabled={isSubmiting}>
             Cancelar
           </Button>
-          <Button type='submit' color='primary' isDisabled={!isDirty} isLoading={isSubmiting}>
+          <Button
+            type='submit'
+            color='primary'
+            isDisabled={!isDirty}
+            isLoading={isSubmiting}
+          >
             Confirmar
           </Button>
         </div>

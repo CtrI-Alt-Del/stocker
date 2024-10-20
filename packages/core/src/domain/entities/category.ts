@@ -21,8 +21,16 @@ export class Category extends Entity<CategoryProps> {
     )
   }
 
+  get hasParentCategory(): boolean {
+    return Boolean(this.props.parentCategoryId)
+  }
+
   get name(): string {
     return this.props.name
+  }
+
+  get subCategories(): Category[] {
+    return this.props.subCategories
   }
 
   get dto(): CategoryDto {

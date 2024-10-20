@@ -121,6 +121,10 @@ export class Product extends Entity<ProductProps> {
     return Boolean(this.image)
   }
 
+  get categoryId(): string | null {
+    return this.props.categoryId
+  }
+
   get costPrice(): Price {
     return this.props.costPrice
   }

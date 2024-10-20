@@ -1,63 +1,56 @@
-import { Icon } from '@/ui/components/commons/icon'
+import { useRef } from 'react'
 import { Accordion, AccordionItem, Button, Pagination, Spinner } from '@nextui-org/react'
-import { useCategoryPage } from '../use-categories-page'
-import { Category } from '@stocker/core/entities'
+import { motion } from 'framer-motion'
+
+import type { Category } from '@stocker/core/entities'
+
+import { Icon } from '@/ui/components/commons/icon'
 import { Drawer } from '@/ui/components/commons/drawer'
 import { RegisterCategoryForm } from '../register-category-form'
-import { CategoryDto } from '@stocker/core/dtos'
 import { AlertDialog } from '@/ui/components/commons/alert-dialog'
-import { useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import type { DrawerRef } from '@/ui/components/commons/drawer/types'
 import { UpdateCategoryForm } from '../update-category-form'
-import { useCategoriesAccordion } from './use-categories-accordion'
-import { DrawerRef } from '@/ui/components/commons/drawer/types'
+import { useCategoriesList } from './use-categories-list'
 
 type CategoryAccordionProps = {
-  categories: CategoryDto[]
+  categories: Category[]
   totalItems: number
   page: number
+  isFetching: boolean
   handlePageChange: (page: number) => void
   handleUpdateCategory: VoidFunction
   handleDeleteCategory: (categoryId: string) => void
   handleRegisterCategory: VoidFunction
-  isFetching: boolean
 }
 
-export const CategoriesAccordion = ({
+export const CategoriesList = ({
   categories,
   totalItems,
   page,
+  isFetching,
   handleUpdateCategory,
   handlePageChange,
-  isFetching,
   handleRegisterCategory,
   handleDeleteCategory,
 }: CategoryAccordionProps) => {
-  const [expandedItems, setExpandedItems] = useState<{ [key: string]: boolean }>({})
-
-  const toggleItem = (id: string) => {
-    setExpandedItems((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }))
-  }
-
   const drawerRef = useRef<DrawerRef>(null)
   const registerDrawerRef = useRef<DrawerRef>(null)
   const {
     categoryBeingEditted,
+    parentCategoryId,
+    expandedItems,
+    handleAccordionClick,
     handleEditCategoryButtonClick,
     handleUpdateCategoryFormSubmit,
     handleCancelEditting,
     handleDrawerClose,
-    parentCategoryId,
     handleRegisterSubCategoryFormSubmit,
     handleRegisterSubCategoryButtonClick,
-  } = useCategoriesAccordion({
+  } = useCategoriesList({
     registerDrawerRef,
-    onRegisterSubCategory: handleRegisterCategory,
     categories,
     drawerRef,
+    onRegisterSubCategory: handleRegisterCategory,
     onUpdateCategory: handleUpdateCategory,
   })
 
@@ -77,7 +70,7 @@ export const CategoriesAccordion = ({
                 startContent={
                   <motion.div
                     initial={{ rotate: 0 }}
-                    animate={{ rotate: expandedItems[category.id || ''] ? 90 : 0 }}
+                    animate={{ rotate: expandedItems[category.id] ? 90 : 0 }}
                     transition={{ duration: 0.2 }}
                   >
                     <Icon name='arrow-up' size={18} className='rotate-90' />
@@ -86,14 +79,14 @@ export const CategoriesAccordion = ({
                 hideIndicator
                 title={
                   <div className='flex justify-between w-full items-center gap-2'>
-                    <p>{category.name}</p>
+                    <p className='text-sm md:text-base'>{category.name}</p>
                     <div className='flex space-x-2'>
                       <div className='flex space-x-2 m-0'>
                         <Button
                           size='sm'
-                          className='bg-transparent hover:bg-primary hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
+                          className='bg-transparent hover:bg-primary text-gray-700 hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
                           onClick={() =>
-                            handleRegisterSubCategoryButtonClick(category.id || '')
+                            handleRegisterSubCategoryButtonClick(category.id)
                           }
                         >
                           <Icon name='plus' size={18} />
@@ -101,7 +94,7 @@ export const CategoriesAccordion = ({
                         <Button
                           size='sm'
                           onClick={() => handleEditCategoryButtonClick(category)}
-                          className='bg-transparent hover:bg-primary hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
+                          className='bg-transparent hover:bg-primary text-gray-700 hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
                         >
                           <Icon name='pencil' size={18} />
                         </Button>
@@ -109,13 +102,13 @@ export const CategoriesAccordion = ({
                           trigger={
                             <Button
                               size='sm'
-                              className='bg-transparent hover:bg-primary hover:text-white hover:transition-all transition-all duration-1000 border-zinc-400 h-10 min-w-10'
+                              className='bg-transparent hover:bg-primary text-gray-700 hover:text-white hover:transition-all transition-all duration-1000 border-zinc-400 h-10 min-w-10'
                             >
                               <Icon name='trash' size={18} />
                             </Button>
                           }
                           onConfirm={() => {
-                            handleDeleteCategory(category.id || '')
+                            handleDeleteCategory(category.id)
                           }}
                         >
                           Você tem certeza que deseja deletar essa categoria?
@@ -124,20 +117,20 @@ export const CategoriesAccordion = ({
                     </div>
                   </div>
                 }
-                onClick={() => toggleItem(category.id || '')}
+                onClick={() => handleAccordionClick(category.id)}
               >
-                <div className='flex gap-2 flex-col sm:ml-4 ml-0'>
+                <div className='flex gap-1 flex-col sm:ml-4 ml-0'>
                   {category.subCategories.length > 0 ? (
                     category.subCategories.map((subcategory) => (
                       <div
                         key={subcategory.id}
-                        className='flex justify-between items-center'
+                        className='flex justify-between items-center -translate-y-2'
                       >
-                        <p>{subcategory.name}</p>
+                        <p className='text-md'>{subcategory.name}</p>
                         <div className='flex gap-2'>
                           <Button
                             size='sm'
-                            className='bg-transparent hover:bg-primary hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
+                            className='bg-transparent hover:bg-primary text-gray-700 hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
                             onClick={() => handleEditCategoryButtonClick(subcategory)}
                           >
                             <Icon name='pencil' size={18} />
@@ -146,13 +139,13 @@ export const CategoriesAccordion = ({
                             trigger={
                               <Button
                                 size='sm'
-                                className='bg-transparent hover:bg-primary hover:text-white hover:transition-all transition-all duration-1000 border-zinc-400 h-9 min-w-8'
+                                className='bg-transparent hover:bg-primary text-gray-700 hover:text-white hover:transition-all transition-all duration-1000 border-zinc-400 h-9 min-w-8'
                               >
-                                <Icon name='trash' size={14} />
+                                <Icon name='trash' size={18} />
                               </Button>
                             }
                             onConfirm={() => {
-                              handleDeleteCategory(subcategory.id || '')
+                              handleDeleteCategory(subcategory.id)
                             }}
                           >
                             Você tem certeza que deseja deletar essa subcategoria?
