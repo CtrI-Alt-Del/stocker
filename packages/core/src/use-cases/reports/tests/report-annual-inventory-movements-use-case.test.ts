@@ -1,17 +1,24 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { InventoryMovementsFaker, ProductsFaker } from '../../../../__tests__/fakers'
 import { Datetime } from '../../../libs'
-import { InventoryMovementsRepositoryMock } from '../../../../__tests__/mocks/repositories'
+import {
+  InventoryMovementsRepositoryMock,
+  ProductsRepositoryMock,
+} from '../../../../__tests__/mocks/repositories'
 import { ReportAnnualOutboundInventoryMovementsUseCase } from '../report-annual-outbound-inventorymovements-use-case'
 
 let useCase: ReportAnnualOutboundInventoryMovementsUseCase
 let inventoryMovementsRepositoryMock: InventoryMovementsRepositoryMock
+let productsRepositoryMock: ProductsRepositoryMock
 
 describe('Report annual inventory movements use case', () => {
   beforeEach(() => {
     inventoryMovementsRepositoryMock = new InventoryMovementsRepositoryMock()
+    productsRepositoryMock = new ProductsRepositoryMock()
+
     useCase = new ReportAnnualOutboundInventoryMovementsUseCase(
       inventoryMovementsRepositoryMock,
+      productsRepositoryMock,
     )
   })
 

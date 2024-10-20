@@ -2,15 +2,24 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { InventoryMovementsFaker, ProductsFaker } from '../../../../__tests__/fakers'
 import { Datetime } from '../../../libs'
 import { ReportWeeklyInventoryMovementsUseCase } from '../report-weekly-inventory-movements-use-case'
-import { InventoryMovementsRepositoryMock } from '../../../../__tests__/mocks/repositories'
+import {
+  InventoryMovementsRepositoryMock,
+  ProductsRepositoryMock,
+} from '../../../../__tests__/mocks/repositories'
 
 let useCase: ReportWeeklyInventoryMovementsUseCase
 let inventoryMovementsRepositoryMock: InventoryMovementsRepositoryMock
+let productsRepositoryMock: ProductsRepositoryMock
 
 describe('Report weekly inventory movements use case', () => {
   beforeEach(() => {
     inventoryMovementsRepositoryMock = new InventoryMovementsRepositoryMock()
-    useCase = new ReportWeeklyInventoryMovementsUseCase(inventoryMovementsRepositoryMock)
+    productsRepositoryMock = new ProductsRepositoryMock()
+
+    useCase = new ReportWeeklyInventoryMovementsUseCase(
+      inventoryMovementsRepositoryMock,
+      productsRepositoryMock,
+    )
   })
 
   it('should return the count of inbound and outbound inventory movements of each weekday of last days', async () => {

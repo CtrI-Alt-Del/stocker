@@ -2,7 +2,7 @@ import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 import type { IHttp } from '@stocker/core/interfaces'
 import { ReportWeeklyInventoryMovementsUseCase } from '@stocker/core/use-cases'
 
-import { inventoryMovementsRepository } from '@/database'
+import { inventoryMovementsRepository, productsRepository } from '@/database'
 
 type QueryParams = {
   productId?: string
@@ -14,6 +14,7 @@ export class ReportWeeklyInventoryMovementsController {
 
     const usecase = new ReportWeeklyInventoryMovementsUseCase(
       inventoryMovementsRepository,
+      productsRepository,
     )
     const stockLevel = await usecase.execute({
       productId,
