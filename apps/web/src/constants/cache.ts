@@ -1,4 +1,7 @@
 export const CACHE = {
+  product: {
+    key: '/product',
+  },
   productsList: {
     key: '/products-list',
   },
