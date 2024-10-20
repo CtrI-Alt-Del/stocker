@@ -8,10 +8,12 @@ import { useCategorySelect } from './use-category-select'
 
 type CategorySelectProps = {
   defeaultCategoryId?: string
+  className?: string
   onSelectChange: (categoryId: string) => void
 }
 
 export const CategorySelect = ({
+  className,
   defeaultCategoryId,
   onSelectChange,
 }: CategorySelectProps) => {
@@ -22,10 +24,10 @@ export const CategorySelect = ({
     totalPages,
     selectedCategoryName,
     expandedItems,
+    handleCategoryIdChange,
     handleAccordionClick,
-    handleSelectCategoryNameChange,
     handleCategoryPageChange,
-  } = useCategorySelect(defeaultCategoryId)
+  } = useCategorySelect(onSelectChange, defeaultCategoryId)
 
   return isFetching ? (
     <Spinner label='Carregando...' className='w-full h-full mx-auto' />
@@ -35,7 +37,7 @@ export const CategorySelect = ({
         title='Selecione uma categoria ou subcategoria'
         size='2xl'
         trigger={
-          <Select className='w-full'>
+          <Select className={className}>
             {selectedCategoryName ? selectedCategoryName : 'Selecione categoria'}
           </Select>
         }
@@ -49,8 +51,7 @@ export const CategorySelect = ({
                     <Button
                       className='bg-transparent hover:bg-primary hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
                       onClick={() => {
-                        onSelectChange(category.id)
-                        handleSelectCategoryNameChange(category.name)
+                        handleCategoryIdChange(category.id)
                         closeDrawer()
                       }}
                     >
@@ -81,8 +82,7 @@ export const CategorySelect = ({
                           <Button
                             className='bg-transparent hover:bg-primary hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
                             onClick={() => {
-                              onSelectChange(category.id)
-                              handleSelectCategoryNameChange(category.name)
+                              handleCategoryIdChange(subCategory.id)
                               closeDrawer()
                             }}
                           >

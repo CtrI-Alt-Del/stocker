@@ -5,6 +5,7 @@ import {
   useToast,
   useUrlParamDate,
   useUrlParamNumber,
+  useUrlParamString,
 } from '@/ui/hooks'
 import { Product } from '@stocker/core/entities'
 import { Datetime } from '@stocker/core/libs'
@@ -23,12 +24,14 @@ export function useMostTrendingProductsTable() {
     'most-trending-products-end-date',
     DEFAULT_END_DATE.getDate(),
   )
+  const [categoryId, setCategoryId] = useUrlParamString('most-trending-products-category')
   const [page, setPage] = useUrlParamNumber('most-trending-products-page', 1)
   const [datesDifference, setDatesDifference] = useState('')
   const { showError } = useToast()
 
   async function fetchProducts() {
     const response = await reportsService.reportMostTrendingProducts({
+      categoryId,
       startDate,
       endDate,
       page,
@@ -41,6 +44,10 @@ export function useMostTrendingProductsTable() {
     }
 
     return response.body
+  }
+
+  function handleCategoryChange(categoryId: string) {
+    setCategoryId(categoryId)
   }
 
   function handleStartDateChange(date: Date) {
@@ -58,7 +65,7 @@ export function useMostTrendingProductsTable() {
   const { data, isFetching } = useCache({
     fetcher: fetchProducts,
     key: CACHE.mostTrendingProducts.key,
-    dependencies: [startDate, endDate, page],
+    dependencies: [categoryId, startDate, endDate, page],
   })
 
   const products = data?.items?.map(Product.create) ?? []
@@ -110,11 +117,13 @@ export function useMostTrendingProductsTable() {
   return {
     products,
     isFetching,
+    categoryId,
     startDate: startDatetime,
     endDate: endDatetime,
     datesDifference,
     page,
     totalPages: Math.ceil(itemsCount / 5),
+    handleCategoryChange,
     handleStartDateChange,
     handleEndDateChange,
     handlePageChange,

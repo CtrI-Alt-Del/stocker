@@ -17,6 +17,7 @@ export const ReportsService = (apiClient: IApiClient): IReportsService => {
       return await apiClient.get<any>('/reports/inventory-summary')
     },
     async reportMostTrendingProducts({
+      categoryId,
       startDate,
       endDate,
       page,
@@ -24,6 +25,7 @@ export const ReportsService = (apiClient: IApiClient): IReportsService => {
       if (page) apiClient.setParam('page', page ? String(page) : '1')
       if (startDate) apiClient.setParam('startDate', String(startDate))
       if (endDate) apiClient.setParam('endDate', String(endDate))
+      if (categoryId) apiClient.setParam('categoryId', categoryId)
 
       return await apiClient.get<PaginationResponse<ProductDto>>(
         '/reports/most-trending-products',

@@ -27,6 +27,9 @@ export const CACHE = {
     key: '/inventory',
   },
   categories: {
-    key: "/categories",
-  }
+    key: '/categories',
+  },
+  category: {
+    key: '/category',
+  },
 }
