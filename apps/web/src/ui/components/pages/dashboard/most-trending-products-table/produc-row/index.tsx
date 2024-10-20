@@ -79,9 +79,9 @@ export const ProductRow = ({
             </Link>
           </div>
           <div className='flex items-center gap-3 text-sm text-zinc-400'>
-            {stockLevel === 'safe' && <Tag type='sucess'>Ideal</Tag>}
-            {stockLevel === 'average' && <Tag type='warning'>Em baixa</Tag>}
-            {stockLevel === 'danger' && <Tag type='danger'>Esgotado</Tag>}
+            {stockLevel === 'safe' && <Tag type='sucess'>Estoque ideal</Tag>}
+            {stockLevel === 'average' && <Tag type='warning'>Estoque em baixa</Tag>}
+            {stockLevel === 'danger' && <Tag type='danger'>Estoque esgotado</Tag>}
             <span className='flex '>Estoque atual: {currentStock}</span>
             <span>Estoque mínimo: {minimumStock}</span>
           </div>

@@ -27,7 +27,7 @@ export const MostTrendingProductsTable = () => {
   return (
     <div className='w-full shadow px-6 py-3'>
       <div className='flex flex-col md:flex-row   md:items-center justify-between w-full'>
-        <div className='flex items-center gap-3'>
+        <div className='flex items-center gap-1'>
           <Link
             href={`${ENV.serverUrl}/reports/most-trending-products/csv?startDate=${startDate.format('YYYY-MM-DD')}&endDate=${endDate.format('YYYY-MM-DD')}`}
             aria-label='Exportar para arquivo csv'
@@ -35,7 +35,7 @@ export const MostTrendingProductsTable = () => {
           >
             <Icon name='download' size={20} />
           </Link>
-          <h2 className='text-gray-800 text-lg md:text-xl  font-bold '>
+          <h2 className='text-gray-800 text-lg font-bold '>
             Produtos com Maior Demanda
           </h2>
         </div>

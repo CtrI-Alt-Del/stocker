@@ -101,7 +101,7 @@ export const StockLevelChart = () => {
                 className='w-3 h-3 rounded-full'
                 style={{ backgroundColor: COLORS[key] }}
               />
-              <span className='text-sm'>{key}</span>
+              <span className='text-lg'>{key}</span>
             </div>
           ))}
         </div>
