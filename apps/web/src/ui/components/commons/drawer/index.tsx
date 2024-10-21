@@ -1,12 +1,6 @@
 'use client'
 
-import {
-  type ForwardedRef,
-  forwardRef,
-  useImperativeHandle,
-  type ReactNode,
-  useEffect,
-} from 'react'
+import { type ForwardedRef, forwardRef, useImperativeHandle, type ReactNode } from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import RmDrawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
