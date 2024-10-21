@@ -38,7 +38,7 @@ https://github.com/user-attachments/assets/2a9432b4-2785-4214-95e5-3daf1474814f
 
 ### Sprint - 2️⃣
 
-Work in progress... 🚧
+https://github.com/user-attachments/assets/5fc5ecfe-b5ca-4994-9c50-6341796bb7cc
 
 ### Sprint - 3️⃣
 
