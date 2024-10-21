@@ -74,7 +74,7 @@ export const ProductRow = ({
         <div className='flex flex-col'>
           <div className='flex items-center gap-2'>
             <p className='font-semibold text-sm text-zinc-900 truncate'>{name}</p>
-            <Link href={`/inventory/stock/${id}`} aria-label={`View ${name}`}>
+            <Link href={`/inventory/stocks/${id}`} aria-label={`View ${name}`}>
               <Icon name='link' className='text-zinc-600' size={16} />
             </Link>
           </div>
