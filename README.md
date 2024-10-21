@@ -67,9 +67,9 @@ Work in progress... 🚧
 
 ## Relatório e detalhes de cada Sprint 📅
 
-- Sprint 1: [Acessar](https://github.com/CtrI-Alt-Del/stocker/blob/main/documentation/sprints_reports/sprint-1.md)
+- Sprint 1: [Acessar](https://github.com/CtrI-Alt-Del/stocker/blob/main/documentation/sprints-reports/sprint-1.md)
 
-- Sprint 2: [Acessar](https://github.com/CtrI-Alt-Del/stocker/blob/main/documentation/sprints_reports/sprint-2.md)
+- Sprint 2: [Acessar](https://github.com/CtrI-Alt-Del/stocker/blob/main/documentation/sprints-reports/sprint-2.md)
 
 - Sprint 3: Work in progress... 🚧
 
