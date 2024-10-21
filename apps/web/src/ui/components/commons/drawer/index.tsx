@@ -1,11 +1,10 @@
-'use client'
-
 import {
   type ForwardedRef,
   forwardRef,
   useImperativeHandle,
   type ReactNode,
   useEffect,
+  useState,
 } from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import RmDrawer from 'react-modern-drawer'
@@ -40,24 +39,31 @@ export const DrawerComponent = (
 ) => {
   const { isOpen, open, close } = useDrawer(onOpen, onClose)
   const { md } = useBreakpoint()
+  const [drawerKey, setDrawerKey] = useState(0)
+
+  
+  useEffect(() => {
+    if (isOpen) {
+      setDrawerKey(prevKey => prevKey + 1)
+    }
+  }, [isOpen, md, width])
 
   useImperativeHandle(
     ref,
-    () => {
-      return {
-        close,
-        open,
-      }
-    },
+    () => ({
+      close,
+      open,
+    }),
     [close, open],
   )
 
   return (
     <>
       <RmDrawer
+        key={drawerKey} 
         open={isOpen}
         onClose={close}
-        size={md ? width ?? 700 : 370}
+        size={md ? width ?? 700 : 350} 
         direction={direction}
         zIndex={zIndex}
       >
@@ -74,3 +80,4 @@ export const DrawerComponent = (
 }
 
 export const Drawer = forwardRef(DrawerComponent)
+
