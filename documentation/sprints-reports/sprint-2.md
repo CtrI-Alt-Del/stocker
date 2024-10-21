@@ -2,7 +2,7 @@
 
 ## Requisitos realizados nessa sprint
 
-<img src="../images/requirements-sprint-2.jpg" width="2000" height="450" />
+<img src="../images/requirements-sprint-2.png" width="2000" height="450" />
 
 
 ## User Stories realizados nessa sprint
