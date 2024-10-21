@@ -85,19 +85,14 @@
 - A tabela deve estar paginada.
 
 ### US07
-- No formulário produto deve estar disponível um botão switch para tornar o produto em questão como ativo ou inativo.
-- O sistema não deve permitir que seja realizado lançamentos com produtos inativos.
 - O sistema deve validar se o usuário que está realizando essa ação é um gerente.
 
 ### US08
-- O sistema deve validar se o usuário que está realizando essa ação é um gerente.
-
-### US09
 - O gerente pode deletar um ou mais produtos de uma vez.
 - O sistema deve validar se o usuário que está realizando essa ação é um gerente.
 - Deve ser exibido uma mensagem de confirmação antes de ser concluído essa ação.
 
-### US10
+### US09
 - O sistema deve validar se o usuário que está realizando essa ação é um gerente.
 
 ### Tasks realizados nessa sprint
