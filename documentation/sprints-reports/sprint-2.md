@@ -23,7 +23,6 @@
     - Tag indicando se o produto está no estoque ideal, perto do estoque mínimo ou sem estoque.
 - A tabela deve ser paginada.
 - Somente devem ser exibidos os produtos que estão com o status ativo no sistema.
-- Somente devem ser considerados produtos ativos.
  
 ### US11
 - O arquivo excel não deve conter paginação, ou seja, deve conter todos os produtos do inventário.
