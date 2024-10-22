@@ -35,7 +35,7 @@ export const WeeklyInventoryMovementsChart = () => {
       ) : (
         <>
           <div className='flex justify-between flex-col md:flex-row p-5 items-center translate-y-3'>
-            <h2 className='font-bold text-lg'>Lançamentos de estoque anual</h2>
+            <h2 className='font-bold text-lg'>Lançamentos de estoque semanal</h2>
             <div className='gap-3 flex flex-col items-end mt-3 md:mt-0'>
               <ProductSelect
                 productId={productId}

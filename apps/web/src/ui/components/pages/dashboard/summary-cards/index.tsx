@@ -28,7 +28,7 @@ export const SummaryCards = async () => {
           icon='arrow-big-down-dash'
         />
         <Card
-          title='Lançamenots de Saída'
+          title='Lançamentos de Saída'
           value={outboundMovementsCount}
           href='/?movement_type=outbound'
           icon='arrow-big-up-dash'
