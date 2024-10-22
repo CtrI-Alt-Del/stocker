@@ -1,6 +1,6 @@
 # DoR (Definition of Ready)
 
-Este documento lista os critérios que devem ser atendidos para que uma User Story esteja pronta para ser desenvolvido, ou seja, viável de se colocar no Sprint Backlog.
+Este documento lista os critérios que devem ser atendidos para que uma User Story esteja pronta para ser desenvolvida, ou seja, viável de se colocar no Sprint Backlog.
 
 - Deve estar associado a um dos 10 requisitos do Backlog.
 - Deve conter critérios de aceitação.
