@@ -41,10 +41,9 @@ export const DrawerComponent = (
   const { md } = useBreakpoint()
   const [drawerKey, setDrawerKey] = useState(0)
 
-  
   useEffect(() => {
     if (isOpen) {
-      setDrawerKey(prevKey => prevKey + 1)
+      setDrawerKey((prevKey) => prevKey + 1)
     }
   }, [isOpen, md, width])
 
@@ -60,10 +59,10 @@ export const DrawerComponent = (
   return (
     <>
       <RmDrawer
-        key={drawerKey} 
+        key={drawerKey}
         open={isOpen}
         onClose={close}
-        size={md ? width ?? 700 : 350} 
+        size={md ? width ?? 700 : 350}
         direction={direction}
         zIndex={zIndex}
       >
@@ -80,4 +79,3 @@ export const DrawerComponent = (
 }
 
 export const Drawer = forwardRef(DrawerComponent)
-
