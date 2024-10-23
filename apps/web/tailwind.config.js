@@ -8,7 +8,13 @@ export default {
     "../../node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors:{
+        orange:{
+          DEFAULT: '#FF6200'
+        }
+      }
+    },
   },
   darkMode: "class",
   plugins: [nextui({
