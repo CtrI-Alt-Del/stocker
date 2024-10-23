@@ -1,6 +1,7 @@
 import Fastify, { type FastifyInstance } from 'fastify'
 import Multipart from '@fastify/multipart'
 import Cors from '@fastify/cors'
+import Cookies from '@fastify/cookie'
 
 import type { IServerApp } from '@stocker/core/interfaces'
 import {
@@ -20,6 +21,7 @@ import {
   ReportsRoutes,
   CategoriesRoutes,
 } from './routes'
+import Jwt from '@fastify/jwt'
 import { BatchesRoutes } from './routes/batches-routes'
 
 export class FastifyApp implements IServerApp {
@@ -29,6 +31,8 @@ export class FastifyApp implements IServerApp {
     this.app = Fastify()
     this.app.register(Cors, { origin: '*' })
     this.app.register(Multipart)
+    this.app.register(Jwt, { secret: ENV.jwtSecret })
+    this.app.register(Cookies)
     this.setErrorHandler()
     this.registerRoutes()
   }
@@ -45,7 +49,7 @@ export class FastifyApp implements IServerApp {
       })
   }
 
-  stopServer() {}
+  stopServer() { }
 
   private setErrorHandler() {
     this.app.setErrorHandler((error, _, reply) => {

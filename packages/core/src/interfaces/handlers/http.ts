@@ -1,8 +1,12 @@
+import { UserDto } from "../../dtos"
+
 export interface IHttp {
   getBody<Body>(): Body
   getRouteParams<RouteParams>(): RouteParams
   getQueryParams<QueryParams>(): QueryParams
   setHeader(key: string, value: string): void
+  setJwt(user: UserDto): Promise<string>
+  destroyJwt(): void
   send(response: unknown, statusCode?: number): unknown
   redirect(route: string): unknown
   getFile(): Promise<Buffer>
