@@ -11,4 +11,6 @@ export interface IHttp {
   redirect(route: string): unknown
   getFile(): Promise<Buffer>
   getImageFile(): Promise<Buffer>
+  verifyJwt(): Promise<boolean>
+  next(): Promise<unknown>
 }
