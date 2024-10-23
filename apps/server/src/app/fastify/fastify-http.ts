@@ -4,12 +4,13 @@ import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 import type { IHttp } from '@stocker/core/interfaces'
 import { MAX_FILE_SIZE } from '@/constants'
 import { ValidationError } from '@stocker/core/errors'
+import { UserDto } from '@stocker/core/dtos'
 
 export class FastifyHttp implements IHttp {
   constructor(
     private readonly request: FastifyRequest,
     private readonly reply: FastifyReply,
-  ) {}
+  ) { }
 
   send(response: unknown, statusCode = HTTP_STATUS_CODE.ok) {
     return this.reply.status(statusCode).send(response)
@@ -21,6 +22,19 @@ export class FastifyHttp implements IHttp {
 
   setHeader(key: string, value: string): void {
     this.reply.header(key, value)
+  }
+
+  async setJwt(user: UserDto): Promise<string> {
+    const jwt = await this.reply.jwtSign(user, {
+      sub: user.id,
+      expiresIn: '30 days',
+    })
+
+    return jwt
+  }
+
+  destroyJwt(): void {
+    this.reply.clearCookie('access_token');
   }
 
   getBody<Body>(): Body {

@@ -15,6 +15,7 @@ export const envSchema = z.object({
   databaseUrl: stringSchema,
   directUrl: urlSchema,
   supabaseUrl: stringSchema,
+  jwtSecret: stringSchema,
 })
 
 const validation = envSchema.safeParse({
