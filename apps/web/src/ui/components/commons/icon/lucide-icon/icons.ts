@@ -32,6 +32,7 @@ import {
   type LucideProps,
   Settings2,
   Plus,
+  EyeClosed,
 } from 'lucide-react'
 
 import type { IconName } from '../types'
@@ -40,6 +41,7 @@ export const ICONS: Record<
   IconName,
   ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>
 > = {
+  "eye-closed": EyeClosed,
   "settings-2": Settings2,
   plus:Plus,
   'square-user-round': SquareUserRound,

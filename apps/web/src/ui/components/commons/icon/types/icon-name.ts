@@ -1,4 +1,5 @@
 export type IconName =
+  | 'eye-closed'
   | 'plus'
   | 'settings-2'
   | 'archive'
