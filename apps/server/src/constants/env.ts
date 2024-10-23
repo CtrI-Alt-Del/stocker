@@ -25,6 +25,7 @@ const validation = envSchema.safeParse({
   directUrl: process.env.DIRECT_URL,
   supabaseUrl: process.env.SUPABASE_URL,
   supabaseKey: process.env.SUPABASE_KEY,
+  jwtSecret: process.env.JWT_SECRET,
 })
 
 if (!validation.success) {
