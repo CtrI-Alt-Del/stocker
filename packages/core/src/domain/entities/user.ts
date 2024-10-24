@@ -41,4 +41,14 @@ export class User extends Entity<UserProps> {
   get password(): string | undefined {
     return this.props.password
   }
+
+  get dto(): UserDto {
+    return {
+      id: this.id,
+      role: this.props.role,
+      email: this.props.email,
+      name: this.props.name,
+      password: this.props.password,
+    }
+  }
 }
