@@ -39,25 +39,25 @@ model Product {
   category_id   String?
   company_id    String
 
-  Category           Category?           @relation(fields: [category_id], references: [id])
-  Company            Company             @relation(fields: [company_id], references: [id], onDelete: Cascade)
-  batches            Batch[]
-  InventoryMovements InventoryMovement[]
-  notification       Notification[]
+  Category               Category?                @relation(fields: [category_id], references: [id])
+  Company                Company                  @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  batches                Batch[]
+  InventoryMovements     InventoryMovement[]
+  StockLevelNotification StockLevelNotification[]
 
   @@map("products")
 }
 
 model Batch {
-  id                         String         @id @default(uuid())
+  id                         String                       @id @default(uuid())
   code                       String
   expiration_date            DateTime?
   maximum_days_to_expiration Int?
   items_count                Int
   product_id                 String
-  registered_at              DateTime       @default(now())
-  Product                    Product        @relation(fields: [product_id], references: [id], onDelete: Cascade)
-  notification               Notification[] @relation(name: "BatcheToNotification")
+  registered_at              DateTime                     @default(now())
+  Product                    Product                      @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  ExpirationDateNotification ExpirationDateNotification[]
 
   @@map("batches")
 }
@@ -141,14 +141,22 @@ model Location {
   @@map("locations")
 }
 
-model Notification {
+model StockLevelNotification {
   id         String   @id @default(uuid())
-  product_id String?
-  batch_id   String?
+  product_id String
   created_at DateTime @default(now())
 
-  Product Product? @relation(fields: [product_id], references: [id], onDelete: Cascade)
-  Batch   Batch?   @relation(name: "BatcheToNotification", fields: [batch_id], references: [id], onDelete: Cascade)
+  Product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
-  @@map("notifications")
+  @@map("stock-level-notifications")
+}
+
+model ExpirationDateNotification {
+  id         String   @id @default(uuid())
+  batch_id   String
+  created_at DateTime @default(now())
+
+  Batch Batch @relation(fields: [batch_id], references: [id], onDelete: Cascade)
+
+  @@map("expiration-date-notification")
 }

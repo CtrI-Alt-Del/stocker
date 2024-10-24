@@ -1,5 +1,5 @@
-import { User } from "../../domain/entities";
-import { UsersListParams } from "../../types";
+import type { User } from '../../domain/entities'
+import type { UsersListParams } from '../../types'
 
 export interface IUsersRepository {
   findMany(params: UsersListParams): Promise<User[]>

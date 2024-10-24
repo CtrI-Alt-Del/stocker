@@ -7,3 +7,5 @@ export type { WeeklyInventoryMovementsDto } from './weekly-inventory-movements-d
 export type { AnnualInventoryMovementsDto } from './annual-inventory-movements-dto'
 export type { CategoryDto } from './category-dto'
 export type { CompanyDto } from './company-dto'
+export type { StockLevelNotificationDto } from './stock-level-notification-dto'
+export type { ExpirationDateNotificationDto } from './expiration-notification-dto'
