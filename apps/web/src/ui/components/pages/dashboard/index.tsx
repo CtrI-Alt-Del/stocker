@@ -1,9 +1,9 @@
+import { UsersFaker } from '@stocker/core/fakers'
 import { AnualInventoryMovementsChart } from './annual-inventory-movements-chart'
 import { MostTrendingProductsTable } from './most-trending-products-table'
 import { StockLevelChart } from './stock-level-chart'
 import { SummaryCards } from './summary-cards'
 import { WeeklyInventoryMovementsChart } from './weekly-inventory-movements-chart'
-import { CategoriesFaker } from '@stocker/core/fakers'
 
 export const DashboardPage = () => {
   return (

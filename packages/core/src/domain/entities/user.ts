@@ -15,7 +15,7 @@ export class User extends Entity<UserProps> {
   static create(dto: UserDto): User {
     const role = dto.role
 
-    if (User.isUserRole(dto.role)) {
+    if (!User.isUserRole(dto.role)) {
       throw new ValidationError(`${role} não é um tipo de usuário válido`)
     }
 
