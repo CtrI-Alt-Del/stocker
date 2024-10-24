@@ -11,6 +11,7 @@ export class UsersFaker {
       role: faker.helpers.arrayElement(['manager', 'employee']),
       email: faker.internet.email(),
       name: faker.person.fullName(),
+      password: faker.internet.password(),
     }
   }
   static fakeMany(count = 10, baseDto?: Partial<UserDto>) {
