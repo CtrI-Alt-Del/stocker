@@ -1,0 +1,1 @@
+export { DeleteCompanyController } from './delete-company-controller'
