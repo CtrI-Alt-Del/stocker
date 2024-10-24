@@ -1,4 +1,4 @@
-import { CompanyDto } from "../../dtos"
+import type { CompanyDto } from "../../dtos"
 import { Entity } from "../abstracts"
 
 type CompanyProps = {
