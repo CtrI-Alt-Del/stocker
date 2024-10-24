@@ -8,6 +8,7 @@ type UserProps = {
   role: UserRole
   email: string
   name: string
+  password?: string
 }
 
 export class User extends Entity<UserProps> {
@@ -35,5 +36,9 @@ export class User extends Entity<UserProps> {
 
   get email(): string {
     return this.props.email
+  }
+
+  get password(): string | undefined {
+    return this.props.password
   }
 }

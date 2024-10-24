@@ -93,6 +93,7 @@ model User {
 model Company {
   id   String @id @default(uuid())
   name String
+  cnpj String
 
   users      User[]
   product    Product[]
