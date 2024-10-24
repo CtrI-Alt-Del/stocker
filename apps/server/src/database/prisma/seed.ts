@@ -41,7 +41,7 @@ async function resetDatabase() {
 
 async function createBaseEntities() {
   await prisma.company.create({
-    data: { id: COMPANY_ID, name: 'Bulk Bonilha' },
+    data: { id: COMPANY_ID, name: 'Bulk Bonilha', cnpj: '12305123406' },
   })
 
   await prisma.user.create({
