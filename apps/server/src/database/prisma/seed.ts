@@ -187,11 +187,18 @@ async function seedMinimumBatchesForProduct(productId: string, count: number) {
   const batchPromises = fakeBatch.map((batch) => batchesRepository.add(batch))
   await Promise.all(batchPromises)
 }
-async function seedMultipleUsers(count:number){
+async function seedMultipleUsers(count: number) {
   const usersPromises = []
   for (let i = 0; i < count; i++) {
     const newUser = createFakeUser()
-    usersPromises.push(users)
+    // usersPromises.push(usersReposity.create(newUsers))
+  }
+  if (usersPromises.length >= CONNECTION_POOL_SIZE) {
+    await Promise.allSettled(usersPromises)
+    
+  }
+  if (usersPromises.length > 0) {
+    await Promise.allSettled(usersPromises)
     
   }
 }
