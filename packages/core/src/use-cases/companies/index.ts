@@ -1,0 +1,1 @@
+export { DeleteCompanyUseCase } from './delete-company-use-case'
