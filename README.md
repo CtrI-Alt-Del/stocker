@@ -95,12 +95,6 @@ Work in progress... 🚧
       <span>TailwindCSS</span>
     </td>
     <td align="center" width="96">
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">
-        <img src="documentation/images/JavaScript.svg" width="48" height="48" alt="JavaScript" />
-      </a>
-      <span>JavaScript</span>
-    </td>
-    <td align="center" width="96">
       <a href="https://www.typescriptlang.org/docs/">
         <img src="documentation/images/TypeScript.svg" width="48" height="48" alt="TypeScript" />
       </a>
