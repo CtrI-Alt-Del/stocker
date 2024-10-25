@@ -10,7 +10,6 @@ import {
   ReportInventorySummaryController,
   ReportWeeklyInventoryMovementsController,
   ReportAnnualInventorymovementsController,
-
 } from '@/api/controllers/reports'
 
 export const ReportsRoutes = async (app: FastifyInstance) => {
@@ -27,7 +26,6 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
     new ReportWeeklyInventoryMovementsController()
   const reportAnnualInventorymovementsController =
     new ReportAnnualInventorymovementsController()
-
 
   app.get('/stock-level', async (request, response) => {
     const http = new FastifyHttp(request, response)
@@ -54,13 +52,10 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
     return exportInventoryToCsvFileController.handle(http)
   })
 
-
   app.get('/inventory-summary', async (request, response) => {
     const http = new FastifyHttp(request, response)
     return reportInventorySummaryController.handle(http)
   })
-
-  
 
   app.get('/inventory-movements/weekly', async (request, response) => {
     const http = new FastifyHttp(request, response)
@@ -71,5 +66,4 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
     const http = new FastifyHttp(request, response)
     return reportAnnualInventorymovementsController.handle(http)
   })
-
 }
