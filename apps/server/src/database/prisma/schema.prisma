@@ -82,7 +82,7 @@ model User {
   email      String
   role       UserRole @default(EMPLOYEE)
   name       String
-  company_id String?
+  company_id String
 
   Company            Company?            @relation(fields: [company_id], references: [id], onDelete: Cascade)
   inventoryMovements InventoryMovement[]
