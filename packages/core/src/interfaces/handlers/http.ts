@@ -1,4 +1,4 @@
-import { UserDto } from "../../dtos"
+import type { UserDto } from '../../dtos'
 
 export interface IHttp {
   getBody<Body>(): Body
@@ -12,5 +12,5 @@ export interface IHttp {
   getFile(): Promise<Buffer>
   getImageFile(): Promise<Buffer>
   verifyJwt(): Promise<boolean>
-  next(): Promise<unknown>
+  pass(): unknown
 }
