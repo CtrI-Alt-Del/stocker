@@ -4,3 +4,4 @@ export type { IInventoryMovementsRepository } from './inventory-movements-reposi
 export type { ICategoriesRepository } from './categories-repository'
 export type { ICompaniesRepository } from './companies-repository'
 export type { INotificationsRepository } from './notifications-repository'
+export type { IUsersRepository } from './users-repository'

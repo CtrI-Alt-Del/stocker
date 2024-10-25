@@ -5,6 +5,7 @@ import type { IHttp } from '@stocker/core/interfaces'
 import type { UserDto } from '@stocker/core/dtos'
 import { MAX_FILE_SIZE } from '@/constants'
 import { ValidationError } from '@stocker/core/errors'
+import type { UserDto } from '@stocker/core/dtos'
 
 export class FastifyHttp implements IHttp {
   constructor(

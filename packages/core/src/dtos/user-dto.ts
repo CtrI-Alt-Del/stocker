@@ -3,5 +3,6 @@ export type UserDto = {
   role: string
   email: string
   name: string
+  companyId: string
   password?: string
 }
