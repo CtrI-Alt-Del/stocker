@@ -7,9 +7,20 @@ import { Search } from '../../commons/search'
 import { EmployeesTable } from './employees-table'
 import { RegisterEmployeeForm } from './register-employee-form'
 import { useEmployeesPage } from './use-employees-page'
+import { AlertDialog } from '../../commons/alert-dialog'
 
 export const EmployeesPage = () => {
-  const { page, handlePageChange, totalPages, tempoUser, isLoading } = useEmployeesPage()
+  const {
+    page,
+    handlePageChange,
+    totalPages,
+    tempoUser,
+    isLoading,
+    handleUpdateEmployee,
+    handleEmployeesSelectionChange,
+    selectedEmployeesIds,
+    handleDeleteEmployeesAlertDialogConfirm,
+  } = useEmployeesPage()
   return (
     <>
       <div className='space-y-5'>
@@ -19,6 +30,20 @@ export const EmployeesPage = () => {
             <Search value={''} onSearchChange={() => { }} />
           </div>
           <div className='flex items-center justify-center gap-1'>
+            {selectedEmployeesIds.length > 0 && (
+              <AlertDialog
+                trigger={
+                  <Button color='danger' isLoading={isLoading}>
+                    Deletar funcionários
+                  </Button>
+                }
+                onConfirm={handleDeleteEmployeesAlertDialogConfirm}
+              >
+                {selectedEmployeesIds.length <= 1
+                  ? 'Voce tem certeza que deseja deletar esse funcionários?'
+                  : 'Voce tem certeza que deseja deletar esses funcionários?'}
+              </AlertDialog>
+            )}
             <Drawer
               trigger={
                 <Button variant='solid' color='primary' size='md'>
@@ -38,6 +63,9 @@ export const EmployeesPage = () => {
           isLoading={isLoading}
           totalPages={totalPages}
           employees={tempoUser}
+          onUpdateEmployee={handleUpdateEmployee}
+          onEmployeesSelectionChange={handleEmployeesSelectionChange}
+          selectedEmployeesIds={selectedEmployeesIds}
         />
       </div>
     </>
