@@ -86,7 +86,11 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
   async addExpirationDateNotification(expirationDateNotification: ExpirationDateNotification): Promise<void> {
     try {
       await prisma.expirationDateNotification.create({
-        data: this.expirationDateNotificationMapper.toPrisma(expirationDateNotification),
+        data: {
+          id: expirationDateNotification.id,
+          created_at: expirationDateNotification.createdAt,
+          batch_id: expirationDateNotification.batch.id,
+        },
       });
     } catch (error) {
       throw new PrismaError(error);
