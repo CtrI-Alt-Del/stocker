@@ -72,7 +72,11 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
   async addStockLevelNotification(stockLevelNotification: StockLevelNotification): Promise<void> {
     try {
       await prisma.stockLevelNotification.create({
-        data: this.stockLevelNotificationMapper.toPrisma(stockLevelNotification),
+      data: {
+          id: stockLevelNotification.id,
+          created_at: stockLevelNotification.createdAt,
+          product_id: stockLevelNotification.product.id,
+        },
       });
     } catch (error) {
       throw new PrismaError(error);
