@@ -12,6 +12,9 @@ export class DeleteCompanyUseCase {
     }
 
     async execute({ companyId }: Request) {
-        await this.companiesRepository.delete(companyId)
+        const company = await this.companiesRepository.findById(companyId)
+        if (company) {
+            await this.companiesRepository.delete(companyId)
+        }
     }
 }
