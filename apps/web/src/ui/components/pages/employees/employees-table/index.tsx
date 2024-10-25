@@ -1,4 +1,7 @@
+import { Drawer } from '@/ui/components/commons/drawer'
+import { Icon } from '@/ui/components/commons/icon'
 import {
+  Button,
   Pagination,
   Spinner,
   Table,
@@ -7,14 +10,24 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
+  Tooltip,
 } from '@nextui-org/react'
-import { User } from '@stocker/core/entities'
+import type { User } from '@stocker/core/entities'
+import { UpdateEmployeeForm } from '../update-employee-form'
+import { IconButton } from '@/ui/components/commons/icon-button'
+import { useRef } from 'react'
+import type { DrawerRef } from '@/ui/components/commons/drawer/types'
+import { useEmployeesTable } from './use-employees-table'
 type EmployeesTableProps = {
   page: number
   isLoading: boolean
   employees: User[]
   totalPages: number
   onPageChange?: (page: number) => void
+  onUpdateEmployee?: VoidFunction
+  onEmployeesSelectionChange?: (employeesIds: string[]) => void
+  selectionMode?: 'single' | 'multiple'
+  selectedEmployeesIds: string[]
 }
 export const EmployeesTable = ({
   page,
@@ -22,13 +35,34 @@ export const EmployeesTable = ({
   employees,
   totalPages,
   onPageChange,
+  onEmployeesSelectionChange,
+  onUpdateEmployee,
+  selectionMode,
+  selectedEmployeesIds,
 }: EmployeesTableProps) => {
+  const drawerRef = useRef<DrawerRef>(null)
+  const {
+    employeeBeingEditted,
+    handleEditEmployeeButtonClick,
+    handleUpdateEmployeeFormSubmit,
+    handleCancelEditting,
+    handleDrawerClose,
+    handleSelectionChange,
+  } = useEmployeesTable({
+    employees,
+    drawerRef,
+    onEmployeesSelectionChange,
+    onUpdateEmployee,
+  })
   return (
     <>
       <Table
         aria-label='tabela'
         shadow='none'
+        selectionMode={selectionMode ? selectionMode : 'multiple'}
         bottomContentPlacement='outside'
+        selectedKeys={selectedEmployeesIds}
+        onSelectionChange={handleSelectionChange}
         bottomContent={
           totalPages > 1 && (
             <div className='flex w-full justify-start'>
@@ -47,6 +81,7 @@ export const EmployeesTable = ({
           <TableColumn key='name'>NOME</TableColumn>
           <TableColumn key='email'>E-MAIL</TableColumn>
           <TableColumn key='role'>CARGO</TableColumn>
+          <TableColumn key='action'>{null}</TableColumn>
         </TableHeader>
         <TableBody
           items={employees}
@@ -62,10 +97,31 @@ export const EmployeesTable = ({
               <TableCell key='role' className='font-black'>
                 {employee.role === 'manager' ? 'Gerente' : 'Funcionário'}
               </TableCell>
+              <TableCell key='actions'>
+                <Tooltip content='Editar Funcinário'>
+                  <IconButton
+                    name='view'
+                    tooltip='Editar Funcionário'
+                    className='size-6 text-zinc-500'
+                    onClick={() => handleEditEmployeeButtonClick(employee)}
+                  />
+                </Tooltip>
+              </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
+      <Drawer ref={drawerRef} trigger={null} onClose={handleDrawerClose}>
+        {() =>
+          employeeBeingEditted && (
+            <UpdateEmployeeForm
+              employee={employeeBeingEditted}
+              onSubmit={handleUpdateEmployeeFormSubmit}
+              onCancel={handleCancelEditting}
+            />
+          )
+        }
+      </Drawer>
     </>
   )
 }
