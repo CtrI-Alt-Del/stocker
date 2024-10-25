@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import type { CompanyDto } from "../../dtos"
 import { Entity } from "../abstracts"
-=======
-import type { CompanyDto } from '../../dtos'
-import { Entity } from '../abstracts'
->>>>>>> origin
 
 type CompanyProps = {
   name: string

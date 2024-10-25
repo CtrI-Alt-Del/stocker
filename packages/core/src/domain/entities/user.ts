@@ -9,6 +9,7 @@ type UserProps = {
   email: string
   name: string
   password?: string
+  companyId: string
 }
 
 export class User extends Entity<UserProps> {
@@ -19,7 +20,7 @@ export class User extends Entity<UserProps> {
       throw new ValidationError(`${role} não é um tipo de usuário válido`)
     }
 
-    return new User({ name: dto.name, email: dto.email, role: role as UserRole }, dto.id)
+    return new User({ name: dto.name, email: dto.email, role: role as UserRole, companyId: dto.companyId}, dto.id)
   }
 
   static isUserRole(userRole: string): userRole is UserRole {
@@ -40,5 +41,9 @@ export class User extends Entity<UserProps> {
 
   get password(): string | undefined {
     return this.props.password
+  }
+
+  get companyId(): string {
+    return this.props.companyId
   }
 }
