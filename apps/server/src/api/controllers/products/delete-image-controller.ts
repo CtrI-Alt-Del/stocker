@@ -8,7 +8,6 @@ type Body = {
 export class DeleteImageController {
   async handle(http: IHttp): Promise<unknown> {
     const { fileId } = http.getBody<Body>()
-    console.log(http.getBody<Body>())
     await fileStorageProvider.delete(fileId)
     return http.send(null)
   }
