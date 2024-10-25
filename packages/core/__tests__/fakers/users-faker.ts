@@ -8,9 +8,10 @@ export class UsersFaker {
   static fakeDto(baseDto?: Partial<UserDto>): UserDto {
     return {
       id: faker.string.uuid(),
-      role: faker.helpers.arrayElement(['admin', 'manager', 'employee']),
+      role: faker.helpers.arrayElement(['manager', 'employee']),
       email: faker.internet.email(),
       name: faker.person.fullName(),
+      password: faker.internet.password(),
     }
   }
   static fakeMany(count = 10, baseDto?: Partial<UserDto>) {

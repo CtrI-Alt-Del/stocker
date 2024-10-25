@@ -46,4 +46,14 @@ export class User extends Entity<UserProps> {
   get companyId(): string {
     return this.props.companyId
   }
+  
+  get dto(): UserDto {
+    return {
+      id: this.id,
+      role: this.props.role,
+      email: this.props.email,
+      name: this.props.name,
+      password: this.props.password,
+    }
+  }
 }

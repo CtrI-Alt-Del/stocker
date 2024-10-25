@@ -50,7 +50,7 @@ export class FastifyApp implements IServerApp {
       })
   }
 
-  stopServer() { }
+  stopServer() {}
 
   private setErrorHandler() {
     this.app.setErrorHandler((error, _, reply) => {

@@ -2,6 +2,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify'
 
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 import type { IHttp } from '@stocker/core/interfaces'
+import type { UserDto } from '@stocker/core/dtos'
 import { MAX_FILE_SIZE } from '@/constants'
 import { ValidationError } from '@stocker/core/errors'
 import type { UserDto } from '@stocker/core/dtos'
@@ -10,7 +11,15 @@ export class FastifyHttp implements IHttp {
   constructor(
     private readonly request: FastifyRequest,
     private readonly reply: FastifyReply,
-  ) { }
+  ) {}
+
+  verifyJwt(): Promise<boolean> {
+    throw new Error('Method not implemented.')
+  }
+
+  pass(): unknown {
+    return
+  }
 
   send(response: unknown, statusCode = HTTP_STATUS_CODE.ok) {
     return this.reply.status(statusCode).send(response)
@@ -34,7 +43,7 @@ export class FastifyHttp implements IHttp {
   }
 
   destroyJwt(): void {
-    this.reply.clearCookie('access_token');
+    this.reply.clearCookie('access_token')
   }
 
   getBody<Body>(): Body {
