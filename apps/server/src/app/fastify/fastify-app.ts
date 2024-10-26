@@ -21,6 +21,7 @@ import {
   ReportsRoutes,
   CategoriesRoutes,
   CompaniesRoutes,
+  UsersRoutes,
 } from './routes'
 import Jwt from '@fastify/jwt'
 import { BatchesRoutes } from './routes/batches-routes'
@@ -97,5 +98,6 @@ export class FastifyApp implements IServerApp {
     this.app.register(ReportsRoutes, { prefix: '/reports' })
     this.app.register(CategoriesRoutes, { prefix: '/categories' })
     this.app.register(CompaniesRoutes, { prefix: '/companies' })
+    this.app.register(UsersRoutes, { prefix: '/users' })
   }
 }
