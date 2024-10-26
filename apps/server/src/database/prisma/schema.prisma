@@ -144,6 +144,7 @@ model Location {
 model StockLevelNotification {
   id         String   @id @default(uuid())
   product_id String
+  company_id String
   created_at DateTime @default(now())
 
   Product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
@@ -153,6 +154,7 @@ model StockLevelNotification {
 
 model ExpirationDateNotification {
   id         String   @id @default(uuid())
+  company_id String
   batch_id   String
   created_at DateTime @default(now())
 

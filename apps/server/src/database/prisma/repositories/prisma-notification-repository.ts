@@ -20,7 +20,10 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
       })
 
       if (stockNotification) {
-        return this.stockLevelNotificationMapper.toDomain(stockNotification)
+        return this.stockLevelNotificationMapper.toDomain({
+          ...stockNotification,
+          company_id: stockNotification.Product.company_id,
+        })
       }
 
       const expirationNotification = await prisma.expirationDateNotification.findUnique({
@@ -33,7 +36,9 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
       })
 
       if (expirationNotification) {
-        return this.expirationDateNotificationMapper.toDomain(expirationNotification)
+        return this.expirationDateNotificationMapper.toDomain({
+          ...expirationNotification,
+        })
       }
       return null
     } catch (error) {
@@ -48,7 +53,10 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
           Product: true,
         },
       });
-      const mappedNotifications = notifications.map(notification => this.stockLevelNotificationMapper.toDomain(notification));
+      const mappedNotifications = notifications.map(notification => this.stockLevelNotificationMapper.toDomain({
+        ...notification,
+        company_id: notification.Product.company_id,
+      }));
       return mappedNotifications;
     } catch (error) {
       throw new PrismaError(error);
@@ -62,7 +70,9 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
           Batch: true,
         },
       });
-      const mappedNotifications = notifications.map(notification => this.expirationDateNotificationMapper.toDomain(notification));
+      const mappedNotifications = notifications.map(notification => this.expirationDateNotificationMapper.toDomain({
+        ...notification
+      }));
       return mappedNotifications;
     } catch (error) {
       throw new PrismaError(error);
@@ -76,6 +86,7 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
           id: stockLevelNotification.id,
           created_at: stockLevelNotification.createdAt,
           product_id: stockLevelNotification.product.id,
+          company_id: stockLevelNotification.companyId,
         },
       });
     } catch (error) {
@@ -90,6 +101,7 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
           id: expirationDateNotification.id,
           created_at: expirationDateNotification.createdAt,
           batch_id: expirationDateNotification.batch.id,
+          company_id: expirationDateNotification.companyId,
         },
       });
     } catch (error) {

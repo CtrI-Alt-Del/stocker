@@ -12,6 +12,7 @@ export class PrismaExpirationDateNotificationMapper {
         code: prismaExpirationDateNotification.Batch.code,
       },
       createdAt: prismaExpirationDateNotification.created_at,
+      companyId: prismaExpirationDateNotification.company_id,
     });
   }
 
@@ -26,6 +27,7 @@ export class PrismaExpirationDateNotificationMapper {
         id: expirationDateNotification.batch.id,
         code: expirationDateNotification.batch.code,
       },
+      company_id: expirationDateNotification.companyId,
     };
   }
 }
