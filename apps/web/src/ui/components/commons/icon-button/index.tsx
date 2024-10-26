@@ -1,28 +1,34 @@
-import { Button, Tooltip } from '@nextui-org/react'
+import { Button } from '@nextui-org/react'
 import { twMerge } from 'tailwind-merge'
 
 import type { IconName } from '../icon/types'
 import { Icon } from '../icon'
+import { Tag } from '../tag'
 
 type IconButton = {
   name: IconName
   size?: number
   onClick?: () => void
   className?: string
-  tooltip?: string
+  tag?: string
 }
 
-export const IconButton = ({ tooltip, name, size, className, onClick }: IconButton) => {
+export const IconButton = ({ name, size, className, tag, onClick }: IconButton) => {
   return (
     <>
       <Button
         isIconOnly
         aria-label='OPA'
         onClick={onClick}
-        className={twMerge('bg-transparent', className)}
+        className={twMerge('relative bg-transparent overflow-visible', className)}
         size='sm'
       >
         <Icon name={name} size={size} />
+        {tag && (
+          <Tag type='danger' size='sm' className='absolute right-0 -top-3'>
+            {tag}
+          </Tag>
+        )}
       </Button>
     </>
   )
