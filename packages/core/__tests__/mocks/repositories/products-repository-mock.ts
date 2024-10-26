@@ -68,6 +68,7 @@ export class ProductsRepositoryMock implements IProductsRepository {
     page,
     startDate,
     endDate,
+    categoryId,
   }: MostTrendingProductsListParams) {
     let products = this.products
     let inventoryMovements = this.inventoryMovements
@@ -85,6 +86,10 @@ export class ProductsRepositoryMock implements IProductsRepository {
           registeredAt.isBetween(startDate, endDate)
         )
       })
+    }
+
+    if (categoryId) {
+      products = products.filter((product) => product.categoryId === categoryId)
     }
 
     const inventoryMovementsProductsIds = inventoryMovements.map(

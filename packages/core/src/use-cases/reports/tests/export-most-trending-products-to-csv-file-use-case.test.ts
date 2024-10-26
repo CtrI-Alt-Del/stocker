@@ -4,7 +4,11 @@ import { ProductsRepositoryMock } from '../../../../__tests__/mocks/repositories
 import { CsvProviderMock } from '../../../../__tests__/mocks/providers'
 import { Datetime } from '../../../libs'
 import { ValidationError } from '../../../errors'
-import { InventoryMovementsFaker, ProductsFaker } from '../../../../__tests__/fakers'
+import {
+  CategoriesFaker,
+  InventoryMovementsFaker,
+  ProductsFaker,
+} from '../../../../__tests__/fakers'
 import { ExportMostTrendingProductsToCsvFileUseCase } from '../export-most-trending-products-use-case'
 import { MOST_TRENDING_PRODUCTS_CSV_FILE_COLUMNS } from '../../../constants'
 
@@ -173,6 +177,69 @@ describe('Export most trending products to csv file use case', () => {
           MOST_TRENDING_PRODUCTS_CSV_FILE_COLUMNS,
           [fakeProductB.dto, fakeProductA.dto, fakeProductC.dto],
         ].toString(),
+      ),
+    )
+  })
+
+  it('should sort products by outbound inventory movements count', async () => {
+    const fakeCategory = CategoriesFaker.fake()
+
+    const fakeProductA = ProductsFaker.fake({
+      name: 'Product A',
+      categoryId: fakeCategory.id,
+    })
+    const fakeProductB = ProductsFaker.fake({ name: 'Product B' })
+    const fakeProductC = ProductsFaker.fake({ name: 'Product C' })
+
+    const currentDate = new Datetime()
+
+    await Promise.all([
+      productsRepository.add(fakeProductA),
+      productsRepository.add(fakeProductB),
+      productsRepository.add(fakeProductC),
+    ])
+    productsRepository.inventoryMovements.push(
+      InventoryMovementsFaker.fake({
+        movementType: 'outbound',
+        product: { id: fakeProductA.id },
+        registeredAt: currentDate.getDate(),
+      }),
+      InventoryMovementsFaker.fake({
+        movementType: 'outbound',
+        product: { id: fakeProductA.id },
+        registeredAt: currentDate.getDate(),
+      }),
+      InventoryMovementsFaker.fake({
+        movementType: 'outbound',
+        product: { id: fakeProductB.id },
+        registeredAt: currentDate.getDate(),
+      }),
+      InventoryMovementsFaker.fake({
+        movementType: 'outbound',
+        product: { id: fakeProductB.id },
+        registeredAt: currentDate.getDate(),
+      }),
+      InventoryMovementsFaker.fake({
+        movementType: 'outbound',
+        product: { id: fakeProductB.id },
+        registeredAt: currentDate.getDate(),
+      }),
+      InventoryMovementsFaker.fake({
+        movementType: 'outbound',
+        product: { id: fakeProductC.id },
+        registeredAt: currentDate.getDate(),
+      }),
+    )
+
+    const csvBuffer = await useCase.execute({
+      categoryId: fakeCategory.id,
+      startDate: currentDate.subtractYears(10),
+      endDate: currentDate.getDate(),
+    })
+
+    expect(csvBuffer).toEqual(
+      Buffer.from(
+        [MOST_TRENDING_PRODUCTS_CSV_FILE_COLUMNS, [fakeProductA.dto]].toString(),
       ),
     )
   })

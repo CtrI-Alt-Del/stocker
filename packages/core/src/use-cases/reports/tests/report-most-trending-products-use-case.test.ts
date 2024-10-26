@@ -4,7 +4,11 @@ import { ProductsRepositoryMock } from '../../../../__tests__/mocks/repositories
 import { Datetime } from '../../../libs'
 import { ValidationError } from '../../../errors'
 import { ReportMostTrendingProductsUseCase } from '../report-most-trending-products-use-case'
-import { InventoryMovementsFaker, ProductsFaker } from '../../../../__tests__/fakers'
+import {
+  CategoriesFaker,
+  InventoryMovementsFaker,
+  ProductsFaker,
+} from '../../../../__tests__/fakers'
 import { PAGINATION } from '../../../constants'
 
 let useCase: ReportMostTrendingProductsUseCase
@@ -191,5 +195,65 @@ describe('Report most trending products to csv file use case', () => {
     })
 
     expect(items).toEqual([fakeProductB.dto, fakeProductA.dto, fakeProductC.dto])
+  })
+
+  it('should filter products by category', async () => {
+    const fakeCategory = CategoriesFaker.fake()
+
+    const fakeProductA = ProductsFaker.fake({
+      name: 'Product A',
+      categoryId: fakeCategory.id,
+    })
+    const fakeProductB = ProductsFaker.fake({ name: 'Product B' })
+    const fakeProductC = ProductsFaker.fake({ name: 'Product C' })
+
+    const currentDate = new Datetime()
+
+    await Promise.all([
+      productsRepository.add(fakeProductA),
+      productsRepository.add(fakeProductB),
+      productsRepository.add(fakeProductC),
+    ])
+    productsRepository.inventoryMovements.push(
+      InventoryMovementsFaker.fake({
+        movementType: 'outbound',
+        product: { id: fakeProductA.id },
+        registeredAt: currentDate.getDate(),
+      }),
+      InventoryMovementsFaker.fake({
+        movementType: 'outbound',
+        product: { id: fakeProductA.id },
+        registeredAt: currentDate.getDate(),
+      }),
+      InventoryMovementsFaker.fake({
+        movementType: 'outbound',
+        product: { id: fakeProductB.id },
+        registeredAt: currentDate.getDate(),
+      }),
+      InventoryMovementsFaker.fake({
+        movementType: 'outbound',
+        product: { id: fakeProductB.id },
+        registeredAt: currentDate.getDate(),
+      }),
+      InventoryMovementsFaker.fake({
+        movementType: 'outbound',
+        product: { id: fakeProductB.id },
+        registeredAt: currentDate.getDate(),
+      }),
+      InventoryMovementsFaker.fake({
+        movementType: 'outbound',
+        product: { id: fakeProductC.id },
+        registeredAt: currentDate.getDate(),
+      }),
+    )
+
+    const { items } = await useCase.execute({
+      categoryId: fakeCategory.id,
+      page: 1,
+      startDate: currentDate.subtractYears(10),
+      endDate: currentDate.getDate(),
+    })
+
+    expect(items).toEqual([fakeProductA.dto])
   })
 })
