@@ -2,6 +2,7 @@ import { Notification } from '../abstracts'
 import type { ExpirationDateNotificationDto } from '../../dtos'
 
 type ExpirationDateNotificationProps = {
+  companyId: string
   batch: {
     id: string
     code: string
@@ -13,11 +14,16 @@ export class ExpirationDateNotification extends Notification<ExpirationDateNotif
   static create(dto: ExpirationDateNotificationDto) {
     return new ExpirationDateNotification(
       {
+        companyId: dto.companyId,
         createdAt: dto.createdAt,
         batch: dto.batch,
       },
       dto.id,
     )
+  }
+
+  get companyId() {
+    return this.props.companyId
   }
 
   get batch() {
@@ -27,6 +33,7 @@ export class ExpirationDateNotification extends Notification<ExpirationDateNotif
   get dto(): ExpirationDateNotificationDto {
     return {
       id: this.id,
+      companyId: this.props.companyId,
       batch: {
         id: this.props.batch.id,
         code: this.props.batch.code,
