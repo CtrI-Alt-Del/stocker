@@ -64,7 +64,7 @@ export class PrismaProductMapper {
             items_count: batchDto.itemsCount,
             expiration_date: batchDto.expirationDate ?? null,
             maximum_days_to_expiration: batchDto.maximumDaysToExpiration ?? null,
-            registered_at: batchDto.resgisteredAt ?? new Date(),
+            registered_at: batchDto.registeredAt ?? new Date(),
           }))
         : [],
     }

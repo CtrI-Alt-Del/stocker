@@ -11,6 +11,7 @@ import {
   categoriesRepository,
   inventoryMovementsRepository,
   productsRepository,
+  usersRepository,
 } from '..'
 import { prisma } from './prisma-client'
 import { fakerPT_BR as faker } from '@faker-js/faker'
@@ -27,9 +28,14 @@ async function seedDatabase() {
 
   await seedMainProduct()
   const categories = await createManyFakeCategory(20)
+  console.log("1")
   await seedMultipleProducts(50, categories)
+    console.log("2")
   await seedMultipleProductsWithoutRelatedData(25)
+      console.log("3")
   await seedMultipleProductsWithMinimumBatches(25)
+      console.log("4")
+  await seedMultipleUsers(22)
 }
 
 async function resetDatabase() {
@@ -48,6 +54,7 @@ async function createBaseEntities() {
       id: MANAGER_ID,
       name: 'Hector Bonilha',
       email: 'hector@gmail.com',
+      password: '$2b$10$E6JiCj9QnOtYm2O4V1yXhuI1LlkVtrXpiGpqOis75eRPu35XOtm3S',
       role: 'MANAGER',
       company_id: COMPANY_ID,
     },
@@ -149,6 +156,7 @@ function createFakeCategory() {
 function createFakeUser() {
   return UsersFaker.fake({
     id: faker.string.uuid(),
+    companyId: COMPANY_ID,
   })
 }
 
@@ -191,7 +199,7 @@ async function seedMultipleUsers(count: number) {
   const usersPromises = []
   for (let i = 0; i < count; i++) {
     const newUser = createFakeUser()
-    // usersPromises.push(usersReposity.create(newUsers))
+    usersPromises.push(usersRepository.add(newUser))
   }
   if (usersPromises.length >= CONNECTION_POOL_SIZE) {
     await Promise.allSettled(usersPromises)

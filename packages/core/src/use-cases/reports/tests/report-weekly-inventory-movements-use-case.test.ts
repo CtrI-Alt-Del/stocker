@@ -6,6 +6,7 @@ import {
   InventoryMovementsRepositoryMock,
   ProductsRepositoryMock,
 } from '../../../../__tests__/mocks/repositories'
+import { NotFoundError } from '../../../errors'
 
 let useCase: ReportWeeklyInventoryMovementsUseCase
 let inventoryMovementsRepositoryMock: InventoryMovementsRepositoryMock
@@ -103,10 +104,24 @@ describe('Report weekly inventory movements use case', () => {
     ])
   })
 
+  it('should not return the count of inbound and outbound inventory movements of a product that does not exist', async () => {
+    const currentDate = new Datetime(new Date(2024, 9, 15))
+    const fakeProduct = ProductsFaker.fake()
+
+    expect(async () => {
+      await useCase.execute({
+        endDate: currentDate.getDate(),
+        productId: fakeProduct.id,
+      })
+    }).rejects.toThrowError(NotFoundError)
+  })
+
   it('should return the count of inbound and outbound inventory movements for a given product', async () => {
     const endDate = new Datetime(new Date(2024, 10, 15))
 
     const fakeProduct = ProductsFaker.fake()
+
+    productsRepositoryMock.add(fakeProduct)
 
     await inventoryMovementsRepositoryMock.addMany([
       InventoryMovementsFaker.fake({

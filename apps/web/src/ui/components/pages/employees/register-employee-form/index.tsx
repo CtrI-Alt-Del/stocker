@@ -12,7 +12,6 @@ import {
   Textarea,
 } from '@nextui-org/react'
 import { useRegisterEmployeeForm } from './use-register-employee-form'
-import { error } from 'console'
 
 type RegisterProductFormProps = {
   onCancel: VoidFunction

@@ -2,7 +2,7 @@ import type { ExpirationDateNotification } from '../../domain/entities/expiratio
 import type { StockLevelNotification } from '../../domain/entities/stock-level-notification'
 
 export interface INotificationsRepository {
-  findById(notificationId: string): Promise<StockLevelNotification | null>
+  findById(notificationId: string): Promise<StockLevelNotification | ExpirationDateNotification | null>
   findManyStockLevelNotifications(): Promise<StockLevelNotification[]>
   findManyExpirationDateNotifications(): Promise<ExpirationDateNotification[]>
   addStockLevelNotification(stockLevelNotification: StockLevelNotification): Promise<void>
