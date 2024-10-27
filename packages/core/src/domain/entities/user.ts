@@ -27,6 +27,10 @@ export class User extends Entity<UserProps> {
     return ['admin', 'manager', 'employee'].includes(userRole)
   }
 
+  update(partialDto: Partial<UserDto>): User {
+    return User.create({ ...this.dto, ...partialDto })
+  }
+
   get name(): string {
     return this.props.name
   }
