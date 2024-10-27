@@ -82,7 +82,7 @@ export const ProductRow = ({
             {stockLevel === 'safe' && <Tag type='sucess'>Estoque ideal</Tag>}
             {stockLevel === 'average' && <Tag type='warning'>Estoque em baixa</Tag>}
             {stockLevel === 'danger' && <Tag type='danger'>Estoque esgotado</Tag>}
-            <span className='flex '>Estoque atual: {currentStock}</span>
+            <span>Estoque atual: {currentStock}</span>
             <span>Estoque mínimo: {minimumStock}</span>
           </div>
         </div>

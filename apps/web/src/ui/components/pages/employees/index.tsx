@@ -12,13 +12,13 @@ import { AlertDialog } from '../../commons/alert-dialog'
 export const EmployeesPage = () => {
   const {
     page,
-    handlePageChange,
     totalPages,
     tempoUser,
+    selectedEmployeesIds,
     isLoading,
     handleUpdateEmployee,
     handleEmployeesSelectionChange,
-    selectedEmployeesIds,
+    handlePageChange,
     handleDeleteEmployeesAlertDialogConfirm,
   } = useEmployeesPage()
   return (
@@ -27,7 +27,7 @@ export const EmployeesPage = () => {
         <div className='flex flex-col gap-3 md:flex-row md:gap-0 justify-between'>
           <div className='flex-1 w-full max-w-96 space-y-2'>
             <h1 className='text-3xl font-black'>Funcionários</h1>
-            <Search value={''} onSearchChange={() => { }} />
+            <Search value={''} onSearchChange={() => {}} />
           </div>
           <div className='flex items-center justify-center gap-1'>
             {selectedEmployeesIds.length > 0 && (
@@ -52,7 +52,7 @@ export const EmployeesPage = () => {
               }
             >
               {(closeDrawer) => (
-                <RegisterEmployeeForm onSubmit={() => { }} onCancel={closeDrawer} />
+                <RegisterEmployeeForm onSubmit={() => {}} onCancel={closeDrawer} />
               )}
             </Drawer>
           </div>

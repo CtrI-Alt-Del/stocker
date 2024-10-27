@@ -33,6 +33,7 @@ import {
   Settings2,
   Plus,
   EyeClosed,
+  CircleUserRoundIcon,
 } from 'lucide-react'
 
 import type { IconName } from '../types'
@@ -43,7 +44,6 @@ export const ICONS: Record<
 > = {
   "eye-closed": EyeClosed,
   "settings-2": Settings2,
-  plus:Plus,
   'square-user-round': SquareUserRound,
   'arrow-big-up-dash': ArrowBigUpDash,
   'arrow-big-down-dash': ArrowBigDownDash,
@@ -52,6 +52,7 @@ export const ICONS: Record<
   'arrow-up-down': ArrowUpDown,
   'menu-hamburguer': Menu,
   archive: Archive,
+  plus:Plus,
   package: Package,
   dashboard: ChartBarStacked,
   ellipses: EllipsisVertical,
@@ -76,4 +77,5 @@ export const ICONS: Record<
   view: Eye,
   check: Check,
   search: Search,
+  user: CircleUserRoundIcon,
 }

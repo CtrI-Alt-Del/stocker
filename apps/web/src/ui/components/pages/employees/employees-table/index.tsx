@@ -18,27 +18,29 @@ import { IconButton } from '@/ui/components/commons/icon-button'
 import { useRef } from 'react'
 import type { DrawerRef } from '@/ui/components/commons/drawer/types'
 import { useEmployeesTable } from './use-employees-table'
+
 type EmployeesTableProps = {
   page: number
   isLoading: boolean
   employees: User[]
   totalPages: number
+  selectionMode?: 'single' | 'multiple'
+  selectedEmployeesIds: string[]
   onPageChange?: (page: number) => void
   onUpdateEmployee?: VoidFunction
   onEmployeesSelectionChange?: (employeesIds: string[]) => void
-  selectionMode?: 'single' | 'multiple'
-  selectedEmployeesIds: string[]
 }
+
 export const EmployeesTable = ({
   page,
   isLoading,
   employees,
   totalPages,
+  selectionMode,
+  selectedEmployeesIds,
   onPageChange,
   onEmployeesSelectionChange,
   onUpdateEmployee,
-  selectionMode,
-  selectedEmployeesIds,
 }: EmployeesTableProps) => {
   const drawerRef = useRef<DrawerRef>(null)
   const {
@@ -94,14 +96,13 @@ export const EmployeesTable = ({
             <TableRow key={employee.id}>
               <TableCell key='name'>{employee.name}</TableCell>
               <TableCell key='email'>{employee.email}</TableCell>
-              <TableCell key='role' className='font-black'>
+              <TableCell key='role' className='font-semibold'>
                 {employee.role === 'manager' ? 'Gerente' : 'Funcionário'}
               </TableCell>
               <TableCell key='actions'>
                 <Tooltip content='Editar Funcinário'>
                   <IconButton
                     name='view'
-                    tooltip='Editar Funcionário'
                     className='size-6 text-zinc-500'
                     onClick={() => handleEditEmployeeButtonClick(employee)}
                   />
