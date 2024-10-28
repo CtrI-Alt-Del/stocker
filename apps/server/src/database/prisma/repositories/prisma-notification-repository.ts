@@ -46,9 +46,12 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
     }
   }
 
-  async findManyStockLevelNotifications(): Promise<StockLevelNotification[]> {
+  async findManyStockLevelNotifications(companyId: string): Promise<StockLevelNotification[]> {
     try {
       const notifications = await prisma.stockLevelNotification.findMany({
+        where: {
+          company_id: companyId,
+        },
         include: {
           Product: true,
         },
@@ -63,9 +66,12 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
     }
   }
 
-  async findManyExpirationDateNotifications(): Promise<ExpirationDateNotification[]> {
+  async findManyExpirationDateNotifications(companyId: string): Promise<ExpirationDateNotification[]> {
     try {
       const notifications = await prisma.expirationDateNotification.findMany({
+        where: {
+          company_id: companyId,
+        },
         include: {
           Batch: true,
         },
