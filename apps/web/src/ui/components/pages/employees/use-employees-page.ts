@@ -1,10 +1,12 @@
-import { useToast, useUrlParamNumber } from '@/ui/hooks'
+import { useApi, useToast, useUrlParamNumber } from '@/ui/hooks'
 import type { UserDto } from '@stocker/core/dtos'
 import { useState } from 'react'
 
 export function useEmployeesPage() {
   const { showSuccess, showError } = useToast()
+  const { usersService } = useApi()
   const [page, setPage] = useUrlParamNumber('page', 1)
+  const [isDeleting, setIsDeleting] = useState<boolean>(false)
   const [selectedEmployeesIds, setSelectdEmployeesIds] = useState<string[]>([])
   function handlePageChange(page: number) {
     setPage(page)
@@ -31,16 +33,34 @@ export function useEmployeesPage() {
   async function handleUpdateEmployee() {
     console.log('banana')
   }
+  async function handleRegisterEmployeeFormSubmit(){
+    console.log("banana")
+  }
   async function handleDeleteEmployeesAlertDialogConfirm() {
-    console.log(selectedEmployeesIds)
+    setIsDeleting(true)
+    const response = await usersService.deleteUser(selectedEmployeesIds)
+    if (response.isFailure) {
+      showError(response.errorMessage)
+    }
+    if (response.isSuccess) {
+      showSuccess(
+        selectedEmployeesIds.length > 1
+          ? 'Funcionários deletados com sucesso'
+          : 'Funcinário deletado com sucesso',
+      )
+    }
+    setSelectdEmployeesIds([])
+    setIsDeleting(false)
   }
   function handleEmployeesSelectionChange(employeesIds: string[]) {
     setSelectdEmployeesIds(employeesIds)
   }
   return {
+    handleRegisterEmployeeFormSubmit,
     handleDeleteEmployeesAlertDialogConfirm,
     totalPages: Math.ceil(totalPages / 10),
     page,
+    isDeleting,
     handlePageChange,
     tempoUser,
     isLoading,
