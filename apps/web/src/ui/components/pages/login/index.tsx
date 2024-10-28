@@ -1,18 +1,24 @@
 'use client'
-
-import { Button } from '@nextui-org/button'
+import { useBreakpoint } from '@/ui/hooks'
+import { Logo } from '../../commons/logo'
+import { LoginAdminForm } from './login-admin-form'
 
 export const LoginPage = () => {
+  const { sm } = useBreakpoint()
   return (
-    <div className='flex flex-col items-center justify-center h-screen font-sans bg-gray-100'>
-      <h1 className='text-6xl text-gray-800'>Stocker</h1>
-      <div className='mt-5'>
-        <Button className='px-5 py-2.5 text-base bg-transparent text-black border border-gray-500 rounded cursor-pointer mr-2.5 hover:bg-gray-200 transition-colors'>
-          Login
-        </Button>
-        <Button className='px-5 py-2.5 text-base bg-default-500 text-white rounded cursor-pointer hover:bg-default-700 transition-colors'>
-          Register
-        </Button>
+    <div className='h-screen w-screen bg-orange flex justify-center items-center'>
+      <div className='bg-white    sm:w-1/2 w-full  rounded-xl grid grid-cols-1 md:grid-cols-2'>
+        <div className='flex justify-center items-center mr-5 md:order-2 pt-12 sm:pt-0'>
+          <Logo
+            direction={sm ? 'flex-col' : 'flex-row'}
+            width={sm ? 400 : 50}
+            height={sm ? 400 : 50}
+            text={sm ? 'lg' : 'md'}
+          />
+        </div>
+        <div className='flex justify-center items-center p-5  md:order-1 '>
+          <LoginAdminForm />
+        </div>
       </div>
     </div>
   )
