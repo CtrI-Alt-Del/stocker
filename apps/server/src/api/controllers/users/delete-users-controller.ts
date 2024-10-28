@@ -1,19 +1,21 @@
 import type { IHttp } from '@stocker/core/interfaces'
 import { DeleteUsersUseCase } from '@stocker/core/use-cases'
 
-import { userRepository } from '@/database'
+import { usersRepository} from '@/database'
 
 type Body = {
   usersIds: string[]
+  companyId: string
 }
 
 export class DeleteUsersController {
   async handle(http: IHttp) {
-    const { usersIds } = http.getBody<Body>()
+    const { usersIds,companyId } = http.getBody<Body>()
 
-    const useCase = new DeleteUsersUseCase(userRepository)
+    const useCase = new DeleteUsersUseCase(usersRepository)
     await useCase.execute({
       usersIds,
+      companyId
     })
     return http.send(null)
   }
