@@ -1,8 +1,7 @@
 import type { UserDto } from '../../dtos'
 import { ValidationError } from '../../errors'
+import type { UserRole } from '../../types'
 import { Entity } from '../abstracts'
-
-type UserRole = 'admin' | 'manager' | 'employee'
 
 type UserProps = {
   role: UserRole
@@ -16,15 +15,37 @@ export class User extends Entity<UserProps> {
   static create(dto: UserDto): User {
     const role = dto.role
 
-    if (!User.isUserRole(dto.role)) {
+    if (!User.isUserRole(role)) {
       throw new ValidationError(`${role} não é um tipo de usuário válido`)
     }
 
-    return new User({ name: dto.name, email: dto.email, password: dto.password, role: role as UserRole, companyId: dto.companyId}, dto.id)
+    return new User(
+      {
+        name: dto.name,
+        email: dto.email,
+        password: dto.password,
+        companyId: dto.companyId,
+        role: role,
+      },
+      dto.id,
+    )
   }
 
   static isUserRole(userRole: string): userRole is UserRole {
     return ['admin', 'manager', 'employee'].includes(userRole)
+  }
+
+  hasValidRole(role: UserRole) {
+    switch (role) {
+      case 'admin':
+        return this.role === 'admin'
+      case 'manager':
+        return this.role === 'admin' || this.role === 'manager'
+      case 'employee':
+        return (
+          this.role === 'admin' || this.role === 'manager' || this.role === 'employee'
+        )
+    }
   }
 
   update(partialDto: Partial<UserDto>): User {
@@ -35,7 +56,7 @@ export class User extends Entity<UserProps> {
     return this.props.name
   }
 
-  get role(): string {
+  get role(): UserRole {
     return this.props.role
   }
 
@@ -50,7 +71,7 @@ export class User extends Entity<UserProps> {
   get companyId(): string {
     return this.props.companyId
   }
-  
+
   get dto(): UserDto {
     return {
       id: this.id,
@@ -58,7 +79,7 @@ export class User extends Entity<UserProps> {
       email: this.props.email,
       name: this.props.name,
       password: this.props.password,
-      companyId: this.props.companyId
+      companyId: this.props.companyId,
     }
   }
 }

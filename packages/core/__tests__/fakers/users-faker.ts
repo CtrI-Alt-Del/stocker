@@ -1,6 +1,6 @@
 import { fakerPT_BR as faker } from '@faker-js/faker'
 import { User } from '../../src/domain/entities'
-import { UserDto } from '../../src/dtos/user-dto'
+import type { UserDto } from '../../src/dtos/user-dto'
 export class UsersFaker {
   static fake(baseDto?: Partial<UserDto>) {
     return User.create(UsersFaker.fakeDto(baseDto))
@@ -8,10 +8,12 @@ export class UsersFaker {
   static fakeDto(baseDto?: Partial<UserDto>): UserDto {
     return {
       id: faker.string.uuid(),
-      role: faker.helpers.arrayElement(['manager', 'employee']),
+      role: faker.helpers.arrayElement(['admin', 'manager', 'employee']),
       email: faker.internet.email(),
       name: faker.person.fullName(),
       password: faker.internet.password(),
+      companyId: '',
+      ...baseDto,
     }
   }
   static fakeMany(count = 10, baseDto?: Partial<UserDto>) {
