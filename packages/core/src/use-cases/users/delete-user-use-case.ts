@@ -1,5 +1,5 @@
 import { NotFoundError } from '../../errors'
-import { IUsersRepository } from '../../interfaces/repositories/users-repository'
+import type { IUsersRepository } from '../../interfaces/repositories/users-repository'
 
 type Request = {
   usersIds: string[]

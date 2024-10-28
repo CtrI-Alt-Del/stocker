@@ -1,6 +1,6 @@
 import { User } from "../../domain/entities";
-import { UserDto } from "../../dtos";
-import { IUsersRepository } from "../../interfaces/repositories/users-repository";
+import type { UserDto } from "../../dtos";
+import type { IUsersRepository } from "../../interfaces/repositories/users-repository";
 
 type Request = {
   userDto: UserDto
