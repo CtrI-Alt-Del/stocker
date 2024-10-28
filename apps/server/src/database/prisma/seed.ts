@@ -11,7 +11,7 @@ import {
   categoriesRepository,
   inventoryMovementsRepository,
   productsRepository,
-  usersRepository,
+  usersRepository
 } from '..'
 import { prisma } from './prisma-client'
 import { fakerPT_BR as faker } from '@faker-js/faker'
@@ -54,9 +54,9 @@ async function createBaseEntities() {
       id: MANAGER_ID,
       name: 'Hector Bonilha',
       email: 'hector@gmail.com',
-      password: '$2b$10$E6JiCj9QnOtYm2O4V1yXhuI1LlkVtrXpiGpqOis75eRPu35XOtm3S',
       role: 'MANAGER',
       company_id: COMPANY_ID,
+      password: "1233"
     },
   })
 

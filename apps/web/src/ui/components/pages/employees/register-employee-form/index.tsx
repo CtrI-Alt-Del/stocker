@@ -22,7 +22,7 @@ export const RegisterEmployeeForm = ({
   onSubmit,
   onCancel,
 }: RegisterProductFormProps) => {
-  const { control, register, errors, handleSubmit, reset } =
+  const { control, register, errors, handleSubmit, reset, isSubmiting } =
     useRegisterEmployeeForm(onSubmit)
 
   return (
@@ -79,8 +79,10 @@ export const RegisterEmployeeForm = ({
       <Divider className='my-2' />
 
       <div className='flex items-center gap-3'>
-        <Button onClick={onCancel}>Cancelar</Button>
-        <Button type='submit' color='primary'>
+        <Button onClick={onCancel} isDisabled={isSubmiting}>
+          Cancelar
+        </Button>
+        <Button type='submit' color='primary' isLoading={isSubmiting}>
           Confirmar
         </Button>
       </div>
