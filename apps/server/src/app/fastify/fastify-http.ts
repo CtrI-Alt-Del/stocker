@@ -3,9 +3,9 @@ import type { FastifyReply, FastifyRequest } from 'fastify'
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 import type { IHttp } from '@stocker/core/interfaces'
 import type { UserDto } from '@stocker/core/dtos'
-import { MAX_FILE_SIZE } from '@/constants'
 import { ValidationError } from '@stocker/core/errors'
-import type { UserDto } from '@stocker/core/dtos'
+
+import { MAX_FILE_SIZE } from '@/constants'
 
 export class FastifyHttp implements IHttp {
   constructor(
@@ -13,8 +13,13 @@ export class FastifyHttp implements IHttp {
     private readonly reply: FastifyReply,
   ) {}
 
-  verifyJwt(): Promise<boolean> {
-    throw new Error('Method not implemented.')
+  async verifyJwt(): Promise<boolean> {
+    try {
+      await this.request.jwtVerify()
+      return true
+    } catch (error) {
+      return false
+    }
   }
 
   pass(): unknown {
@@ -27,6 +32,11 @@ export class FastifyHttp implements IHttp {
 
   redirect(route: string) {
     return this.reply.redirect(route)
+  }
+
+  async getUser() {
+    await this.verifyJwt()
+    return this.request.user as UserDto
   }
 
   setHeader(key: string, value: string): void {
