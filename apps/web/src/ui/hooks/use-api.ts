@@ -7,6 +7,7 @@ import {
 } from '@/api/services'
 import { CategoriesService } from '@/api/services/categories-service'
 import { InventoryMovementsService } from '@/api/services/inventory-movements-service'
+import { UsersService } from '@/api/services/users-service'
 import { ENV } from '@/constants'
 
 const nextApiClient = NextApiClient()
@@ -14,6 +15,7 @@ nextApiClient.setBaseUrl(ENV.serverUrl)
 
 export function useApi() {
   return {
+    usersService: UsersService(nextApiClient),
     reportsService: ReportsService(nextApiClient),
     inventoryMovementService: InventoryMovementsService(nextApiClient),
     productsService: ProductsService(nextApiClient),
