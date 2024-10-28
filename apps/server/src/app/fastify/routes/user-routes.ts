@@ -22,7 +22,7 @@ export const UsersRoutes = async (app: FastifyInstance) => {
     return updateUserController.handle(http)
   })
 
-  app.delete('/userId', async (request, response) => {
+  app.delete('/', async (request, response) => {
     const http = new FastifyHttp(request, response)
     return deleteUsersController.handle(http)
   })
