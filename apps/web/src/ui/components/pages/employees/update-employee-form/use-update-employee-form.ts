@@ -1,4 +1,6 @@
+import { useApi, useToast } from '@/ui/hooks'
 import { zodResolver } from '@hookform/resolvers/zod'
+import type { UserDto } from '@stocker/core/dtos'
 import type { User } from '@stocker/core/entities'
 import { emailSchema, nameSchema, passwordSchema } from '@stocker/validation/schemas'
 import { useForm } from 'react-hook-form'
@@ -30,6 +32,8 @@ export function useUpdateEmployeeForm({
   onCancel,
   onSubmit,
 }: useUpdateEmployeeFormProps) {
+  const { usersService } = useApi()
+  const { showSuccess, showError } = useToast()
   const { formState, reset, register, handleSubmit, control } =
     useForm<updateEmployeeFormData>({
       defaultValues: {
@@ -44,8 +48,29 @@ export function useUpdateEmployeeForm({
       resolver: zodResolver(updateEmployeeFormSchema),
     })
   async function handleFormSubmit(formData: updateEmployeeFormData) {
-    console.log(formData)
-    onSubmit()
+    const partialUser: Record<string, unknown> = {}
+    const updatedFields = Object.keys(formState.dirtyFields)
+    for (const updatedField of updatedFields) {
+      const updatedValue = formData[updatedField as keyof updateEmployeeFormData]
+      partialUser[updatedField] = updatedValue
+    }
+    if (!employee.id) {
+      return
+    }
+    const response = await usersService.updateUser(
+      partialUser as Partial<UserDto>,
+      employee.id,
+    )
+    if (response.isFailure) {
+      showError(response.errorMessage)
+      return
+    }
+    if (response.isSuccess) {
+      showSuccess('Funcinário atualizado com sucesso!')
+      reset()
+      onCancel()
+      onSubmit()
+    }
   }
   return {
     errors: formState.errors,

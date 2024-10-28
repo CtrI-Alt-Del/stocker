@@ -13,9 +13,11 @@ export const EmployeesPage = () => {
   const {
     page,
     totalPages,
+    isDeleting,
     tempoUser,
     selectedEmployeesIds,
     isLoading,
+    handleRegisterEmployeeFormSubmit,
     handleUpdateEmployee,
     handleEmployeesSelectionChange,
     handlePageChange,
@@ -27,13 +29,13 @@ export const EmployeesPage = () => {
         <div className='flex flex-col gap-3 md:flex-row md:gap-0 justify-between'>
           <div className='flex-1 w-full max-w-96 space-y-2'>
             <h1 className='text-3xl font-black'>Funcionários</h1>
-            <Search value={''} onSearchChange={() => {}} />
+            <Search value={''} onSearchChange={() => { }} />
           </div>
           <div className='flex items-center justify-center gap-1'>
             {selectedEmployeesIds.length > 0 && (
               <AlertDialog
                 trigger={
-                  <Button color='danger' isLoading={isLoading}>
+                  <Button color='danger' isLoading={isDeleting}>
                     Deletar funcionários
                   </Button>
                 }
@@ -52,7 +54,13 @@ export const EmployeesPage = () => {
               }
             >
               {(closeDrawer) => (
-                <RegisterEmployeeForm onSubmit={() => {}} onCancel={closeDrawer} />
+                <RegisterEmployeeForm
+                  onSubmit={async () => {
+                    await handleRegisterEmployeeFormSubmit()
+                    closeDrawer()
+                  }}
+                  onCancel={closeDrawer}
+                />
               )}
             </Drawer>
           </div>
