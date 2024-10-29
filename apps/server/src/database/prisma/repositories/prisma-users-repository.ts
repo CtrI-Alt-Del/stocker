@@ -26,7 +26,7 @@ export class PrismaUsersRepository implements IUsersRepository {
     }
   }
 
-  async deleteMany(usersIds: string[], companyId: string): Promise<void> {
+  async deleteMany(usersIds: string[]): Promise<void> {
     try {
       await prisma.product.deleteMany({
         where: {
@@ -38,7 +38,7 @@ export class PrismaUsersRepository implements IUsersRepository {
     }
   }
 
-  async findMany(params: UsersListParams): Promise<User[]> {
+  async findMany(params: UsersListParams) {
     try {
       const prismaUsers = await prisma.user.findMany({
         take: PAGINATION.itemsPerPage,
@@ -47,7 +47,15 @@ export class PrismaUsersRepository implements IUsersRepository {
           company_id: params.companyId,
         },
       })
-      return prismaUsers.map((prismaUser) => this.mapper.toDomain(prismaUser))
+
+      const count = await prisma.user.count({
+        where: { company_id: params.companyId },
+      })
+
+      return {
+        users: prismaUsers.map((prismaUser) => this.mapper.toDomain(prismaUser)),
+        count,
+      }
     } catch (error) {
       throw new PrismaError(error)
     }
