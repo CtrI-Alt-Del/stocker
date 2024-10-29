@@ -37,6 +37,7 @@ export class SubscribeUseCase {
         const company = Company.create(companyDto)
         await this.companiesRepository.add(company)
 
+        userDto.companyId = company.id
         const user = User.create(userDto)
         await this.usersRepository.add(user)
     }
