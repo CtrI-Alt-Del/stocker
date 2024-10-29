@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@stocker/typescript-config": "*",
-    "@types/node": "^20",
+    "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "typescript": "5.5.4"
