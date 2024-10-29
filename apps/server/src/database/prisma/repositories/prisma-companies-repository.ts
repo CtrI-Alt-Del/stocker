@@ -79,4 +79,20 @@ export class PrismaCompaniesRepository implements ICompaniesRepository {
       throw new PrismaError(error)
     }
   }
+
+  async findByCnpj(companyCnpj: string): Promise<Company | null> {
+    try {
+      const prismaCompany = await prisma.company.findFirst({
+        where: {
+          cnpj: companyCnpj,
+        },
+      })
+
+      if (!prismaCompany) return null
+
+      return this.mapper.toDomain(prismaCompany)
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
 }
