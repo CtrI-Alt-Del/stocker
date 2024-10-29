@@ -38,7 +38,7 @@ export class PrismaUsersRepository implements IUsersRepository {
     }
   }
 
-  async findMany(params: UsersListParams): Promise<User[]> {
+  async findMany(params: UsersListParams): Promise<{ users: User[]; count: number }> {
     try {
       const prismaUsers = await prisma.user.findMany({
         take: PAGINATION.itemsPerPage,
@@ -47,7 +47,11 @@ export class PrismaUsersRepository implements IUsersRepository {
           company_id: params.companyId,
         },
       })
-      return prismaUsers.map((prismaUser) => this.mapper.toDomain(prismaUser))
+      const count = await prisma.user.count()
+      return {
+        users: prismaUsers.map((prismaUser) => this.mapper.toDomain(prismaUser)),
+        count,
+      }
     } catch (error) {
       throw new PrismaError(error)
     }

@@ -5,7 +5,7 @@ import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 import { usersRepository } from '@/database'
 
 type RouteParams = {
-  page: string,
+  page: string
   companyId: string
 }
 
@@ -13,6 +13,9 @@ export class ListUsersController {
   async handle(http: IHttp) {
     const { page } = http.getQueryParams<RouteParams>()
     const { companyId } = await http.getUser()
+    if (!companyId) {
+      return http.send(null, HTTP_STATUS_CODE.badRequest)
+    }
     const pageNumber = parseInt(page || '1', 10)
 
     const useCase = new ListUsersUseCase(usersRepository)
