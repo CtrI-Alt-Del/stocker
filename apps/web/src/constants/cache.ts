@@ -2,6 +2,9 @@ export const CACHE = {
   product: {
     key: '/product',
   },
+  users: {
+    key: '/users'
+  },
   productsList: {
     key: '/products-list',
   },
