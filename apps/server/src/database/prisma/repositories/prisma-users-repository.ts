@@ -81,4 +81,16 @@ export class PrismaUsersRepository implements IUsersRepository {
       throw new PrismaError(error)
     }
   }
+
+  async findByEmail(userEmail: string): Promise<User | null> {
+    try {
+      const prismaUser = await prisma.user.findFirst({
+        where: { email: userEmail },
+      })
+      if (!prismaUser) return null
+      return this.mapper.toDomain(prismaUser)
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
 }
