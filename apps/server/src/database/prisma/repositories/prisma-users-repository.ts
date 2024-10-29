@@ -18,6 +18,7 @@ export class PrismaUsersRepository implements IUsersRepository {
           name: prismaUser.name,
           email: prismaUser.email,
           password: prismaUser.password,
+          role: prismaUser.role,
           company_id: prismaUser.company_id,
         },
       })
