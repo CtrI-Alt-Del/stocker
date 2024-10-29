@@ -18,11 +18,12 @@ import { IconButton } from '@/ui/components/commons/icon-button'
 import { useRef } from 'react'
 import type { DrawerRef } from '@/ui/components/commons/drawer/types'
 import { useEmployeesTable } from './use-employees-table'
+import { UserDto } from '@stocker/core/dtos'
 
 type EmployeesTableProps = {
   page: number
   isLoading: boolean
-  employees: User[]
+  employees: UserDto[]
   totalPages: number
   selectionMode?: 'single' | 'multiple'
   selectedEmployeesIds: string[]
@@ -88,7 +89,7 @@ export const EmployeesTable = ({
         <TableBody
           items={employees}
           isLoading={isLoading}
-          loadingContent={<Spinner color='primary' />}
+          loadingContent={<Spinner color='primary' label='Carregando...' />}
           aria-label='counteudo da tabela'
           emptyContent={'Nenhum funcionário cadastrado'}
         >

@@ -12,10 +12,10 @@ import {
   Textarea,
 } from '@nextui-org/react'
 import { useUpdateEmployeeForm } from './use-update-employee-form'
-import type { User } from '@stocker/core/entities'
+import type { UserDto } from '@stocker/core/dtos'
 
 type UpdateEmployeeCategoryProps = {
-  employee: User
+  employee: UserDto
 
   onCancel: VoidFunction
   onSubmit: VoidFunction

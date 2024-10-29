@@ -10,7 +10,7 @@ export const RequestPasswordResetForm = () => {
         className='grid grid-rows-4 gap-8 md:gap-2 w-full h-full'
       >
         <div className='flex items-center flex-col justify-center'>
-          <h1 className='font-bold md:text-4xl text-2xl text-default-700'>
+          <h1 className='font-bold md:text-4xl text-2xl '>
             Redefina sua Senha
           </h1>
           <p className='  sm:text-md text-sm   text-default-400'>

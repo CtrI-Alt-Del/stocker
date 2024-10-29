@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 type useUpdateEmployeeFormProps = {
-  employee: User
+  employee: UserDto
   onCancel: VoidFunction
   onSubmit: VoidFunction
 }
