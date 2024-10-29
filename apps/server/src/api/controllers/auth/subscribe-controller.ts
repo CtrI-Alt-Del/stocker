@@ -6,24 +6,25 @@ import type { IHttp } from '@stocker/core/interfaces'
 import { SubscribeUseCase } from '@stocker/core/use-cases'
 
 type Body = {
-  userDto: UserDto
-  companyDto: CompanyDto
+  user: UserDto
+  company: CompanyDto
 }
 
 export class SubscribeController {
   async handle(http: IHttp) {
-    const { userDto, companyDto } = http.getBody<Body>()
+    const { user, company } = http.getBody<Body>()
     const useCase = new SubscribeUseCase(
       usersRepository,
       companiesRepository,
       cryptoProvider,
     )
     await useCase.execute({
-      userDto,
-      companyDto,
+      userDto: user,
+      companyDto: company,
     })
 
-    const jwt = http.setJwt(userDto)
-    return http.send(jwt, HTTP_STATUS_CODE.created)
+    const jwt = await http.setJwt(user)
+
+    return http.send({ jwt }, HTTP_STATUS_CODE.created)
   }
 }
