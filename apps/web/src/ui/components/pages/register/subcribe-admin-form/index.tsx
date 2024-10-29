@@ -25,8 +25,8 @@ export const SubscribeAdminForm = () => {
 
   return (
     <div className='flex items-center justify-center flex-col flex-1  gap-5 p-6 '>
-      <h1 className='text-3xl font-bold w-full text-center'>Cadastre sua conta</h1>
-      <form onSubmit={handleSubmit} className='grid grid-rows-5 gap-5 w-full max-w-md'>
+      <h1 className='text-xl lg:text-3xl font-bold w-full text-center'>Cadastre sua conta</h1>
+      <form onSubmit={handleSubmit} className='grid grid-rows-6 gap-4 w-full h-auto'>
         <Input
           label='Nome'
           placeholder='Digite seu nome'
