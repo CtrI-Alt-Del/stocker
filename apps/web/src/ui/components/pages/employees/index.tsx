@@ -14,7 +14,7 @@ export const EmployeesPage = () => {
     page,
     totalPages,
     isDeleting,
-    tempoUser,
+    users,
     selectedEmployeesIds,
     isLoading,
     handleRegisterEmployeeFormSubmit,
@@ -70,7 +70,7 @@ export const EmployeesPage = () => {
           onPageChange={handlePageChange}
           isLoading={isLoading}
           totalPages={totalPages}
-          employees={tempoUser}
+          employees={users}
           onUpdateEmployee={handleUpdateEmployee}
           onEmployeesSelectionChange={handleEmployeesSelectionChange}
           selectedEmployeesIds={selectedEmployeesIds}

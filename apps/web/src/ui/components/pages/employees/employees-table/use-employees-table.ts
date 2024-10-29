@@ -1,10 +1,12 @@
 import type { DrawerRef } from '@/ui/components/commons/drawer/types'
 import type { Selection } from '@nextui-org/react'
+import type { UserDto } from '@stocker/core/dtos'
 import type { User } from '@stocker/core/entities'
-import { RefObject, useState } from 'react'
+import type { RefObject } from 'react'
+import { useState } from 'react'
 
 type useEmployeesTableProps = {
-  employees: User[]
+  employees: UserDto[]
   drawerRef: RefObject<DrawerRef>
   onUpdateEmployee?: VoidFunction
   onEmployeesSelectionChange?: (employeesIds: string[]) => void
@@ -15,9 +17,9 @@ export function useEmployeesTable({
   onUpdateEmployee,
   onEmployeesSelectionChange,
 }: useEmployeesTableProps) {
-  const [employeeBeingEditted, setEmployeeBeingEditted] = useState<User | null>(null)
+  const [employeeBeingEditted, setEmployeeBeingEditted] = useState<UserDto | null>(null)
 
-  function handleEditEmployeeButtonClick(employee: User) {
+  function handleEditEmployeeButtonClick(employee: UserDto) {
     setEmployeeBeingEditted(employee)
     drawerRef.current?.open()
   }
@@ -36,7 +38,7 @@ export function useEmployeesTable({
   function handleSelectionChange(selection: Selection) {
     if (!onEmployeesSelectionChange) return
     if (selection === 'all') {
-      onEmployeesSelectionChange(employees.map((employee) => employee.id))
+      onEmployeesSelectionChange(employees.map((employee) => employee.id || ''))
     }
     onEmployeesSelectionChange(Array.from(selection) as string[])
   }
