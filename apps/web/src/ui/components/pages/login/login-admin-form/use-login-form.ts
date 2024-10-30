@@ -6,14 +6,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 const loginAdminFormSchema = z
   .object({
-    adminEmail: emailSchema,
+    email: emailSchema,
     password: passwordSchema,
   })
 
 type LoginAdminFormData = z.infer<typeof loginAdminFormSchema>
 
 export function useLoginAdminForm(onSubmit: VoidFunction) {
-  const { control, getValues, formState, reset, handleSubmit } =
+  const { register, formState, handleSubmit } =
     useForm<LoginAdminFormData>({
       resolver: zodResolver(loginAdminFormSchema),
     })
@@ -21,9 +21,7 @@ export function useLoginAdminForm(onSubmit: VoidFunction) {
     console.log(formData)
   }
   return {
-    control,
-    reset,
-    getValues,
+    registerField: register,
     errors: formState.errors,
     handleSubmit: handleSubmit(handleFormSubmit),
   }

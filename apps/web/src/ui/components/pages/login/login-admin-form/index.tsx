@@ -3,10 +3,10 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useState } from 'react'
 import { Icon } from '@/ui/components/commons/icon'
-import { useLoginAdminForm } from './use-login-admin-form'
+import { useLoginAdminForm } from './use-login-form'
 
 export const LoginAdminForm = () => {
-  const { getValues, control, handleSubmit, reset, errors } = useLoginAdminForm(
+  const { handleSubmit, registerField , errors } = useLoginAdminForm(
     () => { },
   )
   const [showPassword, setShowPassword] = useState<Boolean>(false)
@@ -27,9 +27,9 @@ export const LoginAdminForm = () => {
           placeholder='Digite seu email'
           labelPlacement='outside'
           size='md'
-        //   {...getValues('adminEmail')}
-          isInvalid={Boolean(errors.adminEmail)}
-          errorMessage={errors.adminEmail?.message}
+          {...registerField('email')}
+          isInvalid={Boolean(errors.email)}
+          errorMessage={errors.email?.message}
         />
 
         <Input
@@ -38,7 +38,7 @@ export const LoginAdminForm = () => {
           placeholder='Digite sua senha'
           labelPlacement='outside'
           size='md'
-        //   {...getValues('password')}
+          {...registerField('password')}
           isInvalid={Boolean(errors.password)}
           errorMessage={errors.password?.message}
           endContent={
