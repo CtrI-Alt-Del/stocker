@@ -12,20 +12,13 @@ type useUpdateEmployeeFormProps = {
   onSubmit: VoidFunction
 }
 
-const updateEmployeeFormSchema = z
-  .object({
-    name: nameSchema,
-    email: emailSchema,
-    role: z.enum(['manager', 'employee'], {
-      message: 'Cargo é obrigatório',
-    }),
-    password: passwordSchema,
-    confirmPassword: passwordSchema,
-  })
-  .refine((set) => set.password === set.confirmPassword, {
-    message: 'As senhas não estão iguais',
-    path: ['confirmPassword'],
-  })
+const updateEmployeeFormSchema = z.object({
+  name: nameSchema,
+  email: emailSchema,
+  role: z.enum(['manager', 'employee'], {
+    message: 'Cargo é obrigatório',
+  }),
+})
 type updateEmployeeFormData = z.infer<typeof updateEmployeeFormSchema>
 export function useUpdateEmployeeForm({
   employee,
@@ -39,8 +32,6 @@ export function useUpdateEmployeeForm({
       defaultValues: {
         name: employee.name,
         email: employee.email,
-        password: employee.password,
-        confirmPassword: employee.password,
         role: ['manager', 'employee'].includes(employee.role)
           ? (employee.role as 'manager' | 'employee')
           : undefined,
@@ -59,7 +50,7 @@ export function useUpdateEmployeeForm({
     }
     const response = await usersService.updateUser(
       partialUser as Partial<UserDto>,
-      employee.id,
+      employee.id
     )
     if (response.isFailure) {
       showError(response.errorMessage)
