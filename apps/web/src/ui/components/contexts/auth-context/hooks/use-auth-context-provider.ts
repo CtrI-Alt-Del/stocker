@@ -9,8 +9,19 @@ import type { UserRole } from '@stocker/core/types'
 
 import { COOKIES, ROUTES } from '@/constants'
 import { useApi, useCookies, useNavigation, useToast } from '@/ui/hooks'
+import type { deleteCookieAction, setCookieAction } from '@/actions'
 
-export function useAuthContextProvider(userDto: UserDto | null) {
+type UseAuthContextProvider = {
+  userDto: UserDto | null
+  setCookieAction: typeof setCookieAction
+  deleteCookieAction: typeof deleteCookieAction
+}
+
+export function useAuthContextProvider({
+  userDto,
+  setCookieAction,
+  deleteCookieAction,
+}: UseAuthContextProvider) {
   const [user, setUser] = useState<User | null>(userDto ? User.create(userDto) : null)
   const { authService } = useApi()
   const { showError } = useToast()
@@ -38,7 +49,7 @@ export function useAuthContextProvider(userDto: UserDto | null) {
       const user = User.create(userDto)
       setUser(user)
 
-      await setCookie(COOKIES.jwt.key, response.body.jwt)
+      await setCookieAction(COOKIES.jwt.key, response.body.jwt, COOKIES.jwt.duration)
 
       const route = getRouteByUserRole(user.role)
       navigateTo(route)
@@ -56,7 +67,7 @@ export function useAuthContextProvider(userDto: UserDto | null) {
       const user = User.create(userDto)
       setUser(user)
 
-      await setCookie(COOKIES.jwt.key, response.body.jwt)
+      await setCookieAction(COOKIES.jwt.key, response.body.jwt, COOKIES.jwt.duration)
 
       const route = getRouteByUserRole(user.role)
       navigateTo(route)
@@ -70,7 +81,7 @@ export function useAuthContextProvider(userDto: UserDto | null) {
     const response = await authService.logout()
 
     if (response.isSuccess) {
-      await deleteCookie(COOKIES.jwt.key)
+      await deleteCookieAction(COOKIES.jwt.key)
       setUser(null)
       navigateTo(ROUTES.dashboard)
       return

@@ -14,7 +14,6 @@ export const envSchema = z.object({
   supabaseKey: stringSchema,
   databaseUrl: stringSchema,
   directUrl: urlSchema,
-  supabaseUrl: stringSchema,
   jwtSecret: stringSchema,
 })
 
@@ -29,7 +28,7 @@ const validation = envSchema.safeParse({
 })
 
 if (!validation.success) {
-  throw new AppError('Env Error', validation.error.issues.join(', '))
+  throw new AppError('Env Error', String(validation.error.issues))
 }
 
 export const ENV = validation.data
