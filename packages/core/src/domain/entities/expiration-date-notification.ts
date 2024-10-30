@@ -15,7 +15,7 @@ export class ExpirationDateNotification extends Notification<ExpirationDateNotif
     return new ExpirationDateNotification(
       {
         companyId: dto.companyId,
-        createdAt: dto.createdAt,
+        createdAt: dto.createdAt ?? new Date(),
         batch: dto.batch,
       },
       dto.id,
