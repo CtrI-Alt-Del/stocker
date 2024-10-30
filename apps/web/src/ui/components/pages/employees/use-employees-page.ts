@@ -32,7 +32,9 @@ export function useEmployeesPage() {
   }
   async function handleDeleteEmployeesAlertDialogConfirm() {
     setIsDeleting(true)
-    const response = await usersService.deleteUser(selectedEmployeesIds)
+    const response = await usersService.deleteUser(
+      selectedEmployeesIds,
+    )
     if (response.isFailure) {
       showError(response.errorMessage)
     }
@@ -45,6 +47,7 @@ export function useEmployeesPage() {
     }
     setSelectdEmployeesIds([])
     setIsDeleting(false)
+    refetch()
   }
   function handleEmployeesSelectionChange(employeesIds: string[]) {
     setSelectdEmployeesIds(employeesIds)

@@ -7,5 +7,5 @@ export interface IUsersRepository {
   findByEmail(userEmail: string): Promise<User | null>
   add(user: User): Promise<void>
   update(user: User, userId: string): Promise<void>
-  deleteMany(usersIds: string[], companyId: string): Promise<void>
+  deleteMany(usersIds: string[] ): Promise<void>
 }

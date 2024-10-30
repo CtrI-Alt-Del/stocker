@@ -1,6 +1,7 @@
+"use server"
 import { cookies } from 'next/headers'
 
-export function useCookies() {
+export async function useCookies() {
   async function getCookie<Data>(key: string) {
     'use server'
 
