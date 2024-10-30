@@ -19,6 +19,6 @@ export class UpdateUserUseCase {
       throw new NotFoundError('User não encontrado')
     }
     const updatedUser = user.update(userDto)
-    await this.userRepository.update(updatedUser)
+    await this.userRepository.update(updatedUser,user.id)
   }
 }
