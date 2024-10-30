@@ -11,4 +11,6 @@ export const ROUTES = {
     locations: '/records/locations',
     employees: '/records/employees',
   },
+  login: '/login',
+  subscribe: '/subscribe',
 }
