@@ -9,8 +9,7 @@ import {
   passwordSchema,
 } from '@stocker/validation/schemas'
 import type { CompanyDto, UserDto } from '@stocker/core/dtos'
-import { useApi, useNavigation, useToast } from '@/ui/hooks'
-import { ROUTES } from '@/constants'
+import { useAuthContext } from '@/ui/components/contexts/auth-context'
 
 const subscribeFormSchema = z
   .object({
@@ -32,9 +31,7 @@ export function useSubscribeForm() {
   const { formState, control, register, handleSubmit } = useForm<SubscribeFormData>({
     resolver: zodResolver(subscribeFormSchema),
   })
-  const { authService } = useApi()
-  const { showError } = useToast()
-  const { navigateTo } = useNavigation()
+  const { subscribe } = useAuthContext()
 
   async function handleFormSubmit(formData: SubscribeFormData) {
     const userDto: UserDto = {
@@ -50,16 +47,7 @@ export function useSubscribeForm() {
       name: formData.companyName,
     }
 
-    const response = await authService.subscribe(userDto, companyDto)
-
-    if (response.isFailure) {
-      showError(response.errorMessage)
-      return
-    }
-
-    if (response.isSuccess) {
-      navigateTo(ROUTES.records.employees)
-    }
+    await subscribe(userDto, companyDto)
   }
 
   return {

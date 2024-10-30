@@ -1,3 +1,5 @@
+'use client'
+
 import { Button, Input } from '@nextui-org/react'
 import Link from 'next/link'
 
