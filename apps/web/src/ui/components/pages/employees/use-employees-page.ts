@@ -1,4 +1,5 @@
-import { useApi, useToast, useUrlParamNumber } from '@/ui/hooks'
+import { CACHE } from '@/constants'
+import { useApi, useCache, useToast, useUrlParamNumber } from '@/ui/hooks'
 import type { UserDto } from '@stocker/core/dtos'
 import { useState } from 'react'
 
@@ -11,30 +12,23 @@ export function useEmployeesPage() {
   function handlePageChange(page: number) {
     setPage(page)
   }
-  // THIS HERE GENERATES A ERROR SINCE ITS MOCK DATA IN CLIENT SIDE!!!! BUT ITS TEMPORARY SO WHATEVER
-  const tempoUser: UserDto[] = [
-    {
-      id: '1',
-      role: 'manager',
-      email: 'manager@example.com',
-      name: 'Alice Manager',
-      password: 'securePassword1',
-    },
-    {
-      id: '2',
-      role: 'employee',
-      email: 'employee@example.com',
-      name: 'Bob Employee',
-      password: 'securePassword2',
-    },
-  ]
-  const isLoading = false
-  const totalPages = 11
-  async function handleUpdateEmployee() {
-    console.log('banana')
+  async function fetchUsers() {
+    const response = await usersService.listUsers({ page, companyId: '123' })
+    if (response.isFailure) {
+      showError(response.errorMessage)
+    }
+    return response.body
   }
-  async function handleRegisterEmployeeFormSubmit(){
-    console.log("banana")
+  const { data, isFetching, refetch } = useCache({
+    fetcher: fetchUsers,
+    key: CACHE.users.key,
+    dependencies: [page],
+  })
+  async function handleUpdateEmployee() {
+    refetch()
+  }
+  async function handleRegisterEmployeeFormSubmit() {
+    refetch()
   }
   async function handleDeleteEmployeesAlertDialogConfirm() {
     setIsDeleting(true)
@@ -55,6 +49,8 @@ export function useEmployeesPage() {
   function handleEmployeesSelectionChange(employeesIds: string[]) {
     setSelectdEmployeesIds(employeesIds)
   }
+  const users = data?.items ? data.items : []
+  const totalPages = data?.itemsCount ? data.itemsCount : 0
   return {
     handleRegisterEmployeeFormSubmit,
     handleDeleteEmployeesAlertDialogConfirm,
@@ -62,8 +58,8 @@ export function useEmployeesPage() {
     page,
     isDeleting,
     handlePageChange,
-    tempoUser,
-    isLoading,
+    users,
+    isLoading: isFetching,
     handleEmployeesSelectionChange,
     selectedEmployeesIds,
     handleUpdateEmployee,

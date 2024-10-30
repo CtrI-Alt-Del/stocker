@@ -3,24 +3,30 @@ type LogoProps = {
   width?: number
   height?: number
   direction?: 'flex-row' | 'flex-col'
-  className?:string
+  className?: string
   text?: 'lg' | 'md'
 }
-export const Logo = ({ text, width, height, direction,className }: LogoProps) => {
+export const Logo = ({
+  text,
+  width = 40,
+  height = 40,
+  direction,
+  className,
+}: LogoProps) => {
   return (
     <div className={`flex items-center ${direction || 'flex-row'} gap-2`}>
       <Image
         src='/images/camel.png'
-        width={width || 40}
-        height={height || 40}
-        alt='Camel'
-        className={`${width ? className : 'size-10'}`}
+        width={width}
+        height={height}
+        alt='Camelo negro carregando dois containers de laranja nas costas'
+        className={className}
       />
-      <h1
+      <strong
         className={`font-bold text-zinc-900 ${text === 'lg' ? 'text-7xl' : 'text-3xl'}`}
       >
         Stocker
-      </h1>
+      </strong>
     </div>
   )
 }

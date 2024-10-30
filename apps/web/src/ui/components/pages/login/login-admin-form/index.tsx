@@ -60,7 +60,7 @@ export const LoginAdminForm = () => {
         />
         <p className='text-xs pb-4 justify-items-end'>
             Esqueceu sua senha?{' '}
-            <Link href='/#' className='font-black'>
+            <Link href='/request-reset' className='font-black'>
               Clique aqui!
             </Link>
           </p>

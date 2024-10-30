@@ -1,3 +1,5 @@
 import { z } from 'zod'
 
-export const stringSchema = z.string().min(1, 'texto inválido')
+export const stringSchema = z
+  .string({ message: 'texto inválido' })
+  .min(1, 'texto inválido')

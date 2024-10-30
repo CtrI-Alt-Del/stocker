@@ -1,5 +1,4 @@
 import { parseAsInteger, useQueryState } from 'nuqs'
-
 export function useUrlParamNumber(
   key: string,
   defeaulNumber = 0,

@@ -9,7 +9,7 @@ export class PrismaUsersMapper {
       email: prismaUser.email,
       password: prismaUser.password,
       role: prismaUser.role.toLowerCase() as 'admin' | 'manager' | 'employee',
-      companyId: prismaUser.company_id
+      companyId: prismaUser.company_id,
     })
     return user
   }
@@ -21,7 +21,7 @@ export class PrismaUsersMapper {
       email: user.email,
       password: user.password,
       role: user.role.toUpperCase() as 'ADMIN' | 'MANAGER' | 'EMPLOYEE',
-      company_id: user.companyId
+      company_id: user.companyId,
     }
   }
 }
