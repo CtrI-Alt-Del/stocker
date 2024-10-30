@@ -29,7 +29,7 @@ export class PrismaUsersRepository implements IUsersRepository {
 
   async deleteMany(usersIds: string[]): Promise<void> {
     try {
-      await prisma.product.deleteMany({
+      await prisma.user.deleteMany({
         where: {
           id: { in: usersIds },
         },
