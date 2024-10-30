@@ -5,5 +5,5 @@ export type ExpirationDateNotificationDto = {
     id: string
     code: string
   }
-  createdAt: Date
+  createdAt?: Date | undefined
 }
