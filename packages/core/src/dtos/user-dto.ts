@@ -4,5 +4,6 @@ export type UserDto = {
   email: string
   name: string
   companyId: string
-  password: string
+  hasFirstPasswordReset: boolean
+  password?: string
 }

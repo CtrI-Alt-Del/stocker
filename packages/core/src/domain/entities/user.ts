@@ -9,7 +9,10 @@ type UserProps = {
   name: string
   password: string
   companyId: string
+  hasFirstPasswordReset: boolean
 }
+
+const DEAFAULT_PASSWORD = 'stocker@123'
 
 export class User extends Entity<UserProps> {
   static create(dto: UserDto): User {
@@ -23,9 +26,10 @@ export class User extends Entity<UserProps> {
       {
         name: dto.name,
         email: dto.email,
-        password: dto.password,
+        password: dto.password ?? DEAFAULT_PASSWORD,
         companyId: dto.companyId,
         role: role,
+        hasFirstPasswordReset: dto.hasFirstPasswordReset,
       },
       dto.id,
     )
@@ -68,6 +72,10 @@ export class User extends Entity<UserProps> {
     return this.props.password
   }
 
+  get hasFirstPasswordReset(): boolean {
+    return this.props.hasFirstPasswordReset
+  }
+
   get companyId(): string {
     return this.props.companyId
   }
@@ -79,6 +87,7 @@ export class User extends Entity<UserProps> {
       email: this.props.email,
       name: this.props.name,
       password: this.props.password,
+      hasFirstPasswordReset: this.props.hasFirstPasswordReset,
       companyId: this.props.companyId,
     }
   }
