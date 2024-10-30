@@ -7,4 +7,5 @@ export interface IAuthService {
     userDto: UserDto,
     companyDto: CompanyDto,
   ): Promise<ApiResponse<{ jwt: string }>>
+  logout(): Promise<ApiResponse>
 }
