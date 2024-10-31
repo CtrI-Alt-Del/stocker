@@ -2,27 +2,29 @@
 
 import { createContext, type ReactNode } from 'react'
 
-import type { UserDto } from '@stocker/core/dtos'
-
-import type { AuthContextValue } from './types'
-import { useAuthContext, useAuthContextProvider } from './hooks'
 import { deleteCookieAction, setCookieAction } from '@/actions'
+import { useAuthContext, useAuthContextProvider } from './hooks'
+import type { AuthContextValue } from './types'
 
 const AuthContext = createContext({} as AuthContextValue)
 
 type AuthContextProviderProps = {
   children: ReactNode
-  userDto: UserDto | null
+  jwt: string | null
 }
 
-const AuthContextProvider = ({ children, userDto }: AuthContextProviderProps) => {
+const AuthContextProvider = ({ children, jwt }: AuthContextProviderProps) => {
   const contextValue = useAuthContextProvider({
-    userDto,
+    jwt,
     setCookieAction,
     deleteCookieAction,
   })
 
-  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ jwt, ...contextValue }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 export { AuthContext, AuthContextProvider, useAuthContext }
