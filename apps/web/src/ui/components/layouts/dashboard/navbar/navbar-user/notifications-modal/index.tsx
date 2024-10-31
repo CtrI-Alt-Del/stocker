@@ -1,7 +1,8 @@
-import { Dialog } from '@/ui/components/commons/dialog'
 import { Tab, Tabs } from '@nextui-org/react'
-import { StockNotificationsTab } from './stock-notifications-tab'
+
+import { Dialog } from '@/ui/components/commons/dialog'
 import { IconButton } from '@/ui/components/commons/icon-button'
+import { NotificationCard } from './notification-card'
 
 export const NotifcationsDialog = () => {
   return (
@@ -17,10 +18,52 @@ export const NotifcationsDialog = () => {
           className='w-full bg-transparent'
         >
           <Tab key='stock' title='Produtos com estoque zero'>
-            <StockNotificationsTab />
+            <ul className='space-y-4 divide-y-2 min-h-80'>
+              <li>
+                <NotificationCard
+                  id=''
+                  href='/'
+                  icon='product'
+                  title='Produto muito dahora dahora demais'
+                  createdAt={new Date()}
+                  onRemove={() => {}}
+                />
+              </li>
+              <li>
+                <NotificationCard
+                  id=''
+                  href='/'
+                  icon='product'
+                  title='Produto muito dahora'
+                  createdAt={new Date()}
+                  onRemove={() => {}}
+                />
+              </li>
+              <li>
+                <NotificationCard
+                  id=''
+                  href='/'
+                  icon='product'
+                  title='Produto muito dahora'
+                  createdAt={new Date()}
+                  onRemove={() => {}}
+                />
+              </li>
+            </ul>
           </Tab>
-          <Tab key='expiration-date' title='Lotes fora da data de validade'>
-            <StockNotificationsTab />
+          <Tab key='expiration-date' title='Lotes perto da  data de validade'>
+            <ul className='space-y-4 divide-y-2 min-h-80'>
+              <li>
+                <NotificationCard
+                  id=''
+                  href='/'
+                  icon='batch'
+                  title='Lote muito dahora dahora demais'
+                  createdAt={new Date()}
+                  onRemove={() => {}}
+                />
+              </li>
+            </ul>
           </Tab>
         </Tabs>
       )}
