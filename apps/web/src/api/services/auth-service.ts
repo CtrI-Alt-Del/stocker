@@ -13,5 +13,9 @@ export const AuthService = (apiClient: IApiClient): IAuthService => {
         company: companyDto,
       })
     },
+
+    async logout() {
+      return await apiClient.post('/auth/logout')
+    },
   }
 }

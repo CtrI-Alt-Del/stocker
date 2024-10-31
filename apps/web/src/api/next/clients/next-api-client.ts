@@ -23,7 +23,6 @@ export const NextApiClient = (cacheConfig?: CacheConfig): IApiClient => {
       params = {}
       const data = await response.json()
 
-
       if (!response.ok) {
         return handleApiError<ResponseBody>(data, response.status)
       }
@@ -34,7 +33,7 @@ export const NextApiClient = (cacheConfig?: CacheConfig): IApiClient => {
       })
     },
 
-    async post<ResponseBody>(url: string, body: unknown) {
+    async post<ResponseBody>(url: string, body: unknown = {}) {
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
         method: 'POST',
         headers,
@@ -72,7 +71,7 @@ export const NextApiClient = (cacheConfig?: CacheConfig): IApiClient => {
       })
     },
 
-    async delete(url: string, body: unknown) {
+    async delete(url: string, body: unknown = {}) {
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
         method: 'DELETE',
         headers,
