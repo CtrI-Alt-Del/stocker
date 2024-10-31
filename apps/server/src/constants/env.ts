@@ -12,7 +12,8 @@ export const envSchema = z.object({
   port: integerSchema.default(3333),
   mode: appModeSchema,
   supabaseKey: stringSchema,
-  databaseUrl: stringSchema,
+  databaseUrl: urlSchema,
+  supabaseUrl: urlSchema,
   directUrl: urlSchema,
   jwtSecret: stringSchema,
 })
@@ -28,6 +29,7 @@ const validation = envSchema.safeParse({
 })
 
 if (!validation.success) {
+  console.log(validation.error.issues)
   throw new AppError('Env Error', String(validation.error.issues))
 }
 
