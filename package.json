@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "turbo build --filter=@stocker/web",
-    "dev": "turbo dev",
+    "dev": "turbo run dev --filter='!./packages/email'",
     "test": "turbo test"
   },
   "devDependencies": {
