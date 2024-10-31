@@ -1,10 +1,11 @@
-import { RequestPasswordResetController } from '@/api/controllers/auth'
-import { NextApiClient } from '@/api/next/clients'
+import type { NextRequest } from 'next/server'
 
-export default function POST() {
-  const apiClient = NextApiClient()
-  const http = 
+import { RequestPasswordResetController } from '@/api/controllers/auth'
+import { NextHttp } from '@/api/next/http'
+
+export default function POST(request: NextRequest) {
+  const http = NextHttp(request)
   const controller = RequestPasswordResetController()
 
-  return controller.handle()
+  return controller.handle(http)
 }
