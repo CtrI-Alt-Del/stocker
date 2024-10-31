@@ -14,5 +14,8 @@
   },
   "devDependencies": {
     "react-email": "3.0.1"
+  },
+  "exports": {
+    "./templates": "./src/templates/index.tsx"
   }
 }

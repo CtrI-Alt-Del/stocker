@@ -1,3 +1,4 @@
+import * as React from 'react'
 import {
   Body,
   Button,
@@ -11,15 +12,12 @@ import {
   Tailwind,
   Text,
 } from '@react-email/components'
-import * as React from 'react'
 
-type StockerResetPasswordEmailProps = {
+type ResetPasswordTemplateProps = {
   baseUrl: string
 }
 
-export const StockerResetPasswordEmail = ({
-  baseUrl,
-}: StockerResetPasswordEmailProps) => (
+const ResetPasswordTemplate = ({ baseUrl }: ResetPasswordTemplateProps) => (
   <Tailwind
     config={{
       theme: {
@@ -69,8 +67,8 @@ export const StockerResetPasswordEmail = ({
   </Tailwind>
 )
 
-StockerResetPasswordEmail.PreviewProps = {
+ResetPasswordTemplate.PreviewProps = {
   baseUrl: 'http://localhost:3000',
-} as StockerResetPasswordEmailProps
+} as ResetPasswordTemplateProps
 
-export default StockerResetPasswordEmail
+export default ResetPasswordTemplate
