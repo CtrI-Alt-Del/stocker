@@ -83,6 +83,7 @@ model User {
   role       UserRole @default(EMPLOYEE)
   name       String
   password   String
+  has_first_password_reset Boolean @default(true)
   company_id String
 
   Company            Company?            @relation(fields: [company_id], references: [id], onDelete: Cascade)
