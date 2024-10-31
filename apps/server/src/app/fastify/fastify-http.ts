@@ -6,6 +6,7 @@ import type { UserDto } from '@stocker/core/dtos'
 import { ValidationError } from '@stocker/core/errors'
 
 import { MAX_FILE_SIZE } from '@/constants'
+import { Datetime } from '@stocker/core/libs'
 
 export class FastifyHttp implements IHttp {
   constructor(
@@ -34,6 +35,10 @@ export class FastifyHttp implements IHttp {
     return this.reply.redirect(route)
   }
 
+  getCurrentRoute(): string {
+    return this.request.originalUrl
+  }
+
   async getUser() {
     await this.verifyJwt()
     return this.request.user as UserDto
@@ -41,6 +46,18 @@ export class FastifyHttp implements IHttp {
 
   setHeader(key: string, value: string): void {
     this.reply.header(key, value)
+  }
+
+  setCookie(key: string, value: string, duration: number): void {
+    this.reply.setCookie(key, value, {
+      httpOnly: true,
+      expires: new Datetime().addSeconds(duration),
+    })
+  }
+
+  getCookie<Data>(key: string): Data | null {
+    const cookie = this.request.cookies[key]
+    return cookie ? (JSON.stringify(cookie) as Data) : null
   }
 
   async setJwt(user: UserDto): Promise<string> {
