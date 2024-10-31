@@ -1,3 +1,3 @@
 export interface IEmailProvider {
-  sendPasswordResetEmail(confirmationToken: string): Promise<void>
+  sendPasswordResetEmail(recipientEmail: string, confirmationToken: string): Promise<void>
 }
