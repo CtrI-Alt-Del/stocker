@@ -13,6 +13,7 @@ export class UsersFaker {
       name: faker.person.fullName(),
       password: faker.internet.password(),
       companyId: '',
+      hasFirstPasswordReset: false,
       ...baseDto,
     }
   }
