@@ -7,6 +7,7 @@ export interface IHttp {
   setHeader(key: string, value: string): void
   setJwt(user: UserDto): Promise<string>
   destroyJwt(): void
+  setCookie(key: string, value: string, duration: number): void
   getUser(): Promise<UserDto>
   send(response: unknown, statusCode?: number): unknown
   redirect(route: string): unknown
