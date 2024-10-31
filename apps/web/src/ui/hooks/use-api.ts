@@ -11,11 +11,18 @@ import { CategoriesService } from '@/api/services/categories-service'
 import { InventoryMovementsService } from '@/api/services/inventory-movements-service'
 import { UsersService } from '@/api/services/users-service'
 import { BROWSER_ENV } from '@/constants'
+import { useAuthContext } from '../components/contexts/auth-context'
 
 const nextApiClient = NextApiClient()
 nextApiClient.setBaseUrl(BROWSER_ENV.serverUrl)
 
 export function useApi() {
+  const { jwt } = useAuthContext()
+
+  if (jwt) {
+    nextApiClient.setHeader('Authorization', `Bearer ${jwt}`)
+  }
+
   return {
     authService: AuthService(nextApiClient),
     usersService: UsersService(nextApiClient),

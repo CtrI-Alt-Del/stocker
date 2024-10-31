@@ -12,16 +12,17 @@ import { useApi, useNavigation, useToast } from '@/ui/hooks'
 import type { deleteCookieAction, setCookieAction } from '@/actions'
 
 type UseAuthContextProvider = {
-  userDto: UserDto | null
+  jwt: string | null
   setCookieAction: typeof setCookieAction
   deleteCookieAction: typeof deleteCookieAction
 }
 
 export function useAuthContextProvider({
-  userDto,
+  jwt,
   setCookieAction,
   deleteCookieAction,
 }: UseAuthContextProvider) {
+  const userDto = jwt ? jwtDecode<UserDto>(jwt) : null
   const [user, setUser] = useState<User | null>(userDto ? User.create(userDto) : null)
   const { authService } = useApi()
   const { showError } = useToast()
@@ -82,7 +83,7 @@ export function useAuthContextProvider({
     if (response.isSuccess) {
       await deleteCookieAction(COOKIES.jwt.key)
       setUser(null)
-      navigateTo(ROUTES.dashboard)
+      navigateTo(ROUTES.login)
       return
     }
 
