@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { AppError } from '@stocker/core/errors'
+import { EnvError } from '@stocker/core/errors'
 import {
   appModeSchema,
   integerSchema,
@@ -29,8 +29,7 @@ const validation = envSchema.safeParse({
 })
 
 if (!validation.success) {
-  console.log(validation.error.issues)
-  throw new AppError('Env Error', String(validation.error.issues))
+  throw new EnvError(validation.error.flatten().fieldErrors)
 }
 
 export const ENV = validation.data

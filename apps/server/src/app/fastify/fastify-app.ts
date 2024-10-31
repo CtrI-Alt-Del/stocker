@@ -3,7 +3,7 @@ import Multipart from '@fastify/multipart'
 import Cors from '@fastify/cors'
 import Cookies from '@fastify/cookie'
 
-import type { IServerApp } from '@stocker/core/interfaces'
+import type { IApp } from '@stocker/core/interfaces'
 import {
   AppError,
   NotAllowedError,
@@ -28,7 +28,7 @@ import {
 import Jwt from '@fastify/jwt'
 import { BatchesRoutes } from './routes/batches-routes'
 
-export class FastifyApp implements IServerApp {
+export class FastifyApp implements IApp {
   private readonly app: FastifyInstance
 
   constructor() {

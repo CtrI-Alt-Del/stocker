@@ -2,6 +2,7 @@ import type { DateFormat } from '../../libs/datetime/types'
 
 export interface IDatetime {
   format(dateFormat: DateFormat): string
+  addSeconds(secondsCount: number): Date
   addDays(daysCount: number): Date
   addMonths(monthssCount: number): Date
   addYears(yearsCount: number): Date

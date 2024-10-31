@@ -1,5 +1,5 @@
 export const ROUTES = {
-  dashboard: '/',
+  dashboard: '/dashboard',
   inventory: {
     stocks: '/inventory/stocks',
     movements: '/inventory/movements',

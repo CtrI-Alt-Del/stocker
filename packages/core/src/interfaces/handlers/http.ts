@@ -4,9 +4,11 @@ export interface IHttp {
   getBody<Body>(): Body
   getRouteParams<RouteParams>(): RouteParams
   getQueryParams<QueryParams>(): QueryParams
+  getCurrentRoute(): string
   setHeader(key: string, value: string): void
   setJwt(user: UserDto): Promise<string>
   destroyJwt(): void
+  getCookie<Data>(key: string): Data | null
   setCookie(key: string, value: string, duration: number): void
   getUser(): Promise<UserDto>
   send(response: unknown, statusCode?: number): unknown

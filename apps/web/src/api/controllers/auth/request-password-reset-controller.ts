@@ -13,6 +13,7 @@ export const RequestPasswordResetController = () => {
     async handle(http: IHttp) {
       const { email } = http.getBody<Body>()
 
+      // TODO: Instantiate use case with email provider
       // const useCase = new RequestPasswordResetUseCase(cryptoProvider)
       // const confirmationToken = await useCase.execute(email, ENV.passwordResetSecret)
 

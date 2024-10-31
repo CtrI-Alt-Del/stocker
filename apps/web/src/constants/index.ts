@@ -1,4 +1,4 @@
-export { ENV } from './env'
+export { BROWSER_ENV } from './browser-env'
 export { ROUTES } from './routes'
 export { CACHE } from './cache'
 export { IMAGE_PLACEHOLDER } from './image-placeholder'

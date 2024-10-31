@@ -10,10 +10,10 @@ import {
 import { CategoriesService } from '@/api/services/categories-service'
 import { InventoryMovementsService } from '@/api/services/inventory-movements-service'
 import { UsersService } from '@/api/services/users-service'
-import { ENV } from '@/constants'
+import { BROWSER_ENV } from '@/constants'
 
 const nextApiClient = NextApiClient()
-nextApiClient.setBaseUrl(ENV.serverUrl)
+nextApiClient.setBaseUrl(BROWSER_ENV.serverUrl)
 
 export function useApi() {
   return {
