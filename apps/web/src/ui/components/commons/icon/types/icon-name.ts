@@ -27,6 +27,7 @@ export type IconName =
   | 'supplier'
   | 'stock'
   | 'notification'
+  | 'logout'
   | 'inbound'
   | 'outbound'
   | 'link'

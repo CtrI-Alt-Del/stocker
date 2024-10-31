@@ -34,6 +34,7 @@ import {
   Plus,
   EyeClosed,
   CircleUserRoundIcon,
+  Power,
 } from 'lucide-react'
 
 import type { IconName } from '../types'
@@ -42,8 +43,8 @@ export const ICONS: Record<
   IconName,
   ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>
 > = {
-  "eye-closed": EyeClosed,
-  "settings-2": Settings2,
+  'eye-closed': EyeClosed,
+  'settings-2': Settings2,
   'square-user-round': SquareUserRound,
   'arrow-big-up-dash': ArrowBigUpDash,
   'arrow-big-down-dash': ArrowBigDownDash,
@@ -52,7 +53,8 @@ export const ICONS: Record<
   'arrow-up-down': ArrowUpDown,
   'menu-hamburguer': Menu,
   archive: Archive,
-  plus:Plus,
+  logout: Power,
+  plus: Plus,
   package: Package,
   dashboard: ChartBarStacked,
   ellipses: EllipsisVertical,
