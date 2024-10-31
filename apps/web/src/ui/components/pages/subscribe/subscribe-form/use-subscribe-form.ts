@@ -40,6 +40,7 @@ export function useSubscribeForm() {
       email: formData.email,
       password: formData.password,
       companyId: '',
+      hasFirstPasswordReset: false,
     }
 
     const companyDto: CompanyDto = {

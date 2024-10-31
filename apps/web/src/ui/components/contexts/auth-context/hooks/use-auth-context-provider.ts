@@ -8,7 +8,7 @@ import type { CompanyDto, UserDto } from '@stocker/core/dtos'
 import type { UserRole } from '@stocker/core/types'
 
 import { COOKIES, ROUTES } from '@/constants'
-import { useApi, useCookies, useNavigation, useToast } from '@/ui/hooks'
+import { useApi, useNavigation, useToast } from '@/ui/hooks'
 import type { deleteCookieAction, setCookieAction } from '@/actions'
 
 type UseAuthContextProvider = {
@@ -26,7 +26,6 @@ export function useAuthContextProvider({
   const { authService } = useApi()
   const { showError } = useToast()
   const { navigateTo } = useNavigation()
-  const { setCookie, deleteCookie } = useCookies()
 
   function getRouteByUserRole(role: UserRole) {
     switch (role) {
