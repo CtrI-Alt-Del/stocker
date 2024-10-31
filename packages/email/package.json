@@ -1,5 +1,5 @@
 {
-  "name": "email",
+  "name": "@stocker/email",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -16,6 +16,6 @@
     "react-email": "3.0.1"
   },
   "exports": {
-    "./templates": "./src/templates/index.tsx"
+    "./templates": "./src/templates/index.ts"
   }
 }
