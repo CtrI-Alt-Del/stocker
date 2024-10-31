@@ -4,6 +4,8 @@ import { type NextRequest, NextResponse } from 'next/server'
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 import type { IHttp } from '@stocker/core/interfaces'
 import type { UserDto } from '@stocker/core/dtos'
+import { BROWSER_ENV, COOKIES } from '@/constants'
+import { jwtDecode } from 'jwt-decode'
 
 type Cookie = {
   key: string
@@ -86,11 +88,12 @@ export const NextHttp = (request: NextRequest): IHttp => {
     },
 
     async getUser(): Promise<UserDto> {
-      throw new Error('Method not implemented')
+      const jwt = this.getCookie<string>(COOKIES.jwt.key)
+      return jwtDecode<UserDto>(jwt ?? '')
     },
 
     getCurrentRoute() {
-      return request.url
+      return `${request.url.split(BROWSER_ENV.appUrl)[1]}`
     },
 
     getQueryParams<QueryParams>(): QueryParams {

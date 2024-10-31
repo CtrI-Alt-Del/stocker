@@ -1,10 +1,11 @@
 import type { NextRequest, MiddlewareConfig } from 'next/server'
+
 import { NextHttp } from './api/next/http'
-import { VerifyJwtMiddleware } from './api/middlewares'
+import { RedirectByUserRoleMiddleware, VerifyJwtMiddleware } from './api/middlewares'
 
 const Middleware = async (request: NextRequest) => {
   const http = NextHttp(request)
-  const middlewares = [VerifyJwtMiddleware()]
+  const middlewares = [VerifyJwtMiddleware(), RedirectByUserRoleMiddleware()]
 
   for (const middleware of middlewares) {
     const response = await middleware.handle(http)
@@ -13,7 +14,7 @@ const Middleware = async (request: NextRequest) => {
 }
 
 export const config: MiddlewareConfig = {
-  matcher: '^(?:/(?:[^/]+/)*)([^/]+)(?:/([^/]+))?(?:/([^/]+))?$',
+  matcher: ['/', '/dashboard/:path*', '/inventory/:path*', '/records/:path*'],
 }
 
 export default Middleware
