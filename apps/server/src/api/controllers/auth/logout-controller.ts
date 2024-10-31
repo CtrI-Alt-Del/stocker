@@ -1,12 +1,9 @@
-import type { IHttp } from "@stocker/core/interfaces";
+import type { IHttp } from '@stocker/core/interfaces'
+import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 
-interface Body {
-    companyId: string
-}
 export class LogoutController {
-    async handle(http: IHttp) {
-        const companyId = http.getBody<Body>()
-
-        await http.destroyJwt()
-    }
+  async handle(http: IHttp) {
+    http.destroyJwt()
+    return http.send(null, HTTP_STATUS_CODE.ok)
+  }
 }
