@@ -58,7 +58,7 @@ export const SubscribeForm = () => {
         <Controller
           name='password'
           control={control}
-          render={({ field: { value, onChange }, fieldState, formState }) => (
+          render={({ field: { value, onChange } }) => (
             <PasswordInput
               name='password'
               control={control}

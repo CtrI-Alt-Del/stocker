@@ -1,23 +1,20 @@
 'use client'
-import { useBreakpoint } from '@/ui/hooks'
+
 import { Logo } from '../../commons/logo'
-import { LoginAdminForm } from './login-admin-form'
+import { LoginForm } from './login-form'
 
 export const LoginPage = () => {
-  const { sm } = useBreakpoint()
   return (
-    <div className='h-screen w-screen bg-orange flex justify-center items-center'>
-      <div className='bg-white    sm:w-1/2 md:w-3/4 w-full  rounded-xl grid grid-cols-1 md:grid-cols-2'>
-        <div className='flex justify-center items-center mr-5 md:order-2 pt-12 sm:pt-0'>
-          <Logo
-            direction={sm ? 'flex-col' : 'flex-row'}
-            width={sm ? 400 : 50}
-            height={sm ? 400 : 50}
-            text={sm ? 'lg' : 'md'}
-          />
+    <div className='grid place-content-center w-full bg-white shadow-md md:bg-orange md:h-screen'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16 p-12 md:bg-white rounded-xl'>
+        <div className='md:hidden'>
+          <Logo direction='flex-col' width={64} height={64} text='md' />
         </div>
-        <div className='flex justify-center items-center p-5  md:order-1 '>
-          <LoginAdminForm />
+        <div className='w-full'>
+          <LoginForm />
+        </div>
+        <div className='hidden md:grid place-content-center pt-12'>
+          <Logo direction='flex-col' width={240} height={240} text='lg' />
         </div>
       </div>
     </div>
