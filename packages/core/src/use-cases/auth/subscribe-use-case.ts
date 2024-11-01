@@ -42,7 +42,8 @@ export class SubscribeUseCase {
     await this.companiesRepository.add(company)
 
     userDto.companyId = company.id
-    userDto.password = await this.cryptoProvider.hash(userDto.password)
+    if (userDto.password)
+      userDto.password = await this.cryptoProvider.hash(userDto.password)
 
     const user = User.create(userDto)
     await this.usersRepository.add(user)
