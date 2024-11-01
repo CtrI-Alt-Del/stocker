@@ -1,16 +1,24 @@
 import type { FastifyInstance } from 'fastify'
 
 import { FastifyHttp } from '../fastify-http'
+import { FastifyHandler } from '../fastify-handler'
 import {
+  DeleteAccountController,
   LoginController,
   LogoutController,
   SubscribeController,
 } from '@/api/controllers/auth'
+import { VerifyJwtMiddleware, VerifyUserRoleMiddleware } from '@/api/middlewares'
 
 export const AuthRoutes = async (app: FastifyInstance) => {
   const subscribeController = new SubscribeController()
   const loginController = new LoginController()
   const logoutController = new LogoutController()
+  const deleteAccountController = new DeleteAccountController()
+  const verifyJwtMiddleware = new FastifyHandler(new VerifyJwtMiddleware())
+  const verifyAdminRoleMiddleware = new FastifyHandler(
+    new VerifyUserRoleMiddleware('admin'),
+  )
 
   app.post('/subscribe', async (request, response) => {
     const http = new FastifyHttp(request, response)
@@ -22,8 +30,26 @@ export const AuthRoutes = async (app: FastifyInstance) => {
     return loginController.handle(http)
   })
 
-  app.post('/logout', async (request, response) => {
-    const http = new FastifyHttp(request, response)
-    return logoutController.handle(http)
-  })
+  app.delete(
+    '/logout',
+    { preHandler: [verifyJwtMiddleware.handle.bind(verifyJwtMiddleware)] },
+    async (request, response) => {
+      const http = new FastifyHttp(request, response)
+      return logoutController.handle(http)
+    },
+  )
+
+  app.delete(
+    '/account',
+    {
+      preHandler: [
+        verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
+        verifyAdminRoleMiddleware.handle.bind(verifyAdminRoleMiddleware),
+      ],
+    },
+    async (request, response) => {
+      const http = new FastifyHttp(request, response)
+      return deleteAccountController.handle(http)
+    },
+  )
 }

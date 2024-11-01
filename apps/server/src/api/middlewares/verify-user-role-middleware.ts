@@ -17,6 +17,6 @@ export class VerifyUserRoleMiddleware implements IController {
       throw new NotAllowedError('Permissão negada para esse usuário')
     }
 
-    http.pass()
+    return http.pass()
   }
 }

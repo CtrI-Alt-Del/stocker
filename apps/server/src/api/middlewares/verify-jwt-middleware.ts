@@ -7,6 +7,6 @@ export class VerifyJwtMiddleware {
     if (!isValidJwt) {
       throw new NotAllowedError('Acesso não permitido')
     }
-    http.pass()
+    return http.pass()
   }
 }

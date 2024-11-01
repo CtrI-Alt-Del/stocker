@@ -11,6 +11,8 @@ import {
   ReportWeeklyInventoryMovementsController,
   ReportAnnualInventorymovementsController,
 } from '@/api/controllers/reports'
+import { FastifyHandler } from '../fastify-handler'
+import { VerifyJwtMiddleware, VerifyUserRoleMiddleware } from '@/api/middlewares'
 
 export const ReportsRoutes = async (app: FastifyInstance) => {
   const reportStockLevelController = new ReportStockLevelController()
@@ -19,51 +21,76 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
   const exportMostTrendingProductsToCsvFileController =
     new ExportMostTrendingProductsToCsvFileController()
   const exportInventoryToCsvFileController = new ExportInventoryToCsvFileController()
-
   const reportInventorySummaryController = new ReportInventorySummaryController()
-
   const reportWeeklyInventoryMovementsController =
     new ReportWeeklyInventoryMovementsController()
   const reportAnnualInventorymovementsController =
     new ReportAnnualInventorymovementsController()
+  const verifyJwtMiddleware = new FastifyHandler(new VerifyJwtMiddleware())
+  const verifyManagerRoleMiddleware = new FastifyHandler(
+    new VerifyUserRoleMiddleware('manager'),
+  )
+  const preHandlers = [verifyJwtMiddleware, verifyManagerRoleMiddleware].map((handler) =>
+    handler.handle.bind(handler),
+  )
 
-  app.get('/stock-level', async (request, response) => {
+  app.get('/stock-level', { preHandler: preHandlers }, async (request, response) => {
     const http = new FastifyHttp(request, response)
     return reportStockLevelController.handle(http)
   })
 
-  app.get('/inventory', async (request, response) => {
+  app.get('/inventory', { preHandler: preHandlers }, async (request, response) => {
     const http = new FastifyHttp(request, response)
     return reportInventoryController.handle(http)
   })
 
-  app.get('/most-trending-products', async (request, response) => {
-    const http = new FastifyHttp(request, response)
-    return reportMostTrendingProductsController.handle(http)
-  })
+  app.get(
+    '/most-trending-products',
+    { preHandler: preHandlers },
+    async (request, response) => {
+      const http = new FastifyHttp(request, response)
+      return reportMostTrendingProductsController.handle(http)
+    },
+  )
 
-  app.get('/most-trending-products/csv', async (request, response) => {
-    const http = new FastifyHttp(request, response)
-    return exportMostTrendingProductsToCsvFileController.handle(http)
-  })
+  app.get(
+    '/most-trending-products/csv',
+    { preHandler: preHandlers },
+    async (request, response) => {
+      const http = new FastifyHttp(request, response)
+      return exportMostTrendingProductsToCsvFileController.handle(http)
+    },
+  )
 
-  app.get('/inventory/csv', async (request, response) => {
+  app.get('/inventory/csv', { preHandler: preHandlers }, async (request, response) => {
     const http = new FastifyHttp(request, response)
     return exportInventoryToCsvFileController.handle(http)
   })
 
-  app.get('/inventory-summary', async (request, response) => {
-    const http = new FastifyHttp(request, response)
-    return reportInventorySummaryController.handle(http)
-  })
+  app.get(
+    '/inventory-summary',
+    { preHandler: preHandlers },
+    async (request, response) => {
+      const http = new FastifyHttp(request, response)
+      return reportInventorySummaryController.handle(http)
+    },
+  )
 
-  app.get('/inventory-movements/weekly', async (request, response) => {
-    const http = new FastifyHttp(request, response)
-    return reportWeeklyInventoryMovementsController.handle(http)
-  })
+  app.get(
+    '/inventory-movements/weekly',
+    { preHandler: preHandlers },
+    async (request, response) => {
+      const http = new FastifyHttp(request, response)
+      return reportWeeklyInventoryMovementsController.handle(http)
+    },
+  )
 
-  app.get('/inventory-movements/annual', async (request, response) => {
-    const http = new FastifyHttp(request, response)
-    return reportAnnualInventorymovementsController.handle(http)
-  })
+  app.get(
+    '/inventory-movements/annual',
+    { preHandler: preHandlers },
+    async (request, response) => {
+      const http = new FastifyHttp(request, response)
+      return reportAnnualInventorymovementsController.handle(http)
+    },
+  )
 }

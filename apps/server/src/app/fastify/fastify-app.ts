@@ -20,7 +20,6 @@ import {
   InventoryMovementsRoutes,
   ReportsRoutes,
   CategoriesRoutes,
-  CompaniesRoutes,
   UsersRoutes,
   NotificationsRoutes,
   AuthRoutes,
@@ -93,15 +92,14 @@ export class FastifyApp implements IApp {
   }
 
   private registerRoutes() {
+    this.app.register(AuthRoutes, { prefix: '/auth' })
     this.app.register(ProductsRoutes, { prefix: '/products' })
     this.app.register(BatchesRoutes, { prefix: '/batches' })
     this.app.register(InventoryMovementsRoutes, { prefix: '/inventory-movements' })
     this.app.register(FileStorageRoutes, { prefix: '/file-storage' })
     this.app.register(ReportsRoutes, { prefix: '/reports' })
     this.app.register(CategoriesRoutes, { prefix: '/categories' })
-    this.app.register(CompaniesRoutes, { prefix: '/companies' })
     this.app.register(UsersRoutes, { prefix: '/users' })
     this.app.register(NotificationsRoutes, { prefix: '/notifications' })
-    this.app.register(AuthRoutes, { prefix: '/auth' })
   }
 }

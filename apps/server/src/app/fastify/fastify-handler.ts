@@ -4,7 +4,7 @@ import { FastifyHttp } from './fastify-http'
 import type { IController } from '@stocker/core/interfaces'
 
 export class FastifyHandler {
-  private readonly controller: IController
+  readonly controller: IController
 
   constructor(controller: IController) {
     this.controller = controller
