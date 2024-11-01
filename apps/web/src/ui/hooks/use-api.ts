@@ -20,7 +20,7 @@ export function useApi() {
   const { jwt } = useAuthContext()
 
   if (jwt) {
-    nextApiClient.setHeader('Authorization', `Bearer ${jwt}`)
+    nextApiClient.setHeader('Authorization', `Bearer ${jwt.replaceAll('"', '')}`)
   }
 
   return {

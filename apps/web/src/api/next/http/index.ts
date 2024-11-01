@@ -89,7 +89,7 @@ export const NextHttp = (request: NextRequest): IHttp => {
 
     async getUser(): Promise<UserDto> {
       const jwt = this.getCookie<string>(COOKIES.jwt.key)
-      return jwtDecode<UserDto>(jwt ?? '')
+      return jwt ? jwtDecode<UserDto>(jwt) : ({} as UserDto)
     },
 
     getCurrentRoute() {
