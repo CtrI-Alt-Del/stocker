@@ -2,6 +2,7 @@ import { COOKIES, ROUTES } from '@/constants'
 import type { IController, IHttp } from '@stocker/core/interfaces'
 
 const PRIVATE_ROUTES = [
+  '/',
   ROUTES.dashboard,
   ...Object.values(ROUTES.inventory),
   ...Object.values(ROUTES.records),
