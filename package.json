@@ -24,7 +24,7 @@
   ],
   "dependencies": {
     "@faker-js/faker": "^9.0.1",
-    "@nextui-org/react": "2.4.6",
+    "@nextui-org/react": "2.4.8",
     "@prisma/client": "^5.19.1",
     "bcrypt": "5.1.1",
     "dayjs": "1.11.13",
