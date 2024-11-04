@@ -29,7 +29,7 @@
     "@types/node": "22.8.7",
     "esbuild": "0.24.0",
     "prisma": "^5.19.1",
-    "tsx": "^4.19.1",
+    "tsx": "^4.19.2",
     "typescript": "^5"
   },
   "prisma": {
