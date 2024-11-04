@@ -4,3 +4,4 @@ export { InventoryMovementsRepositoryMock } from './inventory-movements-reposito
 export { CategoriesRepositoryMock } from './category-repository-mock'
 export { NotificationsRepositoryMock } from './notifications-repository-mock'
 export { UsersRepositoryMock } from './users-repository-mock'
+export { CompanyRepositoryMock } from './company-repository-mock'
