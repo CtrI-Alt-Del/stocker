@@ -8,4 +8,5 @@ export interface IAuthService {
     companyDto: CompanyDto,
   ): Promise<ApiResponse<{ jwt: string }>>
   logout(): Promise<ApiResponse>
+  requestPasswordReset(email: string): Promise<ApiResponse<{ confirmationToken: string }>>
 }
