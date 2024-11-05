@@ -1,14 +1,12 @@
-import { NotFoundError } from "../../errors";
-import { INotificationsRepository } from "../../interfaces";
+import { NotFoundError } from '../../errors'
+import type { INotificationsRepository } from '../../interfaces'
 
 type Request = {
   notificationId: string
 }
 
 export class DeleteNotificationUseCase {
-  constructor(
-    private readonly notificationsRepository: INotificationsRepository,
-  ) {}
+  constructor(private readonly notificationsRepository: INotificationsRepository) {}
 
   async execute({ notificationId }: Request): Promise<void> {
     const notification = await this.notificationsRepository.findById(notificationId)
