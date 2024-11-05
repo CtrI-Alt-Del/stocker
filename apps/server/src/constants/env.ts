@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { EnvError } from '@stocker/core/errors'
 import {
   appModeSchema,
+  emailSchema,
   integerSchema,
   stringSchema,
   urlSchema,
@@ -15,7 +16,12 @@ export const envSchema = z.object({
   databaseUrl: urlSchema,
   supabaseUrl: urlSchema,
   directUrl: urlSchema,
+  webAppUrl: urlSchema,
   jwtSecret: stringSchema,
+  passwordResetSecret: stringSchema,
+  resendApiKey: stringSchema,
+  senderName: stringSchema,
+  senderEmail: emailSchema,
 })
 
 const validation = envSchema.safeParse({
@@ -26,6 +32,11 @@ const validation = envSchema.safeParse({
   supabaseUrl: process.env.SUPABASE_URL,
   supabaseKey: process.env.SUPABASE_KEY,
   jwtSecret: process.env.JWT_SECRET,
+  passwordResetSecret: process.env.PASSWORD_RESET_SECRET,
+  resendApiKey: process.env.RESEND_API_KEY,
+  senderName: process.env.SENDER_NAME,
+  senderEmail: process.env.SENDER_EMAIL,
+  webAppUrl: process.env.WEB_APP_URL,
 })
 
 if (!validation.success) {
