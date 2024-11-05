@@ -8,4 +8,5 @@ export interface IUsersRepository {
   add(user: User): Promise<void>
   update(user: User, userId: string): Promise<void>
   deleteMany(usersIds: string[] ): Promise<void>
+  updatePassword(userId: string, newPassword: string): Promise<void>
 }

@@ -104,4 +104,18 @@ export class PrismaUsersRepository implements IUsersRepository {
       throw new PrismaError(error)
     }
   }
+
+  async updatePassword(userId: string, newPassword: string): Promise<void> {
+    try {
+      await prisma.user.update({
+        data: {
+          password: newPassword,
+          has_first_password_reset: false
+        },
+        where: { id: userId }
+      })
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
 }
