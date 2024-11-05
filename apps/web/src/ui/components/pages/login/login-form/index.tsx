@@ -1,3 +1,5 @@
+'use client'
+
 import { Button, Input } from '@nextui-org/react'
 import Link from 'next/link'
 import { Controller } from 'react-hook-form'
@@ -11,7 +13,7 @@ export const LoginForm = () => {
     useLoginForm()
 
   return (
-    <div className='flex items-center justify-center flex-col flex-1 gap-5 w-full '>
+    <div className='flex items-center justify-center flex-col flex-1 gap-5 w-full'>
       <h1 className='text-3xl font-bold w-full text-center'>Login</h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-5 w-80'>
         <Input
@@ -30,7 +32,6 @@ export const LoginForm = () => {
           render={({ field: { value, onChange } }) => (
             <PasswordInput
               name='password'
-              control={formControl}
               label='Senha'
               placeholder='Digite sua senha'
               labelPlacement='outside'
@@ -43,9 +44,9 @@ export const LoginForm = () => {
           )}
         />
 
-        <p className='text-xs pb-4 justify-items-end'>
+        <p className='text-sm pb-4 justify-items-end'>
           Esqueceu sua senha?{' '}
-          <Link href='/request-reset' className='font-semibold'>
+          <Link href={ROUTES.requestPasswordReset} className='font-semibold'>
             Clique aqui!
           </Link>
         </p>
@@ -59,7 +60,7 @@ export const LoginForm = () => {
           >
             Entrar
           </Button>
-          <p className='text-xs pb-4'>
+          <p className='text-sm'>
             Não possui uma conta?{' '}
             <Link href={ROUTES.subscribe} className='font-semibold'>
               Cadastre-se agora!
