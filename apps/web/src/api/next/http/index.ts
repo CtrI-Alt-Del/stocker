@@ -78,8 +78,9 @@ export const NextHttp = (request: NextRequest): IHttp => {
       })
     },
 
-    getCookie<Data>(key: string) {
-      const cookie = NextCookies().get(key)
+    async getCookie<Data>(key: string) {
+      const nextcookies = await NextCookies()
+      const cookie = nextcookies.get(key)
       return cookie?.value ? (JSON.stringify(cookie.value) as Data) : null
     },
 
@@ -88,7 +89,7 @@ export const NextHttp = (request: NextRequest): IHttp => {
     },
 
     async getUser(): Promise<UserDto> {
-      const jwt = this.getCookie<string>(COOKIES.jwt.key)
+      const jwt = await this.getCookie<string>(COOKIES.jwt.key)
       return jwt ? jwtDecode<UserDto>(jwt) : ({} as UserDto)
     },
 

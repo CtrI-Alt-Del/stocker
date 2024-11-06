@@ -6,8 +6,8 @@ import { AuthContextProvider } from '@/ui/components/contexts/auth-context'
 
 type ServerProviderProps = { children: ReactNode }
 
-export function ServerProvider({ children }: ServerProviderProps) {
-  const jwtCookie = cookies().get(COOKIES.jwt.key)
+export async function ServerProvider({ children }: ServerProviderProps) {
+  const jwtCookie = (await cookies()).get(COOKIES.jwt.key)
   const jwt = jwtCookie?.value ?? null
 
   return <AuthContextProvider jwt={jwt}>{children}</AuthContextProvider>

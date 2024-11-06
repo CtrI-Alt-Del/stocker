@@ -3,6 +3,6 @@
 import { cookies } from 'next/headers'
 
 export async function getCookieAction<Data>(key: string) {
-  const cookie = cookies().get(key)
+  const cookie = (await cookies()).get(key)
   return cookie?.value ? (JSON.stringify(cookie.value) as Data) : null
 }
