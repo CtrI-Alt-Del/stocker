@@ -5,7 +5,7 @@ import {
   DeleteUsersController,
   UpdateUserController,
   ListUsersController,
-  CountUsersController,
+  CountCompanyUsersController,
 } from '@/api/controllers/users'
 import { FastifyHttp } from '../fastify-http'
 import { FastifyHandler } from '../fastify-handler'
@@ -16,7 +16,7 @@ export const UsersRoutes = async (app: FastifyInstance) => {
   const deleteUsersController = new DeleteUsersController()
   const updateUserController = new UpdateUserController()
   const listUsersController = new ListUsersController()
-  const countUserController = new CountUsersController()
+  const countCompanyUserController = new CountCompanyUsersController()
   const verifyJwtMiddleware = new FastifyHandler(new VerifyJwtMiddleware())
   const verifyAdminRoleMiddleware = new FastifyHandler(
     new VerifyUserRoleMiddleware('admin'),
@@ -40,9 +40,9 @@ export const UsersRoutes = async (app: FastifyInstance) => {
     return updateUserController.handle(http)
   })
 
-  app.get('/', { preHandler: preHandlers }, async (request, response) => {
+  app.get('/company', { preHandler: preHandlers }, async (request, response) => {
     const http = new FastifyHttp(request, response)
-    return countUserController.handle(http)
+    return countCompanyUserController.handle(http)
   })
 
   app.delete('/', { preHandler: preHandlers }, async (request, response) => {
