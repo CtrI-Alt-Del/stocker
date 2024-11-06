@@ -1,3 +1,5 @@
+'use client'
+
 import { type RefObject, useState } from 'react'
 import type { Selection } from '@nextui-org/react'
 

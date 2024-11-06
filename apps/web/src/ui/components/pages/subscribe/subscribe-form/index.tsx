@@ -12,11 +12,11 @@ export const SubscribeForm = () => {
     useSubscribeForm()
 
   return (
-    <div>
+    <div className='w-full'>
       <h1 className='text-xl lg:text-3xl font-bold w-full text-center'>
         Cadastre sua conta
       </h1>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4 mt-3 w-full'>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-4 mt-3 w-96'>
         <Input
           label='Nome'
           placeholder='Digite seu nome'
@@ -61,7 +61,6 @@ export const SubscribeForm = () => {
           render={({ field: { value, onChange } }) => (
             <PasswordInput
               name='password'
-              control={control}
               label='Senha'
               placeholder='Digite sua senha'
               labelPlacement='outside'
@@ -80,7 +79,6 @@ export const SubscribeForm = () => {
           render={({ field: { value, onChange } }) => (
             <PasswordInput
               name='confirmPassword'
-              control={control}
               label='Confirme sua senha'
               placeholder='Confirme sua senha'
               labelPlacement='outside'

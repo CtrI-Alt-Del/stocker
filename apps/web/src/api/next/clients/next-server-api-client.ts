@@ -13,5 +13,14 @@ export const NextServerApiClient = async (cacheConfig?: CacheConfig) => {
   }
 
   apiClient.setBaseUrl(BROWSER_ENV.serverUrl)
+
+  const jwt = cookies().get(COOKIES.jwt.key)
+
+  console.log('JWT:', jwt?.value)
+
+  if (jwt?.value) {
+    apiClient.setHeader('Authorization', `Bearer ${jwt?.value.replaceAll('"', '')}`)
+  }
+
   return apiClient
 }

@@ -1,4 +1,3 @@
-import { type Control, Controller } from 'react-hook-form'
 import { Input, type InputProps } from '@nextui-org/react'
 
 import { usePasswordInput } from './use-password-input'
@@ -6,10 +5,9 @@ import { AnimatedIcon } from './animated-icon'
 
 type PasswordInputProps = InputProps & {
   name: string
-  control: Control<any, any>
 }
 
-export const PasswordInput = ({ name, control, ...inputProps }: PasswordInputProps) => {
+export const PasswordInput = ({ name, ...inputProps }: PasswordInputProps) => {
   const { isPasswordVisible, handleIconClick } = usePasswordInput()
 
   return (

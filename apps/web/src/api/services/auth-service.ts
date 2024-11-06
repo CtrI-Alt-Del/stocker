@@ -17,5 +17,9 @@ export const AuthService = (apiClient: IApiClient): IAuthService => {
     async logout() {
       return await apiClient.post('/auth/logout')
     },
+
+    async requestPasswordReset(email: string) {
+      return await apiClient.post('/auth/password', { email })
+    },
   }
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { type RefObject, useState } from 'react'
+import { type RefObject, use, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -18,6 +18,7 @@ import {
 import { useApi, useToast } from '@/ui/hooks'
 import { Product } from '@stocker/core/entities'
 import type { ImageInputRef } from '@/ui/components/commons/image-input/types'
+import { useAuthContext } from '@/ui/components/contexts/auth-context'
 
 const registerProductFormSchema = z.object({
   image: fileSchema.optional(),
@@ -51,6 +52,7 @@ export function useRegisterProductForm(
     useForm<RegisterProductFormData>({
       resolver: zodResolver(registerProductFormSchema),
     })
+  const {user} = useAuthContext()
   const { showSuccess, showError } = useToast()
   const { fileStorageService, productsService } = useApi()
   const [isSubmiting, setIsSubmiting] = useState(false)
@@ -87,7 +89,7 @@ export function useRegisterProductForm(
       isActive: formData.isActive,
       brand: formData.brand,
       image: imageUrl,
-      companyId: 'eceda392-06df-4ed2-8c90-db6bf1e38830',
+      companyId: user?.companyId || " ",
     })
 
     const response = await productsService.registerProduct(product)

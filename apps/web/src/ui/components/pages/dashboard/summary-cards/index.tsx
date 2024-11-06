@@ -1,4 +1,4 @@
-import { NextServerApiClient } from '@/api/next/clients'
+import { NextServerApiClient } from '@/api/next/clients/next-server-api-client'
 import { ReportsService } from '@/api/services'
 import { Card } from '@/ui/components/commons/card'
 

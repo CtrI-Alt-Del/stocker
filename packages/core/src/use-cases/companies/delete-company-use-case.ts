@@ -1,3 +1,4 @@
+import { NotFoundError } from "../../errors";
 import type { ICompaniesRepository } from "../../interfaces";
 
 type Request = {
@@ -13,6 +14,9 @@ export class DeleteCompanyUseCase {
 
     async execute({ companyId }: Request) {
         const company = await this.companiesRepository.findById(companyId)
+        if (!company) {
+            throw new NotFoundError('Company não encontrado')
+          }
         if (company) {
             await this.companiesRepository.delete(companyId)
         }

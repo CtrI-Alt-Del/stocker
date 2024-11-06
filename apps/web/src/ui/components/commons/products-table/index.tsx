@@ -4,7 +4,6 @@ import { useRef } from 'react'
 
 import {
   Avatar,
-  Link,
   Pagination,
   Spinner,
   Table,
@@ -16,6 +15,7 @@ import {
   Tooltip,
 } from '@nextui-org/react'
 
+
 import type { Product } from '@stocker/core/entities'
 
 import { Tag } from '@/ui/components/commons/tag'
@@ -23,7 +23,7 @@ import { Drawer } from '@/ui/components/commons/drawer'
 import { IconButton } from '@/ui/components/commons/icon-button'
 import type { DrawerRef } from '@/ui/components/commons/drawer/types'
 
-import { IMAGE_PLACEHOLDER, ROUTES } from '@/constants'
+import { IMAGE_PLACEHOLDER } from '@/constants'
 
 import { UpdateProductForm } from '../../pages/products/update-product-form'
 import { useProductsTable } from './use-products-table'
@@ -132,10 +132,9 @@ export const ProductsTable = ({
                 )}
               </TableCell>
               <TableCell key='option'>
-                <Tooltip aria-content='Editar produto'>
+                <Tooltip content='Editar produto' showArrow>
                   <IconButton
                     name='view'
-                    tooltip='Editar produto'
                     className='size-6 text-zinc-500'
                     onClick={() => handleEditProductButtonClick(product)}
                   />

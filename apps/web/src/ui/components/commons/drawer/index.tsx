@@ -1,3 +1,5 @@
+'use client'
+
 import {
   type ForwardedRef,
   forwardRef,
@@ -7,13 +9,15 @@ import {
   useState,
 } from 'react'
 import { Slot } from '@radix-ui/react-slot'
-import RmDrawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
+import dynamic from 'next/dynamic'
 
 import { IconButton } from '../icon-button'
 import { useDrawer } from './use-drawer'
 import type { DrawerRef } from './types'
 import { useBreakpoint } from '@/ui/hooks'
+
+const RmDrawer = dynamic(() => import('react-modern-drawer'), { ssr: false });
 
 type DrawerProps = {
   children: (closeDrawer: VoidFunction) => ReactNode
@@ -57,7 +61,7 @@ export const DrawerComponent = (
   )
 
   return (
-    <>
+    <div suppressHydrationWarning={true}>
       <RmDrawer
         key={drawerKey}
         open={isOpen}
@@ -74,7 +78,7 @@ export const DrawerComponent = (
         </div>
       </RmDrawer>
       <Slot onClick={open}>{trigger}</Slot>
-    </>
+    </div>
   )
 }
 

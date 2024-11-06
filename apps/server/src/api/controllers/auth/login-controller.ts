@@ -4,6 +4,7 @@ import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 
 import { usersRepository } from '@/database'
 import { cryptoProvider } from '@/providers'
+import { COOKIES } from '@/constants'
 
 type Body = {
   email: string
@@ -18,6 +19,7 @@ export class LoginController {
 
     const jwt = await http.setJwt(userDto)
 
+    http.setCookie(COOKIES.jwt.key, jwt, COOKIES.jwt.duration)
     return http.send({ jwt }, HTTP_STATUS_CODE.ok)
   }
 }

@@ -1,6 +1,7 @@
 import type { Batch } from '@stocker/core/entities'
 import type { IBatchesRepository } from '@stocker/core/interfaces'
 import { PrismaBatchesMapper } from '../mappers'
+import type { PrismaBatch } from '../types'
 
 import { prisma } from '../prisma-client'
 import { PrismaError } from '../prisma-error'
@@ -27,6 +28,32 @@ export class PrismaBatchesRepository implements IBatchesRepository {
         },
       })
       return prismaBatch ? this.mapper.toDomain(prismaBatch) : null
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
+  async findManyNearToExpire(): Promise<{ batches: Batch; companyId: string }[]> {
+    try {
+      const prismaBatches: (PrismaBatch & { company_id: string })[] =
+        await prisma.$queryRaw`
+        SELECT 
+          B.*, 
+          P.company_id
+        FROM 
+          batches B
+        JOIN 
+          products P
+        ON 
+          P.id = batches.P
+        WHERE 
+          B.expiration_date >= B.maximum_days_to_expiration
+      `
+
+      return prismaBatches.map((batch) => {
+        const domainBatch = this.mapper.toDomain(batch)
+        return { batches: domainBatch, companyId: batch.company_id }
+      })
     } catch (error) {
       throw new PrismaError(error)
     }

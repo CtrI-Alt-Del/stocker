@@ -1,4 +1,4 @@
-import { NextApiClient } from '@/api/next/clients'
+import { NextApiClient } from '@/api/next/clients/next-api-client'
 import {
   FileStorageService,
   ProductsService,

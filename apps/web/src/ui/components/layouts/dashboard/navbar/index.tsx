@@ -40,7 +40,6 @@ export const Navbar = () => {
           </NavbarLink>
         </NavbarItem>
         <NavbarItem className='w-full mt-3'>
-          {/* @ts-ignore */}
           <Accordion showDivider={false} className='p-0 space-y-3'>
             <AccordionItem
               key='1'

@@ -11,7 +11,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts'
-import { Button, Spinner } from '@nextui-org/react'
+import { Spinner } from '@nextui-org/react'
 
 import { Icon } from '@/ui/components/commons/icon'
 import { ProductSelect } from '@/ui/components/commons/product-select'

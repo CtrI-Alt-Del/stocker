@@ -43,3 +43,4 @@
 | Mock things                | mocks             | 🤡 `::clown_face::`              |
 | Text file storage          | text              | 🧾 `:pencil:`                    |
 | Code review                | review            | 👌 `:ok_hand:`                   |
+| Cron Jobs                  | jobs              | ⏰ `:clock:`                    |

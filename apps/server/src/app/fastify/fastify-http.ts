@@ -5,7 +5,7 @@ import type { IHttp } from '@stocker/core/interfaces'
 import type { UserDto } from '@stocker/core/dtos'
 import { ValidationError } from '@stocker/core/errors'
 
-import { MAX_FILE_SIZE } from '@/constants'
+import { COOKIES, MAX_FILE_SIZE } from '@/constants'
 import { Datetime } from '@stocker/core/libs'
 
 export class FastifyHttp implements IHttp {
@@ -50,7 +50,10 @@ export class FastifyHttp implements IHttp {
 
   setCookie(key: string, value: string, duration: number): void {
     this.reply.setCookie(key, value, {
+      path: '/',
+      secure: true,
       httpOnly: true,
+      sameSite: true,
       expires: new Datetime().addSeconds(duration),
     })
   }

@@ -7,7 +7,7 @@ export class UsersRepositoryMock implements IUsersRepository {
   users: User[] = []
 
   async findMany({ page }: UsersListParams): Promise<{ users: User[], count: number }> {
-    const startIndex = (page - 1) * 10 // 10 pode ser o valor do PAGINATION.itemsPerPage
+    const startIndex = (page - 1) * 10
     return {
     users: this.users.slice(startIndex, startIndex + 10), 
     count: this.users.length
@@ -43,5 +43,23 @@ export class UsersRepositoryMock implements IUsersRepository {
     this.users = this.users.filter(
       (currentUser) => !userIds.includes(currentUser.id),
     )
+  }
+
+  async updatePassword(userId: string, newPassword: string): Promise<void> {
+    const user = this.users.find((user) => user.id === userId);
+    
+    if (!user) {
+      throw new Error('Usuário não encontrado');
+    }
+
+    user.update({ password: newPassword})
+  }
+
+  async countEmployeeUsersByCompany(companyId: string): Promise<number> {
+    throw new Error('Method not implemented.')
+  }
+
+  async countManagerUsersByCompany(companyId: string): Promise<number> {
+    throw new Error('Method not implemented.')
   }
 }

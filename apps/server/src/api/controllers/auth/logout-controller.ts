@@ -3,7 +3,7 @@ import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 
 export class LogoutController {
   async handle(http: IHttp) {
-    http.destroyJwt()
+    await http.destroyJwt()
     return http.send(null, HTTP_STATUS_CODE.ok)
   }
 }
