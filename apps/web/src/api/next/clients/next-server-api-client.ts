@@ -3,11 +3,11 @@ import { NextApiClient } from './next-api-client'
 import type { CacheConfig } from '../types'
 import { cookies } from 'next/headers'
 
-export const NextServerApiClient = async (cacheConfig?: CacheConfig) => {
+export const NextServerApiClient = (cacheConfig?: CacheConfig) => {
   const apiClient = NextApiClient(cacheConfig)
   apiClient.setBaseUrl(BROWSER_ENV.serverUrl)
 
-  const jwt = (await cookies()).get(COOKIES.jwt.key)
+  const jwt = cookies().get(COOKIES.jwt.key)
 
   console.log('JWT:', jwt?.value)
 

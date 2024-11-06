@@ -3,7 +3,7 @@ import { ReportsService } from '@/api/services'
 import { Card } from '@/ui/components/commons/card'
 
 export const SummaryCards = async () => {
-  const apiClient = await NextServerApiClient({ isCacheEnabled: false })
+  const apiClient = NextServerApiClient({ isCacheEnabled: false })
   const reportsService = ReportsService(apiClient)
   const data = await reportsService.reportSummary()
   const batchesCount = data.body.batchescount
