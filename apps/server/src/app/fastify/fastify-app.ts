@@ -103,12 +103,12 @@ export class FastifyApp implements IApp {
   }
 
   private scheduleJobs() {
-    const sendExpirationDateNotificationjob = new SendExpirationDateNotificationJob(
-      notificationsRepository,
-      batchesRepository,
-    )
+    const sendExpirationDateNotificationjob = new SendExpirationDateNotificationJob()
 
-    // nodeCron.schedule('* * * * * *', () => console.log('opa'))
+    nodeCron.schedule(
+      '* * * * * *',
+      async () => await sendExpirationDateNotificationjob.handle(),
+    )
   }
 
   private registerRoutes() {

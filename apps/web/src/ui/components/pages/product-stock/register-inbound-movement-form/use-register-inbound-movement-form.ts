@@ -66,6 +66,8 @@ export function useRegisterInboundMovementForm(
       batch,
     )
 
+    console.log(batch.dto.expirationDate)
+
     if (response.isFailure) {
       showError(response.errorMessage)
       console.log(response.errorMessage)

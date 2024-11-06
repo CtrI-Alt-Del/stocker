@@ -10,7 +10,7 @@ export interface INotificationsRepository {
     companyId: string,
   ): Promise<ExpirationDateNotification[]>
   addStockLevelNotification(stockLevelNotification: StockLevelNotification): Promise<void>
-  addManyExpirationDateNotification(
+  addManyExpirationDateNotifications(
     expirationDateNotifications: ExpirationDateNotification[],
   ): Promise<void>
   deleteNotification(notificationId: string): Promise<void>
