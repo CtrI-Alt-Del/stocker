@@ -6,6 +6,7 @@ import {
   DeleteAccountController,
   LoginController,
   LogoutController,
+  ResetPasswordController,
   SubscribeController,
 } from '@/api/controllers/auth'
 import { VerifyJwtMiddleware, VerifyUserRoleMiddleware } from '@/api/middlewares'
@@ -21,6 +22,7 @@ export const AuthRoutes = async (app: FastifyInstance) => {
   const verifyAdminRoleMiddleware = new FastifyHandler(
     new VerifyUserRoleMiddleware('admin'),
   )
+  const resetPasswordController = new ResetPasswordController()
 
   app.post('/subscribe', async (request, response) => {
     const http = new FastifyHttp(request, response)
@@ -59,4 +61,9 @@ export const AuthRoutes = async (app: FastifyInstance) => {
       return deleteAccountController.handle(http)
     },
   )
+
+  app.patch('/password', async (request, response) => {
+    const http = new FastifyHttp(request, response)
+    return resetPasswordController.handle(http)
+  })
 }
