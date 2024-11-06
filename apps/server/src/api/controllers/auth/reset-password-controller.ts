@@ -5,15 +5,15 @@ import { ResetPasswordUseCase } from "@stocker/core/use-cases";
 import { HTTP_STATUS_CODE } from "@stocker/core/constants";
 
 type Body = {
-    email: string
-    newPassword: string
+  email: string
+  password: string
 }
 export class ResetPasswordController {
-    async handle(http: IHttp) {
-        const { email, newPassword } = http.getBody<Body>()
-        const useCase = new ResetPasswordUseCase(usersRepository, cryptoProvider)
+  async handle(http: IHttp) {
+    const { email, password } = http.getBody<Body>()
+    const useCase = new ResetPasswordUseCase(usersRepository, cryptoProvider)
 
-        await useCase.execute({ email, newPassword })
-        return http.send(HTTP_STATUS_CODE.ok)
-    }
+    await useCase.execute({ email, password })
+    return http.send(null, HTTP_STATUS_CODE.ok)
+  }
 }

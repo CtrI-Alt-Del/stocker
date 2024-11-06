@@ -3,7 +3,7 @@ import type { ICryptoProvider, IUsersRepository } from "../../interfaces";
 
 type Request = {
     email: string,
-    newPassword: string
+    password: string
 }
 export class ResetPasswordUseCase {
     private readonly usersRepository: IUsersRepository
@@ -14,12 +14,11 @@ export class ResetPasswordUseCase {
         this.cryptoProvider = cryptoProvider
     }
 
-    async execute({email, newPassword}: Request) {
+    async execute({ email, password }: Request) {
         const user = await this.usersRepository.findByEmail(email)
-        if (!user) {
-            throw new NotFoundError('Usuário não encontrado')
-        }
-        const hashedNewPassword = await this.cryptoProvider.hash(newPassword)
-        await this.usersRepository.updatePassword(user.id, hashedNewPassword)
+        if (!user) throw new NotFoundError('Usuário não encontrado')
+
+        const hashedPassword = await this.cryptoProvider.hash(password)
+        await this.usersRepository.updatePassword(user.id, hashedPassword)
     }
 }
