@@ -2,7 +2,7 @@ import Fastify, { type FastifyInstance } from 'fastify'
 import Multipart from '@fastify/multipart'
 import Cors from '@fastify/cors'
 import Cookies from '@fastify/cookie'
-
+import nodeCron from 'node-cron'
 import type { IApp } from '@stocker/core/interfaces'
 import {
   AppError,
@@ -12,7 +12,6 @@ import {
   ValidationError,
 } from '@stocker/core/errors'
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
-
 import { ENV } from '@/constants'
 import {
   ProductsRoutes,
@@ -24,8 +23,10 @@ import {
   NotificationsRoutes,
   AuthRoutes,
 } from './routes'
+import { notificationsRepository, batchesRepository } from '@/database'
 import Jwt from '@fastify/jwt'
 import { BatchesRoutes } from './routes/batches-routes'
+import { SendExpirationDateNotificationJob } from '@/jobs'
 
 export class FastifyApp implements IApp {
   private readonly app: FastifyInstance
@@ -38,6 +39,7 @@ export class FastifyApp implements IApp {
     this.app.register(Cookies)
     this.setErrorHandler()
     this.registerRoutes()
+    this.scheduleJobs()
   }
 
   startServer() {
@@ -89,6 +91,14 @@ export class FastifyApp implements IApp {
         message: error.message,
       })
     })
+  }
+
+  private scheduleJobs() {
+    const job = new SendExpirationDateNotificationJob(
+      notificationsRepository,
+      batchesRepository,
+    )
+    nodeCron.schedule('* * * * * *', () => job.handle())
   }
 
   private registerRoutes() {
