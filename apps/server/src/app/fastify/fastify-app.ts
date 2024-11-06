@@ -107,7 +107,7 @@ export class FastifyApp implements IApp {
       notificationsRepository,
       batchesRepository,
     )
-    nodeCron.schedule('0 0 * * * *', () => sendExpirationDateNotificationjob.handle())
+    nodeCron.schedule('0 0 * * * ', () => sendExpirationDateNotificationjob.handle())
   }
 
   private registerRoutes() {
