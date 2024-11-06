@@ -57,7 +57,7 @@ export function useUpdateEmployeeForm({
       return
     }
     if (response.isSuccess) {
-      showSuccess('Funcinário atualizado com sucesso!')
+      showSuccess('Funcionário atualizado com sucesso!')
       reset()
       onCancel()
       onSubmit()

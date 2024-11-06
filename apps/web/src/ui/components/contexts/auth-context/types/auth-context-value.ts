@@ -7,4 +7,5 @@ export type AuthContextValue = {
   login: (email: string, password: string) => Promise<void>
   subscribe: (userDto: UserDto, companyDto: CompanyDto) => Promise<void>
   logout: () => Promise<void>
+  deleteUser: (userId: string) => Promise<void>
 }

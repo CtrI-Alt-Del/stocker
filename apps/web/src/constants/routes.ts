@@ -1,3 +1,5 @@
+import { profile } from "console";
+
 export const ROUTES = {
   dashboard: '/dashboard',
   inventory: {
