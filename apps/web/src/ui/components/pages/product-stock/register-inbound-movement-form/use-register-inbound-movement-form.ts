@@ -9,6 +9,7 @@ import { Batch, InventoryMovement } from '@stocker/core/entities'
 import { Datetime } from '@stocker/core/libs'
 
 import { useApi, useToast } from '@/ui/hooks'
+import { useAuthContext } from '@/ui/components/contexts/auth-context'
 
 const registerInboundMovementFormSchema = z.intersection(
   inventoryMovementSchema,
@@ -30,15 +31,18 @@ export function useRegisterInboundMovementForm(
     })
   const { showError, showSuccess } = useToast()
   const { inventoryMovementService } = useApi()
+  const { user } = useAuthContext()
 
   async function handleFormSubmit(formData: RegisterInboundMovementFormData) {
+    if (!user) return
+
     const inboundMovement = InventoryMovement.create({
       movementType: 'inbound',
       registeredAt: formData.registeredAt,
       itemsCount: formData.itemsCount,
       remark: formData.remark,
       responsible: {
-        id: '29fcf7a0-5ee3-4cb0-b36e-ecc825f1cdaa',
+        id: user.id,
       },
       product: {
         id: productId,
@@ -51,7 +55,7 @@ export function useRegisterInboundMovementForm(
 
     const batch = Batch.create({
       code: formData.code,
-      expirationDate: formData.expirationDate?.toDateString(),
+      expirationDate: formData.expirationDate,
       maximumDaysToExpiration: formData.maximumDaysToExipiration,
       itemsCount: formData.itemsCount,
       productId,
@@ -64,6 +68,7 @@ export function useRegisterInboundMovementForm(
 
     if (response.isFailure) {
       showError(response.errorMessage)
+      console.log(response.errorMessage)
     }
 
     if (response.isSuccess) {
