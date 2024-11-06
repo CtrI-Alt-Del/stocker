@@ -12,7 +12,7 @@ import {
   ValidationError,
 } from '@stocker/core/errors'
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
-import { ENV } from '@/constants'
+import { COOKIES, ENV } from '@/constants'
 import {
   ProductsRoutes,
   FileStorageRoutes,
@@ -35,7 +35,16 @@ export class FastifyApp implements IApp {
     this.app = Fastify()
     this.app.register(Cors, { origin: '*' })
     this.app.register(Multipart)
-    this.app.register(Jwt, { secret: ENV.jwtSecret })
+    this.app.register(Jwt, {
+      secret: ENV.jwtSecret,
+      cookie: {
+        cookieName: COOKIES.jwt.key,
+        signed: true,
+      },
+      sign: {
+        expiresIn: '1d',
+      },
+    })
     this.app.register(Cookies)
     this.setErrorHandler()
     this.registerRoutes()
@@ -94,11 +103,12 @@ export class FastifyApp implements IApp {
   }
 
   private scheduleJobs() {
-    const job = new SendExpirationDateNotificationJob(
+    const sendExpirationDateNotificationjob = new SendExpirationDateNotificationJob(
       notificationsRepository,
       batchesRepository,
     )
-    nodeCron.schedule('* * * * * *', () => job.handle())
+
+    // nodeCron.schedule('* * * * * *', () => console.log('opa'))
   }
 
   private registerRoutes() {

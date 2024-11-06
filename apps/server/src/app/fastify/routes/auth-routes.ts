@@ -41,7 +41,7 @@ export const AuthRoutes = async (app: FastifyInstance) => {
 
   app.delete(
     '/logout',
-    { preHandler: [verifyJwtMiddleware.handle.bind(verifyJwtMiddleware)] },
+    // { preHandler: [verifyJwtMiddleware.handle.bind(verifyJwtMiddleware)] },
     async (request, response) => {
       const http = new FastifyHttp(request, response)
       return logoutController.handle(http)

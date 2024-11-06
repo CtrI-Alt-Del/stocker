@@ -38,16 +38,16 @@ export class PrismaBatchesRepository implements IBatchesRepository {
       const prismaBatches: (PrismaBatch & { company_id: string })[] =
         await prisma.$queryRaw`
         SELECT 
-          batches.*, 
-          products.company_id
+          B.*, 
+          P.company_id
         FROM 
-          batches
+          batches B
         JOIN 
-          products 
+          products P
         ON 
-          products.id = batches.product_id
+          P.id = batches.P
         WHERE 
-          batches.expiration_date >= batches.maximum_days_to_expiration
+          B.expiration_date >= B.maximum_days_to_expiration
       `
 
       return prismaBatches.map((batch) => {
