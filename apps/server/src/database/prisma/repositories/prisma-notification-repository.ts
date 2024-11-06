@@ -1,14 +1,23 @@
-import { INotificationsRepository } from "@stocker/core/interfaces";
-import { PrismaExpirationDateNotificationMapper, PrismaStockLevelNotificationMapper } from "../mappers";
+import type { INotificationsRepository } from '@stocker/core/interfaces'
+import {
+  PrismaExpirationDateNotificationMapper,
+  PrismaStockLevelNotificationMapper,
+} from '../mappers'
 import { prisma } from '../prisma-client'
-import { StockLevelNotification, ExpirationDateNotification } from "@stocker/core/entities";
-import { PrismaError } from "../prisma-error";
+import type {
+  StockLevelNotification,
+  ExpirationDateNotification,
+} from '@stocker/core/entities'
+import { PrismaError } from '../prisma-error'
 
 export class PrismaNotificationsRepository implements INotificationsRepository {
   private readonly stockLevelNotificationMapper = new PrismaStockLevelNotificationMapper()
-  private readonly expirationDateNotificationMapper = new PrismaExpirationDateNotificationMapper()
+  private readonly expirationDateNotificationMapper =
+    new PrismaExpirationDateNotificationMapper()
 
-  async findById(notificationId: string): Promise<StockLevelNotification | ExpirationDateNotification | null> {
+  async findById(
+    notificationId: string,
+  ): Promise<StockLevelNotification | ExpirationDateNotification | null> {
     try {
       const stockNotification = await prisma.stockLevelNotification.findUnique({
         where: {
@@ -46,7 +55,9 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
     }
   }
 
-  async findManyStockLevelNotifications(companyId: string): Promise<StockLevelNotification[]> {
+  async findManyStockLevelNotifications(
+    companyId: string,
+  ): Promise<StockLevelNotification[]> {
     try {
       const notifications = await prisma.stockLevelNotification.findMany({
         where: {
@@ -55,18 +66,22 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
         include: {
           Product: true,
         },
-      });
-      const mappedNotifications = notifications.map(notification => this.stockLevelNotificationMapper.toDomain({
-        ...notification,
-        company_id: notification.Product.company_id,
-      }));
-      return mappedNotifications;
+      })
+      const mappedNotifications = notifications.map((notification) =>
+        this.stockLevelNotificationMapper.toDomain({
+          ...notification,
+          company_id: notification.Product.company_id,
+        }),
+      )
+      return mappedNotifications
     } catch (error) {
-      throw new PrismaError(error);
+      throw new PrismaError(error)
     }
   }
 
-  async findManyExpirationDateNotifications(companyId: string): Promise<ExpirationDateNotification[]> {
+  async findManyExpirationDateNotifications(
+    companyId: string,
+  ): Promise<ExpirationDateNotification[]> {
     try {
       const notifications = await prisma.expirationDateNotification.findMany({
         where: {
@@ -75,43 +90,48 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
         include: {
           Batch: true,
         },
-      });
-      const mappedNotifications = notifications.map(notification => this.expirationDateNotificationMapper.toDomain({
-        ...notification
-      }));
-      return mappedNotifications;
+      })
+      const mappedNotifications = notifications.map((notification) =>
+        this.expirationDateNotificationMapper.toDomain({
+          ...notification,
+        }),
+      )
+      return mappedNotifications
     } catch (error) {
-      throw new PrismaError(error);
+      throw new PrismaError(error)
     }
   }
 
-  async addStockLevelNotification(stockLevelNotification: StockLevelNotification): Promise<void> {
+  async addStockLevelNotification(
+    stockLevelNotification: StockLevelNotification,
+  ): Promise<void> {
     try {
       await prisma.stockLevelNotification.create({
-      data: {
+        data: {
           id: stockLevelNotification.id,
           created_at: stockLevelNotification.createdAt,
           product_id: stockLevelNotification.product.id,
           company_id: stockLevelNotification.companyId,
         },
-      });
+      })
     } catch (error) {
-      throw new PrismaError(error);
+      throw new PrismaError(error)
     }
   }
 
-  async addExpirationDateNotification(expirationDateNotification: ExpirationDateNotification): Promise<void> {
+  async addManyExpirationDateNotification(
+    expirationDateNotifications: ExpirationDateNotification[],
+  ): Promise<void> {
     try {
-      await prisma.expirationDateNotification.create({
-        data: {
-          id: expirationDateNotification.id,
-          created_at: expirationDateNotification.createdAt,
-          batch_id: expirationDateNotification.batch.id,
-          company_id: expirationDateNotification.companyId,
-        },
-      });
+      const data = expirationDateNotifications.map((notification) =>
+        this.expirationDateNotificationMapper.toPrisma(notification),
+      )
+      await prisma.expirationDateNotification.createMany({
+        data,
+        skipDuplicates: true,
+      })
     } catch (error) {
-      throw new PrismaError(error);
+      throw new PrismaError(error)
     }
   }
 
@@ -119,9 +139,9 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
     try {
       await prisma.stockLevelNotification.delete({
         where: { id: notificationId },
-      });
+      })
     } catch (error) {
-      throw new PrismaError(error);
+      throw new PrismaError(error)
     }
   }
 }
