@@ -10,7 +10,7 @@ let useCase: LoginUseCase
 let usersRepository: UsersRepositoryMock
 let cryptoProvider: ICryptoProvider
 
-describe('Delete company use case', () => {
+describe('Login use case', () => {
   beforeEach(() => {
     usersRepository = new UsersRepositoryMock()
     cryptoProvider = new BcryptCryptoProvider()
@@ -18,14 +18,30 @@ describe('Delete company use case', () => {
   })
 
   it('should log in and return user dto', async () => {
-    const fakeUser = UsersFaker.fake()
-
-    await usersRepository.add(fakeUser)
-
+    let fakeUser = UsersFaker.fake()
+    const password = fakeUser.password
+    const hashedPassword = await cryptoProvider.hash(fakeUser.password)
+    fakeUser = fakeUser.update({ password: hashedPassword })
+    usersRepository.add(fakeUser)
     expect(usersRepository.users).toHaveLength(1)
 
-    const result = await useCase.execute({ email: fakeUser.email, password: fakeUser.password })
+    await useCase.execute({ email: fakeUser.email, password })
+    expect(fakeUser.dto)
+  })
 
-    expect(result).toBe(fakeUser.password)
+  it('should generate an error if there is no user with the received email', async () => {
+    expect(async () => {
+      await useCase.execute({ email: '', password: ''})
+    }).rejects.toThrowError(NotFoundError)
+  })
+
+  it('should generate an error if the credentials are invalid', async () => {
+    const fakeUser = UsersFaker.fake()
+    usersRepository.add(fakeUser)
+    expect(usersRepository.users).toHaveLength(1)
+
+    expect(async () => {
+      await useCase.execute({ email: fakeUser.email, password: ''})
+    }).rejects.toThrowError('Credenciais inválidas')
   })
 })

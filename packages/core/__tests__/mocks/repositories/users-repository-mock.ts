@@ -44,4 +44,8 @@ export class UsersRepositoryMock implements IUsersRepository {
       (currentUser) => !userIds.includes(currentUser.id),
     )
   }
+
+  async updatePassword(userId: string, newPassword: string): Promise<void> {
+    throw new Error('Method not implemented.')
+  }
 }
