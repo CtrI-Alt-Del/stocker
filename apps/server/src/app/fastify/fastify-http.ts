@@ -12,7 +12,7 @@ export class FastifyHttp implements IHttp {
   constructor(
     private readonly request: FastifyRequest,
     private readonly reply: FastifyReply,
-  ) {}
+  ) { }
 
   async verifyJwt(): Promise<boolean> {
     try {
