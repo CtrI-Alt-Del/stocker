@@ -6,7 +6,6 @@ import {
   Head,
   Hr,
   Html,
-  Img,
   Preview,
   Section,
   Tailwind,
@@ -16,10 +15,14 @@ import {
 type ResetPasswordTemplateProps = {
   baseUrl: string
   token: string
+  recipientEmail: string
 }
-// i want to kms
 
-export const ResetPasswordTemplate = ({ baseUrl, token }: ResetPasswordTemplateProps) => (
+export const ResetPasswordTemplate = ({
+  baseUrl,
+  recipientEmail,
+  token,
+}: ResetPasswordTemplateProps) => (
   <Tailwind
     config={{
       theme: {
@@ -45,7 +48,7 @@ export const ResetPasswordTemplate = ({ baseUrl, token }: ResetPasswordTemplateP
           <Section className='text-center mt-4'>
             <Button
               className='bg-brand rounded-lg text-white text-lg w-full py-3   inline-block'
-              href={`${baseUrl}/${token}/reset-password`}
+              href={`${baseUrl}/reset-password/${token}?email=${recipientEmail}`}
             >
               Redefinir Senha
             </Button>

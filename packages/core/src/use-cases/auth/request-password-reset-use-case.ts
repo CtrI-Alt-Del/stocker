@@ -7,9 +7,7 @@ export class RequestPasswordResetUseCase {
   ) {}
 
   async execute(recipientEmail: string, passwordResetSecret: string) {
-    const confirmationToken = await this.cryptoProvider.hash(
-      `${recipientEmail}${passwordResetSecret}`,
-    )
+    const confirmationToken = await this.cryptoProvider.hash(passwordResetSecret)
 
     await this.emailProvider.sendPasswordResetEmail(recipientEmail, confirmationToken)
 

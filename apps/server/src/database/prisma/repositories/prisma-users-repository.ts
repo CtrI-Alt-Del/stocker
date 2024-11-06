@@ -75,6 +75,18 @@ export class PrismaUsersRepository implements IUsersRepository {
     }
   }
 
+  async findByEmail(userEmail: string): Promise<User | null> {
+    try {
+      const prismaUser = await prisma.user.findFirst({
+        where: { email: userEmail },
+      })
+      if (!prismaUser) return null
+      return this.mapper.toDomain(prismaUser)
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
   async update(user: User, userId: string): Promise<void> {
     try {
       const prismaUser = this.mapper.toPrisma(user)
@@ -93,13 +105,35 @@ export class PrismaUsersRepository implements IUsersRepository {
     }
   }
 
-  async findByEmail(userEmail: string): Promise<User | null> {
+  async countEmployeeUsersByCompany(companyId: string): Promise<number> {
     try {
-      const prismaUser = await prisma.user.findFirst({
-        where: { email: userEmail },
+      return await prisma.user.count({
+        where: { role: 'EMPLOYEE', company_id: companyId },
       })
-      if (!prismaUser) return null
-      return this.mapper.toDomain(prismaUser)
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
+  async countManagerUsersByCompany(companyId: string): Promise<number> {
+    try {
+      return await prisma.user.count({
+        where: { role: 'MANAGER', company_id: companyId },
+      })
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
+  async updatePassword(userId: string, newPassword: string): Promise<void> {
+    try {
+      await prisma.user.update({
+        data: {
+          password: newPassword,
+          has_first_password_reset: false
+        },
+        where: { id: userId }
+      })
     } catch (error) {
       throw new PrismaError(error)
     }

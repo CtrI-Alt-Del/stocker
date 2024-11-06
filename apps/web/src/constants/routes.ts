@@ -13,4 +13,5 @@ export const ROUTES = {
   },
   login: '/login',
   subscribe: '/subscribe',
+  requestPasswordReset: '/request-password-reset',
 }

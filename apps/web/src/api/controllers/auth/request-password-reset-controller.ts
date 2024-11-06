@@ -1,29 +1,29 @@
-import { COOKIES, ENV } from '@/constants'
-import { cryptoProvider } from '@/providers'
+import { COOKIES } from '@/constants'
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
-import type { IHttp } from '@stocker/core/interfaces'
-import { RequestPasswordResetUseCase } from '@stocker/core/use-cases'
+import type { IAuthService, IHttp } from '@stocker/core/interfaces'
 
 type Body = {
   email: string
 }
 
-export const RequestPasswordResetController = () => {
+export const RequestPasswordResetController = (authService: IAuthService) => {
   return {
     async handle(http: IHttp) {
       const { email } = http.getBody<Body>()
 
-      // TODO: Instantiate use case with email provider
-      // const useCase = new RequestPasswordResetUseCase(cryptoProvider)
-      // const confirmationToken = await useCase.execute(email, ENV.passwordResetSecret)
+      const response = await authService.requestPasswordReset(email)
 
-      // http.setCookie(
-      //   confirmationToken,
-      //   COOKIES.passwordResetToken.key,
-      //   COOKIES.passwordResetToken.duration,
-      // )
+      if (response.isFailure) {
+        return response.throwError()
+      }
 
-      // return http.send(null, HTTP_STATUS_CODE.ok)
+      http.setCookie(
+        response.body.confirmationToken,
+        COOKIES.passwordResetToken.key,
+        COOKIES.passwordResetToken.duration,
+      )
+
+      return http.send(null, HTTP_STATUS_CODE.ok)
     },
   }
 }
