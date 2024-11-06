@@ -78,8 +78,8 @@ export const NextHttp = (request: NextRequest): IHttp => {
       })
     },
 
-    async getCookie<Data>(key: string) {
-      const nextcookies = await NextCookies()
+    getCookie<Data>(key: string) {
+      const nextcookies = NextCookies()
       const cookie = nextcookies.get(key)
       return cookie?.value ? (JSON.stringify(cookie.value) as Data) : null
     },
