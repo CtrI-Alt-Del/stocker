@@ -7,6 +7,7 @@ import { NotAllowedError, NotFoundError } from '../../errors'
 type Request = {
   productId?: string
   currentDate?: Date
+  companyId: string
 }
 
 export class ReportAnnualOutboundInventoryMovementsUseCase {
@@ -21,7 +22,7 @@ export class ReportAnnualOutboundInventoryMovementsUseCase {
     this.productsRepository = productsRepository
   }
 
-  async execute({ productId, currentDate = new Date() }: Request) {
+  async execute({ productId, companyId, currentDate = new Date() }: Request) {
     if (productId) {
       const product = await this.productsRepository.findById(productId)
       if (!product) throw new NotFoundError('Produto não encontrado')
@@ -30,6 +31,7 @@ export class ReportAnnualOutboundInventoryMovementsUseCase {
 
     const { inventoryMovements } = await this.inventoryMovementsRepository.findMany({
       productId,
+      companyId,
       startDate: new Datetime(currentDate).subtractYears(1),
       endDate: currentDate,
     })
