@@ -6,6 +6,7 @@ import {
   ReportsService,
   AuthService,
   NotificationsService,
+  CompaniesService,
 } from '@/api/services'
 import { CategoriesService } from '@/api/services/categories-service'
 import { InventoryMovementsService } from '@/api/services/inventory-movements-service'
@@ -33,5 +34,6 @@ export function useApi() {
     batchesService: BatchesService(nextApiClient),
     fileStorageService: FileStorageService(nextApiClient),
     categoriesService: CategoriesService(nextApiClient),
+    companiesService: CompaniesService(nextApiClient),
   }
 }

@@ -6,7 +6,10 @@ import { NotifcationsDialog } from './notifications-modal'
 import { UserMenu } from './user-menu'
 
 export const NavbarUser = () => {
-  const { user } = useAuthContext()
+  const { user, company } = useAuthContext()
+
+  console.log('companyId', user?.companyId)
+  console.log('company', company)
 
   return (
     <div className='flex items-center gap-2'>

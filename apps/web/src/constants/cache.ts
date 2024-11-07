@@ -1,12 +1,12 @@
 export const CACHE = {
-  notifications:{
-    key: '/notifications'
+  notifications: {
+    key: '/notifications',
   },
   product: {
     key: '/product',
   },
   users: {
-    key: '/users'
+    key: '/users',
   },
   productsList: {
     key: '/products-list',
@@ -37,5 +37,8 @@ export const CACHE = {
   },
   category: {
     key: '/category',
+  },
+  company: {
+    key: '/company',
   },
 }

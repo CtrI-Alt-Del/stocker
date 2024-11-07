@@ -41,10 +41,29 @@ export const AuthRoutes = async (app: FastifyInstance) => {
 
   app.delete(
     '/logout',
-    // { preHandler: [verifyJwtMiddleware.handle.bind(verifyJwtMiddleware)] },
+    { preHandler: [verifyJwtMiddleware.handle.bind(verifyJwtMiddleware)] },
     async (request, response) => {
       const http = new FastifyHttp(request, response)
       return logoutController.handle(http)
+    },
+  )
+
+  app.patch('/password', async (request, response) => {
+    const http = new FastifyHttp(request, response)
+    return resetPasswordController.handle(http)
+  })
+
+  app.put(
+    '/account',
+    {
+      preHandler: [
+        verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
+        verifyAdminRoleMiddleware.handle.bind(verifyAdminRoleMiddleware),
+      ],
+    },
+    async (request, response) => {
+      const http = new FastifyHttp(request, response)
+      return deleteAccountController.handle(http)
     },
   )
 
@@ -61,9 +80,4 @@ export const AuthRoutes = async (app: FastifyInstance) => {
       return deleteAccountController.handle(http)
     },
   )
-
-  app.patch('/password', async (request, response) => {
-    const http = new FastifyHttp(request, response)
-    return resetPasswordController.handle(http)
-  })
 }

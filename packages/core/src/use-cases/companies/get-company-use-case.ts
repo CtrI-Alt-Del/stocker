@@ -5,7 +5,7 @@ type Request = {
   companyId: string
 }
 
-export class DeleteCompanyUseCase {
+export class GetCompanyUseCase {
   private readonly companiesRepository: ICompaniesRepository
 
   constructor(companiesRepository: ICompaniesRepository) {
@@ -14,11 +14,11 @@ export class DeleteCompanyUseCase {
 
   async execute({ companyId }: Request) {
     const company = await this.companiesRepository.findById(companyId)
+
     if (!company) {
-      throw new NotFoundError('Company não encontrado')
+      throw new NotFoundError('Empresa não encontrada')
     }
-    if (company) {
-      await this.companiesRepository.delete(companyId)
-    }
+
+    return company.dto
   }
 }
