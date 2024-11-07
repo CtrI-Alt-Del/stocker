@@ -9,3 +9,4 @@ export type { MostTrendingProductsListParams } from './most-trending-products-li
 export type { FindByDateRangeParams } from './find-by-date-range-params'
 export type { UsersListParams } from './users-list-params'
 export type { UserRole } from './user-role'
+export type { JobKey } from './job-key'

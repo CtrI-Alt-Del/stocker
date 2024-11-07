@@ -3,4 +3,5 @@ export interface IEmailProvider {
     recipientEmail: string,
     confirmationToken: string,
   ): Promise<boolean>
+  sendWelcomeEmployeeEmail(employeeName: string, companyName: string): Promise<boolean>
 }
