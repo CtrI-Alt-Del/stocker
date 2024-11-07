@@ -118,7 +118,7 @@ export function useAuthContextProvider({
       return
     }
 
-    showError('Não foi possível sair da sua conta, tente novamente mais tarde')
+    showError('Não foi possível atualizar sua conta, tente novamente mais tarde')
   }
 
   return {
