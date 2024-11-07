@@ -15,10 +15,12 @@ import { useNavigation } from '@/ui/hooks'
 import { ROUTES } from '@/constants'
 import { Logo } from '@/ui/components/commons/logo'
 import { NavbarUser } from './navbar-user'
+import { useAuthContext } from '@/ui/components/contexts/auth-context'
 
 export const Navbar = () => {
   const { currentRoute } = useNavigation()
-
+  const { user } = useAuthContext()
+  const userLevel = user?.role
   return (
     <NavbarRoot
       classNames={{
@@ -31,13 +33,15 @@ export const Navbar = () => {
       </NavbarBrand>
       <NavbarContent className='flex-col gap-0 mt-6 p-0 w-full'>
         <NavbarItem className='w-full'>
-          <NavbarLink
-            href={ROUTES.dashboard}
-            icon='dashboard'
-            isActive={currentRoute === ROUTES.dashboard}
-          >
-            Dashboard
-          </NavbarLink>
+          {userLevel !== 'employee' && (
+            <NavbarLink
+              href={ROUTES.dashboard}
+              icon='dashboard'
+              isActive={currentRoute === ROUTES.dashboard}
+            >
+              Dashboard
+            </NavbarLink>
+          )}
         </NavbarItem>
         <NavbarItem className='w-full mt-3'>
           <Accordion showDivider={false} className='p-0 space-y-3'>
@@ -65,13 +69,15 @@ export const Navbar = () => {
                   </NavbarLink>
                 </NavbarItem>
                 <NavbarItem className='w-full'>
-                  <NavbarLink
-                    href={ROUTES.inventory.movements}
-                    icon='arrow-up-down'
-                    isActive={currentRoute === '/inventory/movements'}
-                  >
-                    Lançamentos
-                  </NavbarLink>
+                  {userLevel !== 'employee' && (
+                    <NavbarLink
+                      href={ROUTES.inventory.movements}
+                      icon='arrow-up-down'
+                      isActive={currentRoute === '/inventory/movements'}
+                    >
+                      Lançamentos
+                    </NavbarLink>
+                  )}
                 </NavbarItem>
               </NavbarContent>
             </AccordionItem>
@@ -99,40 +105,48 @@ export const Navbar = () => {
                   </NavbarLink>
                 </NavbarItem>
                 <NavbarItem className='w-full'>
-                  <NavbarLink
-                    href={ROUTES.records.employees}
-                    icon='employee'
-                    isActive={currentRoute === ROUTES.records.employees}
-                  >
-                    Funcionários
-                  </NavbarLink>
+                  {userLevel === 'admin' && (
+                    <NavbarLink
+                      href={ROUTES.records.employees}
+                      icon='employee'
+                      isActive={currentRoute === ROUTES.records.employees}
+                    >
+                      Funcionários
+                    </NavbarLink>
+                  )}
                 </NavbarItem>
                 <NavbarItem className='w-full'>
-                  <NavbarLink
-                    href={ROUTES.records.suppliers}
-                    icon='supplier'
-                    isActive={currentRoute === ROUTES.records.suppliers}
-                  >
-                    Fornecedores
-                  </NavbarLink>
+                  {userLevel !== 'employee' && (
+                    <NavbarLink
+                      href={ROUTES.records.suppliers}
+                      icon='supplier'
+                      isActive={currentRoute === ROUTES.records.suppliers}
+                    >
+                      Fornecedores
+                    </NavbarLink>
+                  )}
                 </NavbarItem>
                 <NavbarItem className='w-full'>
-                  <NavbarLink
-                    href={ROUTES.records.categories}
-                    icon='category'
-                    isActive={currentRoute === ROUTES.records.categories}
-                  >
-                    Categorias
-                  </NavbarLink>
+                  {userLevel !== 'employee' && (
+                    <NavbarLink
+                      href={ROUTES.records.categories}
+                      icon='category'
+                      isActive={currentRoute === ROUTES.records.categories}
+                    >
+                      Categorias
+                    </NavbarLink>
+                  )}
                 </NavbarItem>
                 <NavbarItem className='w-full'>
-                  <NavbarLink
-                    href={ROUTES.records.locations}
-                    icon='location'
-                    isActive={currentRoute === ROUTES.records.locations}
-                  >
-                    Setores
-                  </NavbarLink>
+                  {userLevel !== 'employee' && (
+                    <NavbarLink
+                      href={ROUTES.records.locations}
+                      icon='location'
+                      isActive={currentRoute === ROUTES.records.locations}
+                    >
+                      Setores
+                    </NavbarLink>
+                  )}
                 </NavbarItem>
               </NavbarContent>
             </AccordionItem>
