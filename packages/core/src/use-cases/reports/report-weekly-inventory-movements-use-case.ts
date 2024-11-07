@@ -6,6 +6,7 @@ import { Datetime } from '../../libs'
 type Request = {
   endDate?: Date
   productId?: string
+  companyId: string
 }
 
 const WEEKDAYS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb']
@@ -22,7 +23,7 @@ export class ReportWeeklyInventoryMovementsUseCase {
     this.productsRepository = productsRepository
   }
 
-  async execute({ endDate = new Date(), productId }: Request) {
+  async execute({ endDate = new Date(), productId, companyId }: Request) {
     if (productId) {
       const product = await this.productsRepository.findById(productId)
       if (!product) throw new NotFoundError('Produto não encontrado')
@@ -33,6 +34,7 @@ export class ReportWeeklyInventoryMovementsUseCase {
 
     const { inventoryMovements: inboundInventoryMovements } =
       await this.inventoryMovementsRepository.findMany({
+        companyId,
         startDate,
         endDate,
         movementType: 'inbound',
@@ -41,6 +43,7 @@ export class ReportWeeklyInventoryMovementsUseCase {
 
     const { inventoryMovements: outboundInventoryMovements } =
       await this.inventoryMovementsRepository.findMany({
+        companyId,
         startDate,
         endDate,
         movementType: 'outbound',

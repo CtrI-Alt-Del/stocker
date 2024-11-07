@@ -16,7 +16,7 @@ export const NotFoundPage = () => {
           />
           <h1 className="text-6xl font-bold">Página não encontrada!</h1>
           <p className="mt-5 text-xl">Desculpe, a página que você está procurando não foi encontrada.</p>
-          <Button className="px-6 py-2 mt-5 text-white rounded bg-primary" as={Link} href="/">
+          <Button className="px-6 py-2 mt-5 text-white rounded bg-primary" as={Link} href="/records/products">
             Voltar para a página inicial
           </Button>
         </div>

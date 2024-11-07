@@ -6,7 +6,8 @@ import { ReportStockLevelUseCase } from '@stocker/core/use-cases'
 export class ReportStockLevelController {
   async handle(http: IHttp) {
     const usecase = new ReportStockLevelUseCase(productsRepository)
-    const stockLevel = await usecase.execute()
+    const { companyId } = await http.getUser()
+    const stockLevel = await usecase.execute({ companyId })
 
     return http.send(stockLevel, HTTP_STATUS_CODE.ok)
   }

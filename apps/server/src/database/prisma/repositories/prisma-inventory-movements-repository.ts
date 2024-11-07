@@ -62,6 +62,7 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
     endDate,
     movementType,
     productId,
+    companyId,
   }: InventoryMovementsListParams) {
     try {
       const whereCondition = productId ? { product_id: productId } : undefined
@@ -105,6 +106,9 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
           ...productIdFilter,
           ...movementTypeFilter,
           ...dateRangeParams,
+          Product:{
+            company_id:companyId
+          }
         },
         orderBy: {
           registered_at: 'desc',
@@ -185,18 +189,25 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
     }
   }
 
-  async countInbound(): Promise<number> {
+  async countInbound(companyId: string): Promise<number> {
     try {
-      return await prisma.inventoryMovement.count({ where: { movement_type: 'INBOUND' } })
+      return await prisma.inventoryMovement.count({
+        where: { movement_type: 'INBOUND', Product: { company_id: companyId } },
+      })
     } catch (error) {
       throw new PrismaError(error)
     }
   }
 
-  async countOutbound(): Promise<number> {
+  async countOutbound(companyId: string): Promise<number> {
     try {
       return await prisma.inventoryMovement.count({
-        where: { movement_type: 'OUTBOUND' },
+        where: {
+          movement_type: 'OUTBOUND',
+          Product: {
+            company_id: companyId,
+          },
+        },
       })
     } catch (error) {
       throw new PrismaError(error)

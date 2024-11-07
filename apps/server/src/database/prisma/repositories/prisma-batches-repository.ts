@@ -122,20 +122,31 @@ export class PrismaBatchesRepository implements IBatchesRepository {
     }
   }
 
-  async count(): Promise<number> {
+  async count(companyId: string): Promise<number> {
     try {
-      return prisma.batch.count()
+      return prisma.batch.count({
+        where: {
+          Product: {
+            company_id: companyId,
+          },
+        },
+      })
     } catch (error) {
       throw new PrismaError(error)
     }
   }
 
-  async countItems(): Promise<number> {
+  async countItems(companyId: string): Promise<number> {
     try {
       const result = await prisma.batch.groupBy({
         by: ['id'],
         _sum: {
           items_count: true,
+        },
+        where: {
+          Product: {
+            company_id: companyId,
+          },
         },
       })
       return result.reduce((sum, item) => sum + (item._sum.items_count || 0), 0)

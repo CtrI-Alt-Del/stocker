@@ -10,11 +10,12 @@ type RouteParams = {
 
 export class ListProductsController {
   async handle(http: IHttp) {
+    const { companyId } = await http.getUser()
     const { page } = http.getQueryParams<RouteParams>()
     const pageNumber = parseInt(page || '1', 10)
 
     const useCase = new ListProductsUseCase(productsRepository)
-    const response = await useCase.execute({ page: pageNumber })
+    const response = await useCase.execute({ page: pageNumber, companyId: companyId })
 
     return http.send(response, HTTP_STATUS_CODE.ok)
   }

@@ -3,6 +3,7 @@ import { PaginationResponse } from '../../responses'
 
 type Request = {
   page: number
+  companyId: string
 }
 
 export class ReportInventorysUseCase {
@@ -11,9 +12,12 @@ export class ReportInventorysUseCase {
     this.productsRepository = productsRepository
   }
 
-  async execute({ page }: Request) {
+  async execute({ page, companyId }: Request) {
     const { products, count } =
-      await this.productsRepository.findManyWithInventoryMovementsCount({ page })
+      await this.productsRepository.findManyWithInventoryMovementsCount({
+        page,
+        companyId,
+      })
 
     return new PaginationResponse({
       items: products.map((product) => product.dto),

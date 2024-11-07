@@ -1,5 +1,7 @@
 import type { IBatchesRepository, IInventoryMovementsRepository } from '../../interfaces'
-
+type Request = {
+  companyId:string
+}
 export class ReportInventorySummaryUseCase {
   private readonly batchesRepository: IBatchesRepository
   private readonly inventoryMovementsRepository: IInventoryMovementsRepository
@@ -11,17 +13,17 @@ export class ReportInventorySummaryUseCase {
     this.inventoryMovementsRepository = inventoryMovementsRepository
   }
 
-  async execute() {
+  async execute({companyId}:Request) {
     const [
       batchescount,
       itemscount,
       inboundinventorymovementscount,
       outboundinventorymovementscount,
     ] = await Promise.all([
-      this.batchesRepository.count(),
-      this.batchesRepository.countItems(),
-      this.inventoryMovementsRepository.countInbound(),
-      this.inventoryMovementsRepository.countOutbound(),
+      this.batchesRepository.count(companyId),
+      this.batchesRepository.countItems(companyId),
+      this.inventoryMovementsRepository.countInbound(companyId),
+      this.inventoryMovementsRepository.countOutbound(companyId),
     ])
 
     return {
