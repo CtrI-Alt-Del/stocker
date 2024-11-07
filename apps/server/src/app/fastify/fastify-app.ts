@@ -108,10 +108,10 @@ export class FastifyApp implements IApp {
   private scheduleJobs() {
     const sendExpirationDateNotificationjob = new SendExpirationDateNotificationJob()
 
-    // nodeCron.schedule(
-    //   '* * * * * *',
-    //   async () => await sendExpirationDateNotificationjob.handle(),
-    // )
+    nodeCron.schedule(
+      '0 0 * * *',
+      async () => await sendExpirationDateNotificationjob.handle(),
+    )
   }
 
   private registerRoutes() {
