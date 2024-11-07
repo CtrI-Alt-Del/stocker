@@ -68,10 +68,10 @@ export class Batch extends Entity<BatchProps> {
   get dto(): BatchDto {
     const dto: BatchDto = {
       id: this.id,
-      code: this.props.code,
+      code: this.code,
       itemsCount: this.itemsCount,
       productId: this.props.productId,
-      registeredAt: this.props.registeredAt,
+      registeredAt: this.registeredAt,
     }
 
     if (this.expirationDate) dto.expirationDate = this.expirationDate

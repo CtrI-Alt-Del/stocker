@@ -1,7 +1,6 @@
 import type { IBatchesRepository } from '../../interfaces'
 import type { INotificationsRepository } from '../../interfaces'
 import { ExpirationDateNotification } from '../../domain/entities'
-import { NotFoundError } from '../../errors'
 
 export class SendExpirationDateNotificationsUseCase {
   constructor(
@@ -10,22 +9,23 @@ export class SendExpirationDateNotificationsUseCase {
   ) {}
 
   async execute(): Promise<void> {
-    try {
-      const nearExpiringBatches = await this.batchesRepository.findManyNearToExpire()
+    const companyNearExpiringBatches = await this.batchesRepository.findManyNearToExpire()
 
-      if (nearExpiringBatches.length === 0) {
-        throw new NotFoundError('Nenhum lote próximo da expiração encontrado')
-      }
+    const notifications: ExpirationDateNotification[] = []
 
-      const notifications = nearExpiringBatches.map(({ batches, companyId }) =>
+    for (const { companyId, batches } of companyNearExpiringBatches) {
+      const companyNotifications = batches.map((batch) =>
         ExpirationDateNotification.create({
           companyId,
-          batch: batches,
+          batch: { id: batch.id, code: batch.code },
         }),
       )
-      await this.notificationsRepository.addManyExpirationDateNotification(notifications)
-    } catch (error) {
-      throw new NotFoundError('Erro ao enviar notificações de expiração')
+
+      notifications.push(...companyNotifications)
     }
+
+    console.log(notifications.length)
+
+    // await this.notificationsRepository.addManyExpirationDateNotifications(notifications)
   }
 }

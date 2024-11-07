@@ -119,5 +119,9 @@ export const NextApiClient = (cacheConfig?: CacheConfig): IApiClient => {
     setParam(key: string, value: string) {
       params[key] = value
     },
+
+    clearParams() {
+      params = {}
+    },
   }
 }

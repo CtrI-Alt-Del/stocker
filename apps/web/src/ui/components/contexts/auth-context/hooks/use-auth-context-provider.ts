@@ -3,12 +3,12 @@
 import { useState } from 'react'
 import { jwtDecode } from 'jwt-decode'
 
-import { User } from '@stocker/core/entities'
+import { Company, User } from '@stocker/core/entities'
 import type { CompanyDto, UserDto } from '@stocker/core/dtos'
 import type { UserRole } from '@stocker/core/types'
 
-import { COOKIES, ROUTES } from '@/constants'
-import { useApi, useNavigation, useToast } from '@/ui/hooks'
+import { CACHE, COOKIES, ROUTES } from '@/constants'
+import { useApi, useCache, useNavigation, useToast } from '@/ui/hooks'
 import type { deleteCookieAction, setCookieAction } from '@/actions'
 
 type UseAuthContextProvider = {
@@ -24,9 +24,27 @@ export function useAuthContextProvider({
 }: UseAuthContextProvider) {
   const userDto = jwt ? jwtDecode<UserDto>(jwt) : null
   const [user, setUser] = useState<User | null>(userDto ? User.create(userDto) : null)
-  const { authService } = useApi()
+  const { authService, companiesService } = useApi()
   const { showError } = useToast()
   const { navigateTo } = useNavigation()
+
+  async function fetchCompany() {
+    if (!user) return
+
+    const response = await companiesService.getCompany(user.companyId)
+
+    if (response.isSuccess) {
+      return response.body
+    }
+
+    response.throwError()
+  }
+
+  const { data, refetch: refetchCompany } = useCache({
+    fetcher: fetchCompany,
+    key: CACHE.company.key,
+    isEnabled: Boolean(user),
+  })
 
   function getRouteByUserRole(role: UserRole) {
     switch (role) {
@@ -90,10 +108,25 @@ export function useAuthContextProvider({
     showError('Não foi possível sair da sua conta, tente novamente mais tarde')
   }
 
+  async function update(userDto: Partial<UserDto>, companyDto: Partial<CompanyDto>) {
+    const response = await authService.updateAccount(userDto, companyDto)
+
+    if (response.isSuccess) {
+      await setCookieAction(COOKIES.jwt.key, response.body.jwt, COOKIES.jwt.duration)
+      if (user) setUser(user.update(userDto))
+      refetchCompany()
+      return
+    }
+
+    showError('Não foi possível atualizar sua conta, tente novamente mais tarde')
+  }
+
   return {
     user,
+    company: data ? Company.create(data) : null,
     login,
     subscribe,
     logout,
+    update,
   }
 }

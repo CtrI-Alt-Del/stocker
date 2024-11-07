@@ -1,6 +1,6 @@
 import type { UserDto } from '../../dtos'
+import type { IUsersRepository } from '../../interfaces'
 import { NotFoundError } from '../../errors'
-import { IUsersRepository } from '../../interfaces/repositories/users-repository'
 
 type Request = {
   userDto: Partial<UserDto>
@@ -19,6 +19,8 @@ export class UpdateUserUseCase {
       throw new NotFoundError('User não encontrado')
     }
     const updatedUser = user.update(userDto)
-    await this.userRepository.update(updatedUser,user.id)
+    await this.userRepository.update(updatedUser, user.id)
+
+    return updatedUser
   }
 }

@@ -42,7 +42,7 @@ export class NotificationsRepositoryMock implements INotificationsRepository {
     this.notifications.push(stockLevelNotification)
   }
 
-  async addManyExpirationDateNotification(
+  async addManyExpirationDateNotifications(
     expirationNotifications: ExpirationDateNotification[],
   ): Promise<void> {
     this.notifications.push(...expirationNotifications)

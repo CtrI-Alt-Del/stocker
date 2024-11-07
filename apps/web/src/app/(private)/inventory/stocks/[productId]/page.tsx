@@ -11,7 +11,7 @@ type PageProps = {
 }
 
 const Page = async ({ params }: PageProps) => {
-  const apiClient = NextServerApiClient({ isCacheEnabled: false })
+  const apiClient = await NextServerApiClient({ isCacheEnabled: false })
   const productsService = ProductsService(apiClient)
   const response = await productsService.getProduct(params.productId)
 

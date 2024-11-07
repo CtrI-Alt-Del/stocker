@@ -119,7 +119,7 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
     }
   }
 
-  async addManyExpirationDateNotification(
+  async addManyExpirationDateNotifications(
     expirationDateNotifications: ExpirationDateNotification[],
   ): Promise<void> {
     try {

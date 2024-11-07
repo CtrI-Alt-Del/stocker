@@ -33,27 +33,38 @@ export class PrismaBatchesRepository implements IBatchesRepository {
     }
   }
 
-  async findManyNearToExpire(): Promise<{ batches: Batch; companyId: string }[]> {
+  async findManyNearToExpire(): Promise<Array<{ companyId: string; batches: Batch[] }>> {
     try {
-      const prismaBatches: (PrismaBatch & { company_id: string })[] =
+      const prismaBatches: Array<{ company_id: string; batches: PrismaBatch[] }> =
         await prisma.$queryRaw`
         SELECT 
-          B.*, 
-          P.company_id
+          P.company_id,
+          ARRAY_AGG(
+            JSON_BUILD_OBJECT(
+              'id', B.id,
+              'code', B.code,
+              'expiration_date', B.expiration_date,
+              'items_count', B.items_count,
+              'product_id', B.product_id,
+              'registered_at', B.registered_at
+              )
+            ) batches
         FROM 
           batches B
         JOIN 
           products P
         ON 
-          P.id = batches.P
+          P.id = B.product_id
         WHERE 
-          B.expiration_date >= B.maximum_days_to_expiration
+          B.expiration_date IS NOT NULL AND 
+          EXTRACT(DAY FROM B.expiration_date - INTERVAL '1 DAY' - CURRENT_DATE) < B.maximum_days_to_expiration
+        GROUP BY P.company_id
       `
 
-      return prismaBatches.map((batch) => {
-        const domainBatch = this.mapper.toDomain(batch)
-        return { batches: domainBatch, companyId: batch.company_id }
-      })
+      return prismaBatches.map(({ company_id, batches }) => ({
+        companyId: company_id,
+        batches: batches.map(this.mapper.toDomain),
+      }))
     } catch (error) {
       throw new PrismaError(error)
     }
