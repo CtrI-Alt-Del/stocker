@@ -6,11 +6,12 @@ import { batchesRepository, inventoryMovementsRepository } from '@/database'
 
 export class ReportInventorySummaryController {
   async handle(http: IHttp) {
+    const {companyId} = await http.getUser()
     const usecase = new ReportInventorySummaryUseCase(
       batchesRepository,
       inventoryMovementsRepository,
     )
-    const report = await usecase.execute()
+    const report = await usecase.execute({companyId})
 
     return http.send(report, HTTP_STATUS_CODE.ok)
   }
