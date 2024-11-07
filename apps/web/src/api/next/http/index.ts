@@ -42,6 +42,10 @@ export const NextHttp = (request: NextRequest): IHttp => {
       return response
     },
 
+    notFound() {
+      return this.send(null, HTTP_STATUS_CODE.notFound)
+    },
+
     pass() {
       return
     },

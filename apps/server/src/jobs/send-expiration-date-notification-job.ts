@@ -1,8 +1,19 @@
 import { SendExpirationDateNotificationsUseCase } from '@stocker/core/use-cases'
+import type {
+  IBatchesRepository,
+  IJob,
+  INotificationsRepository,
+} from '@stocker/core/interfaces'
+import type { JobKey } from '@stocker/core/types'
 
-import { batchesRepository, notificationsRepository } from '@/database'
+export class SendExpirationDateNotificationJob implements IJob {
+  readonly key: JobKey = 'send-expiration-date-notification'
 
-export class SendExpirationDateNotificationJob {
+  constructor(
+    private readonly notificationsRepository: INotificationsRepository,
+    private readonly batchesRepository: IBatchesRepository,
+  ) {}
+
   async handle() {
     const useCase = new SendExpirationDateNotificationsUseCase(
       notificationsRepository,

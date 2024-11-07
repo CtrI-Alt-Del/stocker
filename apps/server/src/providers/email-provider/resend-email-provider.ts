@@ -12,7 +12,6 @@ export class ResendEmailProvider implements IEmailProvider {
   constructor() {
     this.resend = new Resend(ENV.resendApiKey)
   }
-
   async sendPasswordResetEmail(
     recipientEmail: string,
     confirmationToken: string,
@@ -37,5 +36,9 @@ export class ResendEmailProvider implements IEmailProvider {
     }
 
     return Boolean(data?.id)
+  }
+
+  sendWelcomeEmployeeEmail(employeeName: string, companyName: string): Promise<boolean> {
+    throw new Error('Method not implemented.')
   }
 }

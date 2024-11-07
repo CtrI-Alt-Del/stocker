@@ -8,6 +8,7 @@ import {
   Html,
   Preview,
   Section,
+  Img,
   Tailwind,
   Text,
 } from '@react-email/components'
@@ -39,6 +40,7 @@ export const ResetPasswordTemplate = ({
       <Preview>Redefinição de Senha - Stocker</Preview>
       <Body className='bg-white font-sans'>
         <Container className='mx-auto my-0 py-5 px-0'>
+          <Img src='../assets/images/camel.png' width={300} height={300} />
           <Text className='text-lg leading-7 mt-2'>
             Olá,
             <br />
@@ -47,7 +49,7 @@ export const ResetPasswordTemplate = ({
           </Text>
           <Section className='text-center mt-4'>
             <Button
-              className='bg-brand rounded-lg text-white text-lg w-full py-3   inline-block'
+              className='bg-brand rounded-lg text-white text-lg w-full py-3 inline-block'
               href={`${baseUrl}/reset-password/${token}?email=${recipientEmail}`}
             >
               Redefinir Senha
