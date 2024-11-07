@@ -34,13 +34,12 @@ export class ReportAnnualOutboundInventoryMovementsUseCase {
       endDate: currentDate,
     })
 
-    const formattedMovements = this.formatByLast12data(inventoryMovements)
+    const formattedMovements = this.formatByLast12data(inventoryMovements, currentDate)
 
     return formattedMovements
   }
 
-  private formatByLast12data(inventoryMovements: InventoryMovement[]) {
-    const currentDate = new Date()
+  private formatByLast12data(inventoryMovements: InventoryMovement[], currentDate: Date) {
     const currentMonth = currentDate.getMonth()
     const currentYear = currentDate.getFullYear()
 
