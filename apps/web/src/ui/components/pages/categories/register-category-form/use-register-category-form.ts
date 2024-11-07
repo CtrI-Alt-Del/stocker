@@ -9,6 +9,7 @@ import { nameSchema } from '@stocker/validation/schemas'
 import { useApi, useToast } from '@/ui/hooks'
 import { Category } from '@stocker/core/entities'
 import { CategoryDto } from '@stocker/core/dtos'
+import { useAuthContext } from '@/ui/components/contexts/auth-context'
 
 const registerCategoryFormSchema = z.object({
   name: nameSchema,
@@ -30,12 +31,13 @@ export function useRegisterCategoryForm({
     })
   const { showSuccess, showError } = useToast()
   const { categoriesService } = useApi()
-
+  const {user} = useAuthContext()
+  const companyId = user ? user.companyId : ""
   async function handleFormSubmit({ name }: RegisterCategoryFormData) {
     const category = Category.create({
       name,
       parentCategoryId: parentCategoryId ? parentCategoryId : undefined,
-      companyId: 'eceda392-06df-4ed2-8c90-db6bf1e38830',
+      companyId: companyId,
       subCategories: [],
     })
     const response = await categoriesService.registerCategory(category)
