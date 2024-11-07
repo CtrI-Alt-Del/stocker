@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "tsx watch --env-file .env src",
+    "dev": "npm-run-all -p dev:*",
+    "dev:server": "tsx watch --env-file .env src/server",
+    "dev:queue": "tsx watch --env-file .env src/queue",
     "build": "echo 'No build required for server'",
     "start": "node index.ts",
     "db:generate": "prisma generate",
