@@ -1,1 +1,1 @@
-export { BcryptCryptoProvider } from './bcrypt-crypto-provider'
+export { BcryptCryptoProvider as CryptoProvider } from './bcrypt-crypto-provider'
