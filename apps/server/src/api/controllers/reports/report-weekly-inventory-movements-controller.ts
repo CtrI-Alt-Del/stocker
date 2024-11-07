@@ -10,6 +10,7 @@ type QueryParams = {
 
 export class ReportWeeklyInventoryMovementsController {
   async handle(http: IHttp) {
+    const { companyId } = await http.getUser()
     const { productId } = http.getQueryParams<QueryParams>()
 
     const usecase = new ReportWeeklyInventoryMovementsUseCase(
@@ -17,6 +18,7 @@ export class ReportWeeklyInventoryMovementsController {
       productsRepository,
     )
     const stockLevel = await usecase.execute({
+      companyId,
       productId,
     })
 
