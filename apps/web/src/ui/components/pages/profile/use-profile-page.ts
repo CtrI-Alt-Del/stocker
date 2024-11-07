@@ -4,11 +4,9 @@ import type { CompanyDto, UserDto } from '@stocker/core/dtos'
 import { cnpjSchema, companyNameSchema, emailSchema, nameSchema } from '@stocker/validation/schemas'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { useAuthContext } from '../../contexts/auth-context'
 
-type useUpdateProfileFormProps = {
-  user: UserDto
-  company: CompanyDto
-}
+const {user, company, update} = useAuthContext()
 
 const updateProfileFormSchema = z.object({
   name: nameSchema,
@@ -17,19 +15,17 @@ const updateProfileFormSchema = z.object({
   email: emailSchema,
 })
 type updateProfileFormData = z.infer<typeof updateProfileFormSchema>
-export function useUpdateProfileForm({
-  user,
-  company,
-}: useUpdateProfileFormProps) {
+export function useUpdateProfileForm() {
+  
   const { usersService } = useApi()
   const { showSuccess, showError } = useToast()
   const { formState, reset, register, handleSubmit, control } =
     useForm<updateProfileFormData>({
       defaultValues: {
-        name: user.name,
-        companyName: company.name,
-        cnpj: company.cnpj,
-        email: user.email,
+        name: user?.name,
+        companyName: company?.name,
+        cnpj: company?.cnpj,
+        email: user?.email,
       },
       resolver: zodResolver(updateProfileFormSchema),
     })
@@ -40,7 +36,7 @@ export function useUpdateProfileForm({
       const updatedValue = formData[updatedField as keyof updateProfileFormData]
       partialUser[updatedField] = updatedValue
     }
-    if (!user.id) {
+    if (!user || !company) {
       return
     }
     const response = await usersService.updateUser(
