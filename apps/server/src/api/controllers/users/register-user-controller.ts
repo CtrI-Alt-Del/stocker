@@ -3,14 +3,15 @@ import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 import { usersRepository } from '@/database'
 import { RegisterUserUseCase } from '@stocker/core/use-cases'
 import type { UserDto } from '@stocker/core/dtos'
+import { BcryptCryptoProvider } from '@/providers/crypto-provider'
 
 
 export class RegisterUserController {
   async handle(http: IHttp) {
     const userDto = http.getBody<UserDto>()
-    const useCase = new RegisterUserUseCase(usersRepository)
+    const bcryptProvider = new BcryptCryptoProvider()
+    const useCase = new RegisterUserUseCase(usersRepository,bcryptProvider)
     const userId = await useCase.execute({ userDto })
-  console.log("Ola eu registrei um borther")
     return http.send({ userId }, HTTP_STATUS_CODE.created)
   }
 }

@@ -11,8 +11,8 @@ type RouteParams = {
 
 export class ListUsersController {
   async handle(http: IHttp) {
+    const { companyId } = await http.getUser()
     const { page } = http.getQueryParams<RouteParams>()
-    const companyId = "eceda392-06df-4ed2-8c90-db6bf1e38830"
     if (!companyId) {
       return http.send(null, HTTP_STATUS_CODE.badRequest)
     }

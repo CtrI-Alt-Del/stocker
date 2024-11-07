@@ -16,8 +16,8 @@ export class SendExpirationDateNotificationJob implements IJob {
 
   async handle() {
     const useCase = new SendExpirationDateNotificationsUseCase(
-      this.notificationsRepository,
-      this.batchesRepository,
+      notificationsRepository,
+      batchesRepository,
     )
     await useCase.execute()
   }

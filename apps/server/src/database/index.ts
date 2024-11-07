@@ -7,6 +7,7 @@ import {
   PrismaCompaniesRepository,
   PrismaUsersRepository,
 } from './prisma/repositories'
+
 export const usersRepository = new PrismaUsersRepository()
 export const productsRepository = new PrismaProductsRepository()
 export const batchesRepository = new PrismaBatchesRepository()
@@ -14,4 +15,3 @@ export const inventoryMovementsRepository = new PrismaInventoryMovementsReposito
 export const categoriesRepository = new PrismaCategoriesRepository()
 export const notificationsRepository = new PrismaNotificationsRepository()
 export const companiesRepository = new PrismaCompaniesRepository()
-

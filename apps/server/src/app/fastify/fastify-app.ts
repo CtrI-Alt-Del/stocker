@@ -3,16 +3,6 @@ import Multipart from '@fastify/multipart'
 import Cors from '@fastify/cors'
 import Cookies from '@fastify/cookie'
 import nodeCron from 'node-cron'
-import type { IApp } from '@stocker/core/interfaces'
-import {
-  AppError,
-  NotAllowedError,
-  ConflictError,
-  NotFoundError,
-  ValidationError,
-} from '@stocker/core/errors'
-import { HTTP_STATUS_CODE } from '@stocker/core/constants'
-import { COOKIES, ENV } from '@/constants'
 import {
   ProductsRoutes,
   FileStorageRoutes,
@@ -22,10 +12,22 @@ import {
   UsersRoutes,
   NotificationsRoutes,
   AuthRoutes,
+  BatchesRoutes,
+  CompaniesRoutes,
 } from './routes'
-import { notificationsRepository, batchesRepository } from '@/database'
 import Jwt from '@fastify/jwt'
-import { BatchesRoutes } from './routes/batches-routes'
+
+import type { IApp } from '@stocker/core/interfaces'
+import {
+  AppError,
+  NotAllowedError,
+  ConflictError,
+  NotFoundError,
+  ValidationError,
+} from '@stocker/core/errors'
+import { HTTP_STATUS_CODE } from '@stocker/core/constants'
+
+import { COOKIES, ENV } from '@/constants'
 import { SendExpirationDateNotificationJob } from '@/jobs'
 
 export class FastifyApp implements IApp {
@@ -46,6 +48,7 @@ export class FastifyApp implements IApp {
       },
     })
     this.app.register(Cookies)
+
     this.setErrorHandler()
     this.registerRoutes()
     this.scheduleJobs()
@@ -103,18 +106,19 @@ export class FastifyApp implements IApp {
   }
 
   private scheduleJobs() {
-    const sendExpirationDateNotificationjob = new SendExpirationDateNotificationJob(
-      notificationsRepository,
-      batchesRepository,
-    )
+    const sendExpirationDateNotificationjob = new SendExpirationDateNotificationJob()
 
-    // nodeCron.schedule('* * * * * *', () => console.log('opa'))
+    nodeCron.schedule(
+      '0 0 * * *',
+      async () => await sendExpirationDateNotificationjob.handle(),
+    )
   }
 
   private registerRoutes() {
     this.app.register(AuthRoutes, { prefix: '/auth' })
     this.app.register(ProductsRoutes, { prefix: '/products' })
     this.app.register(BatchesRoutes, { prefix: '/batches' })
+    this.app.register(CompaniesRoutes, { prefix: '/companies' })
     this.app.register(InventoryMovementsRoutes, { prefix: '/inventory-movements' })
     this.app.register(FileStorageRoutes, { prefix: '/file-storage' })
     this.app.register(ReportsRoutes, { prefix: '/reports' })

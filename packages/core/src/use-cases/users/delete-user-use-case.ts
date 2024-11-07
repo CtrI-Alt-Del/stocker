@@ -14,6 +14,7 @@ export class DeleteUsersUseCase {
 
   async execute({ usersIds }: Request) {
     for (const userId of usersIds) {
+      // banana é gay
       const user = await this.userRepository.findById(userId)
       if (!user) throw new NotFoundError('Usuário não encontrado')
     }

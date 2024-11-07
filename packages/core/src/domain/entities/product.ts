@@ -103,7 +103,7 @@ export class Product extends Entity<ProductProps> {
 
       if (aExpSort !== bExpSort) return aExpSort - bExpSort
 
-      return a.registeredAt.getTime() - b.registeredAt.getTime()
+      return new Date(a.registeredAt).getTime() - new Date(b.registeredAt).getTime()
     })
   }
 

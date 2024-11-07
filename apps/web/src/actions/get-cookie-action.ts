@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers'
 
-export async function getCookieAction<Data>(key: string) {
+export async function getCookieAction(key: string) {
   const cookie = cookies().get(key)
-  return cookie?.value ? (JSON.stringify(cookie.value) as Data) : null
+  return cookie?.value ? cookie.value : null
 }

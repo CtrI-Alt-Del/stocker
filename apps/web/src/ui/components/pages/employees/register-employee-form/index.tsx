@@ -59,20 +59,6 @@ export const RegisterEmployeeForm = ({
               </Select>
             )}
           />
-          <Input
-            label='Senha do funcionário'
-            isRequired
-            isInvalid={Boolean(errors.password)}
-            errorMessage={errors.password?.message}
-            {...register('password')}
-          />
-          <Input
-            label='Confirme a senha'
-            isRequired
-            isInvalid={Boolean(errors.confirmPassword)}
-            errorMessage={errors.confirmPassword?.message}
-            {...register('confirmPassword')}
-          />
         </div>
       </div>
 

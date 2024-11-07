@@ -15,11 +15,22 @@ export const AuthService = (apiClient: IApiClient): IAuthService => {
     },
 
     async logout() {
-      return await apiClient.post('/auth/logout')
+      return await apiClient.delete('/auth/logout')
     },
 
     async requestPasswordReset(email: string) {
       return await apiClient.post('/auth/password', { email })
+    },
+
+    async updateAccount(userDto: Partial<UserDto>, companyDto: Partial<CompanyDto>) {
+      return await apiClient.put<{ jwt: string }>('/auth/account', {
+        user: userDto,
+        company: companyDto,
+      })
+    },
+
+    async deleteAccount() {
+      return await apiClient.delete('/auth/account')
     },
   }
 }

@@ -9,4 +9,9 @@ export interface IAuthService {
   ): Promise<ApiResponse<{ jwt: string }>>
   logout(): Promise<ApiResponse>
   requestPasswordReset(email: string): Promise<ApiResponse<{ confirmationToken: string }>>
+  updateAccount(
+    userDto: Partial<UserDto>,
+    companyDto: Partial<CompanyDto>,
+  ): Promise<ApiResponse<{ jwt: string }>>
+  deleteAccount(): Promise<ApiResponse>
 }

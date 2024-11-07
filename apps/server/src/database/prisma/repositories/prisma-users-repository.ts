@@ -47,6 +47,7 @@ export class PrismaUsersRepository implements IUsersRepository {
         skip: params.page > 0 ? (params.page - 1) * PAGINATION.itemsPerPage : 1,
         where: {
           company_id: params.companyId,
+          role: {not: "ADMIN"}
         },
       })
 

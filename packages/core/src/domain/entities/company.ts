@@ -1,5 +1,5 @@
-import type { CompanyDto } from "../../dtos"
-import { Entity } from "../abstracts"
+import type { CompanyDto } from '../../dtos'
+import { Entity } from '../abstracts'
 
 type CompanyProps = {
   name: string
@@ -9,6 +9,10 @@ type CompanyProps = {
 export class Company extends Entity<CompanyProps> {
   static create(dto: CompanyDto) {
     return new Company(dto, dto.id)
+  }
+
+  update(partialDto: Partial<CompanyDto>): Company {
+    return Company.create({ ...this.dto, ...partialDto })
   }
 
   get name() {

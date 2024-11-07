@@ -14,7 +14,6 @@ import { BatchesTable } from './batches-table'
 import { InventoryMovementsTable } from './inventory-movements-table'
 import { Icon } from '../../commons/icon'
 import { AlertDialog } from '../../commons/alert-dialog'
-import { isBuiltin } from 'module'
 
 type ProductStockPageProps = {
   productDto: ProductDto

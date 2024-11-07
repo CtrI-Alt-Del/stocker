@@ -9,4 +9,5 @@ export interface IApiClient {
   setBaseUrl(url: string): void
   setHeader(key: string, value: string): void
   setParam(key: string, value: string): void
+  clearParams(): void
 }

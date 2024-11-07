@@ -12,6 +12,7 @@ import {
 } from '@stocker/validation/schemas'
 
 import { useApi, useToast } from '@/ui/hooks'
+import { useAuthContext } from '@/ui/components/contexts/auth-context'
 
 const registerOutboundMovementFormSchema = z.object({
   registeredAt: dateSchema,
@@ -39,15 +40,18 @@ export function useRegisterOutbondMovementForm(
 
   const { showError, showSuccess } = useToast()
   const { inventoryMovementService } = useApi()
+  const { user } = useAuthContext()
 
   async function handleFormSubmit(formData: RegisterInboundMovementFormData) {
+    if (!user) return
+
     const outboundMovement = InventoryMovement.create({
       movementType: 'outbound',
       registeredAt: formData.registeredAt,
       itemsCount: formData.itemsCount,
       remark: formData.remark,
       responsible: {
-        id: '29fcf7a0-5ee3-4cb0-b36e-ecc825f1cdaa',
+        id: user.id,
       },
       product: {
         id: productId,
