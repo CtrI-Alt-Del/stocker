@@ -3,7 +3,7 @@ import { UsersRepositoryMock } from '../../../../__tests__/mocks/repositories'
 import { NotFoundError } from '../../../errors'
 import { UsersFaker } from '../../../../__tests__/fakers'
 import { ResetPasswordUseCase } from '../reset-password-use-case'
-import { BcryptCryptoProvider } from '../../../../../../apps/server/src/providers/crypto-provider'
+import { CryptoProvider } from '../../../../../../apps/server/src/providers/crypto-provider'
 import type { ICryptoProvider } from '../../../interfaces'
 
 let useCase: ResetPasswordUseCase
@@ -13,7 +13,7 @@ let cryptoProvider: ICryptoProvider
 describe('Reset Password use case', () => {
   beforeEach(() => {
     usersRepository = new UsersRepositoryMock()
-    cryptoProvider = new BcryptCryptoProvider()
+    cryptoProvider = new CryptoProvider()
     useCase = new ResetPasswordUseCase(usersRepository, cryptoProvider)
   })
 
