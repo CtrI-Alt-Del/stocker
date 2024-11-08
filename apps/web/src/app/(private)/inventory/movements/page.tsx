@@ -1,6 +1,13 @@
+import { verifyUserRoleAction } from '@/actions'
 import { InventoryMovementsPage } from '@/ui/components/pages/inventory-movements'
+import { notFound } from 'next/navigation'
 
-const Page = () => {
+const Page = async () => {
+  const isValidRole = await verifyUserRoleAction('manager')
+  if (!isValidRole) {
+    return notFound()
+  }
+
   return <InventoryMovementsPage />
 }
 
