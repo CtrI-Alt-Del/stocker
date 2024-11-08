@@ -1,5 +1,9 @@
 import { ResetPasswordForm } from './reset-password-form'
 
-export const ResetPasswordPage = () => {
-  return <ResetPasswordForm />
+type ResetPasswordPageProps = {
+  email: string
+}
+
+export const ResetPasswordPage = async ({ email }: ResetPasswordPageProps) => {
+  return <ResetPasswordForm email={email} />
 }

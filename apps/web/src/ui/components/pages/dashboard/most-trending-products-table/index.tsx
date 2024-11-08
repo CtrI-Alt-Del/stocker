@@ -4,7 +4,7 @@ import { Input, Link, Pagination } from '@nextui-org/react'
 
 import { Datetime } from '@stocker/core/libs'
 
-import { BROWSER_ENV } from '@/constants'
+import { BROWSER_ENV, ROUTES } from '@/constants'
 import { Icon } from '@/ui/components/commons/icon'
 import { Loading } from '@/ui/components/commons/loading'
 import { ProductRow } from './produc-row'
@@ -32,7 +32,7 @@ export const MostTrendingProductsTable = () => {
       <div className='flex flex-col w-full'>
         <div className='flex items-center gap-2'>
           <Link
-            href={`${BROWSER_ENV.appUrl}/api/reports/most-trending-products/csv?startDate=${startDate.format('YYYY-MM-DD')}&endDate=${endDate.format('YYYY-MM-DD')}${categoryId ? `&categoryId=${categoryId}` : ''}`}
+            href={`${BROWSER_ENV.appUrl}${ROUTES.api.mostTrendingRecordsCsv}?startDate=${startDate.format('YYYY-MM-DD')}&endDate=${endDate.format('YYYY-MM-DD')}${categoryId ? `&categoryId=${categoryId}` : ''}`}
             aria-label='Exportar para arquivo csv'
             className='text-zinc-400'
           >

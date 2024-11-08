@@ -17,7 +17,7 @@ export const ReportsService = (apiClient: IApiClient): IReportsService => {
     async reportSummary() {
       return await apiClient.get<any>('/reports/inventory-summary')
     },
-    
+
     async reportMostTrendingProducts({
       categoryId,
       startDate,
@@ -34,18 +34,20 @@ export const ReportsService = (apiClient: IApiClient): IReportsService => {
       )
     },
 
-    async exportMostTrendingProductsToCsvFile({startDate, endDate, categoryId}) {
-       apiClient.setParam('startDate', String(startDate))
-       apiClient.setParam('endDate', String(endDate))
+    async exportMostTrendingProductsToCsvFile({ startDate, endDate, categoryId }) {
+      apiClient.setParam('startDate', String(startDate))
+      apiClient.setParam('endDate', String(endDate))
       if (categoryId) apiClient.setParam('categoryId', categoryId)
 
-      return await apiClient.get<PaginationResponse>(
-        '/reports/most-trending-products/csv',
-      )
+      return await apiClient.fetchBuffer('/reports/most-trending-products/csv')
     },
 
     async reportInventory() {
       return await apiClient.get<PaginationResponse<ProductDto>>('/reports/inventory')
+    },
+
+    async exportInventoryToCsvFile() {
+      return await apiClient.fetchBuffer('/reports/inventory/csv')
     },
 
     async reportWeeklyInventoryMovements(productId?: string) {
@@ -54,7 +56,7 @@ export const ReportsService = (apiClient: IApiClient): IReportsService => {
         '/reports/inventory-movements/weekly',
       )
     },
-    
+
     async reportAnualInventoryMovements(productId?: string) {
       if (productId) {
         apiClient.setParam('productId', productId)

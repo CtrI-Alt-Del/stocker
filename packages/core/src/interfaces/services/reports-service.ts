@@ -5,7 +5,10 @@ import type {
   WeeklyInventoryMovementsDto,
 } from '../../dtos'
 import type { ApiResponse, PaginationResponse } from '../../responses'
-import type { ExportMostTrendingProductsToCsvFileParams, ProducsStocksListParams } from '../../types'
+import type {
+  ExportMostTrendingProductsToCsvFileParams,
+  ProducsStocksListParams,
+} from '../../types'
 import type { MostTrendingProductsListParams } from '../../types/most-trending-products-list-params'
 
 export interface IReportsService {
@@ -15,11 +18,12 @@ export interface IReportsService {
     params: MostTrendingProductsListParams,
   ): Promise<ApiResponse<PaginationResponse<ProductDto>>>
   exportMostTrendingProductsToCsvFile(
-  params: ExportMostTrendingProductsToCsvFileParams
-  ): Promise<ApiResponse<PaginationResponse<Buffer>>>
+    params: ExportMostTrendingProductsToCsvFileParams,
+  ): Promise<ApiResponse<Buffer>>
   reportInventory(
     params: ProducsStocksListParams,
   ): Promise<ApiResponse<PaginationResponse<ProductDto>>>
+  exportInventoryToCsvFile(): Promise<ApiResponse<Buffer>>
   reportWeeklyInventoryMovements(
     productId?: string,
   ): Promise<ApiResponse<WeeklyInventoryMovementsDto[]>>

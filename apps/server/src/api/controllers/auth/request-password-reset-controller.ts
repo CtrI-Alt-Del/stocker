@@ -13,7 +13,7 @@ export class RequestPasswordResetController {
   async handle(http: IHttp) {
     const { email } = http.getBody<Body>()
     const useCase = new RequestPasswordResetUseCase(cryptoProvider, queueProvider)
-    const confirmationToken = await useCase.execute(email, ENV.passwordResetSecret)
+    const confirmationToken = await useCase.execute(email)
 
     return http.send({ confirmationToken }, HTTP_STATUS_CODE.created)
   }

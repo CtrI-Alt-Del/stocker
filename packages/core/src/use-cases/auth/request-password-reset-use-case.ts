@@ -6,8 +6,8 @@ export class RequestPasswordResetUseCase {
     private readonly queueProvider: IQueueProvider,
   ) {}
 
-  async execute(recipientEmail: string, passwordResetSecret: string) {
-    const confirmationToken = await this.cryptoProvider.hash(passwordResetSecret)
+  async execute(recipientEmail: string) {
+    const confirmationToken = await this.cryptoProvider.token()
 
     this.queueProvider.push('send-password-reset-email', {
       recipientEmail,

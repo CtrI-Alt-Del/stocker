@@ -69,6 +69,7 @@ export class User extends Entity<UserProps> {
   }
 
   get password(): string {
+    this.props.hasFirstPasswordReset = false
     return this.props.password
   }
 

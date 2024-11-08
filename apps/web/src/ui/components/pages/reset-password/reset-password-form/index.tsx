@@ -6,21 +6,27 @@ import Link from 'next/link'
 
 import { useResetPasswordForm } from './use-reset-password-form'
 import { PasswordInput } from '@/ui/components/commons/password-input'
+import { ROUTES } from '@/constants'
 
-export const ResetPasswordForm = () => {
-  const { isSuccess, fieldErrors, formControl, handleSubmit } = useResetPasswordForm()
+type ResetPasswordPageProps = {
+  email: string
+}
+
+export const ResetPasswordForm = ({ email }: ResetPasswordPageProps) => {
+  const { isSuccess, isSubmitting, fieldErrors, formControl, handleSubmit } =
+    useResetPasswordForm(email)
 
   return isSuccess ? (
-    <div className='w-full h-full grid grid-rows-2'>
-      <h1 className='font-bold md:text-4xl text-xl  flex  justify-center items-center whitespace-nowrap'>
+    <div className='grid place-content-center gap-6 w-full h-full'>
+      <strong className='font-bold md:text-2xl text-xl flex justify-center items-center whitespace-nowrap'>
         Senha redefinida com sucesso!
-      </h1>
+      </strong>
       <Button
         as={Link}
-        href='/login'
+        href={ROUTES.login}
         color='primary'
-        size='md'
-        className='h-14 font-bold text-sm md:text-lg'
+        size='lg'
+        className='font-semibold'
         radius='lg'
       >
         Voltar para fazer login
@@ -77,10 +83,9 @@ export const ResetPasswordForm = () => {
 
       <Button
         color='primary'
-        size='lg'
         className='font-bold w-full mt-6'
-        radius='lg'
         type='submit'
+        isLoading={isSubmitting}
       >
         Redefinir senha
       </Button>

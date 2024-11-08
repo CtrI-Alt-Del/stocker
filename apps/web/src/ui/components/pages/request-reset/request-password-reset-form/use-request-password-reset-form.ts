@@ -6,6 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { emailSchema } from '@stocker/validation/schemas'
 import { useApi, useToast } from '@/ui/hooks'
+import { setCookieAction } from '@/actions'
+import { COOKIES } from '@/constants'
 
 const RequestPasswordFormSchema = z.object({
   email: emailSchema,
@@ -28,6 +30,11 @@ export function useRequestPasswordForm() {
       return
     }
 
+    await setCookieAction(
+      COOKIES.passwordResetToken.key,
+      `${response.body.confirmationToken}|${email}`,
+      COOKIES.passwordResetToken.duration,
+    )
     showSuccess(`Pedido de redefinição de senha enviado para ${email}`)
   }
 
