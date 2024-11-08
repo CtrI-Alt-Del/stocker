@@ -2,6 +2,7 @@ import { CACHE } from '@/constants'
 import { useApi, useCache, useToast, useUrlParamNumber } from '@/ui/hooks'
 import type { UserDto } from '@stocker/core/dtos'
 import { useState } from 'react'
+import { useAuthContext } from '../../contexts/auth-context'
 
 export function useEmployeesPage() {
   const { showSuccess, showError } = useToast()
@@ -12,8 +13,10 @@ export function useEmployeesPage() {
   function handlePageChange(page: number) {
     setPage(page)
   }
+  const { user } = useAuthContext()
+  const companyId = user ? user.companyId : ''
   async function fetchUsers() {
-    const response = await usersService.listUsers({ page, companyId: '123' })
+    const response = await usersService.listUsers({ page, companyId: companyId })
     if (response.isFailure) {
       showError(response.errorMessage)
     }
@@ -32,9 +35,7 @@ export function useEmployeesPage() {
   }
   async function handleDeleteEmployeesAlertDialogConfirm() {
     setIsDeleting(true)
-    const response = await usersService.deleteUser(
-      selectedEmployeesIds,
-    )
+    const response = await usersService.deleteUser(selectedEmployeesIds)
     if (response.isFailure) {
       showError(response.errorMessage)
     }

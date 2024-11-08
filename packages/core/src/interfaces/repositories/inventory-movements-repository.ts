@@ -8,7 +8,7 @@ export interface IInventoryMovementsRepository {
     params: InventoryMovementsListParams,
   ): Promise<{ inventoryMovements: InventoryMovement[]; count: number }>
   countItems(): Promise<number>
-  countInbound(): Promise<number>
-  countOutbound(): Promise<number>
+  countInbound(companyId:string): Promise<number>
+  countOutbound(companyId:string): Promise<number>
   findByDateRange(params: FindByDateRangeParams): Promise<InventoryMovement[]>
 }

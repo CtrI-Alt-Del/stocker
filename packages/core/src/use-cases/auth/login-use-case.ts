@@ -18,7 +18,7 @@ export class LoginUseCase {
   async execute({ email, password }: Request) {
     const user = await this.userRepository.findByEmail(email)
     if (!user) {
-      throw new NotFoundError('Usuário não encontrado')
+      throw new NotFoundError('Credenciais inválidas')
     }
 
     const isPasswordValid = await this.cryptoProvider.validateHash(

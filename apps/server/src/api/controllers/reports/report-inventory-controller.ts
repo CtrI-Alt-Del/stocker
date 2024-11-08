@@ -10,9 +10,11 @@ type QueryParams = {
 
 export class ReportInventoryController {
   async handle(http: IHttp) {
+    const { companyId } = await http.getUser()
     const { page } = http.getQueryParams<QueryParams>()
+    const pageNumber = parseInt(page || '1', 10)
     const useCase = new ReportInventorysUseCase(productsRepository)
-    const products = await useCase.execute({ page: page ? Number(page) : 1 })
+    const products = await useCase.execute({ page: pageNumber,companyId: companyId })
     return http.send(products, HTTP_STATUS_CODE.ok)
   }
 }

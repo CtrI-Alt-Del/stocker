@@ -3,6 +3,7 @@ import { PaginationResponse } from '../../responses'
 
 type Request = {
   page: number
+  companyId: string
 }
 
 export class ListCategoryUseCase {
@@ -12,8 +13,8 @@ export class ListCategoryUseCase {
     this.categoriesRepository = categoriesRepository
   }
 
-  async execute({ page }: Request) {
-    const categories = await this.categoriesRepository.findMany({ page })
+  async execute({ page, companyId }: Request) {
+    const categories = await this.categoriesRepository.findMany({ page, companyId })
     const categoriesCount = await this.categoriesRepository.count()
 
     return new PaginationResponse({

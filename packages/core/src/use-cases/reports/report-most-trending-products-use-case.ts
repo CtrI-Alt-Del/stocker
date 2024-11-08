@@ -8,12 +8,13 @@ type Request = {
   endDate?: Date
   page: number
   categoryId?: string
+  companyId: string
 }
 
 export class ReportMostTrendingProductsUseCase {
-  constructor(private readonly productsRepository: IProductsRepository) {}
+  constructor(private readonly productsRepository: IProductsRepository) { }
 
-  async execute({ startDate, endDate, page, categoryId }: Request) {
+  async execute({ startDate, endDate, page, categoryId, companyId }: Request) {
     if (startDate && endDate && new Datetime(startDate).isGreaterThan(endDate)) {
       throw new ValidationError('Data de início não pode ser maior que a data final')
     }
@@ -26,6 +27,7 @@ export class ReportMostTrendingProductsUseCase {
 
     const { products, count } =
       await this.productsRepository.findOrderByInventoryMovementsCount({
+        companyId,
         startDate,
         endDate,
         page,

@@ -6,14 +6,15 @@ import type { FindByDateRangeParams } from '@stocker/core/types'
 
 export class ReportAnnualInventorymovementsController {
   async handle(http: IHttp) {
-    const queryParams = http.getQueryParams<FindByDateRangeParams>()
-
+    const { productId } = http.getQueryParams<FindByDateRangeParams>()
+    const { companyId } = await http.getUser()
     const useCase = new ReportAnnualOutboundInventoryMovementsUseCase(
       inventoryMovementsRepository,
       productsRepository,
     )
     const result = await useCase.execute({
-      productId: queryParams.productId,
+      productId,
+      companyId,
     })
     return http.send(result, HTTP_STATUS_CODE.ok)
   }

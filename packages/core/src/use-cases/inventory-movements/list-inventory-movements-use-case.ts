@@ -4,16 +4,18 @@ import { PaginationResponse } from '../../responses'
 type Request = {
   page?: number
   productId?: string
+  companyId: string
 }
 
 export class ListInventoryMovementsUseCase {
-  constructor(
-    private readonly inventoryMovementsRepository: IInventoryMovementsRepository,
-  ) {}
+  private readonly inventoryMovementsRepository: IInventoryMovementsRepository
+  constructor(inventoryMovementsRepository: IInventoryMovementsRepository) {
+    this.inventoryMovementsRepository = inventoryMovementsRepository
+  }
 
-  async execute({ page, productId }: Request) {
+  async execute({ page, productId, companyId }: Request) {
     const { inventoryMovements, count } =
-      await this.inventoryMovementsRepository.findMany({ page, productId })
+      await this.inventoryMovementsRepository.findMany({ page, productId, companyId })
 
     return new PaginationResponse({
       items: inventoryMovements.map((inventoryMovement) => inventoryMovement.dto),

@@ -4,13 +4,14 @@ import {
   Button,
   Container,
   Head,
-  Hr,
   Html,
   Preview,
   Section,
-  Tailwind,
   Text,
 } from '@react-email/components'
+import { Style } from '../components/style'
+import { Logo } from '../components/logo'
+import { Footer } from '../components/footer'
 
 type ResetPasswordTemplateProps = {
   baseUrl: string
@@ -23,22 +24,13 @@ export const ResetPasswordTemplate = ({
   recipientEmail,
   token,
 }: ResetPasswordTemplateProps) => (
-  <Tailwind
-    config={{
-      theme: {
-        extend: {
-          colors: {
-            brand: '#EF5C31',
-          },
-        },
-      },
-    }}
-  >
+  <Style>
     <Html className='bg-white font-sans'>
       <Head />
       <Preview>Redefinição de Senha - Stocker</Preview>
       <Body className='bg-white font-sans'>
         <Container className='mx-auto my-0 py-5 px-0'>
+          <Logo baseUrl={baseUrl} />
           <Text className='text-lg leading-7 mt-2'>
             Olá,
             <br />
@@ -57,21 +49,16 @@ export const ResetPasswordTemplate = ({
             Caso não tenha solicitado a redefinição, recomendamos que você melhore sua
             segurança e verifique suas informações.
           </Text>
-          <Text className='text-lg leading-7 mt-5'>
-            Atenciosamente, <br />
-            <strong>Equipe Stocker</strong>
-          </Text>
 
-          <Hr className='border-gray-300 my-5' />
-          <Text className='text-xs text-gray-500'>
-            Parque de Inovação Tecnológica, São José dos Campos, São Paulo
-          </Text>
+          <Footer />
         </Container>
       </Body>
     </Html>
-  </Tailwind>
+  </Style>
 )
 
 ResetPasswordTemplate.PreviewProps = {
   baseUrl: 'http://localhost:3000',
 } as ResetPasswordTemplateProps
+
+export default ResetPasswordTemplate

@@ -10,11 +10,14 @@ type QueryParams = {
 
 export class ListInventoryMovementsController {
   async handle(http: IHttp) {
-    const queryParams = http.getQueryParams<QueryParams>()
+    const { page, productId } = http.getQueryParams<QueryParams>()
+    const { companyId } = await http.getUser()
     const useCase = new ListInventoryMovementsUseCase(inventoryMovementsRepository)
+    const pageNumber = parseInt(page || '1', 10)
     const result = await useCase.execute({
-      page: queryParams.page ? Number(queryParams.page) : 1,
-      productId: queryParams.productId,
+      page: pageNumber,
+      productId: productId,
+      companyId: companyId
     })
     return http.send(result, HTTP_STATUS_CODE.ok)
   }

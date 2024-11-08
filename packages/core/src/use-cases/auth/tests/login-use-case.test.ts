@@ -3,7 +3,7 @@ import { UsersRepositoryMock } from '../../../../__tests__/mocks/repositories'
 import { NotFoundError } from '../../../errors'
 import { UsersFaker } from '../../../../__tests__/fakers'
 import { LoginUseCase } from '../login-use-case'
-import { BcryptCryptoProvider } from '../../../../../../apps/server/src/providers/crypto-provider'
+import { CryptoProvider } from '../../../../../../apps/server/src/providers/crypto-provider'
 import type { ICryptoProvider } from '../../../interfaces'
 
 let useCase: LoginUseCase
@@ -13,7 +13,7 @@ let cryptoProvider: ICryptoProvider
 describe('Login use case', () => {
   beforeEach(() => {
     usersRepository = new UsersRepositoryMock()
-    cryptoProvider = new BcryptCryptoProvider()
+    cryptoProvider = new CryptoProvider()
     useCase = new LoginUseCase(usersRepository, cryptoProvider)
   })
 
@@ -31,7 +31,7 @@ describe('Login use case', () => {
 
   it('should generate an error if there is no user with the received email', async () => {
     expect(async () => {
-      await useCase.execute({ email: '', password: ''})
+      await useCase.execute({ email: '', password: '' })
     }).rejects.toThrowError(NotFoundError)
   })
 
@@ -41,7 +41,7 @@ describe('Login use case', () => {
     expect(usersRepository.users).toHaveLength(1)
 
     expect(async () => {
-      await useCase.execute({ email: fakeUser.email, password: ''})
+      await useCase.execute({ email: fakeUser.email, password: '' })
     }).rejects.toThrowError('Credenciais inválidas')
   })
 })

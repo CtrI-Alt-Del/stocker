@@ -1,5 +1,5 @@
 export type { IHttp } from './http'
 export type { IApp } from './app'
-export type { IServer } from './server'
 export type { IApiClient } from './api-client'
 export type { IController } from './controller'
+export type { IJob } from './job'

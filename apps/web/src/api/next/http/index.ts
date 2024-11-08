@@ -6,6 +6,7 @@ import type { IHttp } from '@stocker/core/interfaces'
 import type { UserDto } from '@stocker/core/dtos'
 import { BROWSER_ENV, COOKIES } from '@/constants'
 import { jwtDecode } from 'jwt-decode'
+import { notFound } from 'next/navigation'
 
 type Cookie = {
   key: string
