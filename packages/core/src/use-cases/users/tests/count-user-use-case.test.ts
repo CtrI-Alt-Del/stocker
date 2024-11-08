@@ -30,15 +30,12 @@ describe('Count users use case', () => {
     expect(result.usersEmployees).toBe(5)
   })
 
-  // it('should return zero for managers and employees if no users are in company', async () => {
-  //   const companyId = 'non-existent-company-id'
+  it('should return zero for managers and employees if no users are in company', async () => {
+    const companyId = 'non-existent-company-id'
 
-  //   usersRepository.countManagerUsersByCompany = jest.fn(async () => 0)
-  //   usersRepository.countEmployeeUsersByCompany = jest.fn(async () => 0)
+    const result = await useCase.execute({ companyId })
 
-  //   const result = await useCase.execute({ companyId })
-
-  //   expect(result.usersManagers).toBe(0)
-  //   expect(result.usersEmployees).toBe(0)
-  // })
+    expect(result.usersManagers).toBe(0)
+    expect(result.usersEmployees).toBe(0)
+  })
 })
