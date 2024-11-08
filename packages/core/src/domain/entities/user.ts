@@ -79,6 +79,9 @@ export class User extends Entity<UserProps> {
   get hasFirstPasswordReset(): boolean {
     return this.props.hasFirstPasswordReset
   }
+  set hasFirstPasswordReset(status:boolean){
+    this.props.hasFirstPasswordReset = status
+  }
 
   get companyId(): string {
     return this.props.companyId
