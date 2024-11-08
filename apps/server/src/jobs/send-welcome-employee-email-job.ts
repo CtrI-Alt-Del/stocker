@@ -1,3 +1,4 @@
+import { emailProvider } from '@/providers'
 import type { IEmailProvider, IJob } from '@stocker/core/interfaces'
 import type { JobKey } from '@stocker/core/types'
 
@@ -12,6 +13,6 @@ export class SendWelcomeEmployeeEmailJob implements IJob {
   constructor(private readonly emailProvider: IEmailProvider) {}
 
   async handle({ employeeName, companyName }: Payload) {
-    await this.emailProvider.sendWelcomeEmployeeEmail(employeeName, companyName)
+    await emailProvider.sendWelcomeEmployeeEmail(employeeName, companyName)
   }
 }

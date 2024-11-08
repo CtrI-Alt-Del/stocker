@@ -30,6 +30,9 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
   const verifyManagerRoleMiddleware = new FastifyHandler(
     new VerifyUserRoleMiddleware('manager'),
   )
+  const verifyEmployeeRoleMiddleware = new FastifyHandler(
+    new VerifyUserRoleMiddleware('employee'),
+  )
   const preHandlers = [verifyJwtMiddleware, verifyManagerRoleMiddleware].map((handler) =>
     handler.handle.bind(handler),
   )
@@ -39,10 +42,16 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
     return reportStockLevelController.handle(http)
   })
 
-  app.get('/inventory', { preHandler: preHandlers }, async (request, response) => {
-    const http = new FastifyHttp(request, response)
-    return reportInventoryController.handle(http)
-  })
+  app.get(
+    '/inventory',
+    {
+      preHandler: verifyEmployeeRoleMiddleware.handle.bind(verifyEmployeeRoleMiddleware),
+    },
+    async (request, response) => {
+      const http = new FastifyHttp(request, response)
+      return reportInventoryController.handle(http)
+    },
+  )
 
   app.get(
     '/most-trending-products',
@@ -62,10 +71,16 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
     },
   )
 
-  app.get('/inventory/csv', { preHandler: preHandlers }, async (request, response) => {
-    const http = new FastifyHttp(request, response)
-    return exportInventoryToCsvFileController.handle(http)
-  })
+  app.get(
+    '/inventory/csv',
+    {
+      preHandler: verifyEmployeeRoleMiddleware.handle.bind(verifyEmployeeRoleMiddleware),
+    },
+    async (request, response) => {
+      const http = new FastifyHttp(request, response)
+      return exportInventoryToCsvFileController.handle(http)
+    },
+  )
 
   app.get(
     '/inventory-summary',
