@@ -32,6 +32,22 @@ export const NextApiClient = (cacheConfig?: CacheConfig): IApiClient => {
         statusCode: response.status,
       })
     },
+    async patch<ResponseBody>(url: string, body: unknown = {}) {
+      const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
+        method: 'PATCH',
+        headers,
+        body: JSON.stringify(body) ?? {},
+      })
+      params = {}
+      const data = await response.json()
+      if (!response.ok) {
+        return handleApiError<ResponseBody>(data, response.status)
+      }
+      return new ApiResponse<ResponseBody>({
+        body: data,
+        statusCode: response.status,
+      })
+    },
 
     async post<ResponseBody>(url: string, body: unknown = {}) {
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {

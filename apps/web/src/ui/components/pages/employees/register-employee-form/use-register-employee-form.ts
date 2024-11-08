@@ -36,7 +36,7 @@ export function useRegisterEmployeeForm(onSubmit: VoidFunction) {
       role: formData.role,
       email: formData.email,
       companyId: companyId,
-      hasFirstPasswordReset: false,
+      hasFirstPasswordReset: true,
     })
     const response = await usersService.registerUser(user)
     if (response.isFailure) {

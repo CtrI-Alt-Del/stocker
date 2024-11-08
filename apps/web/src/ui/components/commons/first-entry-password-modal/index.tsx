@@ -1,13 +1,25 @@
 import { Button, Input } from '@nextui-org/react'
 import { Dialog } from '../dialog'
 import { useFirstPasswordEntryModal } from './use-first-entry-password-modal'
+import { useRef, useEffect } from 'react'
+import type { DialogRef } from '../dialog/types'
 
 export const FirstEntryPasswordModal = () => {
   const { register, errors, handleSubmit } = useFirstPasswordEntryModal()
+  const dialogRef = useRef<DialogRef>(null)
+
+  
+  useEffect(() => {
+    dialogRef.current?.open()
+  }, [])
+
   return (
-    <Dialog title='Defina sua senha' trigger={null}>
-      {() => (
-        <form onSubmit={handleSubmit} className='grid grid-rows-2 gap-2'>
+    <Dialog ref={dialogRef}  title='Defina sua senha' trigger={null}>
+      {(closeDialog) => (
+        <form onSubmit={() => {
+          handleSubmit()
+          closeDialog()
+        }} className='grid grid-rows-2 gap-2'>
           <Input
             label='Defina sua senha'
             {...register('password')}
@@ -15,7 +27,7 @@ export const FirstEntryPasswordModal = () => {
             errorMessage={errors.password?.message}
           />
           <div className='w-full flex justify-center items-center'>
-            <Button color='primary' type='submit' className='text-center w-full font-bold'>
+            <Button color='primary'  type='submit' className='text-center w-full font-bold'>
               Confirmar
             </Button>
           </div>
@@ -24,3 +36,4 @@ export const FirstEntryPasswordModal = () => {
     </Dialog>
   )
 }
+

@@ -3,6 +3,7 @@ import type { ApiResponse } from '../../responses'
 
 export interface IAuthService {
   login(email: string, password: string): Promise<ApiResponse<{ jwt: string }>>
+  resetPassword(email:string,password:string): Promise<ApiResponse<void>>
   subscribe(
     userDto: UserDto,
     companyDto: CompanyDto,

@@ -10,18 +10,15 @@ const FirstPasswordEntryModalSchema = z.object({
 })
 type FirstPasswordEntryModalData = z.infer<typeof FirstPasswordEntryModalSchema>
 export function useFirstPasswordEntryModal() {
-  const { usersService } = useApi()
+  const { authService } = useApi()
   const { user } = useAuthContext()
   const {showError,showSuccess} = useToast()
-  const userId = user ? user.id : ''
+  const userEmail = user ? user.email : ''
   const { register, formState, handleSubmit } = useForm<FirstPasswordEntryModalData>({
     resolver: zodResolver(FirstPasswordEntryModalSchema),
   })
   async function handleFormSubmit(formData: FirstPasswordEntryModalData) {
-    const partialUser: Record<string, unknown> = {}
-    partialUser['password'] = formData.password
-    partialUser['hasFirstPasswordReset'] = true
-    const response = await usersService.updateUser(partialUser, userId)
+    const response = await authService.resetPassword(userEmail,formData.password) 
     if (response.isSuccess) {
       showSuccess("Senha definida com sucesso")
     }
