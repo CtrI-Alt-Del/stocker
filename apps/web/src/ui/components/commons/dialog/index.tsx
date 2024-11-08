@@ -23,10 +23,12 @@ type DialogProps = {
   children: (closeDialog: VoidFunction) => ReactNode
   trigger?: ReactNode
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | 'full'
+  isDismissable?: boolean
+  hideCloseButton?:boolean
 }
 
 const DialogComponent = (
-  { title, children, trigger, size }: DialogProps,
+  { title, children, trigger, size, isDismissable,hideCloseButton }: DialogProps,
   ref: ForwardedRef<DialogRef>,
 ) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -46,6 +48,8 @@ const DialogComponent = (
     <>
       <Modal
         size={size ? size : 'md'}
+        isDismissable={isDismissable ?? true}
+        hideCloseButton={hideCloseButton ?? false}
         isOpen={isOpen}
         scrollBehavior='inside'
         classNames={{ wrapper: 'overflow-x-hidden' }}
