@@ -1,12 +1,15 @@
+import { useAuthContext } from '@/ui/components/contexts/auth-context'
 import { useApi, useToast } from '@/ui/hooks'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { CompanyDto, UserDto } from '@stocker/core/dtos'
-import { cnpjSchema, companyNameSchema, emailSchema, nameSchema } from '@stocker/validation/schemas'
+import {
+  cnpjSchema,
+  companyNameSchema,
+  emailSchema,
+  nameSchema,
+} from '@stocker/validation/schemas'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { useAuthContext } from '../../contexts/auth-context'
-
-const {user, company, update} = useAuthContext()
 
 const updateProfileFormSchema = z.object({
   name: nameSchema,
@@ -15,8 +18,8 @@ const updateProfileFormSchema = z.object({
   email: emailSchema,
 })
 type updateProfileFormData = z.infer<typeof updateProfileFormSchema>
-export function useUpdateProfileForm() {
-  
+export function useProfileForm() {
+  const { user, company, update } = useAuthContext()
   const { usersService } = useApi()
   const { showSuccess, showError } = useToast()
   const { formState, reset, register, handleSubmit, control } =
@@ -41,7 +44,7 @@ export function useUpdateProfileForm() {
     }
     const response = await usersService.updateUser(
       partialUser as Partial<UserDto>,
-      user.id
+      user.id,
     )
     if (response.isFailure) {
       showError(response.errorMessage)
@@ -58,6 +61,7 @@ export function useUpdateProfileForm() {
     isSubmiting: formState.isSubmitting,
     register,
     control,
+    update,
     handleSubmit: handleSubmit(handleFormSubmit),
   }
 }
