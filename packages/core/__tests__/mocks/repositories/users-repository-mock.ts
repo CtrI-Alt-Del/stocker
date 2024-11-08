@@ -56,36 +56,12 @@ export class UsersRepositoryMock implements IUsersRepository {
   }
 
   async countEmployeeUsersByCompany(companyId: string): Promise<number> {
-    try {
       const employees = this.users.filter(user => user.role === 'employee' && user.companyId === companyId);
       return employees.length;
-    } catch (error) {
-      console.error(error);
-      throw new Error('fudeu');
-    }
   }
 
   async countManagerUsersByCompany(companyId: string): Promise<number> {
-    try {
       const managers = this.users.filter(user => user.role === 'manager' && user.companyId === companyId);
       return managers.length;
-    } catch (error) {
-      console.error(error);
-      throw new Error('fudeu');
-    }
   }
 }
-
-// async countEmployeeUsersByCompany(companyId: string): Promise<number> {
-//
-// }
-
-// async countManagerUsersByCompany(companyId: string): Promise<number> {
-//   try {
-//     return await prisma.user.count({
-//       where: { role: 'MANAGER', company_id: companyId },
-//     })
-//   } catch (error) {
-//     throw new PrismaError(error)
-//   }
-// }
