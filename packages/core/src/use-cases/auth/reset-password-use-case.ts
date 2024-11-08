@@ -20,5 +20,8 @@ export class ResetPasswordUseCase {
 
         const hashedPassword = await this.cryptoProvider.hash(password)
         await this.usersRepository.updatePassword(user.id, hashedPassword)
+
+        user.password = hashedPassword
+        await this.usersRepository.update(user, user.id)
     }
 }
