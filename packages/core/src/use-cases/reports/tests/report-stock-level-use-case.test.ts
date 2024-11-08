@@ -12,7 +12,7 @@ describe('Report sotck level use case', () => {
 
     const useCase = new ReportStockLevelUseCase(productsRepository)
 
-    const stockLevel = await useCase.execute()
+    const stockLevel = await useCase.execute({ companyId: '1' })
     expect(stockLevel.safe).toBe(100)
     expect(stockLevel.average).toBe(50)
     expect(stockLevel.danger).toBe(10)

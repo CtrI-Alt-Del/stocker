@@ -7,12 +7,15 @@ import { Drawer } from '../../commons/drawer'
 import { IconButton } from '../../commons/icon-button'
 import { useDashboardLayout } from './use-dashboard-layout'
 import type { DrawerRef } from '../../commons/drawer/types'
+import { useAuthContext } from '../../contexts/auth-context'
+import { FirstEntryPasswordModal } from '../../commons/first-entry-password-modal'
 
 type DashboardLayoutProps = {
   children: ReactNode
 }
 
 export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+  const { user } = useAuthContext()
   const drawerRef = useRef<DrawerRef>(null)
   useDashboardLayout(drawerRef)
 
@@ -34,6 +37,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       </div>
 
       <main className='pl-6 md:pl-60 py-6 pr-6'>{children}</main>
+      {user?.hasFirstPasswordReset && <FirstEntryPasswordModal />}
     </>
   )
 }

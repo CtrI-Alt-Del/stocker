@@ -7,6 +7,7 @@ export interface IHttp {
   getCurrentRoute(): string
   setHeader(key: string, value: string): void
   setJwt(user: UserDto): Promise<string>
+  sendFile(user: UserDto): Promise<string>
   destroyJwt(): void
   getCookie<Data>(key: string): Data | null
   setCookie(key: string, value: string, duration: number): void

@@ -99,7 +99,7 @@ export const NextHttp = (request: NextRequest): IHttp => {
     },
 
     getQueryParams<QueryParams>(): QueryParams {
-      const searchParams = Object.entries(new URL(request.url).searchParams)
+      const searchParams = new URL(request.url).searchParams.entries()
       let queryParams = {}
 
       for (const [key, value] of searchParams) {

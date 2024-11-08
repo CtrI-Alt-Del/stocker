@@ -28,6 +28,10 @@ export class BatchesRepositoryMock implements IBatchesRepository {
     }
   }
 
+  async findManyNearToExpire(): Promise<Array<{ companyId: string; batches: Batch[] }>> {
+    throw new Error('Method not implemented.')
+  }
+
   async update(batch: Batch): Promise<void> {
     this.batches = this.batches.map((currentbatch) =>
       currentbatch.id === batch.id ? batch : currentbatch,

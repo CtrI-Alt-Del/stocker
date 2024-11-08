@@ -27,15 +27,6 @@ export class ExportMostTrendingProductsToCsvFileController {
       categoryId,
     })
 
-    http.setHeader(
-      'Content-Type',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    )
-    http.setHeader(
-      'Content-Disposition',
-      'attachment; filename="produtos-de-maior-tendencia.xlsx"',
-    )
-
     return http.send(csvBuffer, HTTP_STATUS_CODE.ok)
   }
 }

@@ -120,7 +120,13 @@ export function useAuthContextProvider({
 
     showError('Não foi possível atualizar sua conta, tente novamente mais tarde')
   }
-
+  async function resetPassword(email:string,password:string){
+    const response = await authService.resetPassword(email,password)
+    if (response.isSuccess) {
+      await setCookieAction(COOKIES.jwt.key,response.body,COOKIES.jwt.duration)
+      
+    }
+  }
   return {
     user,
     company: data ? Company.create(data) : null,
