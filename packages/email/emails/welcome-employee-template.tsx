@@ -18,7 +18,7 @@ export const WelcomeEmployeeTemplate = ({
 }: WelcomeEmployeeTemplateProps) => (
   <Root preview='Mensagem de boas-vindas'>
     <Container className='mx-auto my-0 py-5 px-0'>
-      <Logo baseUrl={baseUrl} />
+      <Logo />
       <Text className='text-lg leading-7 mt-2'>
         Olá, {employeeName}
         <br />

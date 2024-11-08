@@ -17,7 +17,7 @@ export const ResetPasswordTemplate = ({
 }: ResetPasswordTemplateProps) => (
   <Root preview='Pedido de redefinição de senha'>
     <Container className='mx-auto my-0 py-5 px-0'>
-      <Logo baseUrl={baseUrl} />
+      <Logo />
       <Text className='text-lg leading-7 mt-2'>
         Olá,
         <br />
@@ -27,7 +27,7 @@ export const ResetPasswordTemplate = ({
       <Section className='text-center mt-4'>
         <Button
           className='bg-brand rounded-lg text-white text-lg w-full py-3   inline-block'
-          href={`${baseUrl}/reset-password/${token}?email=${recipientEmail}`}
+          href={`${baseUrl}/reset-password/${token}`}
         >
           Redefinir Senha
         </Button>
