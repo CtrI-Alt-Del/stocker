@@ -1,9 +1,8 @@
-import { ReportsService } from "@/api/services"
-import { CACHE } from "@/constants"
-import { useApi, useCache, useToast, useUrlParamString } from "@/ui/hooks"
-import { PAGINATION } from "@stocker/core/constants"
-import { Product } from "@stocker/core/entities"
-import { useQueryState, parseAsInteger } from "nuqs"
+import { CACHE } from '@/constants'
+import { useApi, useCache, useToast, useUrlParamString } from '@/ui/hooks'
+import { PAGINATION } from '@stocker/core/constants'
+import { Product } from '@stocker/core/entities'
+import { useQueryState, parseAsInteger } from 'nuqs'
 
 export function useStocksPage() {
   const { reportsService } = useApi()
@@ -41,7 +40,6 @@ export function useStocksPage() {
     setFilterByNameValue(value ?? '')
   }
 
-
   return {
     handlePageChange,
     page,
@@ -52,5 +50,4 @@ export function useStocksPage() {
     handleSearchChange,
     totalPages: Math.ceil(itemsCount / PAGINATION.itemsPerPage),
   }
-  
 }

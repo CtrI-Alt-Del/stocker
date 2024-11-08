@@ -10,7 +10,6 @@ export class ExportInventoryToCsvFileController {
     const useCase = new ExportInventoryToCsvFileUseCase(productsRepository, csvProvider)
     const csvBuffer = await useCase.execute()
 
-    http.setHeader('Content-Disposition', 'attachment; filename="inventario.xlsx"')
     return http.send(csvBuffer, HTTP_STATUS_CODE.ok)
   }
 }

@@ -40,9 +40,11 @@ export const NextApiClient = (cacheConfig?: CacheConfig): IApiClient => {
       })
       params = {}
       const data = await response.json()
+
       if (!response.ok) {
         return handleApiError<ResponseBody>(data, response.status)
       }
+
       return new ApiResponse<ResponseBody>({
         body: data,
         statusCode: response.status,
@@ -120,6 +122,23 @@ export const NextApiClient = (cacheConfig?: CacheConfig): IApiClient => {
 
       return new ApiResponse<ResponseBody>({
         body: data,
+        statusCode: response.status,
+      })
+    },
+
+    async fetchBuffer(url: string) {
+      const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
+        headers,
+      })
+      params = {}
+      const data = await response.arrayBuffer()
+
+      if (!response.ok) {
+        return handleApiError<Buffer>(data, response.status)
+      }
+
+      return new ApiResponse<Buffer>({
+        body: data as Buffer,
         statusCode: response.status,
       })
     },

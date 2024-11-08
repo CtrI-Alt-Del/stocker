@@ -7,11 +7,18 @@ type QueryParams = {
   categoryId?: string
 }
 
-export const ExportMostTrendingProductsToCsvFileController = (reportsService: IReportsService) => {
+export const ExportMostTrendingProductsToCsvFileController = (
+  reportsService: IReportsService,
+) => {
   return {
     async handle(http: IHttp) {
       const { startDate, endDate, categoryId } = http.getQueryParams<QueryParams>()
-      const response = await reportsService.exportMostTrendingProductsToCsvFile({ startDate: new Date(startDate), endDate: new Date(endDate), categoryId })
+      
+      const response = await reportsService.exportMostTrendingProductsToCsvFile({
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
+        categoryId,
+      })
 
       if (response.isFailure) {
         return response.throwError()
@@ -19,16 +26,12 @@ export const ExportMostTrendingProductsToCsvFileController = (reportsService: IR
 
       const csvBuffer = response.body
 
-      http.setHeader(
-        'Content-Type',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      return http.sendFile(
+        csvBuffer,
+        'produtos-de-maior-tendencia.csv',
+        'csv',
+        HTTP_STATUS_CODE.ok,
       )
-      http.setHeader(
-        'Content-Disposition',
-        'attachment; filename="produtos-de-maior-tendencia.xlsx"',
-      )
-
-      return http.send(csvBuffer, HTTP_STATUS_CODE.ok)
     },
   }
 }

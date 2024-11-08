@@ -12,6 +12,11 @@ export const ROUTES = {
     locations: '/records/locations',
     employees: '/records/employees',
   },
+  api: {
+    inventoryCsv: '/api/reports/inventory/csv',
+    mostTrendingRecordsCsv: '/api/reports/most-trending-products/csv',
+  },
+  profile: '/profile',
   login: '/login',
   subscribe: '/subscribe',
   requestPasswordReset: '/request-password-reset',

@@ -1,12 +1,12 @@
 import { cookies as NextCookies } from 'next/headers'
 import { type NextRequest, NextResponse } from 'next/server'
 
-import { HTTP_STATUS_CODE } from '@stocker/core/constants'
+import { HTTP_CONTENT_TYPE, HTTP_STATUS_CODE } from '@stocker/core/constants'
 import type { IHttp } from '@stocker/core/interfaces'
 import type { UserDto } from '@stocker/core/dtos'
+import type { HttpContentType } from '@stocker/core/types'
 import { BROWSER_ENV, COOKIES } from '@/constants'
 import { jwtDecode } from 'jwt-decode'
-import { notFound } from 'next/navigation'
 
 type Cookie = {
   key: string
@@ -39,6 +39,24 @@ export const NextHttp = (request: NextRequest): IHttp => {
       if (headers.length) {
         for (const header of headers) response.headers.set(header.key, header.value)
       }
+
+      return response
+    },
+
+    sendFile(
+      file: Buffer,
+      filename: string,
+      contentType: HttpContentType,
+      statusCode = HTTP_STATUS_CODE.ok,
+    ) {
+      const response = new Response(file, { status: statusCode })
+
+      if (headers.length) {
+        for (const header of headers) response.headers.set(header.key, header.value)
+      }
+
+      response.headers.set('Content-Type', HTTP_CONTENT_TYPE[contentType])
+      response.headers.set('Content-Disposition', `attachment; filename="${filename}"`)
 
       return response
     },
