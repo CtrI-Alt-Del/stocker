@@ -9,8 +9,8 @@ export class UsersRepositoryMock implements IUsersRepository {
   async findMany({ page }: UsersListParams): Promise<{ users: User[], count: number }> {
     const startIndex = (page - 1) * 10
     return {
-    users: this.users.slice(startIndex, startIndex + 10), 
-    count: this.users.length
+      users: this.users.slice(startIndex, startIndex + 10),
+      count: this.users.length
     }
   }
 
@@ -25,10 +25,10 @@ export class UsersRepositoryMock implements IUsersRepository {
 
   async findByEmail(userEmail: string): Promise<User | null> {
     const email = this.users.find((user) => user.email === userEmail)
-    
+
     if (!email) {
       throw new NotFoundError();
-    } 
+    }
 
     return email
   }
@@ -47,19 +47,45 @@ export class UsersRepositoryMock implements IUsersRepository {
 
   async updatePassword(userId: string, newPassword: string): Promise<void> {
     const user = this.users.find((user) => user.id === userId);
-    
+
     if (!user) {
       throw new Error('Usuário não encontrado');
     }
 
-    user.update({ password: newPassword})
+    user.update({ password: newPassword })
   }
 
   async countEmployeeUsersByCompany(companyId: string): Promise<number> {
-    throw new Error('Method not implemented.')
+    try {
+      const employees = this.users.filter(user => user.role === 'employee' && user.companyId === companyId);
+      return employees.length;
+    } catch (error) {
+      console.error(error);
+      throw new Error('fudeu');
+    }
   }
 
   async countManagerUsersByCompany(companyId: string): Promise<number> {
-    throw new Error('Method not implemented.')
+    try {
+      const managers = this.users.filter(user => user.role === 'manager' && user.companyId === companyId);
+      return managers.length;
+    } catch (error) {
+      console.error(error);
+      throw new Error('fudeu');
+    }
   }
 }
+
+// async countEmployeeUsersByCompany(companyId: string): Promise<number> {
+//
+// }
+
+// async countManagerUsersByCompany(companyId: string): Promise<number> {
+//   try {
+//     return await prisma.user.count({
+//       where: { role: 'MANAGER', company_id: companyId },
+//     })
+//   } catch (error) {
+//     throw new PrismaError(error)
+//   }
+// }
