@@ -47,7 +47,7 @@ export class PrismaUsersRepository implements IUsersRepository {
         skip: params.page > 0 ? (params.page - 1) * PAGINATION.itemsPerPage : 1,
         where: {
           company_id: params.companyId,
-          role: {not: "ADMIN"}
+          role: { not: 'ADMIN' },
         },
       })
 
@@ -131,9 +131,9 @@ export class PrismaUsersRepository implements IUsersRepository {
       await prisma.user.update({
         data: {
           password: newPassword,
-          has_first_password_reset: false
+          has_first_password_reset: false,
         },
-        where: { id: userId }
+        where: { id: userId },
       })
     } catch (error) {
       throw new PrismaError(error)

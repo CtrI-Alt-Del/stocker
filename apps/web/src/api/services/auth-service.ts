@@ -7,7 +7,7 @@ export const AuthService = (apiClient: IApiClient): IAuthService => {
       return await apiClient.post<{ jwt: string }>('/auth/login', { email, password })
     },
     async resetPassword(email: string, password: string) {
-      return await apiClient.patch('/auth/password', { email, password })
+      return await apiClient.patch<{jwt:string}>('/auth/password', { email, password })
     },
     async subscribe(userDto: UserDto, companyDto: CompanyDto) {
       return await apiClient.post<{ jwt: string }>('/auth/subscribe', {
