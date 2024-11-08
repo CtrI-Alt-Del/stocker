@@ -1,9 +1,8 @@
-import { profile } from "console";
-
 export const ROUTES = {
   dashboard: '/dashboard',
   inventory: {
     stocks: '/inventory/stocks',
+    productStock: '/inventory/stocks/:routeParam',
     movements: '/inventory/movements',
   },
   records: {

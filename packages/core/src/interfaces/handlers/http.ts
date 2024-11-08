@@ -12,7 +12,6 @@ export interface IHttp {
   setCookie(key: string, value: string, duration: number): void
   getUser(): Promise<UserDto>
   send(response: unknown, statusCode?: number): unknown
-  notFound(): unknown
   redirect(route: string): unknown
   getFile(): Promise<Buffer>
   getImageFile(): Promise<Buffer>

@@ -14,7 +14,13 @@ const Middleware = async (request: NextRequest) => {
 }
 
 export const config: MiddlewareConfig = {
-  matcher: ['/', '/dashboard/:path*', '/inventory/:path*', '/records/:path*'],
+  matcher: [
+    '/',
+    '/dashboard/:path*',
+    '/inventory/:path*',
+    '/inventory/stocks/:productId*',
+    '/records/:path*',
+  ],
 }
 
 export default Middleware
