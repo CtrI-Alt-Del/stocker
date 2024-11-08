@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "email dev"
+    "dev": "email dev --port 3001"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,6 @@
     "react-email": "3.0.2"
   },
   "exports": {
-    "./templates": "./src/templates/index.ts"
+    "./templates": "./emails/index.ts"
   }
 }
