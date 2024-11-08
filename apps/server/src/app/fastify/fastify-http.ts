@@ -1,12 +1,13 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
-import { HTTP_STATUS_CODE } from '@stocker/core/constants'
+import { HTTP_CONTENT_TYPE, HTTP_STATUS_CODE } from '@stocker/core/constants'
 import type { IHttp } from '@stocker/core/interfaces'
 import type { UserDto } from '@stocker/core/dtos'
 import { ValidationError } from '@stocker/core/errors'
 import { Datetime } from '@stocker/core/libs'
+import type { HttpContentType } from '@stocker/core/types'
 
-import { COOKIES, MAX_FILE_SIZE } from '@/constants'
+import { MAX_FILE_SIZE } from '@/constants'
 
 export class FastifyHttp implements IHttp {
   constructor(
@@ -29,6 +30,19 @@ export class FastifyHttp implements IHttp {
 
   send(response: unknown, statusCode = HTTP_STATUS_CODE.ok) {
     return this.reply.status(statusCode).send(response)
+  }
+
+  sendFile(
+    file: Buffer,
+    filename: string,
+    contentType: HttpContentType,
+    statusCode = HTTP_STATUS_CODE.ok,
+  ): unknown {
+    this.reply.header('Content-Type', HTTP_CONTENT_TYPE[contentType])
+    this.reply.header('Content-Disposition', `attachment; filename="${filename}"`)
+
+    console.log('que?')
+    return this.reply.status(statusCode).send(file)
   }
 
   redirect(route: string) {
