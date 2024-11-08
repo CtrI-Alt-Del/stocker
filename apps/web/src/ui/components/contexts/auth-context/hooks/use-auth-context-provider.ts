@@ -25,7 +25,7 @@ export function useAuthContextProvider({
   const userDto = jwt ? jwtDecode<UserDto>(jwt) : null
   const [user, setUser] = useState<User | null>(userDto ? User.create(userDto) : null)
   const { authService, companiesService } = useApi()
-  const { showError } = useToast()
+  const { showError, showSuccess } = useToast()
   const { navigateTo } = useNavigation()
 
   async function fetchCompany() {
@@ -120,12 +120,15 @@ export function useAuthContextProvider({
 
     showError('Não foi possível atualizar sua conta, tente novamente mais tarde')
   }
-  async function resetPassword(email:string,password:string){
-    const response = await authService.resetPassword(email,password)
+  async function resetPassword(email: string, password: string) {
+    const response = await authService.resetPassword(email, password)
+    console.log(response)
     if (response.isSuccess) {
-      await setCookieAction(COOKIES.jwt.key,response.body,COOKIES.jwt.duration)
-      
+      await setCookieAction(COOKIES.jwt.key, response.body.jwt, COOKIES.jwt.duration)
+      showSuccess('Senha redefinida com sucesso!')
+      return
     }
+    showError('Não foi capaz redefinir sua senha por favor tente mais tarde')
   }
   return {
     user,
@@ -134,5 +137,6 @@ export function useAuthContextProvider({
     subscribe,
     logout,
     update,
+    resetPassword,
   }
 }
