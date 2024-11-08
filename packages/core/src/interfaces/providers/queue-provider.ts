@@ -1,5 +1,3 @@
-import type { JobKey } from '../../types'
-
 export interface IQueueProvider {
   push(
     key: 'send-password-reset-email',
@@ -7,7 +5,7 @@ export interface IQueueProvider {
   ): void
   push(
     key: 'send-welcome-employee-email',
-    data: { employeeName: string; companyName: string },
+    data: { employeeEmail: string; employeeName: string; companyName: string },
   ): void
   process(): void
 }

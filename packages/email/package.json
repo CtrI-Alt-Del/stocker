@@ -10,12 +10,13 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@react-email/components": "0.0.25"
+    "@react-email/components": "0.0.25",
+    "react": "18.3.1"
   },
   "devDependencies": {
     "react-email": "3.0.2"
   },
   "exports": {
-    "./templates": "./emails/index.ts"
+    "./templates": "./emails/index.tsx"
   }
 }

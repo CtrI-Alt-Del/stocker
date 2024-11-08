@@ -41,6 +41,7 @@ export class RegisterUserUseCase {
     await this.usersRepository.add(user)
 
     this.queueProvider.push('send-welcome-employee-email', {
+      employeeEmail: user.email,
       companyName: user.name,
       employeeName: company.name,
     })
