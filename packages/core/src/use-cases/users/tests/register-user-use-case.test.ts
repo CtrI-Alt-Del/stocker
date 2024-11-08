@@ -15,7 +15,7 @@ describe('Register user use case', () => {
     const userRepository = new UsersRepositoryMock()
     const companiesRepository = new CompanyRepositoryMock()
     const cryptoProvider = new CryptoProvider()
-    const queueProvider = new QueueProvider({ jobs: [] })
+    const queueProvider = new QueueProvider([])
 
     const useCase = new RegisterUserUseCase(
       userRepository,
