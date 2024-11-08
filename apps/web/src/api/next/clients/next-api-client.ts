@@ -111,6 +111,7 @@ export const NextApiClient = (cacheConfig?: CacheConfig): IApiClient => {
     async multipart<ResponseBody>(url: string, body: FormData) {
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
         method: 'POST',
+        headers,
         body: body,
       })
       params = {}

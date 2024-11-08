@@ -19,7 +19,7 @@ export const CategoriesPage = () => {
     handleUpdateCategory,
     handleRegisterCategory,
   } = useCategoryPage()
-  
+
   return (
     <div>
       <div className='flex flex-col gap-3 md:flex-row md:gap-0 justify-between'>

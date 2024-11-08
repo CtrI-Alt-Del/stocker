@@ -1,14 +1,22 @@
 import { CACHE } from '@/constants'
 import { useApi, useCache, useToast, useUrlParamNumber } from '@/ui/hooks'
 import { Category } from '@stocker/core/entities'
+import { useAuthContext } from '../../contexts/auth-context/hooks'
+import { PAGINATION } from '@stocker/core/constants'
 
 export function useCategoryPage() {
   const { categoriesService } = useApi()
+  const { company } = useAuthContext()
   const { showError, showSuccess } = useToast()
   const [page, SetPage] = useUrlParamNumber('page', 1)
 
   async function fetchCategories() {
-    const response = await categoriesService.listCategories({ page })
+    if (!company) return
+
+    const response = await categoriesService.listCategories({
+      page,
+      companyId: company?.id,
+    })
     if (response.isFailure) {
       showError(response.errorMessage)
       return
@@ -50,12 +58,12 @@ export function useCategoryPage() {
   const totalItems = data ? data.itemsCount : 0
 
   return {
-    handlePageChange,
-    totalPages: Math.ceil(totalItems / 10),
     page,
-    handleRegisterCategory,
+    totalPages: Math.ceil(totalItems / PAGINATION.itemsPerPage),
     categories,
     isFetching,
+    handlePageChange,
+    handleRegisterCategory,
     handleUpdateCategory,
     handleDeleteCategory,
   }

@@ -60,6 +60,8 @@ export const CategoriesList = ({
         <div>
           <Spinner label='Carregando...' className='w-full h-full mx-auto' />
         </div>
+      ) : categories.length === 0 ? (
+        <p className='text-center font-semibold mt-12'>Nenhuma categoria registrada.</p>
       ) : (
         <div className='space-y-2'>
           <Accordion selectionMode='multiple'>
