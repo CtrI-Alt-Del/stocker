@@ -13,7 +13,7 @@ type NotificationCardProps = {
   href: string
   icon: IconName
   sentAt: Date
-  onRemove: (notificationId: string) => void
+  onDelete: (notificationId: string) => void
 }
 
 export const NotificationCard = ({
@@ -22,7 +22,7 @@ export const NotificationCard = ({
   icon,
   sentAt,
   href,
-  onRemove,
+  onDelete,
 }: NotificationCardProps) => {
   const { user } = useAuthContext()
 
@@ -50,7 +50,7 @@ export const NotificationCard = ({
           Acessar
         </Button>
         {user?.hasValidRole('manager') && (
-          <Button size='sm' onClick={() => onRemove(id)} className='bg-zinc-100'>
+          <Button size='sm' onClick={() => onDelete(id)} className='bg-zinc-100'>
             Remover
           </Button>
         )}

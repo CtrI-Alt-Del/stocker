@@ -1,13 +1,13 @@
-import { useToast } from '@/ui/hooks'
+'use client'
+
+import { useState } from 'react'
 import { useNotificationWebSocket } from '@/ui/hooks/use-notifications-websocket'
 import type {
   ExpirationDateNotification,
   StockLevelNotification,
 } from '@stocker/core/entities'
-import { useCallback, useState } from 'react'
 
 export function useNotificationDialog(companyId: string) {
-  const { showError } = useToast()
   const [stockLevelNotifications, setStockLevelNotifications] = useState<
     StockLevelNotification[]
   >([])
@@ -16,7 +16,7 @@ export function useNotificationDialog(companyId: string) {
   >([])
   const [notificationsCount, setNotificationsCount] = useState(0)
 
-  useNotificationWebSocket({
+  const { deleteNotification } = useNotificationWebSocket({
     companyId,
     onConnect: ({
       expirationDateNotifications,
@@ -27,11 +27,23 @@ export function useNotificationDialog(companyId: string) {
       setStockLevelNotifications(stockLevelNotifications)
       setNotificationsCount(notificationsCount)
     },
+    onSendStockLevelNotification(stockLevelNotification) {
+      setStockLevelNotifications((notifications) => [
+        ...notifications,
+        stockLevelNotification,
+      ])
+      setNotificationsCount((count) => count + 1)
+    },
   })
+
+  function handleDeleteNotification(notificationId: string) {
+    deleteNotification(notificationId)
+  }
 
   return {
     notificationsCount,
     stockLevelNotifications,
     expirationDateNotifications,
+    handleDeleteNotification,
   }
 }

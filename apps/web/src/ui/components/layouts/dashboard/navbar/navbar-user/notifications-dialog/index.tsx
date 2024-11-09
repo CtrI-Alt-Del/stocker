@@ -4,14 +4,19 @@ import { Dialog } from '@/ui/components/commons/dialog'
 import { IconButton } from '@/ui/components/commons/icon-button'
 import { NotificationCard } from './notification-card'
 import { useNotificationDialog } from './use-notifications-dialog'
+import { Tag } from '@/ui/components/commons/tag'
 
 type NotifcationsDialogProps = {
   companyId: string
 }
 
 export const NotifcationsDialog = ({ companyId }: NotifcationsDialogProps) => {
-  const { expirationDateNotifications, stockLevelNotifications, notificationsCount } =
-    useNotificationDialog(companyId)
+  const {
+    expirationDateNotifications,
+    stockLevelNotifications,
+    notificationsCount,
+    handleDeleteNotification,
+  } = useNotificationDialog(companyId)
 
   return (
     <Dialog
@@ -31,7 +36,20 @@ export const NotifcationsDialog = ({ companyId }: NotifcationsDialogProps) => {
           aria-label='Categorias de notificação'
           className='w-full bg-transparent'
         >
-          <Tab key='stock' title='Produtos com estoque zero'>
+          <Tab
+            key='stock'
+            title={
+              <div className='relative'>
+                <p>Produtos com estoque zero</p>
+                {stockLevelNotifications.length > 0 && (
+                  <Tag type='danger' size='sm' className='absolute -top-2 -right-5 z-50'>
+                    {stockLevelNotifications.length.toString()}
+                  </Tag>
+                )}
+              </div>
+            }
+            className='overflow-visible'
+          >
             <div className='h-80'>
               {stockLevelNotifications.length > 0 ? (
                 <ul className='space-y-4 divide-y-2 pb-6'>
@@ -43,7 +61,7 @@ export const NotifcationsDialog = ({ companyId }: NotifcationsDialogProps) => {
                         icon='product'
                         title={`${stockNotification.product.name} | ${stockNotification.product.code}`}
                         sentAt={stockNotification.sentAt ?? new Date()}
-                        onRemove={() => {}}
+                        onDelete={handleDeleteNotification}
                       />
                     </li>
                   ))}
@@ -55,7 +73,19 @@ export const NotifcationsDialog = ({ companyId }: NotifcationsDialogProps) => {
               )}
             </div>
           </Tab>
-          <Tab key='expiration-date' title='Lotes perto da  data de validade'>
+          <Tab
+            key='expiration-date'
+            title={
+              <div className='relative'>
+                <p>Lotes próximos da expiração</p>
+                {expirationDateNotifications.length > 0 && (
+                  <Tag type='danger' size='sm' className='absolute -top-2 -right-4 z-50'>
+                    {expirationDateNotifications.length.toString()}
+                  </Tag>
+                )}
+              </div>
+            }
+          >
             <div className='h-80'>
               {expirationDateNotifications.length > 0 ? (
                 <ul className='space-y-4 divide-y-2 pb-6'>
@@ -67,7 +97,7 @@ export const NotifcationsDialog = ({ companyId }: NotifcationsDialogProps) => {
                         icon='batch'
                         title={expirationDateNotification.batch.code}
                         sentAt={expirationDateNotification.sentAt ?? new Date()}
-                        onRemove={() => {}}
+                        onDelete={handleDeleteNotification}
                       />
                     </li>
                   ))}
