@@ -2,7 +2,6 @@ import Fastify, { type FastifyInstance } from 'fastify'
 import Multipart from '@fastify/multipart'
 import Cors from '@fastify/cors'
 import Cookies from '@fastify/cookie'
-import nodeCron from 'node-cron'
 import {
   ProductsRoutes,
   FileStorageRoutes,
@@ -16,6 +15,8 @@ import {
   CompaniesRoutes,
 } from './routes'
 import Jwt from '@fastify/jwt'
+import Websocket from '@fastify/websocket'
+import nodeCron from 'node-cron'
 
 import type { IApp } from '@stocker/core/interfaces'
 import {
@@ -47,6 +48,7 @@ export class FastifyApp implements IApp {
         expiresIn: '1d',
       },
     })
+    this.app.register(Websocket)
     this.app.register(Cookies)
 
     this.setErrorHandler()
@@ -58,7 +60,7 @@ export class FastifyApp implements IApp {
     this.app
       .listen({ port: ENV.port })
       .then(() => {
-        console.log(`📟 Server running on port: http://localhost:${ENV.port}`)
+        console.log(`📟 Server running on port: http://${ENV.domain}:${ENV.port}`)
       })
       .catch((error) => {
         console.error(`❌ Error on start server: ${error}`)
