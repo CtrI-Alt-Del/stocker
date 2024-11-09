@@ -9,6 +9,7 @@ import { RegisterProductForm } from './register-product-form'
 import { useProductsPage } from './use-products-page'
 import { Search } from '../../commons/search'
 import { AlertDialog } from '../../commons/alert-dialog'
+import { useAuthContext } from '../../contexts/auth-context'
 
 export const ProductsPage = () => {
   const {
@@ -27,6 +28,8 @@ export const ProductsPage = () => {
     handleRegisterProductFormSubmit,
   } = useProductsPage()
 
+  const { user } = useAuthContext()
+  const hasValidRole = user?.hasValidRole('manager')
   return (
     <>
       <div className='flex flex-col gap-3 md:flex-row md:gap-0 justify-between'>
@@ -50,27 +53,30 @@ export const ProductsPage = () => {
                 : 'Você tem certeza que deseja deletar esse produto?'}
             </AlertDialog>
           )}
-          <Drawer
-            trigger={
-              <Button variant='solid' color='primary' radius='sm'>
-                Adicionar produto
-              </Button>
-            }
-          >
-            {(closeDrawer) => (
-              <RegisterProductForm
-                onSubmit={async () => {
-                  await handleRegisterProductFormSubmit()
-                  closeDrawer()
-                }}
-                onCancel={closeDrawer}
-              />
-            )}
-          </Drawer>
+          {hasValidRole && (
+            <Drawer
+              trigger={
+                <Button variant='solid' color='primary' radius='sm'>
+                  Adicionar produto
+                </Button>
+              }
+            >
+              {(closeDrawer) => (
+                <RegisterProductForm
+                  onSubmit={async () => {
+                    await handleRegisterProductFormSubmit()
+                    closeDrawer()
+                  }}
+                  onCancel={closeDrawer}
+                />
+              )}
+            </Drawer>
+          )}
         </div>
       </div>
       <div className='mt-3'>
         <ProductsTable
+          selectionMode={hasValidRole ? 'multiple' : 'none'}
           products={products}
           totalPages={totalPages}
           isLoading={isFetching}
