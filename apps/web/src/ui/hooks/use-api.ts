@@ -15,7 +15,7 @@ import { BROWSER_ENV } from '@/constants'
 import { useAuthContext } from '../components/contexts/auth-context'
 
 const nextApiClient = NextApiClient()
-nextApiClient.setBaseUrl(BROWSER_ENV.serverUrl)
+nextApiClient.setBaseUrl(BROWSER_ENV.serverApiUrl)
 
 export function useApi() {
   const { jwt } = useAuthContext()
