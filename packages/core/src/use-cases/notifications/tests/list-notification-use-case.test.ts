@@ -20,10 +20,8 @@ describe('List notification use case', () => {
       await notificationsRepository.addStockLevelNotification(fakeNotification)
     }
 
-    const { stockNotifications } = await useCase.execute({
-      companyId,
-    })
-    expect(stockNotifications).toEqual(
+    const { stockLevelNotifications } = await useCase.execute(companyId)
+    expect(stockLevelNotifications).toEqual(
       fakeStockLevelNotifications.map((notification) => notification.dto),
     )
   })
@@ -42,9 +40,7 @@ describe('List notification use case', () => {
       fakeExpirationDateNotifications,
     )
 
-    const { expirationDateNotifications } = await useCase.execute({
-      companyId,
-    })
+    const { expirationDateNotifications } = await useCase.execute(companyId)
     expect(expirationDateNotifications).toEqual(
       fakeExpirationDateNotifications.map((notification) => notification.dto),
     )
@@ -54,10 +50,9 @@ describe('List notification use case', () => {
     const notificationsRepository = new NotificationsRepositoryMock()
     const useCase = new ListNotificationsUseCase(notificationsRepository)
 
-    const { stockNotifications, expirationDateNotifications } = await useCase.execute({
-      companyId: 'non-existent-company-id',
-    })
-    expect(stockNotifications).toEqual([])
+    const { stockLevelNotifications, expirationDateNotifications } =
+      await useCase.execute('non-existent-company-id')
+    expect(stockLevelNotifications).toEqual([])
     expect(expirationDateNotifications).toEqual([])
   })
 })

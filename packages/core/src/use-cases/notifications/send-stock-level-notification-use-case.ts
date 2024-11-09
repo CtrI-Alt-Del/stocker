@@ -1,4 +1,4 @@
-import type { IProductsRepository } from '../../interfaces'
+import type { INotificationsSocket, IProductsRepository } from '../../interfaces'
 import type { INotificationsRepository } from '../../interfaces'
 import { StockLevelNotification } from '../../domain/entities'
 import { NotFoundError } from '../../errors'
@@ -7,6 +7,7 @@ export class SendStockLevelNotificationsUseCase {
   constructor(
     private readonly notificationsRepository: INotificationsRepository,
     private readonly productsRepository: IProductsRepository,
+    private readonly notificstionsSocket: INotificationsSocket,
   ) {}
 
   async execute(productId: string): Promise<void> {
@@ -21,6 +22,8 @@ export class SendStockLevelNotificationsUseCase {
       })
 
       await this.notificationsRepository.addStockLevelNotification(notification)
+
+      this.notificstionsSocket.emitStockLevelNotification(notification)
     }
   }
 }
