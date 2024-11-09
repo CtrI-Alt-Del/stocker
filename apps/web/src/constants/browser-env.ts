@@ -5,12 +5,14 @@ import { urlSchema } from '@stocker/validation/schemas'
 
 const envSchema = z.object({
   appUrl: urlSchema,
-  serverUrl: urlSchema,
+  serverApiUrl: urlSchema,
+  serverRealtimeUrl: urlSchema,
 })
 
 const validation = envSchema.safeParse({
   appUrl: process.env.NEXT_PUBLIC_APP_URL,
-  serverUrl: process.env.NEXT_PUBLIC_SERVER_URL,
+  serverApiUrl: process.env.NEXT_PUBLIC_SERVER_API_URL,
+  serverRealtimeUrl: process.env.NEXT_PUBLIC_SERVER_REALTIME_URL,
 })
 
 if (!validation.success) {
