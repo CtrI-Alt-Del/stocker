@@ -1,5 +1,5 @@
 import { emailProvider } from '@/providers'
-import type { IEmailProvider, IJob } from '@stocker/core/interfaces'
+import type { IJob } from '@stocker/core/interfaces'
 import type { JobKey } from '@stocker/core/types'
 
 type Payload = {

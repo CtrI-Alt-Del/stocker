@@ -7,14 +7,17 @@ import {
   productsRepository,
 } from '@/database'
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
+import { queueProvider } from '@/providers'
 
 export class RegisterOutboundInventoryMovementController {
   async handle(http: IHttp) {
     const body = http.getBody<InventoryMovementDto>()
+
     const useCase = new RegisterOutboundInventoryMovementUseCase(
       batchesRepository,
       productsRepository,
       inventoryMovementsRepository,
+      queueProvider,
     )
 
     await useCase.execute({
