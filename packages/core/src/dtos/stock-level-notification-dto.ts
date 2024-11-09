@@ -6,5 +6,5 @@ export type StockLevelNotificationDto = {
     name: string
     code: string
   }
-  createdAt: Date
+  sentAt?: Date
 }

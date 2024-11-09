@@ -5,6 +5,7 @@ import type {
   IBatchesRepository,
   IInventoryMovementsRepository,
   IProductsRepository,
+  IQueueProvider,
 } from '../../interfaces'
 
 type Request = {
@@ -15,15 +16,18 @@ export class RegisterOutboundInventoryMovementUseCase {
   private readonly batchRepository: IBatchesRepository
   private readonly productsRepository: IProductsRepository
   private readonly inventoryMovementsRepository: IInventoryMovementsRepository
+  private readonly queueProvider: IQueueProvider
 
   constructor(
     batchRepository: IBatchesRepository,
     productsRepository: IProductsRepository,
     inventoryMovementsRepository: IInventoryMovementsRepository,
+    queueProvider: IQueueProvider,
   ) {
     this.batchRepository = batchRepository
     this.productsRepository = productsRepository
     this.inventoryMovementsRepository = inventoryMovementsRepository
+    this.queueProvider = queueProvider
   }
 
   async execute({ inventoryMovementDto }: Request) {
@@ -49,5 +53,7 @@ export class RegisterOutboundInventoryMovementUseCase {
     }
 
     await this.inventoryMovementsRepository.add(inventory)
+
+    this.queueProvider.push('send-stock-level-notification', { productId: product.id })
   }
 }

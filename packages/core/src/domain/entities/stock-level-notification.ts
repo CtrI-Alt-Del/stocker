@@ -8,7 +8,7 @@ type StockLevelNotificationProps = {
     name: string
     code: string
   }
-  createdAt: Date
+  sentAt: Date
 }
 
 export class StockLevelNotification extends Notification<StockLevelNotificationProps> {
@@ -16,8 +16,8 @@ export class StockLevelNotification extends Notification<StockLevelNotificationP
     return new StockLevelNotification(
       {
         companyId: dto.companyId,
-        createdAt: dto.createdAt,
         product: dto.product,
+        sentAt: dto.sentAt ?? new Date(),
       },
       dto.id,
     )
@@ -31,8 +31,8 @@ export class StockLevelNotification extends Notification<StockLevelNotificationP
     return this.props.product
   }
 
-  get createdAt() {
-    return this.props.createdAt
+  get sentAt() {
+    return this.props.sentAt
   }
 
   get dto(): StockLevelNotificationDto {
@@ -44,7 +44,7 @@ export class StockLevelNotification extends Notification<StockLevelNotificationP
         name: this.props.product.name,
         code: this.props.product.code,
       },
-      createdAt: this.props.createdAt,
+      sentAt: this.props.sentAt,
     }
   }
 }

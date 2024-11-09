@@ -1,5 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
-import { RegisterInboundInventoryMovementUseCase } from '../register-inbound-inventory-movement-use-case'
+import { beforeEach, describe, expect, it } from 'vitest'
 import {
   BatchesRepositoryMock,
   InventoryMovementsRepositoryMock,
@@ -12,10 +11,12 @@ import {
   ProductsFaker,
 } from '../../../../__tests__/fakers'
 import { NotAllowedError, NotFoundError } from '../../../errors'
+import { QueueProviderMock } from '../../../../__tests__/mocks/providers'
 
 let productsRepository: ProductsRepositoryMock
 let batchesRepository: BatchesRepositoryMock
 let inventoryMovementsRepository: InventoryMovementsRepositoryMock
+let queueProvider: QueueProviderMock
 let useCase: RegisterOutboundInventoryMovementUseCase
 
 describe('Register outbound inventory movement use case', () => {
@@ -23,10 +24,12 @@ describe('Register outbound inventory movement use case', () => {
     productsRepository = new ProductsRepositoryMock()
     batchesRepository = new BatchesRepositoryMock()
     inventoryMovementsRepository = new InventoryMovementsRepositoryMock()
+    queueProvider = new QueueProviderMock()
     useCase = new RegisterOutboundInventoryMovementUseCase(
       batchesRepository,
       productsRepository,
       inventoryMovementsRepository,
+      queueProvider,
     )
   })
 
@@ -48,6 +51,7 @@ describe('Register outbound inventory movement use case', () => {
       batchesRepository,
       productsRepository,
       inventoryMovementsRepository,
+      queueProvider,
     )
     const fakeInventoryMovementDto = InventoryMovementsFaker.fakeDto({
       product: { id: fakeProduct.id },
@@ -74,6 +78,7 @@ describe('Register outbound inventory movement use case', () => {
       batchesRepository,
       productsRepository,
       inventoryMovementsRepository,
+      queueProvider,
     )
     const fakeInventoryMovementDto = InventoryMovementsFaker.fakeDto({
       itemsCount: 5,
@@ -101,6 +106,7 @@ describe('Register outbound inventory movement use case', () => {
       batchesRepository,
       productsRepository,
       inventoryMovementsRepository,
+      queueProvider,
     )
     const fakeInventoryMovementDto = InventoryMovementsFaker.fakeDto({
       itemsCount: 10,
@@ -128,6 +134,7 @@ describe('Register outbound inventory movement use case', () => {
       batchesRepository,
       productsRepository,
       inventoryMovementsRepository,
+      queueProvider,
     )
     const fakeInventoryMovementDto = InventoryMovementsFaker.fakeDto({
       itemsCount: 10,
@@ -142,5 +149,31 @@ describe('Register outbound inventory movement use case', () => {
     expect(inventoryMovementsRepository.inventoryMovements[0]?.dto).toEqual(
       fakeInventoryMovementDto,
     )
+  })
+
+  it('should push to the queue a job that sends stock level notification', async () => {
+    const fakeProduct = ProductsFaker.fake({
+      batches: [BatchesFaker.fakeDto({ itemsCount: 10 })],
+      minimumStock: 1,
+    })
+    productsRepository.add(fakeProduct)
+    const fakeInventoryMovementDto = InventoryMovementsFaker.fakeDto({
+      itemsCount: 10,
+      product: { id: fakeProduct.id },
+    })
+
+    expect(queueProvider.jobs).toHaveLength(0)
+
+    await useCase.execute({
+      inventoryMovementDto: fakeInventoryMovementDto,
+    })
+
+    expect(queueProvider.jobs).toHaveLength(1)
+    expect(queueProvider.jobs).toEqual([
+      {
+        key: 'send-stock-level-notification',
+        data: { productId: fakeProduct.id },
+      },
+    ])
   })
 })

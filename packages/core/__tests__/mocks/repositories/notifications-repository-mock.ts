@@ -5,31 +5,41 @@ import {
 import type { INotificationsRepository } from '../../../src/interfaces'
 
 export class NotificationsRepositoryMock implements INotificationsRepository {
-  private notifications: (ExpirationDateNotification | StockLevelNotification)[] = []
+  stockLevelNotifications: StockLevelNotification[] = []
+  expirationDateNotifications: ExpirationDateNotification[] = []
 
   async findById(
     notificationId: string,
   ): Promise<StockLevelNotification | ExpirationDateNotification | null> {
-    const notification = this.notifications.find(
+    const notification = this.stockLevelNotifications.find(
       (notification) => notification.id === notificationId,
     )
-    return notification ?? null
+
+    if (!notification) {
+      const notification = this.expirationDateNotifications.find(
+        (notification) => notification.id === notificationId,
+      )
+
+      return notification ?? null
+    }
+
+    return notification
   }
 
-  async findManyStockLevelNotifications(
+  async findManyStockLevelNotificationsByCompany(
     companyId: string,
   ): Promise<StockLevelNotification[]> {
-    return this.notifications.filter(
+    return this.stockLevelNotifications.filter(
       (notification): notification is StockLevelNotification =>
         notification instanceof StockLevelNotification &&
         notification.companyId === companyId,
     )
   }
 
-  async findManyExpirationDateNotifications(
+  async findManyExpirationDateNotificationsByCompany(
     companyId: string,
   ): Promise<ExpirationDateNotification[]> {
-    return this.notifications.filter(
+    return this.expirationDateNotifications.filter(
       (notification): notification is ExpirationDateNotification =>
         notification instanceof ExpirationDateNotification &&
         notification.companyId === companyId,
@@ -39,18 +49,26 @@ export class NotificationsRepositoryMock implements INotificationsRepository {
   async addStockLevelNotification(
     stockLevelNotification: StockLevelNotification,
   ): Promise<void> {
-    this.notifications.push(stockLevelNotification)
+    this.stockLevelNotifications.push(stockLevelNotification)
   }
 
   async addManyExpirationDateNotifications(
     expirationNotifications: ExpirationDateNotification[],
   ): Promise<void> {
-    this.notifications.push(...expirationNotifications)
+    this.expirationDateNotifications.push(...expirationNotifications)
   }
 
   async deleteNotification(notificationId: string): Promise<void> {
-    this.notifications = this.notifications.filter(
+    const oldStockNotificationsCount = this.stockLevelNotifications.length
+
+    this.stockLevelNotifications = this.stockLevelNotifications.filter(
       (notification) => notification.id !== notificationId,
     )
+
+    if (this.stockLevelNotifications.length === oldStockNotificationsCount) {
+      this.expirationDateNotifications = this.expirationDateNotifications.filter(
+        (notification) => notification.id !== notificationId,
+      )
+    }
   }
 }

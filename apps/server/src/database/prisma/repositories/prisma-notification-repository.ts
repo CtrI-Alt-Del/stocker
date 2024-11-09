@@ -55,7 +55,7 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
     }
   }
 
-  async findManyStockLevelNotifications(
+  async findManyStockLevelNotificationsByCompany(
     companyId: string,
   ): Promise<StockLevelNotification[]> {
     try {
@@ -79,7 +79,7 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
     }
   }
 
-  async findManyExpirationDateNotifications(
+  async findManyExpirationDateNotificationsByCompany(
     companyId: string,
   ): Promise<ExpirationDateNotification[]> {
     try {
@@ -109,7 +109,7 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
       await prisma.stockLevelNotification.create({
         data: {
           id: stockLevelNotification.id,
-          created_at: stockLevelNotification.createdAt,
+          registered_at: stockLevelNotification.sentAt,
           product_id: stockLevelNotification.product.id,
           company_id: stockLevelNotification.companyId,
         },
