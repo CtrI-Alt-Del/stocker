@@ -55,8 +55,8 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
           parent_category_id: null,
           company_id: companyId,
         },
+        orderBy: { registered_at: 'desc' },
       })
-      console.log(prismaCategories)
 
       return prismaCategories.map(this.mapper.toDomain)
     } catch (error) {

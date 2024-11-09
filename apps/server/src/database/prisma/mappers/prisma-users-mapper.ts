@@ -27,6 +27,7 @@ export class PrismaUsersMapper {
       role: user.role.toUpperCase() as PrismaUserRole,
       has_first_password_reset: user.hasFirstPasswordReset,
       company_id: user.companyId,
+      registered_at: new Date(),
     }
   }
 }

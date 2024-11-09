@@ -85,6 +85,7 @@ export class PrismaProductsRepository implements IProductsRepository {
         where: {
           company_id: companyId,
         },
+        orderBy: { registered_at: 'desc' },
         include: {
           batches: {
             orderBy: [
@@ -147,6 +148,7 @@ export class PrismaProductsRepository implements IProductsRepository {
         LEFT JOIN inventory_movements IM ON IM.product_id = P.id
         LEFT JOIN batches B ON B.product_id = P.id
         WHERE P.is_active = true AND P.company_id = ${companyId}
+        ORDER BY P.registered_at DESC
         GROUP BY P.id
       `
 

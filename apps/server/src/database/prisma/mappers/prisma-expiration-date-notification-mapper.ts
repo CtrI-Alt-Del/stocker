@@ -1,9 +1,9 @@
-import { ExpirationDateNotification } from "@stocker/core/entities";
-import type { PrismaExpirationDateNotification } from "../types";
+import { ExpirationDateNotification } from '@stocker/core/entities'
+import type { PrismaExpirationDateNotification } from '../types'
 
 export class PrismaExpirationDateNotificationMapper {
   toDomain(
-    prismaExpirationDateNotification: PrismaExpirationDateNotification
+    prismaExpirationDateNotification: PrismaExpirationDateNotification,
   ): ExpirationDateNotification {
     return ExpirationDateNotification.create({
       id: prismaExpirationDateNotification.id,
@@ -11,23 +11,23 @@ export class PrismaExpirationDateNotificationMapper {
         id: prismaExpirationDateNotification.batch_id,
         code: prismaExpirationDateNotification.Batch.code,
       },
-      createdAt: prismaExpirationDateNotification.created_at,
+      createdAt: prismaExpirationDateNotification.registered_at,
       companyId: prismaExpirationDateNotification.company_id,
-    });
+    })
   }
 
   toPrisma(
-    expirationDateNotification: ExpirationDateNotification
+    expirationDateNotification: ExpirationDateNotification,
   ): PrismaExpirationDateNotification {
     return {
       id: expirationDateNotification.id,
-      created_at: expirationDateNotification.createdAt,
+      registered_at: expirationDateNotification.createdAt,
       batch_id: expirationDateNotification.batch.id,
       Batch: {
         id: expirationDateNotification.batch.id,
         code: expirationDateNotification.batch.code,
       },
       company_id: expirationDateNotification.companyId,
-    };
+    }
   }
 }

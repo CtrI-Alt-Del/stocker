@@ -67,6 +67,7 @@ export class PrismaProductMapper {
             registered_at: batchDto.registeredAt ?? new Date(),
           }))
         : [],
+      registered_at: new Date(),
     }
   }
 }

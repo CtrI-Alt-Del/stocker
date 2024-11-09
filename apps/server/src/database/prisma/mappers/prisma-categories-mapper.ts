@@ -29,6 +29,7 @@ export class PrismaCategoriesMapper {
       name: categoryDto.name,
       parent_category_id: categoryDto.parentCategoryId ?? null,
       company_id: categoryDto.companyId,
+      registered_at: new Date(),
       subCategories: [],
     }
   }

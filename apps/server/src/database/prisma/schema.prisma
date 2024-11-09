@@ -20,7 +20,7 @@ enum InventoryMovementType {
 }
 
 model Product {
-  id            String  @id @default(uuid())
+  id            String   @id @default(uuid())
   name          String
   description   String
   image         String
@@ -35,9 +35,10 @@ model Product {
   code          String
   minimum_stock Int
   model         String?
-  is_active     Boolean @default(true)
+  is_active     Boolean  @default(true)
   category_id   String?
   company_id    String
+  registered_at DateTime @default(now())
 
   Category               Category?                @relation(fields: [category_id], references: [id])
   Company                Company                  @relation(fields: [company_id], references: [id], onDelete: Cascade)
@@ -78,13 +79,14 @@ model InventoryMovement {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  email      String
-  role       UserRole @default(EMPLOYEE)
-  name       String
-  password   String
-  has_first_password_reset Boolean @default(true)
-  company_id String
+  id                       String   @id @default(uuid())
+  email                    String
+  role                     UserRole @default(EMPLOYEE)
+  name                     String
+  password                 String
+  has_first_password_reset Boolean  @default(true)
+  company_id               String
+  registered_at            DateTime @default(now())
 
   Company            Company?            @relation(fields: [company_id], references: [id], onDelete: Cascade)
   inventoryMovements InventoryMovement[]
@@ -107,10 +109,11 @@ model Company {
 }
 
 model Category {
-  id                 String  @id @default(uuid())
+  id                 String   @id @default(uuid())
   name               String
   parent_category_id String?
   company_id         String
+  registered_at      DateTime @default(now())
 
   parentCategory Category?  @relation("CategoryParent", fields: [parent_category_id], references: [id], onDelete: Cascade)
   subCategories  Category[] @relation("CategoryParent")
@@ -121,10 +124,11 @@ model Category {
 }
 
 model Suppliers {
-  id         String @id @default(uuid())
-  name       String
-  email      String
-  company_id String
+  id            String   @id @default(uuid())
+  name          String
+  email         String
+  company_id    String
+  registered_at DateTime @default(now())
 
   Company Company @relation(fields: [company_id], references: [id], onDelete: Cascade)
 
@@ -132,9 +136,10 @@ model Suppliers {
 }
 
 model Location {
-  id                 String  @id @default(uuid())
+  id                 String   @id @default(uuid())
   parent_location_id String?
   company_id         String
+  registered_at      DateTime @default(now())
 
   ParentLocation Location?  @relation("LocationParent", fields: [parent_location_id], references: [id], onDelete: Cascade)
   subLocation    Location[] @relation("LocationParent")
@@ -144,10 +149,10 @@ model Location {
 }
 
 model StockLevelNotification {
-  id         String   @id @default(uuid())
-  product_id String
-  company_id String
-  created_at DateTime @default(now())
+  id            String   @id @default(uuid())
+  product_id    String
+  company_id    String
+  registered_at DateTime @default(now())
 
   Product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
@@ -155,10 +160,10 @@ model StockLevelNotification {
 }
 
 model ExpirationDateNotification {
-  id         String   @id @default(uuid())
-  company_id String
-  batch_id   String
-  created_at DateTime @default(now())
+  id            String   @id @default(uuid())
+  company_id    String
+  batch_id      String
+  registered_at DateTime @default(now())
 
   Batch Batch @relation(fields: [batch_id], references: [id], onDelete: Cascade)
 

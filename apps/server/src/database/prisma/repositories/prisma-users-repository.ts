@@ -49,6 +49,7 @@ export class PrismaUsersRepository implements IUsersRepository {
           company_id: params.companyId,
           role: { not: 'ADMIN' },
         },
+        orderBy: { registered_at: 'desc' },
       })
 
       const count = await prisma.user.count({
