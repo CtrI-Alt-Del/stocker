@@ -1,14 +1,15 @@
+import { useAuthContext } from '@/ui/components/contexts/auth-context'
 import { useApi, useToast } from '@/ui/hooks'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { CompanyDto, UserDto } from '@stocker/core/dtos'
-import { cnpjSchema, companyNameSchema, emailSchema, nameSchema } from '@stocker/validation/schemas'
+import {
+  cnpjSchema,
+  companyNameSchema,
+  emailSchema,
+  nameSchema,
+} from '@stocker/validation/schemas'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-
-type useUpdateProfileFormProps = {
-  user: UserDto
-  company: CompanyDto
-}
 
 const updateProfileFormSchema = z.object({
   name: nameSchema,
@@ -17,19 +18,17 @@ const updateProfileFormSchema = z.object({
   email: emailSchema,
 })
 type updateProfileFormData = z.infer<typeof updateProfileFormSchema>
-export function useUpdateProfileForm({
-  user,
-  company,
-}: useUpdateProfileFormProps) {
+export function useProfileForm() {
+  const { user, company, update } = useAuthContext()
   const { usersService } = useApi()
   const { showSuccess, showError } = useToast()
   const { formState, reset, register, handleSubmit, control } =
     useForm<updateProfileFormData>({
       defaultValues: {
-        name: user.name,
-        companyName: company.name,
-        cnpj: company.cnpj,
-        email: user.email,
+        name: user?.name,
+        companyName: company?.name,
+        cnpj: company?.cnpj,
+        email: user?.email,
       },
       resolver: zodResolver(updateProfileFormSchema),
     })
@@ -40,12 +39,12 @@ export function useUpdateProfileForm({
       const updatedValue = formData[updatedField as keyof updateProfileFormData]
       partialUser[updatedField] = updatedValue
     }
-    if (!user.id) {
+    if (!user || !company) {
       return
     }
     const response = await usersService.updateUser(
       partialUser as Partial<UserDto>,
-      user.id
+      user.id,
     )
     if (response.isFailure) {
       showError(response.errorMessage)
@@ -62,6 +61,7 @@ export function useUpdateProfileForm({
     isSubmiting: formState.isSubmitting,
     register,
     control,
+    update,
     handleSubmit: handleSubmit(handleFormSubmit),
   }
 }

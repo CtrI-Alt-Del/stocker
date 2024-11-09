@@ -12,7 +12,7 @@ export const AdminLogoutButton = () => {
             <Button
               size='md'
               color='default'
-              startContent={<Icon name='logout' size={14} />}
+              startContent={<Icon name='logout' size={12} />}
             >
               Sair
             </Button>
