@@ -14,7 +14,7 @@ export class NotificationsSocket {
 
   emitStockLevelNotification(notification: StockLevelNotification): void {
     const response = new RealtimeResponse({
-      event: REALTIME_EVENTS.notificationsChannel.stockLevelNotificationSent,
+      event: REALTIME_EVENTS.notificationsRoom.stockLevelNotificationSent,
       payload: notification.dto,
     })
 

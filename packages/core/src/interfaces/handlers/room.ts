@@ -1,5 +1,5 @@
 import type { IWs } from './ws'
 
-export interface IChannel {
+export interface IRoom {
   handle(socket: IWs): void
 }

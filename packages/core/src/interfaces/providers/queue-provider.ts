@@ -1,5 +1,8 @@
 export interface IQueueProvider {
-  push(key: 'send-stock-level-notification', data: { productId: string }): void
+  push(
+    key: 'send-stock-level-notification',
+    data: { productId: string; companyId: string },
+  ): void
   push(
     key: 'send-password-reset-email',
     data: { recipientEmail: string; confirmationToken: string },

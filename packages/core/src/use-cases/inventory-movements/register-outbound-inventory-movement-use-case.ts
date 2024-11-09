@@ -54,6 +54,9 @@ export class RegisterOutboundInventoryMovementUseCase {
 
     await this.inventoryMovementsRepository.add(inventory)
 
-    this.queueProvider.push('send-stock-level-notification', { productId: product.id })
+    this.queueProvider.push('send-stock-level-notification', {
+      productId: product.id,
+      companyId: product.companyId,
+    })
   }
 }

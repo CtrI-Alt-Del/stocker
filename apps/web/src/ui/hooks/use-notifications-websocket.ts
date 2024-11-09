@@ -35,7 +35,7 @@ export function useNotificationWebSocket({
     url: `${BROWSER_ENV.serverRealtimeUrl}/notifications/${companyId}`,
     onResponse(response) {
       switch (response.event) {
-        case REALTIME_EVENTS.notificationsChannel.connected:
+        case REALTIME_EVENTS.notificationsRoom.connected:
           onConnect({
             stockLevelNotifications: response.payload.stockLevelNotifications.map(
               StockLevelNotification.create,
@@ -46,7 +46,7 @@ export function useNotificationWebSocket({
             notificationsCount: response.payload.notificationsCount,
           })
           break
-        case REALTIME_EVENTS.notificationsChannel.stockLevelNotificationSent:
+        case REALTIME_EVENTS.notificationsRoom.stockLevelNotificationSent:
           onSendStockLevelNotification(StockLevelNotification.create(response.payload))
           break
       }
@@ -58,16 +58,13 @@ export function useNotificationWebSocket({
 
   const deleteNotification = useCallback(
     (notificationId: string) => {
-      sendResponse(
-        REALTIME_EVENTS.notificationsChannel.notificationDeleted,
-        notificationId,
-      )
+      sendResponse(REALTIME_EVENTS.notificationsRoom.notificationDeleted, notificationId)
     },
     [sendResponse],
   )
 
   useEffect(() => {
-    if (isOpen) sendResponse(REALTIME_EVENTS.notificationsChannel.connected)
+    if (isOpen) sendResponse(REALTIME_EVENTS.notificationsRoom.connected)
   }, [isOpen, sendResponse])
 
   return {

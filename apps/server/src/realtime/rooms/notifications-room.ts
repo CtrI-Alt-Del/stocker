@@ -1,13 +1,13 @@
 import { notificationsRepository } from '@/database'
 import { REALTIME_EVENTS } from '@stocker/core/constants'
 import type { StockLevelNotificationDto } from '@stocker/core/dtos'
-import type { IChannel, IWs } from '@stocker/core/interfaces'
+import type { IRoom, IWs } from '@stocker/core/interfaces'
 import {
   DeleteNotificationUseCase,
   ListNotificationsUseCase,
 } from '@stocker/core/use-cases'
 
-export class NotificationsChannel implements IChannel {
+export class NotificationsRoom implements IRoom {
   constructor(private readonly companyId: string) {}
 
   handle(ws: IWs): void {
@@ -16,26 +16,36 @@ export class NotificationsChannel implements IChannel {
       notificationsRepository,
     )
 
-    ws.on(REALTIME_EVENTS.notificationsChannel.connected, async () => {
+    ws.on(REALTIME_EVENTS.notificationsRoom.connected, this.companyId, async () => {
       const notifications = await listNotificationsUseCase.execute(this.companyId)
 
-      ws.broadcast(REALTIME_EVENTS.notificationsChannel.connected, notifications)
+      ws.emit(REALTIME_EVENTS.notificationsRoom.connected, this.companyId, notifications)
     })
 
     ws.on(
-      REALTIME_EVENTS.notificationsChannel.stockLevelNotificationSent,
+      REALTIME_EVENTS.notificationsRoom.stockLevelNotificationSent,
+      this.companyId,
       async (dto: StockLevelNotificationDto) => {
-        ws.broadcast(REALTIME_EVENTS.notificationsChannel.stockLevelNotificationSent, dto)
+        ws.emit(
+          REALTIME_EVENTS.notificationsRoom.stockLevelNotificationSent,
+          this.companyId,
+          dto,
+        )
       },
     )
 
     ws.on(
-      REALTIME_EVENTS.notificationsChannel.notificationDeleted,
+      REALTIME_EVENTS.notificationsRoom.notificationDeleted,
+      this.companyId,
       async (notificationId: string) => {
         await deleteNotificationUseCase.execute({ notificationId })
         const notifications = await listNotificationsUseCase.execute(this.companyId)
 
-        ws.broadcast(REALTIME_EVENTS.notificationsChannel.connected, notifications)
+        ws.emit(
+          REALTIME_EVENTS.notificationsRoom.connected,
+          this.companyId,
+          notifications,
+        )
       },
     )
   }
