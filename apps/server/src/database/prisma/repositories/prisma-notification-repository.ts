@@ -19,7 +19,7 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
     notificationId: string,
   ): Promise<StockLevelNotification | ExpirationDateNotification | null> {
     try {
-      const stockNotification = await prisma.stockLevelNotification.findUnique({
+      const prismaStockNotification = await prisma.stockLevelNotification.findUnique({
         where: {
           id: notificationId,
         },
@@ -28,11 +28,8 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
         },
       })
 
-      if (stockNotification) {
-        return this.stockLevelNotificationMapper.toDomain({
-          ...stockNotification,
-          company_id: stockNotification.Product.company_id,
-        })
+      if (prismaStockNotification) {
+        return this.stockLevelNotificationMapper.toDomain(prismaStockNotification)
       }
 
       const expirationNotification = await prisma.expirationDateNotification.findUnique({
@@ -45,10 +42,9 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
       })
 
       if (expirationNotification) {
-        return this.expirationDateNotificationMapper.toDomain({
-          ...expirationNotification,
-        })
+        return this.expirationDateNotificationMapper.toDomain(expirationNotification)
       }
+
       return null
     } catch (error) {
       throw new PrismaError(error)
@@ -59,7 +55,7 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
     companyId: string,
   ): Promise<StockLevelNotification[]> {
     try {
-      const notifications = await prisma.stockLevelNotification.findMany({
+      const prismaNotifications = await prisma.stockLevelNotification.findMany({
         where: {
           company_id: companyId,
         },
@@ -67,13 +63,11 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
           Product: true,
         },
       })
-      const mappedNotifications = notifications.map((notification) =>
-        this.stockLevelNotificationMapper.toDomain({
-          ...notification,
-          company_id: notification.Product.company_id,
-        }),
+      const notifications = prismaNotifications.map(
+        this.stockLevelNotificationMapper.toDomain,
       )
-      return mappedNotifications
+
+      return notifications
     } catch (error) {
       throw new PrismaError(error)
     }

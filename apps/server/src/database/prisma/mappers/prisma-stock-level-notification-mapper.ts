@@ -4,13 +4,14 @@ import type { PrismaStockLevelNotification } from '../types'
 export class PrismaStockLevelNotificationMapper {
   toDomain(stockLevelNotification: PrismaStockLevelNotification): StockLevelNotification {
     return StockLevelNotification.create({
-      companyId: stockLevelNotification.company_id,
+      id: stockLevelNotification.id,
       product: {
         id: stockLevelNotification.product_id,
         name: stockLevelNotification.Product.name,
         code: stockLevelNotification.Product.code,
       },
-      createdAt: stockLevelNotification.created_at,
+      companyId: stockLevelNotification.Product.company_id,
+      sentAt: stockLevelNotification.registered_at,
     })
   }
 
@@ -19,11 +20,12 @@ export class PrismaStockLevelNotificationMapper {
       id: stockLevelNotification.id,
       company_id: stockLevelNotification.companyId,
       product_id: stockLevelNotification.product.id,
-      created_at: stockLevelNotification.createdAt,
+      registered_at: stockLevelNotification.sentAt,
       Product: {
         id: stockLevelNotification.product.id,
         name: stockLevelNotification.product.name,
         code: stockLevelNotification.product.code,
+        company_id: stockLevelNotification.companyId,
       },
     }
   }

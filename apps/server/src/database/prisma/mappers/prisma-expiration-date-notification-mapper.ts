@@ -11,7 +11,7 @@ export class PrismaExpirationDateNotificationMapper {
         id: prismaExpirationDateNotification.batch_id,
         code: prismaExpirationDateNotification.Batch.code,
       },
-      createdAt: prismaExpirationDateNotification.registered_at,
+      sentAt: prismaExpirationDateNotification.registered_at,
       companyId: prismaExpirationDateNotification.company_id,
     })
   }
@@ -21,7 +21,7 @@ export class PrismaExpirationDateNotificationMapper {
   ): PrismaExpirationDateNotification {
     return {
       id: expirationDateNotification.id,
-      registered_at: expirationDateNotification.createdAt,
+      registered_at: expirationDateNotification.sentAt,
       batch_id: expirationDateNotification.batch.id,
       Batch: {
         id: expirationDateNotification.batch.id,

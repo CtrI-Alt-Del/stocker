@@ -7,7 +7,7 @@ type ExpirationDateNotificationProps = {
     id: string
     code: string
   }
-  createdAt: Date
+  sentAt: Date
 }
 
 export class ExpirationDateNotification extends Notification<ExpirationDateNotificationProps> {
@@ -15,7 +15,7 @@ export class ExpirationDateNotification extends Notification<ExpirationDateNotif
     return new ExpirationDateNotification(
       {
         companyId: dto.companyId,
-        createdAt: dto.createdAt ?? new Date(),
+        sentAt: dto.sentAt ?? new Date(),
         batch: dto.batch,
       },
       dto.id,
@@ -38,7 +38,7 @@ export class ExpirationDateNotification extends Notification<ExpirationDateNotif
         id: this.props.batch.id,
         code: this.props.batch.code,
       },
-      createdAt: this.props.createdAt,
+      sentAt: this.props.sentAt,
     }
   }
 }
