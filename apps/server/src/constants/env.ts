@@ -12,6 +12,7 @@ import {
 export const envSchema = z.object({
   port: integerSchema.default(3333),
   mode: appModeSchema,
+  domain: stringSchema,
   supabaseKey: stringSchema,
   databaseUrl: urlSchema,
   supabaseUrl: urlSchema,
@@ -27,6 +28,7 @@ export const envSchema = z.object({
 const validation = envSchema.safeParse({
   port: process.env.PORT,
   mode: process.env.MODE,
+  domain: process.env.DOMAIN,
   databaseUrl: process.env.DATABASE_URL,
   directUrl: process.env.DIRECT_URL,
   supabaseUrl: process.env.SUPABASE_URL,
