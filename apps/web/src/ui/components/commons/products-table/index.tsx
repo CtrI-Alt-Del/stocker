@@ -15,7 +15,6 @@ import {
   Tooltip,
 } from '@nextui-org/react'
 
-
 import type { Product } from '@stocker/core/entities'
 
 import { Tag } from '@/ui/components/commons/tag'
@@ -27,6 +26,7 @@ import { IMAGE_PLACEHOLDER } from '@/constants'
 
 import { UpdateProductForm } from '../../pages/products/update-product-form'
 import { useProductsTable } from './use-products-table'
+import { useAuthContext } from '../../contexts/auth-context'
 
 type ProductsTableProps = {
   page: number
@@ -34,7 +34,7 @@ type ProductsTableProps = {
   products: Product[]
   totalPages: number
   selectedProductsIds?: string[]
-  selectionMode?: 'single' | 'multiple'
+  selectionMode?: 'single' | 'multiple' | 'none'
   onUpdateProduct?: VoidFunction
   onProductsSelectionChange?: (productsIds: string[]) => void
   onPageChange?: (page: number) => void
@@ -65,7 +65,8 @@ export const ProductsTable = ({
     onUpdateProduct,
     onProductsSelectionChange,
   })
-
+  const { user } = useAuthContext()
+  const hasValidRole = user?.hasValidRole('manager')
   return (
     <>
       <Table
@@ -131,15 +132,19 @@ export const ProductsTable = ({
                   <Tag type='danger'>Desativo</Tag>
                 )}
               </TableCell>
-              <TableCell key='option'>
-                <Tooltip content='Editar produto' showArrow>
-                  <IconButton
-                    name='view'
-                    className='size-6 text-zinc-500'
-                    onClick={() => handleEditProductButtonClick(product)}
-                  />
-                </Tooltip>
-              </TableCell>
+              {hasValidRole ? (
+                <TableCell key='option'>
+                  <Tooltip content='Editar produto' showArrow>
+                    <IconButton
+                      name='view'
+                      className='size-6 text-zinc-500'
+                      onClick={() => handleEditProductButtonClick(product)}
+                    />
+                  </Tooltip>
+                </TableCell>
+              ) : (
+                <TableCell key='option'>{null}</TableCell>
+              )}
             </TableRow>
           )}
         </TableBody>

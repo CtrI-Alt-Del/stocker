@@ -18,6 +18,7 @@ import { IconButton } from '@/ui/components/commons/icon-button'
 import type { DrawerRef } from '@/ui/components/commons/drawer/types'
 import { UpdateBatchForm } from './update-batch-form'
 import { useBatchesTable } from './use-batches-table'
+import { useAuthContext } from '@/ui/components/contexts/auth-context'
 
 type BatchesTableProps = {
   batches: Batch[]
@@ -43,12 +44,14 @@ export const BatchesTable = ({
     batches,
     onBatchesSelectionChange,
   })
+  const { user } = useAuthContext()
+  const hasValidRole = user?.hasValidRole('manager')
 
   return (
     <>
       <Table
         aria-label='Example table with dynamic content'
-        selectionMode='multiple'
+        selectionMode={hasValidRole ? 'multiple' : 'none'}
         selectedKeys={selectedBatchesIds}
         onSelectionChange={handleBatchesSelectionChange}
       >
@@ -84,11 +87,13 @@ export const BatchesTable = ({
               </TableCell>
               <TableCell>{batch.maximumDaysToExpiration ?? 'N/A'}</TableCell>
               <TableCell>
-                <IconButton
-                  name='view'
-                  onClick={() => handleUpdateBatchButtonClick(batch)}
-                  className='text-zinc-400'
-                />
+                {hasValidRole ? (
+                  <IconButton
+                    name='view'
+                    onClick={() => handleUpdateBatchButtonClick(batch)}
+                    className='text-zinc-400'
+                  />
+                ) : null}
               </TableCell>
             </TableRow>
           )}
