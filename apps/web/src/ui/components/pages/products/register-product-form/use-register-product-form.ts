@@ -52,7 +52,7 @@ export function useRegisterProductForm(
     useForm<RegisterProductFormData>({
       resolver: zodResolver(registerProductFormSchema),
     })
-  const {user} = useAuthContext()
+  const { user } = useAuthContext()
   const { showSuccess, showError } = useToast()
   const { fileStorageService, productsService } = useApi()
   const [isSubmiting, setIsSubmiting] = useState(false)
@@ -66,7 +66,7 @@ export function useRegisterProductForm(
 
       if (response.isFailure) {
         alert(response.errorMessage)
-        setIsSubmiting(true)
+        setIsSubmiting(false)
         return
       }
       imageUrl = response.body.imageUrl
@@ -89,7 +89,7 @@ export function useRegisterProductForm(
       isActive: formData.isActive,
       brand: formData.brand,
       image: imageUrl,
-      companyId: user?.companyId || " ",
+      companyId: user?.companyId || ' ',
     })
 
     const response = await productsService.registerProduct(product)
