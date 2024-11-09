@@ -29,7 +29,7 @@ export class User extends Entity<UserProps> {
         password: dto.password ?? DEAFAULT_PASSWORD,
         companyId: dto.companyId,
         role: role,
-        hasFirstPasswordReset: dto.hasFirstPasswordReset,
+        hasFirstPasswordReset: dto.hasFirstPasswordReset ?? true,
       },
       dto.id,
     )
@@ -80,7 +80,7 @@ export class User extends Entity<UserProps> {
   get hasFirstPasswordReset(): boolean {
     return this.props.hasFirstPasswordReset
   }
-  set hasFirstPasswordReset(status:boolean){
+  set hasFirstPasswordReset(status: boolean) {
     this.props.hasFirstPasswordReset = status
   }
 

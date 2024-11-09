@@ -6,7 +6,7 @@ import { getCookieAction } from '@/actions'
 
 export const NextServerApiClient = async (cacheConfig?: CacheConfig) => {
   const apiClient = NextApiClient(cacheConfig)
-  apiClient.setBaseUrl(BROWSER_ENV.serverUrl)
+  apiClient.setBaseUrl(BROWSER_ENV.serverApiUrl)
 
   const jwt = await getCookieAction(COOKIES.jwt.key)
 

@@ -1,4 +1,5 @@
 export { useApi } from './use-api'
+export { useWebSocket } from './use-websocket'
 export { useCache } from './use-cache'
 export { useGlobalCache } from './use-global-cache'
 export { useNavigation } from './use-navigation'
