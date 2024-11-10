@@ -52,10 +52,10 @@ export function useRegisterEmployeeForm(onSubmit: VoidFunction) {
   }
   return {
     control,
-    reset,
-    register,
     errors: formState.errors,
     isSubmiting: formState.isSubmitting,
+    reset,
+    register,
     handleSubmit: handleSubmit(handleFormSubmit),
   }
 }

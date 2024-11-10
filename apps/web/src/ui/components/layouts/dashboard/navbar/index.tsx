@@ -21,6 +21,7 @@ export const Navbar = () => {
   const { currentRoute } = useNavigation()
   const { user } = useAuthContext()
   const userLevel = user?.role
+
   return (
     <NavbarRoot
       classNames={{

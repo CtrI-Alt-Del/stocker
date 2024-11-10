@@ -5,7 +5,7 @@ import { useRef, useEffect } from 'react'
 import type { DialogRef } from '../dialog/types'
 
 export const FirstEntryPasswordModal = () => {
-  const { register, errors, handleSubmit,isSubmiting } = useFirstPasswordEntryModal()
+  const { isSubmiting, errors, register, handleSubmit } = useFirstPasswordEntryModal()
   const dialogRef = useRef<DialogRef>(null)
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export const FirstEntryPasswordModal = () => {
   return (
     <Dialog
       ref={dialogRef}
-      title='Defina sua senha'
+      title='Defina sua senha definitiva'
       isDismissable={false}
       hideCloseButton={true}
       trigger={null}
@@ -30,7 +30,7 @@ export const FirstEntryPasswordModal = () => {
           className='grid grid-rows-2 gap-2'
         >
           <Input
-            label='Defina sua senha'
+            label='Digita sua senha'
             {...register('password')}
             isInvalid={Boolean(errors.password)}
             errorMessage={errors.password?.message}
@@ -39,7 +39,7 @@ export const FirstEntryPasswordModal = () => {
             <Button
               color='primary'
               type='submit'
-              className='text-center w-full font-bold'
+              className='text-center w-full font-semibold'
               isLoading={isSubmiting}
             >
               Confirmar

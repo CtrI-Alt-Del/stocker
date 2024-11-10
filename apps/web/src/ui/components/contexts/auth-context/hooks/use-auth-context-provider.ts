@@ -106,7 +106,7 @@ export function useAuthContextProvider({
     navigateTo(ROUTES.login)
     setTimeout(async () => {
       await deleteCookieAction(COOKIES.jwt.key)
-    }, 1000)
+    }, 2500)
   }
 
   async function updateAccount(

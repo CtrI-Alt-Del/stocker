@@ -1,9 +1,10 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { passwordSchema } from '@stocker/validation/schemas'
-import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+
+import { passwordSchema } from '@stocker/validation/schemas'
+
 import { useAuthContext } from '../../contexts/auth-context'
-import { useApi, useToast } from '@/ui/hooks'
 
 const FirstPasswordEntryModalSchema = z.object({
   password: passwordSchema,
@@ -11,20 +12,18 @@ const FirstPasswordEntryModalSchema = z.object({
 type FirstPasswordEntryModalData = z.infer<typeof FirstPasswordEntryModalSchema>
 export function useFirstPasswordEntryModal() {
   const { user, resetPassword } = useAuthContext()
-  const {authService} = useApi()
-  const { showError, showSuccess } = useToast()
-  const userEmail = user ? user.email : ''
-  const { register, formState, handleSubmit } = useForm<FirstPasswordEntryModalData>({
+  const { formState, register, handleSubmit } = useForm<FirstPasswordEntryModalData>({
     resolver: zodResolver(FirstPasswordEntryModalSchema),
   })
+
   async function handleFormSubmit(formData: FirstPasswordEntryModalData) {
-    await resetPassword(userEmail, formData.password)
+    if (user) await resetPassword(user.email, formData.password)
   }
 
   return {
-    register,
     isSubmiting: formState.isSubmitting,
     errors: formState.errors,
+    register,
     handleSubmit: handleSubmit(handleFormSubmit),
   }
 }
