@@ -11,7 +11,7 @@ import { AuthService, CompaniesService } from '@/api/services'
 
 const AuthContext = createContext({} as AuthContextValue)
 
-const apiClient = NextApiClient({ isCacheEnabled: true })
+const apiClient = NextApiClient({ isCacheEnabled: false })
 apiClient.setBaseUrl(BROWSER_ENV.serverApiUrl)
 
 type AuthContextProviderProps = {

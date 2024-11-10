@@ -42,8 +42,8 @@ export function useProfileForm() {
 
     const updatedFields = Object.keys(formState.dirtyFields)
 
-    let userDto = {}
-    let companyDto = {}
+    let userDto: Record<string, string> = {}
+    let companyDto: Record<string, string> = {}
 
     for (const updatedField of updatedFields) {
       const updatedValue = formData[updatedField as keyof ProfileFormData]
@@ -54,6 +54,7 @@ export function useProfileForm() {
 
       if (COMPANY_FIELDS.includes(updatedField)) {
         companyDto = { ...companyDto, [updatedField]: updatedValue }
+        if ('companyName' in companyDto) companyDto.name = companyDto.companyName
       }
     }
 
