@@ -71,7 +71,7 @@ Work in progress... 🚧
 
 - Sprint 2: [Acessar](https://github.com/CtrI-Alt-Del/stocker/blob/main/documentation/sprints-reports/sprint-2.md)
 
-- Sprint 3: Work in progress... 🚧
+- Sprint 3: [Acessar](https://github.com/CtrI-Alt-Del/stocker/blob/main/documentation/sprints-reports/sprint-3.md)
 
 - Sprint 4: Work in progress... 🚧
 
