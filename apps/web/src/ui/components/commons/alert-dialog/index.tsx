@@ -21,7 +21,7 @@ const AlertDialogComponent = (
       {(closeDialog) => (
         <>
           <p className='text-lg text-zinc-600'>{children}</p>
-          <ModalFooter className='justify-start'>
+          <ModalFooter className='p-0 justify-start mt-3 pb-3'>
             <Button onClick={closeDialog}>Cancelar</Button>
             <Button
               color='primary'

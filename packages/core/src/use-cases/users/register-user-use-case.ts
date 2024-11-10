@@ -34,7 +34,9 @@ export class RegisterUserUseCase {
       userDto.password = await this.cryptoProvider.hash(userDto.password)
     }
 
+    console.log(userDto)
     const user = User.create(userDto)
+
     const company = await this.companiesRepository.findById(user.companyId)
     if (!company) throw new NotFoundError('Empresa não encontrada')
 

@@ -8,7 +8,7 @@ export const InventoryMovementsPage = () => {
 
   return (
     <>
-      <div className=' flex space-y-2 flex-col'>
+      <div className='flex space-y-2 flex-col'>
         <div className='flex justify-between'>
           <div className='flex-1 max-w-96 space-y-2'>
             <h1 className='text-3xl font-black'>Lançamentos</h1>

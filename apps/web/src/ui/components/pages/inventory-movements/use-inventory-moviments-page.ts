@@ -31,7 +31,6 @@ export function useInventoryMovementPage() {
     key: CACHE.productInventoryMovements.key,
     dependencies: [page],
   })
-  console.log(data)
   const movements = data ? data.items.map(InventoryMovement.create) : []
   const itemsCount = data ? data.itemsCount : 0
 
