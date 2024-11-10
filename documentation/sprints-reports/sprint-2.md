@@ -1,15 +1,15 @@
 # Sprint - 2️⃣ 
 
-## Requisitos realizados nessa sprint
+## Requisitos realizados nessa sprint ✨
 
 <img src="../images/requirements-sprint-2.png" width="2000" height="450" />
 
 
-## User Stories realizados nessa sprint
+## User Stories realizados nessa sprint 📖
 
 <img src="../images/user-stories-sprint-2.jpg"  width="2223" height="1240"  />
 
-## Critérios de aceitação para cada User Story
+## Critérios de aceitação para cada User Story 📒
 
 ### US10
 - Deve ser exibido em uma tabela onde para cada produto deve ser informado seus dados vitais:
