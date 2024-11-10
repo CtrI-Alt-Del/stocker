@@ -10,21 +10,25 @@ import type { UserRole } from '@stocker/core/types'
 import { CACHE, COOKIES, ROUTES } from '@/constants'
 import { useApi, useCache, useNavigation, useToast } from '@/ui/hooks'
 import type { deleteCookieAction, setCookieAction } from '@/actions'
+import type { IAuthService, ICompaniesService } from '@stocker/core/interfaces'
 
 type UseAuthContextProvider = {
   jwt: string | null
+  authService: IAuthService
+  companiesService: ICompaniesService
   setCookieAction: typeof setCookieAction
   deleteCookieAction: typeof deleteCookieAction
 }
 
 export function useAuthContextProvider({
   jwt,
+  authService,
+  companiesService,
   setCookieAction,
   deleteCookieAction,
 }: UseAuthContextProvider) {
   const userDto = jwt ? jwtDecode<UserDto>(jwt) : null
   const [user, setUser] = useState<User | null>(userDto ? User.create(userDto) : null)
-  const { authService, companiesService } = useApi()
   const { showError, showSuccess } = useToast()
   const { navigateTo } = useNavigation()
 
@@ -40,11 +44,13 @@ export function useAuthContextProvider({
     response.throwError()
   }
 
-  const { data, refetch: refetchCompany } = useCache({
+  const { data, mutate } = useCache({
     fetcher: fetchCompany,
     key: CACHE.company.key,
     isEnabled: Boolean(user),
   })
+
+  const company = data ? Company.create(data) : null
 
   function getRouteByUserRole(role: UserRole) {
     switch (role) {
@@ -108,21 +114,41 @@ export function useAuthContextProvider({
     showError('Não foi possível sair da sua conta, tente novamente mais tarde')
   }
 
-  async function update(userDto: Partial<UserDto>, companyDto: Partial<CompanyDto>) {
+  async function updateAccount(
+    userDto: Partial<UserDto>,
+    companyDto: Partial<CompanyDto>,
+  ) {
     const response = await authService.updateAccount(userDto, companyDto)
 
     if (response.isSuccess) {
-      await setCookieAction(COOKIES.jwt.key, response.body.jwt, COOKIES.jwt.duration)
-      if (user) setUser(user.update(userDto))
-      refetchCompany()
+      if (response.body.jwt)
+        await setCookieAction(COOKIES.jwt.key, response.body.jwt, COOKIES.jwt.duration)
+
+      if (user && Object.keys(userDto).length > 0) setUser(user.update(userDto))
+      if (company && Object.keys(companyDto).length > 0)
+        mutate(company?.update(companyDto))
+
+      showSuccess('Conta atualizada')
       return
     }
 
     showError('Não foi possível atualizar sua conta, tente novamente mais tarde')
   }
+
+  async function deleteAccount() {
+    const response = await authService.deleteAccount()
+
+    if (response.isSuccess) {
+      logout()
+      return
+    }
+
+    showError('Não foi possível deletar sua conta, tente novamente mais tarde')
+  }
+
   async function resetPassword(email: string, password: string) {
     const response = await authService.resetPassword(email, password)
-    console.log(response)
+
     if (response.isSuccess) {
       await setCookieAction(COOKIES.jwt.key, response.body.jwt, COOKIES.jwt.duration)
       showSuccess('Senha redefinida com sucesso!')
@@ -132,11 +158,12 @@ export function useAuthContextProvider({
   }
   return {
     user,
-    company: data ? Company.create(data) : null,
+    company,
     login,
     subscribe,
     logout,
-    update,
     resetPassword,
+    updateAccount,
+    deleteAccount,
   }
 }

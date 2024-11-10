@@ -18,12 +18,12 @@ export class SubscribeController {
       companiesRepository,
       cryptoProvider,
     )
-    await useCase.execute({
+    const createdUser = await useCase.execute({
       userDto: user,
       companyDto: company,
     })
 
-    const jwt = await http.setJwt(user)
+    const jwt = await http.setJwt(createdUser.dto)
 
     return http.send({ jwt }, HTTP_STATUS_CODE.created)
   }

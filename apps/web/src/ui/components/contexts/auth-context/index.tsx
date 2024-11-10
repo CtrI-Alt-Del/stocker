@@ -5,8 +5,14 @@ import { createContext, type ReactNode } from 'react'
 import { deleteCookieAction, setCookieAction } from '@/actions'
 import { useAuthContext, useAuthContextProvider } from './hooks'
 import type { AuthContextValue } from './types'
+import { NextApiClient } from '@/api/next/clients/next-api-client'
+import { BROWSER_ENV } from '@/constants'
+import { AuthService, CompaniesService } from '@/api/services'
 
 const AuthContext = createContext({} as AuthContextValue)
+
+const apiClient = NextApiClient({ isCacheEnabled: true })
+apiClient.setBaseUrl(BROWSER_ENV.serverApiUrl)
 
 type AuthContextProviderProps = {
   children: ReactNode
@@ -14,8 +20,14 @@ type AuthContextProviderProps = {
 }
 
 const AuthContextProvider = ({ children, jwt }: AuthContextProviderProps) => {
+  if (jwt) apiClient.setHeader('Authorization', `Bearer ${jwt}`)
+  const authService = AuthService(apiClient)
+  const companiesService = CompaniesService(apiClient)
+
   const contextValue = useAuthContextProvider({
     jwt,
+    authService,
+    companiesService,
     setCookieAction,
     deleteCookieAction,
   })

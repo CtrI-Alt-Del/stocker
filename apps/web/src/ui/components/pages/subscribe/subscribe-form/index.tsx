@@ -101,7 +101,7 @@ export const SubscribeForm = () => {
           >
             Cadastrar-se
           </Button>
-          <p className='text-sm pb-4'>
+          <p className='text-sm'>
             Já possui uma conta?{' '}
             <Link href='/login' className='font-black'>
               Entrar

@@ -3,7 +3,7 @@ import type { ApiResponse } from '../../responses'
 
 export interface IAuthService {
   login(email: string, password: string): Promise<ApiResponse<{ jwt: string }>>
-  resetPassword(email:string,password:string): Promise<ApiResponse<{jwt:string}>>
+  resetPassword(email: string, password: string): Promise<ApiResponse<{ jwt: string }>>
   subscribe(
     userDto: UserDto,
     companyDto: CompanyDto,
@@ -13,6 +13,6 @@ export interface IAuthService {
   updateAccount(
     userDto: Partial<UserDto>,
     companyDto: Partial<CompanyDto>,
-  ): Promise<ApiResponse<{ jwt: string }>>
+  ): Promise<ApiResponse<{ jwt?: string }>>
   deleteAccount(): Promise<ApiResponse>
 }

@@ -47,5 +47,7 @@ export class SubscribeUseCase {
 
     const user = User.create(userDto)
     await this.usersRepository.add(user)
+
+    return user
   }
 }

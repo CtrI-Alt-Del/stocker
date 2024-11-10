@@ -22,7 +22,9 @@ export class UpdateCompanyUseCase {
       if (company) throw new ConflictError('CNPJ já em uso por outra empresa no sistema')
     }
 
-    const updatedCompanie = company.update(companyDto)
-    await this.companiesRepository.update(updatedCompanie, companyId)
+    const updatedCompany = company.update(companyDto)
+    console.log(companyDto)
+    console.log(updatedCompany)
+    await this.companiesRepository.update(updatedCompany, companyId)
   }
 }

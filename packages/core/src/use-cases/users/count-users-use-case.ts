@@ -11,9 +11,10 @@ export class CountCompanyUsersUseCase {
   }
 
   async execute({ companyId }: Request) {
-    const usersManagers = await this.userRepository.countManagerUsersByCompany(companyId)
-    const usersEmployees =
+    const managersCount = await this.userRepository.countManagerUsersByCompany(companyId)
+    const employeesCount =
       await this.userRepository.countEmployeeUsersByCompany(companyId)
-    return { usersManagers, usersEmployees }
+
+    return { managersCount, employeesCount }
   }
 }

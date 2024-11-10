@@ -15,8 +15,15 @@ export class UpdateAccountController {
     const { user, company } = http.getBody<Body>()
     const currentUser = User.create(await http.getUser())
 
-    const updateCompanyUseCase = new UpdateCompanyUseCase(companiesRepository)
-    await updateCompanyUseCase.execute({ companyId: currentUser.id, companyDto: company })
+    if (Object.keys(company).length > 0) {
+      const updateCompanyUseCase = new UpdateCompanyUseCase(companiesRepository)
+      await updateCompanyUseCase.execute({
+        companyId: currentUser.companyId,
+        companyDto: company,
+      })
+    }
+
+    if (Object.keys(user).length === 0) return http.send({}, HTTP_STATUS_CODE.ok)
 
     const updateUserUseCase = new UpdateUserUseCase(usersRepository)
     const updatedUser = await updateUserUseCase.execute({
@@ -26,6 +33,6 @@ export class UpdateAccountController {
 
     const jwt = await http.setJwt(updatedUser.dto)
 
-    return http.send({ jwt }, HTTP_STATUS_CODE.created)
+    return http.send({ jwt }, HTTP_STATUS_CODE.ok)
   }
 }

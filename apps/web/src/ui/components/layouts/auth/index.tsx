@@ -7,7 +7,7 @@ type AuthLayoutProps = { children: ReactNode }
 export const AuthLayout = async ({ children }: AuthLayoutProps) => {
   return (
     <div className='grid place-content-center w-full bg-white md:shadow-md md:bg-orange md:h-screen'>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16 p-12 md:bg-white rounded-xl'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16 px-12 py-8 md:bg-white rounded-xl'>
         <div className='md:hidden'>
           <Logo direction='flex-col' width={64} height={64} text='md' />
         </div>

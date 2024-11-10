@@ -1,25 +1,25 @@
 import { NextServerApiClient } from '@/api/next/clients/next-server-api-client'
-import { ReportsService } from '@/api/services'
+import { UsersService } from '@/api/services/users-service'
 import { Card } from '@/ui/components/commons/card'
 
 export const EmployeesCards = async () => {
   const apiClient = await NextServerApiClient({ isCacheEnabled: false })
-  const reportsService = ReportsService(apiClient)
-  const data = await reportsService.reportSummary()
-  const employeeCount = data.body.employeecount
-  const managerCount = data.body.managercount
+  const usersService = UsersService(apiClient)
+  const response = await usersService.countCompanyUsers()
+
+  if (response.isFailure) return
 
   return (
     <div className='flex justify-center  items-center gap-6  flex-1 flex-col    '>
       <Card
         title='Funcionários'
-        value={employeeCount}
+        value={response.body.employeesCount}
         href='/records/employees'
         icon='user'
       />
       <Card
         title='Gerentes'
-        value={managerCount}
+        value={response.body.managersCount}
         href='/records/employees'
         icon='user'
       />

@@ -16,7 +16,7 @@ export class UpdateUserUseCase {
   async execute({ userId, userDto }: Request) {
     const user = await this.userRepository.findById(userId)
     if (!user) {
-      throw new NotFoundError('User não encontrado')
+      throw new NotFoundError('Usuário não encontrado')
     }
     const updatedUser = user.update(userDto)
     await this.userRepository.update(updatedUser, user.id)

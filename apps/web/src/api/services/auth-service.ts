@@ -8,7 +8,7 @@ export const AuthService = (apiClient: IApiClient): IAuthService => {
     },
 
     async resetPassword(email: string, password: string) {
-      return await apiClient.patch<{jwt:string}>('/auth/password', { email, password })
+      return await apiClient.patch<{ jwt: string }>('/auth/password', { email, password })
     },
 
     async subscribe(userDto: UserDto, companyDto: CompanyDto) {
@@ -27,7 +27,7 @@ export const AuthService = (apiClient: IApiClient): IAuthService => {
     },
 
     async updateAccount(userDto: Partial<UserDto>, companyDto: Partial<CompanyDto>) {
-      return await apiClient.put<{ jwt: string }>('/auth/account', {
+      return await apiClient.put<{ jwt?: string }>('/auth/account', {
         user: userDto,
         company: companyDto,
       })

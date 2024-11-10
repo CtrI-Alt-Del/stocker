@@ -5,6 +5,9 @@ import type { UsersListParams } from '../../types'
 
 export interface IUsersService {
   listUsers(params: UsersListParams): Promise<ApiResponse<PaginationResponse<UserDto>>>
+  countCompanyUsers(): Promise<
+    ApiResponse<{ managersCount: number; employeesCount: number }>
+  >
   getUser(userId: string): Promise<ApiResponse<UserDto>>
   registerUser(user: User): Promise<ApiResponse<void>>
   updateUser(partialUserDto: Partial<UserDto>, userId: string): Promise<ApiResponse<void>>
