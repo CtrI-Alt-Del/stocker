@@ -172,7 +172,7 @@ describe('Register outbound inventory movement use case', () => {
     expect(queueProvider.jobs).toEqual([
       {
         key: 'send-stock-level-notification',
-        data: { productId: fakeProduct.id },
+        data: { productId: fakeProduct.id, companyId: fakeProduct.companyId },
       },
     ])
   })
