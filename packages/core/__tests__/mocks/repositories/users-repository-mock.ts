@@ -24,12 +24,7 @@ export class UsersRepositoryMock implements IUsersRepository {
   }
 
   async findByEmail(userEmail: string): Promise<User | null> {
-    const email = this.users.find((user) => user.email === userEmail)
-
-    if (!email) {
-      throw new NotFoundError();
-    }
-
+    const email = this.users.find((user) => user.email === userEmail) ?? null
     return email
   }
 
