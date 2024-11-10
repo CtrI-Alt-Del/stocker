@@ -1,15 +1,23 @@
 import type { IHttp } from '@stocker/core/interfaces'
-import { DeleteCompanyUseCase } from '@stocker/core/use-cases'
+import { DeleteCompanyUseCase, DeleteUsersUseCase } from '@stocker/core/use-cases'
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 
-import { companiesRepository } from '@/database'
+import { companiesRepository, usersRepository } from '@/database'
+import { User } from '@stocker/core/entities'
 
 export class DeleteAccountController {
   async handle(http: IHttp) {
-    const { companyId } = await http.getUser()
-    const useCase = new DeleteCompanyUseCase(companiesRepository)
-    await useCase.execute({
-      companyId,
+    const user = User.create(await http.getUser())
+
+    const deleteUsersUseCase = new DeleteUsersUseCase(usersRepository)
+    const deleteCompanyUseCase = new DeleteCompanyUseCase(companiesRepository)
+
+    await deleteUsersUseCase.execute({
+      usersIds: [user.id],
+    })
+
+    await deleteCompanyUseCase.execute({
+      companyId: user.companyId,
     })
 
     http.destroyJwt()

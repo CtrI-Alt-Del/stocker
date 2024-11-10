@@ -8,7 +8,7 @@ import type { CompanyDto, UserDto } from '@stocker/core/dtos'
 import type { UserRole } from '@stocker/core/types'
 
 import { CACHE, COOKIES, ROUTES } from '@/constants'
-import { useApi, useCache, useNavigation, useToast } from '@/ui/hooks'
+import { useCache, useNavigation, useToast } from '@/ui/hooks'
 import type { deleteCookieAction, setCookieAction } from '@/actions'
 import type { IAuthService, ICompaniesService } from '@stocker/core/interfaces'
 
@@ -30,7 +30,7 @@ export function useAuthContextProvider({
   const userDto = jwt ? jwtDecode<UserDto>(jwt) : null
   const [user, setUser] = useState<User | null>(userDto ? User.create(userDto) : null)
   const { showError, showSuccess } = useToast()
-  const { navigateTo } = useNavigation()
+  const { navigateTo, refreshPage } = useNavigation()
 
   async function fetchCompany() {
     if (!user) return
@@ -102,16 +102,11 @@ export function useAuthContextProvider({
   }
 
   async function logout() {
-    const response = await authService.logout()
-
-    if (response.isSuccess) {
+    setUser(null)
+    navigateTo(ROUTES.login)
+    setTimeout(async () => {
       await deleteCookieAction(COOKIES.jwt.key)
-      setUser(null)
-      navigateTo(ROUTES.login)
-      return
-    }
-
-    showError('Não foi possível sair da sua conta, tente novamente mais tarde')
+    }, 1000)
   }
 
   async function updateAccount(

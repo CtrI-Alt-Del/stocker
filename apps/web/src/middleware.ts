@@ -17,6 +17,7 @@ export const config: MiddlewareConfig = {
   matcher: [
     '/',
     '/dashboard/:path*',
+    '/profile/:path*',
     '/inventory/:path*',
     '/inventory/stocks/:productId*',
     '/records/:path*',

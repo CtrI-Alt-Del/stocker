@@ -47,14 +47,14 @@ export const ProfileForm = () => {
         />
       </div>
 
-      <div className='flex mt-5 flex-wrap-reverse md:justify-between'>
+      <div className='flex mt-5 flex-wrap justify-between'>
         <Button
           type='submit'
           color='primary'
           isLoading={isSubmiting}
           isDisabled={!isDirty}
         >
-          Confirmar
+          Atualizar conta
         </Button>
         <DeleteAccount />
       </div>

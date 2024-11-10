@@ -4,6 +4,7 @@ import type { IController, IHttp } from '@stocker/core/interfaces'
 const PRIVATE_ROUTES = [
   '/',
   ROUTES.dashboard,
+  ROUTES.profile,
   ...Object.values(ROUTES.inventory),
   ...Object.values(ROUTES.records),
 ]
