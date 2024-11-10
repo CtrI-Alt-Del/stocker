@@ -28,7 +28,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             trigger={<IconButton name='menu-hamburguer' />}
             direction='left'
           >
-            {() => null}
+            {() => <Navbar />}
           </Drawer>
         </div>
         <aside className='hidden md:block fixed w-52 left-0 top-0 bottom-0 h-screen px-3 py-6 border-r border-zinc-200'>

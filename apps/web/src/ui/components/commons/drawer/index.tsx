@@ -17,7 +17,7 @@ import { useDrawer } from './use-drawer'
 import type { DrawerRef } from './types'
 import { useBreakpoint } from '@/ui/hooks'
 
-const RmDrawer = dynamic(() => import('react-modern-drawer'), { ssr: false });
+const RmDrawer = dynamic(() => import('react-modern-drawer'), { ssr: false })
 
 type DrawerProps = {
   children: (closeDrawer: VoidFunction) => ReactNode
@@ -31,11 +31,11 @@ type DrawerProps = {
 
 export const DrawerComponent = (
   {
-    children,
     trigger,
     direction = 'right',
     zIndex = 1,
     width,
+    children,
     onOpen,
     onClose,
   }: DrawerProps,
