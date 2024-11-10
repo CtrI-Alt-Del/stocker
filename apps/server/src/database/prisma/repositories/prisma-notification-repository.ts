@@ -59,6 +59,7 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
         where: {
           company_id: companyId,
         },
+        orderBy: { registered_at: 'desc' },
         include: {
           Product: true,
         },
@@ -81,6 +82,7 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
         where: {
           company_id: companyId,
         },
+        orderBy: { registered_at: 'desc' },
         include: {
           Batch: true,
         },
