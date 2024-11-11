@@ -52,7 +52,7 @@
 
 ### US28
 
-- Quando o estoque de um produto chegar a zero todos os funcionários da empresa devem ser avisados dessa ocorrência em tempo real.
+- Quando o estoque de um produto chegar abaixo do mínimo todos os funcionários da empresa devem ser avisados dessa ocorrência em tempo real.
 - O corpo da notificação de estoque deve conter data e hora de registro, assim como nome e código do produto.
 - As notifcações de estoque devem der listadas em ordem de registro (mais recentes no topo).
 
@@ -106,7 +106,7 @@ Clique [aqui](https://github.com/orgs/CtrI-Alt-Del/projects/4/views/1?filterQuer
 
 ## Gráfico Burndown 📈
 
-<img src="../images/burndown-chart-sprint-3.png" width="1000" height="500" alt="Grágico Burndown da primeira Sprint" />
+<img src="../images/burndown-chart-sprint-2.png" width="1000" height="500" alt="Grágico Burndown da primeira Sprint" />
 
 ## Slides para apresentação 🎞️
 
