@@ -5,7 +5,11 @@ import {
 } from '../../../../__tests__/mocks/repositories'
 import { SendStockLevelNotificationsUseCase } from '../send-stock-level-notification-use-case'
 import { NotFoundError } from '../../../errors'
-import { BatchesFaker, ProductsFaker } from '../../../../__tests__/fakers'
+import {
+  BatchesFaker,
+  ProductsFaker,
+  StockLevelNotificationsFaker,
+} from '../../../../__tests__/fakers'
 import { NotificationsSocketMock } from '../../../../__tests__/mocks/sockets'
 
 let notificationsRepository: NotificationsRepositoryMock
@@ -85,5 +89,34 @@ describe('Send stock level notification use case', () => {
     expect(notificationsSocket.emittedStockLevelNotifications[0]?.companyId).toBe(
       fakeDangerLevelProduct.companyId,
     )
+  })
+
+  it('should not emit stock level notification if there is already a notification for the same product', async () => {
+    const fakeDangerLevelProduct = ProductsFaker.fake({ batches: [] })
+
+    productsRepository.add(fakeDangerLevelProduct)
+    productsRepository.add(
+      ProductsFaker.fake({
+        minimumStock: 10,
+        batches: [BatchesFaker.fakeDto({ itemsCount: 50 })],
+        companyId: fakeDangerLevelProduct.companyId,
+      }),
+    )
+
+    notificationsRepository.addStockLevelNotification(
+      StockLevelNotificationsFaker.fake({
+        product: {
+          id: fakeDangerLevelProduct.id,
+          name: fakeDangerLevelProduct.name,
+          code: fakeDangerLevelProduct.code,
+        },
+      }),
+    )
+
+    expect(notificationsSocket.emittedStockLevelNotifications).toHaveLength(0)
+
+    await useCase.execute(fakeDangerLevelProduct.id)
+
+    expect(notificationsSocket.emittedStockLevelNotifications).toHaveLength(0)
   })
 })

@@ -12,7 +12,7 @@ describe('DeleteNotificationUseCase', () => {
     const notificationsRepository = new NotificationsRepositoryMock()
     const useCase = new DeleteNotificationUseCase(notificationsRepository)
 
-    const fakeNotification = StockLevelNotificationsFaker.fakeStockLevelNotification()
+    const fakeNotification = StockLevelNotificationsFaker.fake()
     await notificationsRepository.addStockLevelNotification(fakeNotification)
 
     await expect(

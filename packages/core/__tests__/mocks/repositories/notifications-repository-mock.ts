@@ -71,4 +71,14 @@ export class NotificationsRepositoryMock implements INotificationsRepository {
       )
     }
   }
+
+  async findStockLevelNotificationByProduct(
+    productId: string,
+  ): Promise<StockLevelNotification | null> {
+    return (
+      this.stockLevelNotifications.find(
+        (notification) => notification.product.id === productId,
+      ) ?? null
+    )
+  }
 }
