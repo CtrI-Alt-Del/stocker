@@ -32,21 +32,9 @@ Para a confecção do produto foi empregado o framework de [metodologia ágil Sc
 
 ## MVP'S 🏆
 
-### Sprint - 1️⃣
+### Redirecionamento para o Drive
 
-https://github.com/user-attachments/assets/2a9432b4-2785-4214-95e5-3daf1474814f
-
-### Sprint - 2️⃣
-
-https://github.com/user-attachments/assets/5fc5ecfe-b5ca-4994-9c50-6341796bb7cc
-
-### Sprint - 3️⃣
-
-Work in progress... 🚧
-
-### Sprint - 4️⃣
-
-Work in progress... 🚧
+Para acessar os MVP's, acesse o link: <a href="https://drive.google.com/drive/folders/1tPh4nhDt_FMyH65IYhgH4lVDAbrWaRaz?usp=sharing" target="_blank">clique aqui</a>.
 
 ---
 
