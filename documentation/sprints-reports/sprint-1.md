@@ -1,9 +1,8 @@
-# Sprint - 1️⃣ 
+# Sprint - 1️⃣
 
 ## Requisitos realizados nessa sprint ✨
 
 <img src="../images/requirements-sprint-1.jpg" width="2000" height="450" />
-
 
 ## User Stories realizados nessa sprint 📖
 
@@ -12,7 +11,8 @@
 ## Critérios de aceitação para cada User Story 📒
 
 ### US01
-- Deve ser inserido para cada produto via formulário: 
+
+- Deve ser inserido para cada produto via formulário:
   - Nome;
   - Descrição;
   - Imagem;
@@ -23,14 +23,15 @@
   - Unidade de medida;
   - Código de produto;
   - Estoque mínimo;
-  - Ativo ou inativo (ativo como padrão);              
-  - Setor de armazenamento (campo opcional); 
-  - Fornecedor (campo opcional); 
+  - Ativo ou inativo (ativo como padrão);
+  - Setor de armazenamento (campo opcional);
+  - Fornecedor (campo opcional);
   - Categoria (campo opcional).
 - A imagem deve ser tratada como um arquivo e não campo de texto.
 - A o formulário deve conter mecanismo de validação.
- 
+
 ### US02
+
 - O lançamento de entrada deve ser feito via formulário contendo os campos:
   - Data e hora;
   - Código do lote;
@@ -45,6 +46,7 @@
 - Não deve ser possível inserir uma data de validade sem o máximo de dias para notificação de validade e vice-versa.
 
 ### US03
+
 - O lançamento de saída deve ser feito via formulário contendo os campos:
   - Quantidade de itens;
   - Data e hora;
@@ -55,6 +57,7 @@
 - Os lotes que por ventura tiverem seu estoque zerados devem ser excluídos do sistema automaticamente.
 
 ### US04
+
 - Deve ser exibido todos os lotes em uma tabela contendo as colunas:
   - Código;
   - Quantidade disponível.
@@ -63,7 +66,8 @@
 - Os campos que não houveram valor correspondente devem ser exibir "N/A"
 - A tabela deve estar paginada.
 
-### US05 
+### US05
+
 - Deve ser exibido todos os lançamentos em uma tabela contendo as colunas:
   - Nome;
   - Preço;
@@ -74,6 +78,7 @@
 - A tabela deve estar paginada.
 
 ### US06
+
 - Deve ser exibido todos os lançamentos em uma tabela contendo as colunas:
   - Data e hora;
   - Quantidade de itens movimentadas;
@@ -85,19 +90,22 @@
 - A tabela deve estar paginada.
 
 ### US07
+
 - O sistema deve validar se o usuário que está realizando essa ação é um gerente.
 
 ### US08
+
 - O gerente pode deletar um ou mais produtos de uma vez.
 - O sistema deve validar se o usuário que está realizando essa ação é um gerente.
 - Deve ser exibido uma mensagem de confirmação antes de ser concluído essa ação.
 
 ### US09
+
 - O sistema deve validar se o usuário que está realizando essa ação é um gerente.
 
 ### Tasks realizados nessa sprint
 
-Clique [aqui](https://github.com/orgs/CtrI-Alt-Del/projects/4/views/1?filterQuery=iteration%3A%22Sprint+1%22) para acessar as tasks organizadas em uma tabela Kandan.
+Clique [aqui](https://github.com/orgs/CtrI-Alt-Del/projects/4/views/1?filterQuery=iteration%3A%22Sprint+1%22) para acessar as tasks organizadas em uma tabela Kanban.
 
 ## Gráfico Burndown 📈
 
