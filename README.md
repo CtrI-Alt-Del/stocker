@@ -34,7 +34,7 @@ Para a confecção do produto foi empregado o framework de [metodologia ágil Sc
 
 ### Redirecionamento para o Drive
 
-Para acessar os MVP's, acesse o link: [clique aqui](https://drive.google.com/drive/folders/1tPh4nhDt_FMyH65IYhgH4lVDAbrWaRaz?usp=sharing).
+Para acessar os MVP's, acesse o link: <a href="https://drive.google.com/drive/folders/1tPh4nhDt_FMyH65IYhgH4lVDAbrWaRaz?usp=sharing" target="_blank">clique aqui</a>.
 
 ---
 
