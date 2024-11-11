@@ -1,19 +1,22 @@
 import { Button } from '@nextui-org/react'
 
 import { AlertDialog } from '@/ui/components/commons/alert-dialog'
-import { useAuthContext } from '@/ui/components/contexts/auth-context'
+import { AdminPasswordConfirmationDialog } from '@/ui/components/commons/admin-password-confirmation-dialog'
+import { useDeleteButtonAccountButton } from './use-delete-account-button'
 
-export const DeleteAccount = () => {
-  const { deleteAccount } = useAuthContext()
+export const DeleteAccountButton = () => {
+  const { handleAdminPasswordConfirm } = useDeleteButtonAccountButton()
 
   return (
     <AlertDialog
       trigger={
-        <Button size='md' color='danger'>
-          Excluir conta
-        </Button>
+        <AdminPasswordConfirmationDialog onConfirm={handleAdminPasswordConfirm}>
+          <Button type='button' size='md' color='danger'>
+            Excluir conta
+          </Button>
+        </AdminPasswordConfirmationDialog>
       }
-      onConfirm={async () => await deleteAccount()}
+      onConfirm={() => {}}
     >
       Tem certeza que deseja excluir sua conta? ESTA AÇÃO NÃO PODE SER DESFEITA!
     </AlertDialog>

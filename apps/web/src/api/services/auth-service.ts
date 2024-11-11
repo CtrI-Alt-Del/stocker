@@ -36,5 +36,9 @@ export const AuthService = (apiClient: IApiClient): IAuthService => {
     async deleteAccount() {
       return await apiClient.delete('/auth/account')
     },
+
+    async confirmAuth(password: string) {
+      return await apiClient.post('/auth/confirm', { password })
+    },
   }
 }

@@ -49,7 +49,7 @@ export const EmployeesPage = () => {
             <Drawer
               trigger={
                 <Button variant='solid' color='primary' size='md'>
-                  Adicionar Funcionário
+                  Atualizar Funcionário
                 </Button>
               }
             >
