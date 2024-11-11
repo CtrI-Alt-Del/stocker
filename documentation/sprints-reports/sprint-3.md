@@ -106,7 +106,7 @@ Clique [aqui](https://github.com/orgs/CtrI-Alt-Del/projects/4/views/1?filterQuer
 
 ## Gráfico Burndown 📈
 
-<img src="../images/burndown-chart-sprint-2.png" width="1000" height="500" alt="Grágico Burndown da primeira Sprint" />
+<img src="../images/burndown-chart-sprint-3.png" width="1000" height="500" alt="Grágico Burndown da primeira Sprint" />
 
 ## Slides para apresentação 🎞️
 
