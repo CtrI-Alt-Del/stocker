@@ -22,15 +22,17 @@ export class PrismaProductMapper {
       model: prismaProduct.model,
       length: prismaProduct.length,
       minimumStock: prismaProduct.minimum_stock,
-      batches: prismaProduct.batches.map((prismaBatch) => ({
-        id: prismaBatch.id,
-        code: prismaBatch.code,
-        itemsCount: prismaBatch.items_count,
-        expirationDate: prismaBatch.expiration_date ?? undefined,
-        maximumDaysToExpiration: prismaBatch.maximum_days_to_expiration ?? undefined,
-        productId: prismaBatch.product_id,
-        resgisteredAt: prismaBatch.registered_at,
-      })),
+      batches: prismaProduct.batches
+        .filter((batch) => Boolean(batch.id))
+        .map((prismaBatch) => ({
+          id: prismaBatch.id,
+          code: prismaBatch.code,
+          itemsCount: prismaBatch.items_count,
+          expirationDate: prismaBatch.expiration_date ?? undefined,
+          maximumDaysToExpiration: prismaBatch.maximum_days_to_expiration ?? undefined,
+          productId: prismaBatch.product_id,
+          resgisteredAt: prismaBatch.registered_at,
+        })),
     })
   }
 

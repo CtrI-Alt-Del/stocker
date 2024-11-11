@@ -29,7 +29,7 @@ export const FirstEntryPasswordModal = () => {
             await handleSubmit()
             closeDialog()
           }}
-          className='grid grid-rows-2 gap-2'
+          className='grid grid-rows-2 gap-2 pb-3'
         >
           <Controller
             name='password'
