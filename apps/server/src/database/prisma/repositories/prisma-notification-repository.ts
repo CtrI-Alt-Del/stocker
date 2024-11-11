@@ -51,6 +51,27 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
     }
   }
 
+  async findStockLevelNotificationByProduct(
+    productId: string,
+  ): Promise<StockLevelNotification | null> {
+    try {
+      const prismaNotification = await prisma.stockLevelNotification.findFirst({
+        where: {
+          product_id: productId,
+        },
+        include: {
+          Product: true,
+        },
+      })
+
+      if (!prismaNotification) return null
+
+      return this.stockLevelNotificationMapper.toDomain(prismaNotification)
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
   async findManyStockLevelNotificationsByCompany(
     companyId: string,
   ): Promise<StockLevelNotification[]> {

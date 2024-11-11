@@ -50,7 +50,7 @@ export function useUpdateEmployeeForm({
     }
     const response = await usersService.updateUser(
       partialUser as Partial<UserDto>,
-      employee.id
+      employee.id,
     )
     if (response.isFailure) {
       showError(response.errorMessage)

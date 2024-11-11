@@ -1,6 +1,6 @@
 import { User } from '../../domain/entities'
 import type { UserDto } from '../../dtos'
-import { NotFoundError } from '../../errors'
+import { ConflictError, NotFoundError } from '../../errors'
 import type {
   ICompaniesRepository,
   ICryptoProvider,
@@ -30,11 +30,16 @@ export class RegisterUserUseCase {
   }
 
   async execute({ userDto }: Request) {
+    const existingUser = await this.usersRepository.findByEmail(userDto.email)
+
+    if (existingUser) {
+      throw new ConflictError('E-mail já em uso')
+    }
+
     if (userDto.password) {
       userDto.password = await this.cryptoProvider.hash(userDto.password)
     }
 
-    console.log(userDto)
     const user = User.create(userDto)
 
     const company = await this.companiesRepository.findById(user.companyId)
@@ -44,8 +49,8 @@ export class RegisterUserUseCase {
 
     this.queueProvider.push('send-welcome-employee-email', {
       employeeEmail: user.email,
-      companyName: user.name,
-      employeeName: company.name,
+      employeeName: user.name,
+      companyName: company.name,
     })
 
     return user.id

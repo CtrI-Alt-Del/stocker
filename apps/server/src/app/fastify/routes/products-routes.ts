@@ -44,7 +44,7 @@ export const ProductsRoutes = async (app: FastifyInstance) => {
     {
       preHandler: [
         verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
-        verifyManagerRoleMiddleware.handle.bind(verifyManagerRoleMiddleware),
+        verifyEmployeeRoleMiddleware.handle.bind(verifyEmployeeRoleMiddleware),
       ],
     },
     async (request, response) => {

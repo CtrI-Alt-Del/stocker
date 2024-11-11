@@ -40,7 +40,7 @@ export const NotifcationsDialog = ({ companyId }: NotifcationsDialogProps) => {
             key='stock'
             title={
               <div className='relative'>
-                <p>Produtos com estoque zero</p>
+                <p>Produtos com baixo estoque</p>
                 {stockLevelNotifications.length > 0 && (
                   <Tag type='danger' size='sm' className='absolute -top-2 -right-5 z-50'>
                     {stockLevelNotifications.length.toString()}

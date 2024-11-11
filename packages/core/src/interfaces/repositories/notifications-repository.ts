@@ -5,6 +5,9 @@ export interface INotificationsRepository {
   findById(
     notificationId: string,
   ): Promise<StockLevelNotification | ExpirationDateNotification | null>
+  findStockLevelNotificationByProduct(
+    productId: string,
+  ): Promise<StockLevelNotification | null>
   findManyStockLevelNotificationsByCompany(
     companyId: string,
   ): Promise<StockLevelNotification[]>

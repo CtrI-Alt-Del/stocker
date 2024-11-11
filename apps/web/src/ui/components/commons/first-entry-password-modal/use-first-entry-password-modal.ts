@@ -12,7 +12,7 @@ const FirstPasswordEntryModalSchema = z.object({
 type FirstPasswordEntryModalData = z.infer<typeof FirstPasswordEntryModalSchema>
 export function useFirstPasswordEntryModal() {
   const { user, resetPassword } = useAuthContext()
-  const { formState, register, handleSubmit } = useForm<FirstPasswordEntryModalData>({
+  const { formState, control, handleSubmit } = useForm<FirstPasswordEntryModalData>({
     resolver: zodResolver(FirstPasswordEntryModalSchema),
   })
 
@@ -23,7 +23,7 @@ export function useFirstPasswordEntryModal() {
   return {
     isSubmiting: formState.isSubmitting,
     errors: formState.errors,
-    register,
+    control,
     handleSubmit: handleSubmit(handleFormSubmit),
   }
 }

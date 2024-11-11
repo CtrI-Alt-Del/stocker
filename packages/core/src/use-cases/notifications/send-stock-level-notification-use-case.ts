@@ -15,15 +15,19 @@ export class SendStockLevelNotificationsUseCase {
     if (!product)
       throw new NotFoundError('Produto não encontrado ao enviar notificação de estoque')
 
-    if (product.stockLevel === 'danger') {
+    if (product.stockLevel === 'average' || product.stockLevel === 'danger') {
       const notification = StockLevelNotification.create({
         product: { id: product.id, name: product.name, code: product.code },
         companyId: product.companyId,
       })
 
-      await this.notificationsRepository.addStockLevelNotification(notification)
+      const existingNotification =
+        await this.notificationsRepository.findStockLevelNotificationByProduct(productId)
 
-      this.notificstionsSocket.emitStockLevelNotification(notification)
+      if (!existingNotification) {
+        await this.notificationsRepository.addStockLevelNotification(notification)
+        this.notificstionsSocket.emitStockLevelNotification(notification)
+      }
     }
   }
 }

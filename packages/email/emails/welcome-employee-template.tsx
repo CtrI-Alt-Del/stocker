@@ -20,7 +20,7 @@ export const WelcomeEmployeeTemplate = ({
     <Container className='mx-auto my-0 py-5 px-0'>
       <Logo />
       <Text className='text-lg leading-7 mt-2'>
-        Olá, {employeeName}
+        Olá, {employeeName}.
         <br />
         Sua conta na Stocker para a empresa {companyName} foi criado com sucesso! 🎉
       </Text>

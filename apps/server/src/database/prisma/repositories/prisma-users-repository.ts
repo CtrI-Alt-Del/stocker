@@ -98,6 +98,7 @@ export class PrismaUsersRepository implements IUsersRepository {
           email: prismaUser.email,
           password: prismaUser.password,
           company_id: prismaUser.company_id,
+          role: prismaUser.role,
           has_first_password_reset: prismaUser.has_first_password_reset,
         },
         where: { id: userId },

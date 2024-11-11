@@ -101,11 +101,10 @@ export class PrismaProductsRepository implements IProductsRepository {
       })
 
       const count = await prisma.product.count()
+      const products = prismaProducts.map(this.mapper.toDomain)
 
       return {
-        products: prismaProducts.map((prismaProduct) =>
-          this.mapper.toDomain(prismaProduct),
-        ),
+        products,
         count,
       }
     } catch (error) {
