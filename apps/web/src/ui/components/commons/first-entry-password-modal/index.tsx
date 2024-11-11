@@ -3,9 +3,11 @@ import { Dialog } from '../dialog'
 import { useFirstPasswordEntryModal } from './use-first-entry-password-modal'
 import { useRef, useEffect } from 'react'
 import type { DialogRef } from '../dialog/types'
+import { PasswordInput } from '../password-input'
+import { Controller } from 'react-hook-form'
 
 export const FirstEntryPasswordModal = () => {
-  const { isSubmiting, errors, register, handleSubmit } = useFirstPasswordEntryModal()
+  const { isSubmiting, errors, control, handleSubmit } = useFirstPasswordEntryModal()
   const dialogRef = useRef<DialogRef>(null)
 
   useEffect(() => {
@@ -29,11 +31,22 @@ export const FirstEntryPasswordModal = () => {
           }}
           className='grid grid-rows-2 gap-2'
         >
-          <Input
-            label='Digita sua senha'
-            {...register('password')}
-            isInvalid={Boolean(errors.password)}
-            errorMessage={errors.password?.message}
+          <Controller
+            name='password'
+            control={control}
+            render={({ field: { value, onChange } }) => (
+              <PasswordInput
+                name='password'
+                label='Digita sua senha'
+                placeholder='Digite sua senha'
+                labelPlacement='outside'
+                size='md'
+                isInvalid={Boolean(errors.password)}
+                errorMessage={errors.password?.message}
+                value={value}
+                onChange={onChange}
+              />
+            )}
           />
           <div className='w-full flex justify-center items-center'>
             <Button
