@@ -5,5 +5,6 @@ export { User } from './user'
 export { Category } from './category'
 export { Company } from './company'
 export { StockLevelNotification } from './stock-level-notification'
+export { Supplier } from './supplier'
+export { Location } from './location'
 export { ExpirationDateNotification } from './expiration-date-notification'
-
