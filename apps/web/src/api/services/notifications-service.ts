@@ -6,11 +6,12 @@ import type {
 
 export const NotificationsService = (apiClient: IApiClient): INotificationsService => {
   return {
-    async listNotifications() {
+    async listNotifications(companyId: string) {
       return await apiClient.get<{
         stockNotifications: StockLevelNotificationDto[]
         expirationDateNotifications: ExpirationDateNotificationDto[]
-      }>('/notifications')
+        notificationsCount: number
+      }>(`/notifications?companyId=${companyId}`)
     },
 
     async deleteNotification() {
