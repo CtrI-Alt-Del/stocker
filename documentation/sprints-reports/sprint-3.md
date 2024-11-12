@@ -7,7 +7,7 @@
 
 ## User Stories realizados nessa sprint 📖
 
-<img src="../images/user-stories-sprint-3.jpg"  width="2223" height="1240"  />
+<img src="../images/user-stories-sprint-3.png"  width="2223" height="1240"  />
 
 ## Critérios de aceitação para cada User Story 📒
 
