@@ -4,6 +4,7 @@ import type { ApiResponse } from '../../responses'
 export interface IAuthService {
   login(email: string, password: string): Promise<ApiResponse<{ jwt: string }>>
   resetPassword(email: string, password: string): Promise<ApiResponse<{ jwt: string }>>
+  confirmAuth(password: string): Promise<ApiResponse<boolean>>
   subscribe(
     userDto: UserDto,
     companyDto: CompanyDto,

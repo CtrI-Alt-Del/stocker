@@ -1,22 +1,12 @@
 'use client'
 
-import { useRef } from 'react'
 import { Controller } from 'react-hook-form'
-import {
-  Button,
-  Divider,
-  Input,
-  Select,
-  SelectItem,
-  Switch,
-  Textarea,
-} from '@nextui-org/react'
+import { Button, Divider, Input, Select, SelectItem } from '@nextui-org/react'
 import { useUpdateEmployeeForm } from './use-update-employee-form'
 import type { UserDto } from '@stocker/core/dtos'
 
 type UpdateEmployeeCategoryProps = {
   employee: UserDto
-
   onCancel: VoidFunction
   onSubmit: VoidFunction
 }
@@ -81,8 +71,9 @@ export const UpdateEmployeeForm = ({
           color='primary'
           isDisabled={!isDirty}
           isLoading={isSubmiting}
+          className='text-orange'
         >
-          Confirmar
+          <span className='text-white'>Atualizar</span>
         </Button>
       </div>
     </form>

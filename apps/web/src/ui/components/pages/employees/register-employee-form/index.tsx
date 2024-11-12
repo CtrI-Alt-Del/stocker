@@ -59,8 +59,13 @@ export const RegisterEmployeeForm = ({
         <Button onClick={onCancel} isDisabled={isSubmiting}>
           Cancelar
         </Button>
-        <Button type='submit' color='primary' isLoading={isSubmiting}>
-          Confirmar
+        <Button
+          type='submit'
+          color='primary'
+          isLoading={isSubmiting}
+          className='text-orange'
+        >
+          <span className='text-white'>Confirmar</span>
         </Button>
       </div>
     </form>

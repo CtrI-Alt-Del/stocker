@@ -1,29 +1,28 @@
-import { Button, Input } from '@nextui-org/react'
-import { Dialog } from '../dialog'
-import { useFirstPasswordEntryModal } from './use-first-entry-password-modal'
-import { useRef, useEffect } from 'react'
-import type { DialogRef } from '../dialog/types'
-import { PasswordInput } from '../password-input'
 import { Controller } from 'react-hook-form'
+import { type ForwardedRef, forwardRef, type ReactNode } from 'react'
+import { Button } from '@nextui-org/react'
 
-export const FirstEntryPasswordModal = () => {
-  const { isSubmiting, errors, control, handleSubmit } = useFirstPasswordEntryModal()
-  const dialogRef = useRef<DialogRef>(null)
+import { Dialog } from '../dialog'
+import type { DialogRef } from '../dialog/types'
+import { useAdminPasswordConfirmationDialog } from './use-admin-password-confirmation-dialog'
+import { PasswordInput } from '../password-input'
 
-  useEffect(() => {
-    dialogRef.current?.open()
-  }, [])
+type AdminPasswordConfirmationDialogProps = {
+  onConfirm: (isAuthenticated: boolean) => void
+}
+
+const AdminPasswordConfirmationDialogComponent = (
+  { onConfirm }: AdminPasswordConfirmationDialogProps,
+  ref: ForwardedRef<DialogRef>,
+) => {
+  const { control, isSubmiting, errors, handleSubmit } =
+    useAdminPasswordConfirmationDialog(onConfirm)
 
   return (
-    <Dialog
-      ref={dialogRef}
-      title='Defina sua senha definitiva'
-      isDismissable={false}
-      hideCloseButton={true}
-      trigger={null}
-    >
+    <Dialog ref={ref} title='Confirme com a sua senha' trigger={null}>
       {(closeDialog) => (
         <form
+          id='admin-password-confirmation'
           onSubmit={async (e) => {
             e.preventDefault()
             await handleSubmit()
@@ -50,12 +49,13 @@ export const FirstEntryPasswordModal = () => {
           />
           <div className='w-full flex justify-center items-center'>
             <Button
+              form='admin-password-confirmation'
               color='primary'
               type='submit'
-              className='text-center w-full font-semibold'
+              className='text-center w-full font-semibold text-orange'
               isLoading={isSubmiting}
             >
-              Confirmar
+              <span className='text-white'>Confirmar</span>
             </Button>
           </div>
         </form>
@@ -63,3 +63,7 @@ export const FirstEntryPasswordModal = () => {
     </Dialog>
   )
 }
+
+export const AdminPasswordConfirmationDialog = forwardRef(
+  AdminPasswordConfirmationDialogComponent,
+)

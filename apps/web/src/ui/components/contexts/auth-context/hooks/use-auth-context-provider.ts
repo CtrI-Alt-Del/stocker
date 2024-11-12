@@ -130,6 +130,20 @@ export function useAuthContextProvider({
     showError('Não foi possível atualizar sua conta, tente novamente mais tarde')
   }
 
+  async function confirmAuth(password: string) {
+    if (!user) return
+
+    const response = await authService.confirmAuth(password)
+
+    if (response.isSuccess) {
+      const isAuthenticated = response.body
+      if (!isAuthenticated) showError('Senha inválida')
+      return isAuthenticated
+    }
+
+    showError('Não foi possível confirmar sua senha, tente novamente mais tarde')
+  }
+
   async function deleteAccount() {
     const response = await authService.deleteAccount()
 
@@ -160,5 +174,6 @@ export function useAuthContextProvider({
     resetPassword,
     updateAccount,
     deleteAccount,
+    confirmAuth,
   }
 }

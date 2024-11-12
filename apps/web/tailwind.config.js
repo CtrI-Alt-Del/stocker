@@ -9,8 +9,8 @@ export default {
   ],
   theme: {
     extend: {
-      colors:{
-        orange:{
+      colors: {
+        orange: {
           DEFAULT: '#FF6200'
         }
       }

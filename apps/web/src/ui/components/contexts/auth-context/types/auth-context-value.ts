@@ -13,5 +13,6 @@ export type AuthContextValue = {
     companyDto: Partial<CompanyDto>,
   ) => Promise<void>
   deleteAccount: () => Promise<void>
+  confirmAuth: (password: string) => Promise<boolean>
   resetPassword: (email: string, password: string) => Promise<void>
 }

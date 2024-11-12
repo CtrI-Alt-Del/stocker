@@ -3,6 +3,7 @@ import type { FastifyInstance } from 'fastify'
 import { FastifyHttp } from '../fastify-http'
 import { FastifyHandler } from '../fastify-handler'
 import {
+  ConfirmAuthController,
   DeleteAccountController,
   LoginController,
   LogoutController,
@@ -25,6 +26,12 @@ export const AuthRoutes = async (app: FastifyInstance) => {
     new VerifyUserRoleMiddleware('admin'),
   )
   const resetPasswordController = new ResetPasswordController()
+  const confirmAuthController = new ConfirmAuthController()
+
+  app.post('/confirm', async (request, response) => {
+    const http = new FastifyHttp(request, response)
+    return confirmAuthController.handle(http)
+  })
 
   app.post('/subscribe', async (request, response) => {
     const http = new FastifyHttp(request, response)
