@@ -38,7 +38,7 @@ export const FirstEntryPasswordModal = () => {
               <PasswordInput
                 name='password'
                 label='Digita sua senha'
-                placeholder='Digite sua senha'
+                placeholder='******'
                 labelPlacement='outside'
                 size='md'
                 isInvalid={Boolean(errors.password)}

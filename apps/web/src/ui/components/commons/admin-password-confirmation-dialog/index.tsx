@@ -1,30 +1,25 @@
 import { Controller } from 'react-hook-form'
-import type { ReactNode } from 'react'
+import { type ForwardedRef, forwardRef, type ReactNode } from 'react'
 import { Button } from '@nextui-org/react'
 
 import { Dialog } from '../dialog'
+import type { DialogRef } from '../dialog/types'
 import { useAdminPasswordConfirmationDialog } from './use-admin-password-confirmation-dialog'
 import { PasswordInput } from '../password-input'
 
 type AdminPasswordConfirmationDialogProps = {
-  children: ReactNode
   onConfirm: (isAuthenticated: boolean) => void
 }
 
-export const AdminPasswordConfirmationDialog = ({
-  children,
-  onConfirm,
-}: AdminPasswordConfirmationDialogProps) => {
+const AdminPasswordConfirmationDialogComponent = (
+  { onConfirm }: AdminPasswordConfirmationDialogProps,
+  ref: ForwardedRef<DialogRef>,
+) => {
   const { control, isSubmiting, errors, handleSubmit } =
     useAdminPasswordConfirmationDialog(onConfirm)
 
   return (
-    <Dialog
-      title='Confirme com a sua senha'
-      isDismissable={false}
-      hideCloseButton={true}
-      trigger={children}
-    >
+    <Dialog ref={ref} title='Confirme com a sua senha' trigger={null}>
       {(closeDialog) => (
         <form
           id='admin-password-confirmation'
@@ -42,7 +37,7 @@ export const AdminPasswordConfirmationDialog = ({
               <PasswordInput
                 name='password'
                 label='Digita sua senha'
-                placeholder='Digite sua senha'
+                placeholder='******'
                 labelPlacement='outside'
                 size='md'
                 isInvalid={Boolean(errors.password)}
@@ -57,10 +52,10 @@ export const AdminPasswordConfirmationDialog = ({
               form='admin-password-confirmation'
               color='primary'
               type='submit'
-              className='text-center w-full font-semibold'
+              className='text-center w-full font-semibold text-orange'
               isLoading={isSubmiting}
             >
-              Confirmar
+              <span className='text-white'>Confirmar</span>
             </Button>
           </div>
         </form>
@@ -68,3 +63,7 @@ export const AdminPasswordConfirmationDialog = ({
     </Dialog>
   )
 }
+
+export const AdminPasswordConfirmationDialog = forwardRef(
+  AdminPasswordConfirmationDialogComponent,
+)

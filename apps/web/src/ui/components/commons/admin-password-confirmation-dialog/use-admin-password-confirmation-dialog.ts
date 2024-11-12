@@ -15,12 +15,14 @@ export function useAdminPasswordConfirmationDialog(
   onConfirm: (isAuthenticated: boolean) => void,
 ) {
   const { confirmAuth } = useAuthContext()
-  const { formState, control, handleSubmit } = useForm<FirstPasswordEntryModalData>({
-    resolver: zodResolver(formSchema),
-  })
+  const { formState, control, reset, handleSubmit } =
+    useForm<FirstPasswordEntryModalData>({
+      resolver: zodResolver(formSchema),
+    })
 
   async function handleFormSubmit(formData: FirstPasswordEntryModalData) {
     const isAuthenticated = await confirmAuth(formData.password)
+    reset()
     onConfirm(isAuthenticated)
   }
 

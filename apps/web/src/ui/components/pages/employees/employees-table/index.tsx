@@ -12,13 +12,12 @@ import {
   TableRow,
   Tooltip,
 } from '@nextui-org/react'
-import type { User } from '@stocker/core/entities'
 import { UpdateEmployeeForm } from '../update-employee-form'
 import { IconButton } from '@/ui/components/commons/icon-button'
 import { useRef } from 'react'
 import type { DrawerRef } from '@/ui/components/commons/drawer/types'
 import { useEmployeesTable } from './use-employees-table'
-import { UserDto } from '@stocker/core/dtos'
+import type { UserDto } from '@stocker/core/dtos'
 
 type EmployeesTableProps = {
   page: number
@@ -101,7 +100,7 @@ export const EmployeesTable = ({
                 {employee.role === 'manager' ? 'Gerente' : 'Funcionário'}
               </TableCell>
               <TableCell key='actions'>
-                <Tooltip content='Editar Funcinário'>
+                <Tooltip content='Visualizar dados do Funcinário'>
                   <IconButton
                     name='view'
                     className='size-6 text-zinc-500'

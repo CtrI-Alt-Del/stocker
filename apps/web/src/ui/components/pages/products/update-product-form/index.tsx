@@ -209,8 +209,14 @@ export const UpdateProductForm = ({
         <Button onClick={handleCancelButtonClick} isDisabled={isSubmiting}>
           Cancelar
         </Button>
-        <Button type='submit' color='primary' disabled={!isDirty} isLoading={isSubmiting}>
-          Atualizar
+        <Button
+          type='submit'
+          color='primary'
+          disabled={!isDirty}
+          isLoading={isSubmiting}
+          className='text-orange'
+        >
+          <span className='text-white'>Atualizar</span>
         </Button>
       </div>
     </form>

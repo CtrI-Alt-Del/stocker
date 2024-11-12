@@ -71,8 +71,9 @@ export const UpdateEmployeeForm = ({
           color='primary'
           isDisabled={!isDirty}
           isLoading={isSubmiting}
+          className='text-orange'
         >
-          Confirmar
+          <span className='text-white'>Atualizar</span>
         </Button>
       </div>
     </form>

@@ -48,8 +48,8 @@ export const EmployeesPage = () => {
             )}
             <Drawer
               trigger={
-                <Button variant='solid' color='primary' size='md'>
-                  Atualizar Funcionário
+                <Button variant='solid' color='primary' size='md' className='text-orange'>
+                  <span className='text-white'>Adicionar Funcionário</span>
                 </Button>
               }
             >
@@ -67,13 +67,13 @@ export const EmployeesPage = () => {
         </div>
         <EmployeesTable
           page={page}
-          onPageChange={handlePageChange}
           isLoading={isLoading}
           totalPages={totalPages}
           employees={users}
+          selectedEmployeesIds={selectedEmployeesIds}
+          onPageChange={handlePageChange}
           onUpdateEmployee={handleUpdateEmployee}
           onEmployeesSelectionChange={handleEmployeesSelectionChange}
-          selectedEmployeesIds={selectedEmployeesIds}
         />
       </div>
     </>
