@@ -5,5 +5,6 @@ export type ExpirationDateNotificationDto = {
     id: string
     code: string
   }
+  registeredAt?: Date
   sentAt?: Date
 }
