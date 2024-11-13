@@ -2,7 +2,7 @@ import type { Supplier } from '../../domain/entities/supplier'
 import type { PaginationResponse } from '../../responses'
 import type { SuppliersListParams } from '../../types'
 
-export interface SuppliersRepository {
+export interface ISuppliersRepository {
   findMany(params: SuppliersListParams): Promise<PaginationResponse<Supplier>>
   findByEmail(email: string): Promise<Supplier>
   findByCnpj(cnpj: string): Promise<Supplier>
