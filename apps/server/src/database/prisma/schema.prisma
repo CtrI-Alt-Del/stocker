@@ -127,6 +127,8 @@ model Suppliers {
   id            String   @id @default(uuid())
   name          String
   email         String
+  cnpj          String?
+  phone         String?
   company_id    String
   registered_at DateTime @default(now())
 
