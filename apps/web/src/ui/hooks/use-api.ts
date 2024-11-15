@@ -7,6 +7,7 @@ import {
   AuthService,
   NotificationsService,
   CompaniesService,
+  LocationsService,
 } from '@/api/services'
 import { CategoriesService } from '@/api/services/categories-service'
 import { InventoryMovementsService } from '@/api/services/inventory-movements-service'
@@ -26,6 +27,7 @@ export function useApi() {
 
   return {
     authService: AuthService(nextApiClient),
+    locationsService: LocationsService(nextApiClient),
     usersService: UsersService(nextApiClient),
     reportsService: ReportsService(nextApiClient),
     inventoryMovementService: InventoryMovementsService(nextApiClient),

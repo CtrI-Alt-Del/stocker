@@ -1,4 +1,5 @@
 export { AuthService } from './auth-service'
+export { LocationsService } from './locations-service'
 export { BatchesService } from './batches-service'
 export { ProductsService } from './products-service'
 export { FileStorageService } from './file-storage-service'
