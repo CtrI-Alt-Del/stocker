@@ -5,3 +5,4 @@ export { PrismaInventoryMovementsRepository } from './prisma-inventory-movements
 export { PrismaCategoriesRepository } from './prisma-categories-repository'
 export { PrismaCompaniesRepository } from './prisma-companies-repository'
 export { PrismaNotificationsRepository } from './prisma-notification-repository'
+export { PrismaSuppliersRepository } from './prisma-suppliers-repository'

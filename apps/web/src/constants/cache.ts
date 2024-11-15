@@ -2,6 +2,9 @@ export const CACHE = {
   notifications: {
     key: '/notifications',
   },
+  locations: {
+    key: '/locations',
+  },
   product: {
     key: '/product',
   },
