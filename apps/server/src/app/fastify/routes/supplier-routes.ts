@@ -13,7 +13,7 @@ export const SuppliersRoutes = async (app: FastifyInstance) => {
   const updateSupplierController = new UpdateSupplierController()
     const verifyJwtMiddleware = new FastifyHandler(new VerifyJwtMiddleware())
   const verifyAdminRoleMiddleware = new FastifyHandler(
-    new VerifyUserRoleMiddleware('admin'),
+    new VerifyUserRoleMiddleware('manager'),
   )
   const preHandlers = [verifyJwtMiddleware, verifyAdminRoleMiddleware].map((handler) =>
     handler.handle.bind(handler),
