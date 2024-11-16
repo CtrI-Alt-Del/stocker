@@ -14,7 +14,7 @@ export class DeleteSuppliersUseCase {
 
   async execute({ suppliersId }: Request) {
     for (const supplierId of suppliersId) {
-      const supplier = await this.supplierRepository.(supplierId)
+      const supplier = await this.supplierRepository.findById(supplierId)
       if (!supplier) throw new NotFoundError('Fornecedor não encontrado')
     }
 
