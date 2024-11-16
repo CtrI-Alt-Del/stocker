@@ -4,4 +4,5 @@ export type SupplierDto = {
   email: string
   cnpj?: string
   phone?: string
+  companyId: string
 }

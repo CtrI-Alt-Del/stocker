@@ -6,6 +6,7 @@ type SupplierProps = {
   email: string
   cnpj?: string
   phone?: string
+  companyId: string
 }
 
 export class Supplier extends Entity<SupplierProps> {
@@ -20,6 +21,7 @@ export class Supplier extends Entity<SupplierProps> {
       email: this.props.email,
       cnpj: this.props.cnpj,
       phone: this.props.phone,
+      companyId: this.props.companyId
     }
   }
 
@@ -37,6 +39,10 @@ export class Supplier extends Entity<SupplierProps> {
 
   get phone() {
     return this.props.phone
+  }
+
+  get companyId() {
+    return this.props.companyId
   }
 
   update(partialDto: Partial<SupplierDto>): Supplier {
