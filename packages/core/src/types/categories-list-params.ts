@@ -1,5 +1,5 @@
 export type CategoriesListParams = {
-  name: string
+  name?: string
   page: number
   companyId: string
 }

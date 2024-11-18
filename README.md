@@ -1,4 +1,4 @@
-# 🚀 Stocker Web App
+# Stocker 📦
 
 <div align="center">
   <img src="documentation/images/stockerlogo.jpeg" alt="Stocker" width="500" height="330" />
