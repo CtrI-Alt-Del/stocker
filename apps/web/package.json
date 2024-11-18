@@ -28,7 +28,7 @@
     "react-modern-drawer": "^1.4.0",
     "react-use-websocket": "4.10.1",
     "recharts": "2.13.3",
-    "resend": "4.0.1-alpha.0",
+    "resend": "4.0.1",
     "swr": "^2.2.5",
     "tailwind-merge": "^2.5.4",
     "tailwindcss": "^3.4.14",
