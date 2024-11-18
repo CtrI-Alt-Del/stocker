@@ -26,7 +26,7 @@
     "react-hook-form": "7.53.2",
     "react-hot-toast": "2.4.1",
     "react-modern-drawer": "^1.4.0",
-    "react-use-websocket": "4.10.1",
+    "react-use-websocket": "4.11.1",
     "recharts": "2.13.3",
     "resend": "4.0.1-alpha.0",
     "swr": "^2.2.5",
