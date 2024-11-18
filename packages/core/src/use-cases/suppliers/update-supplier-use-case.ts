@@ -20,22 +20,23 @@ export class UpdateSupplierUseCase {
       throw new NotFoundError('Usuário não encontrado')
     }
 
-    const updatedSupplier = supplier.update(supplierDto)
+    const supplierCNPJ = supplierDto.cnpj
+      ? await this.supplierRepository.findByCnpj(supplierDto.cnpj)
+      : null
 
-    const updatedSupplierCNPJ = await this.supplierRepository.findByCnpj(
-      updatedSupplier.cnpj,
-    )
-    if (updatedSupplierCNPJ) {
+    if (supplierCNPJ && supplierCNPJ.id !== supplierId) {
       throw new ConflictError('Esse CNPJ já está em uso')
     }
 
-    const updatedSupplierPhone = await this.supplierRepository.findByPhone(
-      updatedSupplier.phone,
-    )
-    if (updatedSupplierPhone) {
+    const supplierPhone = supplierDto.phone
+      ? await this.supplierRepository.findByPhone(supplierDto.phone)
+      : null
+
+    if (supplierPhone && supplierPhone.id !== supplierId) {
       throw new ConflictError('Esse telefone já está em uso')
     }
 
+    const updatedSupplier = supplier.update(supplierDto)
     await this.supplierRepository.update(updatedSupplier, supplier.id)
   }
 }
