@@ -17,9 +17,8 @@ export class RegisterSupplierUseCase {
     const existingEmailSupplier = await this.suppliersRepository.findByEmail(
       supplierDto.email,
     )
-
     if (existingEmailSupplier) {
-      throw new ConflictError('E-mail já em uso')
+      throw new ConflictError('Email já em uso')
     }
 
     const existingCNPJSupplier = await this.suppliersRepository.findByCnpj(
@@ -28,7 +27,7 @@ export class RegisterSupplierUseCase {
     if (existingCNPJSupplier) {
       throw new ConflictError('CNPJ já em uso')
     }
-
+    
     const existingPhoneSupplier = await this.suppliersRepository.findByPhone(
       supplierDto.phone,
     )

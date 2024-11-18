@@ -7,7 +7,7 @@ export interface ISuppliersRepository {
   findMany(params: SuppliersListParams): Promise<{ suppliers: Supplier[], count: number }>
   findById(userId: string): Promise<Supplier | null>
   findByEmail(email: string): Promise<Supplier | null>
-  findByCnpj(cnpj: string): Promise<Supplier | null>
+  findByCnpj(cnpj: string | undefined): Promise<Supplier | null>
   add(supplier: Supplier): Promise<void>
   update(supplier: Supplier, supplierId: string): Promise<void>
   deleteMany(suppliersIds: string[]): Promise<void>
