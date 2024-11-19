@@ -2,7 +2,7 @@ import { NotFoundError } from '../../errors'
 import type { ISuppliersRepository } from '../../interfaces/repositories/suppliers-repository'
 
 type Request = {
-  suppliersId: string[]
+  suppliersIds: string[]
 }
 
 export class DeleteSuppliersUseCase {
@@ -12,12 +12,12 @@ export class DeleteSuppliersUseCase {
     this.supplierRepository = supplierRepository
   }
 
-  async execute({ suppliersId }: Request) {
-    for (const supplierId of suppliersId) {
+  async execute({ suppliersIds }: Request) {
+    for (const supplierId of suppliersIds) {
       const supplier = await this.supplierRepository.findById(supplierId)
       if (!supplier) throw new NotFoundError('Fornecedor não encontrado')
     }
 
-    await this.supplierRepository.deleteMany(suppliersId)
+    await this.supplierRepository.deleteMany(suppliersIds)
   }
 }
