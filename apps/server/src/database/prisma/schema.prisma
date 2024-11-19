@@ -139,6 +139,7 @@ model Suppliers {
 
 model Location {
   id                 String   @id @default(uuid())
+  name               String
   parent_location_id String?
   company_id         String
   registered_at      DateTime @default(now())
