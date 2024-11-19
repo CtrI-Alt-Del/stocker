@@ -5,6 +5,7 @@ export type InventoryMovementsListParams = {
   companyId?:string
   startDate?: Date
   endDate?: Date
+  employeeId?: string
   movementType?: InventoryMovementType
   productId?: string
 }

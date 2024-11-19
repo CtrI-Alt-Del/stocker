@@ -1,5 +1,5 @@
 export type LocationsListParams = {
-  name: string
+  name?: string
   page: number
   companyId: string
 }
