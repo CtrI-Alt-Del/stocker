@@ -22,10 +22,10 @@ export class RegisterSupplierUseCase {
       throw new ConflictError('E-mail já em uso')
     }
 
-    const existingCPNJSupplier = await this.suppliersRepository.findByCnpj(
+    const existingCNPJSupplier = await this.suppliersRepository.findByCnpj(
       supplierDto.cnpj,
     )
-    if (existingCPNJSupplier) {
+    if (existingCNPJSupplier) {
       throw new ConflictError('CNPJ já em uso')
     }
 

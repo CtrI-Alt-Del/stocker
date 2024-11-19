@@ -1,5 +1,5 @@
 export type SuppliersListParams = {
   page: number
-  name: string
+  name?: string
   companyId: string
 }
