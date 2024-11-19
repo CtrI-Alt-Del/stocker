@@ -34,6 +34,20 @@ export const RegisterSupplierForm = ({
             errorMessage={errors.email?.message}
             {...register('email')}
           />
+          <Input
+            label='CNPJ'
+            isRequired
+            isInvalid={Boolean(errors.cnpj)}
+            errorMessage={errors.email?.message}
+            {...register('cnpj')}
+          />
+          <Input
+            label='Telefone'
+            isRequired
+            isInvalid={Boolean(errors.phone)}
+            errorMessage={errors.phone?.message}
+            {...register('phone')}
+          />
         </div>
       </div>
 

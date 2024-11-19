@@ -13,6 +13,7 @@ export const SuppliersPage = () => {
   const {
     page,
     totalPages,
+    suppliers,
     isDeleting,
     selectedSuppliersIds,
     isLoading,

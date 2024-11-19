@@ -1,8 +1,7 @@
 import { useApi, useToast } from '@/ui/hooks'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { SupplierDto } from '@stocker/core/dtos'
-import type { User } from '@stocker/core/entities'
-import { emailSchema, nameSchema, passwordSchema } from '@stocker/validation/schemas'
+import { cnpjSchema, emailSchema, nameSchema, passwordSchema } from '@stocker/validation/schemas'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -15,6 +14,8 @@ type useUpdateSupplierFormProps = {
 const updateSupplierFormSchema = z.object({
   name: nameSchema,
   email: emailSchema,
+  cnpj: cnpjSchema,
+  phone: phoneSchema
 })
 type updateSupplierFormData = z.infer<typeof updateSupplierFormSchema>
 export function useUpdateSupplierForm({
@@ -29,6 +30,8 @@ export function useUpdateSupplierForm({
       defaultValues: {
         name: supplier.name,
         email: supplier.email,
+        cnpj: supplier.cnpj,
+        phone: supplier.phone
       },
       resolver: zodResolver(updateSupplierFormSchema),
     })

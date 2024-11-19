@@ -1,12 +1,13 @@
 import { CACHE } from '@/constants'
 import { useApi, useCache, useToast, useUrlParamNumber } from '@/ui/hooks'
-import type { UserDto } from '@stocker/core/dtos'
 import { useState } from 'react'
 import { useAuthContext } from '../../contexts/auth-context'
+import { SuppliersService } from '@/api/services'
+import { SupplierDto } from '@stocker/core/dtos'
 
 export function useSuppliersPage() {
   const { showSuccess, showError } = useToast()
-  const { usersService } = useApi()
+  const { suppliersService } = useApi()
   const [page, setPage] = useUrlParamNumber('page', 1)
   const [isDeleting, setIsDeleting] = useState<boolean>(false)
   const [selectedSuppliersIds, setSelectdSuppliersIds] = useState<string[]>([])
@@ -14,9 +15,9 @@ export function useSuppliersPage() {
     setPage(page)
   }
   const { user } = useAuthContext()
-  const companyId = user ? user.companyId : ''
   async function fetchUsers() {
-    const response = await usersService.listUsers({ page, companyId: companyId })
+    if (!user) return
+    const response = await suppliersService.listSuppliers({ page, companyId: user.companyId })
     if (response.isFailure) {
       showError(response.errorMessage)
     }
@@ -35,7 +36,7 @@ export function useSuppliersPage() {
   }
   async function handleDeleteSuppliersAlertDialogConfirm() {
     setIsDeleting(true)
-    const response = await usersService.deleteUser(selectedSuppliersIds)
+    const response = await suppliersService.deleteSupplier(selectedSuppliersIds)
     if (response.isFailure) {
       showError(response.errorMessage)
     }
@@ -53,7 +54,7 @@ export function useSuppliersPage() {
   function handleSuppliersSelectionChange(suppliersIds: string[]) {
     setSelectdSuppliersIds(suppliersIds)
   }
-  const users = data?.items ? data.items : []
+  const suppliers = data?.items ? data.items : []
   const totalPages = data?.itemsCount ? data.itemsCount : 0
   return {
     handleRegisterSupplierFormSubmit,
@@ -62,7 +63,7 @@ export function useSuppliersPage() {
     page,
     isDeleting,
     handlePageChange,
-    users,
+    suppliers,
     isLoading: isFetching,
     handleSuppliersSelectionChange,
     selectedSuppliersIds,

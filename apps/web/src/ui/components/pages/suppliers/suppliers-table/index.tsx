@@ -80,6 +80,8 @@ export const SuppliersTable = ({
         <TableHeader>
           <TableColumn key='name'>NOME</TableColumn>
           <TableColumn key='email'>E-MAIL</TableColumn>
+          <TableColumn key='cnpj'>CNPJ</TableColumn>
+          <TableColumn key='phone'>TELEFONE</TableColumn>
           <TableColumn key='action'>{null}</TableColumn>
         </TableHeader>
         <TableBody
@@ -93,6 +95,8 @@ export const SuppliersTable = ({
             <TableRow key={supplier.id}>
               <TableCell key='name'>{supplier.name}</TableCell>
               <TableCell key='email'>{supplier.email}</TableCell>
+              <TableCell key='cnpj'>{supplier.cnpj}</TableCell>
+              <TableCell key='phone'>{supplier.phone}</TableCell>
               <TableCell key='actions'>
                 <Tooltip content='Visualizar dados do Fornecedor'>
                   <IconButton
