@@ -58,6 +58,24 @@ export class PrismaLocationsRepository implements ILocationsRepository {
           }
     }
 
+    async findByName(locationName: string): Promise<Location | null> {
+        try {
+            const prismaLocation = await prisma.location.findFirst({
+                where: {
+                    name: locationName
+                },
+                include: {
+                    subLocation: true,
+                }
+            })
+
+            if (!prismaLocation) return null
+            return this.mapper.toDomain(prismaLocation)
+        } catch (error) {
+            throw new PrismaError(error)
+          }
+    }
+
     async findMany(params: CategoriesListParams): Promise<PaginationResponse<Location>> {
         try {
             const prismaLocations = await prisma.location.findMany({

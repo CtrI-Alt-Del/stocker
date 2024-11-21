@@ -4,6 +4,7 @@ import type { CategoriesListParams } from '../../types'
 
 export interface ILocationsRepository {
   findById(locationId: string): Promise<Location | null>
+  findByName(locationName: string): Promise<Location | null>
   findMany(params: CategoriesListParams): Promise<PaginationResponse<Location>>
   add(location: Location): Promise<void>
   update(location: Location, locationId: string): Promise<void>
