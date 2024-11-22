@@ -1,0 +1,1 @@
+export { RegisterLocationUseCase } from './register-location-use-case'

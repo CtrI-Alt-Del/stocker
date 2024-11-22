@@ -1,0 +1,1 @@
+export { RegisterLocationController } from "./register-location-controller"

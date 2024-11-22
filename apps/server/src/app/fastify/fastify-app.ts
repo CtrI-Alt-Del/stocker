@@ -14,6 +14,7 @@ import {
   BatchesRoutes,
   CompaniesRoutes,
   SuppliersRoutes,
+  LocationsRoutes,
 } from './routes'
 import Jwt from '@fastify/jwt'
 import Websocket from '@fastify/websocket'
@@ -129,5 +130,6 @@ export class FastifyApp implements IApp {
     this.app.register(UsersRoutes, { prefix: '/users' })
     this.app.register(NotificationsRoutes, { prefix: '/notifications' })
     this.app.register(SuppliersRoutes, { prefix: '/suppliers' })
+    this.app.register(LocationsRoutes, { prefix: '/locations' })
   }
 }
