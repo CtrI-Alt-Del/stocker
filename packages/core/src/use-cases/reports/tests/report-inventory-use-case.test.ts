@@ -23,7 +23,7 @@ describe('Report weekly inventory movements use case', () => {
   })
 
   it(`should list ${PAGINATION.itemsPerPage} products with inventory movements per page`, async () => {
-    const pagination = await useCase.execute({ page: 1 })
+    const pagination = await useCase.execute({ page: 1, companyId: 'company-123' })
 
     expect(pagination.items).toEqual(
       fakeProducts.slice(0, 10).map((fakeProduct) => fakeProduct.dto),
@@ -31,7 +31,7 @@ describe('Report weekly inventory movements use case', () => {
   })
 
   it(`should list ${PAGINATION.itemsPerPage} products with inventory movements per page`, async () => {
-    const pagination = await useCase.execute({ page: 2 })
+    const pagination = await useCase.execute({ page: 2, companyId: 'company-123' })
 
     expect(pagination.items).toEqual(
       fakeProducts.slice(10, 20).map((fakeProduct) => fakeProduct.dto),
