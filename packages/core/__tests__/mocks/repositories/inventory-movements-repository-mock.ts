@@ -66,18 +66,37 @@ export class InventoryMovementsRepositoryMock implements IInventoryMovementsRepo
   }
 
   async countItems(): Promise<number> {
-    throw new Error('Method not implemented.')
+    let totalItems = 0;
+    for (const movement of this.inventoryMovements) {
+    totalItems += movement.itemsCount;
+    }
+    return totalItems;
   }
 
   async countInbound(): Promise<number> {
-    throw new Error('Method not implemented.')
+    let totalInbound = 0;
+    for (const movement of this.inventoryMovements) {
+      if (movement.movementType === 'inbound') {
+        totalInbound += movement.itemsCount;
+      }
+    }
+    return totalInbound;
   }
 
   async countOutbound(): Promise<number> {
-    throw new Error('Method not implemented.')
+    let totalOutbound = 0;
+    for (const movement of this.inventoryMovements) {
+      if (movement.movementType === 'outbound') {
+        totalOutbound += movement.itemsCount;
+      }
+    }
+    return totalOutbound;
   }
 
   async findByDateRange(params: FindByDateRangeParams): Promise<InventoryMovement[]> {
-    throw new Error('Method not implemented.')
+    return this.inventoryMovements.filter((movement) => {
+      const registeredAt = new Datetime(movement.registeredAt)
+      return registeredAt.isBetween(params.startDate, params.endDate)
+    })
   }
 }
