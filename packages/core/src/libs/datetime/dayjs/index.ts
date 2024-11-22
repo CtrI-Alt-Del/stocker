@@ -63,7 +63,7 @@ export class DayjsDatetime implements IDatetime {
     return this.date.isBefore(date)
   }
 
-  isBetween(startDate: Date, endDate: Date): boolean {
+  isBetween(startDate: Date | undefined, endDate: Date | undefined): boolean {
     return this.date.isBetween(startDate, endDate, null, '[]')
   }
 
