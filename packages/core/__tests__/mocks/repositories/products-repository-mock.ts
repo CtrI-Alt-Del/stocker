@@ -151,4 +151,10 @@ export class ProductsRepositoryMock implements IProductsRepository {
       (currentProduct) => !productIds.includes(currentProduct.id),
     )
   }
+
+  async calculateInventoryValue(): Promise<number> {
+    return this.products.reduce((total, product) => {
+      return total + Number(product.costPrice) * Number(product.length)
+    }, 0)
+  }
 }
