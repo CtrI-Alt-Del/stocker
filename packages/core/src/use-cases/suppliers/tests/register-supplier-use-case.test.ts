@@ -52,7 +52,6 @@ describe('Register supplier use case', () => {
     const company = Company.create(companyDto)
     await companiesRepository.add(company)
 
-    // Verifica se a execução da criação do fornecedor lança o erro esperado
     await expect(useCase.execute({ supplierDto })).rejects.toThrowError(
       new ConflictError('Email já em uso')
     )
@@ -77,7 +76,6 @@ describe('Register supplier use case', () => {
     const company = Company.create(companyDto)
     await companiesRepository.add(company)
 
-    // Verifica se a execução da criação do fornecedor lança o erro esperado
     await expect(useCase.execute({ supplierDto })).rejects.toThrowError(
       new ConflictError('CNPJ já em uso')
     )
@@ -103,7 +101,6 @@ describe('Register supplier use case', () => {
     const company = Company.create(companyDto)
     await companiesRepository.add(company)
 
-    // Verifica se a execução da criação do fornecedor lança o erro esperado
     await expect(useCase.execute({ supplierDto })).rejects.toThrowError(
       new ConflictError('Telefone já em uso')
     )

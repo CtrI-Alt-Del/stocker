@@ -20,6 +20,14 @@ export class UpdateSupplierUseCase {
       throw new NotFoundError('Usuário não encontrado')
     }
 
+    const supplierEmail = supplierDto.email
+      ? await this.supplierRepository.findByEmail(supplierDto.email)
+      : null
+
+    if (supplierEmail && supplierEmail.id !== supplierId) {
+      throw new ConflictError('Esse Email já está em uso')
+    }
+
     const supplierCNPJ = supplierDto.cnpj
       ? await this.supplierRepository.findByCnpj(supplierDto.cnpj)
       : null
