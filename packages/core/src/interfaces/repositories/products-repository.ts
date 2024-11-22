@@ -21,4 +21,5 @@ export interface IProductsRepository {
   findOrderByInventoryMovementsCount(
     params: MostTrendingProductsListParams,
   ): Promise<{ products: Product[]; count: number }>
+  calculateInventoryValue(companyId: string): Promise<number>
 }
