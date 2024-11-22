@@ -63,6 +63,7 @@ describe('Report annual inventory movements use case', () => {
 
     const annualInventoryMovements = await useCase.execute({
       currentDate: currentDate.getDate(),
+      companyId: 'company-123',
     })
 
     expect(annualInventoryMovements).toEqual([
@@ -149,6 +150,7 @@ describe('Report annual inventory movements use case', () => {
       await useCase.execute({
         currentDate: currentDate.getDate(),
         productId: fakeProduct.id,
+        companyId: 'company-123',
       })
     }).rejects.toThrowError(NotFoundError)
   })
@@ -174,6 +176,7 @@ describe('Report annual inventory movements use case', () => {
     const annualInventoryMovements = await useCase.execute({
       currentDate: currentDate.getDate(),
       productId: fakeProduct.id,
+      companyId: 'company-123',
     })
 
     expect(annualInventoryMovements.at(-1)).toEqual({
