@@ -370,4 +370,25 @@ export class PrismaProductsRepository implements IProductsRepository {
       throw new PrismaError(error)
     }
   }
+
+  async calculateInventoryValue(companyId: string): Promise<number> {
+    try {
+      const result = await prisma.product.aggregate({
+        _sum: {
+          cost_price: true,
+        },
+        where: {
+            company_id: companyId,
+            is_active: true,
+          },
+        })
+
+      const totalInventoryValue = result._sum.cost_price ?? 0
+
+      return totalInventoryValue
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
 }
