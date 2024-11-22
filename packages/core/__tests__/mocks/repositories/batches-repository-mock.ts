@@ -14,7 +14,7 @@ export class BatchesRepositoryMock implements IBatchesRepository {
 
   async countItems(): Promise<number> {
     return this.batches.reduce((total, batch) => {
-      return total + batch.itemsCount
+      return total + (batch.itemsCount ?? 0)
     }, 0)
   }
 
