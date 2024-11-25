@@ -6,16 +6,20 @@ import { productsRepository } from '@/database'
 
 type RouteParams = {
   page: string
+  name?: string
+  locationId?: string
+  categoryId?: string
+  supplierId?: string
 }
 
 export class ListProductsController {
   async handle(http: IHttp) {
     const { companyId } = await http.getUser()
-    const { page } = http.getQueryParams<RouteParams>()
+    const { page, name, locationId, categoryId, supplierId } = http.getQueryParams<RouteParams>()
     const pageNumber = parseInt(page || '1', 10)
 
     const useCase = new ListProductsUseCase(productsRepository)
-    const response = await useCase.execute({ page: pageNumber, companyId: companyId })
+    const response = await useCase.execute({ page: pageNumber, name: name, locationId: locationId, categoryId: categoryId, supplierId: supplierId, companyId: companyId })
 
     return http.send(response, HTTP_STATUS_CODE.ok)
   }
