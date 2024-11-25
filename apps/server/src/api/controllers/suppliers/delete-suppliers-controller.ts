@@ -4,15 +4,15 @@ import { DeleteSuppliersUseCase } from '@stocker/core/use-cases'
 import { suppliersRepository } from '@/database'
 
 type Body = {
-  suppliersId: string[]
+  suppliersIds: string[]
 }
 
 export class DeleteSuppliersController {
   async handle(http: IHttp) {
-    const { suppliersId } = http.getBody<Body>()
+    const { suppliersIds } = http.getBody<Body>()
     const useCase = new DeleteSuppliersUseCase(suppliersRepository)
     await useCase.execute({
-      suppliersId,
+      suppliersIds,
     })
     return http.send(null)
   }
