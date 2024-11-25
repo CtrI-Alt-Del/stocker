@@ -77,13 +77,17 @@ export class PrismaProductsRepository implements IProductsRepository {
     }
   }
 
-  async findMany({ page, companyId }: ProductsListParams) {
+  async findMany({ page, companyId, categoryId, locationId, name, supplierId }: ProductsListParams) {
     try {
       const prismaProducts = await prisma.product.findMany({
         take: PAGINATION.itemsPerPage,
         skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,
         where: {
           company_id: companyId,
+          ...(name && { name: { contains: name, mode: 'insensitive' } }), 
+          ...(categoryId && { category_id: categoryId }), 
+          ...(locationId && { location_id: locationId }), 
+          ...(supplierId && { supplier_id: supplierId }), 
         },
         orderBy: { registered_at: 'desc' },
         include: {
@@ -98,17 +102,76 @@ export class PrismaProductsRepository implements IProductsRepository {
             ],
           },
         },
-      })
-
-      const count = await prisma.product.count()
-      const products = prismaProducts.map(this.mapper.toDomain)
-
+      });
+  
+      const count = await prisma.product.count({
+        where: {
+          company_id: companyId,
+          ...(name && { name: { contains: name, mode: 'insensitive' } }),
+          ...(categoryId && { category_id: categoryId }),
+          ...(locationId && { location_id: locationId }),
+          ...(supplierId && { supplier_id: supplierId }),
+        },
+      });
+  
+      const products = prismaProducts.map(this.mapper.toDomain);
+  
       return {
         products,
         count,
-      }
+      };
     } catch (error) {
-      throw new PrismaError(error)
+      throw new PrismaError(error);
+    }
+  }
+
+  async findManyInventoryMovementsCount({ page, companyId, categoryId, locationId, name, supplierId, stockLevel }: ProducsStocksListParams) {
+    try {
+      const prismaProducts = await prisma.product.findMany({
+        take: PAGINATION.itemsPerPage,
+        skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,
+        where: {
+          company_id: companyId,
+          ...(name && { name: { contains: name, mode: 'insensitive' } }), 
+          ...(categoryId && { category_id: categoryId }), 
+          ...(locationId && { location_id: locationId }), 
+          ...(supplierId && { supplier_id: supplierId }), 
+          ...(stockLevel && { stockLevel: stockLevel }), 
+        },
+        orderBy: { registered_at: 'desc' },
+        include: {
+          batches: {
+            orderBy: [
+              {
+                expiration_date: 'asc',
+              },
+              {
+                registered_at: 'asc',
+              },
+            ],
+          },
+        },
+      });
+  
+      const count = await prisma.product.count({
+        where: {
+          company_id: companyId,
+          ...(name && { name: { contains: name, mode: 'insensitive' } }),
+          ...(categoryId && { category_id: categoryId }),
+          ...(locationId && { location_id: locationId }),
+          ...(supplierId && { supplier_id: supplierId }),
+          ...(stockLevel && { stockLevel: stockLevel }), 
+        },
+      });
+  
+      const products = prismaProducts.map(this.mapper.toDomain);
+  
+      return {
+        products,
+        count,
+      };
+    } catch (error) {
+      throw new PrismaError(error);
     }
   }
 
