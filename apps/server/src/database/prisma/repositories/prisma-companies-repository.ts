@@ -82,7 +82,7 @@ export class PrismaCompaniesRepository implements ICompaniesRepository {
 
   async findByCnpj(companyCnpj: string): Promise<Company | null> {
     try {
-      const prismaCompany = await prisma.company.findFirst({
+      const prismaCompany = await prisma.company.findUnique({
         where: {
           cnpj: companyCnpj,
         },
