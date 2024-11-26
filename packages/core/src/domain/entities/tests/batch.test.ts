@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { BatchesFaker } from '../../../../__tests__/fakers'
 import { Batch } from '../batch'
+import { Datetime } from '../../../libs'
 
 describe('Batch entity', () => {
   it('should be created', () => {
@@ -49,5 +50,13 @@ describe('Batch entity', () => {
 
     batch = BatchesFaker.fake({ itemsCount: 0 })
     expect(batch.hasItems).toBeFalsy()
+  })
+
+  it('should return the days to expiration', () => {
+    const differenceInDays = 10
+    const fakeExpirationDate = new Datetime().subtractDays(differenceInDays)
+    const batch = BatchesFaker.fake({ expirationDate: fakeExpirationDate })
+
+    expect(batch.daysToExpiration).toBe(10)
   })
 })

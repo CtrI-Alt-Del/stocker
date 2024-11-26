@@ -1,4 +1,5 @@
 import type { BatchDto } from '../../dtos'
+import { Datetime } from '../../libs'
 import { Entity } from '../abstracts'
 
 type BatchProps = {
@@ -16,7 +17,7 @@ export class Batch extends Entity<BatchProps> {
     return new Batch(
       {
         code: dto.code,
-        expirationDate: dto.expirationDate ? new Date(dto.expirationDate) : null,
+        expirationDate: dto.expirationDate ? dto.expirationDate : null,
         maximumDaysToExpiration: dto.maximumDaysToExpiration ?? null,
         itemsCount: dto.itemsCount,
         productId: dto.productId,
@@ -59,6 +60,10 @@ export class Batch extends Entity<BatchProps> {
 
   get maximumDaysToExpiration(): number | null {
     return this.props.maximumDaysToExpiration
+  }
+
+  get daysToExpiration(): number {
+   return new Datetime().differenceInDays(this.props.expirationDate)
   }
 
   get registeredAt(): Date {
