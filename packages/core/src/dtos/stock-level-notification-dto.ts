@@ -1,10 +1,8 @@
+import type { ProductDto } from './product-dto'
+
 export type StockLevelNotificationDto = {
   id?: string
   companyId: string
-  product: {
-    id: string
-    name: string
-    code: string
-  }
+  productDto: ProductDto
   sentAt?: Date
 }

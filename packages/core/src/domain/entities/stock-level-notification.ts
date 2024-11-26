@@ -1,13 +1,10 @@
 import { Notification } from '../abstracts'
 import type { StockLevelNotificationDto } from '../../dtos'
+import { Product } from './product'
 
 type StockLevelNotificationProps = {
   companyId: string
-  product: {
-    id: string
-    name: string
-    code: string
-  }
+  product: Product
   sentAt: Date
 }
 
@@ -16,7 +13,7 @@ export class StockLevelNotification extends Notification<StockLevelNotificationP
     return new StockLevelNotification(
       {
         companyId: dto.companyId,
-        product: dto.product,
+        product: Product.create(dto.productDto),
         sentAt: dto.sentAt ?? new Date(),
       },
       dto.id,
@@ -37,13 +34,9 @@ export class StockLevelNotification extends Notification<StockLevelNotificationP
 
   get dto(): StockLevelNotificationDto {
     return {
-      companyId: this.props.companyId,
       id: this.id,
-      product: {
-        id: this.props.product.id,
-        name: this.props.product.name,
-        code: this.props.product.code,
-      },
+      companyId: this.props.companyId,
+      productDto: this.product.dto,
       sentAt: this.props.sentAt,
     }
   }

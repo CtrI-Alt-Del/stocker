@@ -17,7 +17,7 @@ export class SendStockLevelNotificationsUseCase {
 
     if (product.stockLevel === 'average' || product.stockLevel === 'danger') {
       const notification = StockLevelNotification.create({
-        product: { id: product.id, name: product.name, code: product.code },
+        productDto: product.dto,
         companyId: product.companyId,
       })
 

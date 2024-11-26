@@ -95,7 +95,7 @@ export const NotifcationsDialog = ({ companyId }: NotifcationsDialogProps) => {
                         id={expirationDateNotification.id}
                         href={`/inventory/stocks/${expirationDateNotification.id}`}
                         icon='batch'
-                        title={expirationDateNotification.batch.code}
+                        title={`${expirationDateNotification.batch.code} | dias até expiração: ${expirationDateNotification.batch.daysToExpiration}`}
                         sentAt={expirationDateNotification.sentAt ?? new Date()}
                         onDelete={handleDeleteNotification}
                       />

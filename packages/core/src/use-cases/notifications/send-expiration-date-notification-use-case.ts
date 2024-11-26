@@ -17,7 +17,7 @@ export class SendExpirationDateNotificationsUseCase {
       const companyNotifications = batches.map((batch) =>
         ExpirationDateNotification.create({
           companyId,
-          batch: { id: batch.id, code: batch.code },
+          batchDto: batch.dto,
         }),
       )
 
@@ -26,6 +26,6 @@ export class SendExpirationDateNotificationsUseCase {
 
     console.log(notifications.length)
 
-    // await this.notificationsRepository.addManyExpirationDateNotifications(notifications)
+    await this.notificationsRepository.addManyExpirationDateNotifications(notifications)
   }
 }

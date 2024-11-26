@@ -66,6 +66,9 @@ export const BatchesTable = ({
             Data de validade
           </TableColumn>
           <TableColumn key='maximum-days-to-expiration' className='uppercase'>
+            Dias até expiração
+          </TableColumn>
+          <TableColumn key='maximum-days-to-expiration' className='uppercase'>
             Máximos de dias até notificação de validade
           </TableColumn>
           <TableColumn key='view' className='uppercase'>
@@ -85,6 +88,7 @@ export const BatchesTable = ({
                   ? new Datetime(batch.expirationDate).format('DD/MM/YYYY')
                   : 'N/A'}
               </TableCell>
+              <TableCell>{batch.daysToExpiration}</TableCell>
               <TableCell>{batch.maximumDaysToExpiration ?? 'N/A'}</TableCell>
               <TableCell>
                 {hasValidRole ? (

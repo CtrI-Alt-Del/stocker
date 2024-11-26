@@ -1,12 +1,10 @@
 import { Notification } from '../abstracts'
 import type { ExpirationDateNotificationDto } from '../../dtos'
+import { Batch } from './batch'
 
 type ExpirationDateNotificationProps = {
   companyId: string
-  batch: {
-    id: string
-    code: string
-  }
+  batch: Batch
   sentAt: Date
 }
 
@@ -16,7 +14,7 @@ export class ExpirationDateNotification extends Notification<ExpirationDateNotif
       {
         companyId: dto.companyId,
         sentAt: dto.sentAt ?? new Date(),
-        batch: dto.batch,
+        batch: Batch.create(dto.batchDto),
       },
       dto.id,
     )
@@ -34,10 +32,7 @@ export class ExpirationDateNotification extends Notification<ExpirationDateNotif
     return {
       id: this.id,
       companyId: this.props.companyId,
-      batch: {
-        id: this.props.batch.id,
-        code: this.props.batch.code,
-      },
+      batchDto: this.batch.dto,
       sentAt: this.props.sentAt,
     }
   }

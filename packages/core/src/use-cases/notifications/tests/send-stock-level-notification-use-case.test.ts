@@ -81,11 +81,9 @@ describe('Send stock level notification use case', () => {
     await useCase.execute(fakeDangerLevelProduct.id)
 
     expect(notificationsSocket.emittedStockLevelNotifications).toHaveLength(1)
-    expect(notificationsSocket.emittedStockLevelNotifications[0]?.product).toEqual({
-      id: fakeDangerLevelProduct.id,
-      name: fakeDangerLevelProduct.name,
-      code: fakeDangerLevelProduct.code,
-    })
+    expect(notificationsSocket.emittedStockLevelNotifications[0]?.product).toEqual(
+      fakeDangerLevelProduct,
+    )
     expect(notificationsSocket.emittedStockLevelNotifications[0]?.companyId).toBe(
       fakeDangerLevelProduct.companyId,
     )
@@ -105,11 +103,7 @@ describe('Send stock level notification use case', () => {
 
     notificationsRepository.addStockLevelNotification(
       StockLevelNotificationsFaker.fake({
-        product: {
-          id: fakeDangerLevelProduct.id,
-          name: fakeDangerLevelProduct.name,
-          code: fakeDangerLevelProduct.code,
-        },
+        productDto: fakeDangerLevelProduct.dto,
       }),
     )
 

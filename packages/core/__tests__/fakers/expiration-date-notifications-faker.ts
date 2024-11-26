@@ -1,6 +1,7 @@
 import { fakerPT_BR as faker } from '@faker-js/faker'
 import { ExpirationDateNotification } from '../../src/domain/entities'
 import type { ExpirationDateNotificationDto } from '../../src/dtos'
+import { BatchesFaker } from './batch-faker'
 
 export class ExpirationDateNotificationsFaker {
   static fakeExpirationDateNotification(
@@ -18,10 +19,7 @@ export class ExpirationDateNotificationsFaker {
     return {
       id: faker.string.uuid(),
       companyId: faker.string.uuid(),
-      batch: {
-        id: faker.string.uuid(),
-        code: faker.string.uuid(),
-      },
+      batchDto: BatchesFaker.fakeDto(),
       registeredAt: baseDto?.registeredAt ?? fixedDate,
       ...baseDto,
     }

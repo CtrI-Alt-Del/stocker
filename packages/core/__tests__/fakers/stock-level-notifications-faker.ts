@@ -1,6 +1,7 @@
 import { fakerPT_BR as faker } from '@faker-js/faker'
 import { StockLevelNotification } from '../../src/domain/entities'
 import type { StockLevelNotificationDto } from '../../src/dtos'
+import { ProductsFaker } from './products-faker'
 
 export class StockLevelNotificationsFaker {
   static fake(baseDto?: Partial<StockLevelNotificationDto>) {
@@ -13,11 +14,7 @@ export class StockLevelNotificationsFaker {
     return {
       id: faker.string.uuid(),
       companyId: faker.string.uuid(),
-      product: {
-        id: faker.string.uuid(),
-        name: faker.commerce.productName(),
-        code: faker.string.uuid(),
-      },
+      productDto: ProductsFaker.fakeDto(),
       sentAt: baseDto?.sentAt ?? fixedDate,
       ...baseDto,
     }

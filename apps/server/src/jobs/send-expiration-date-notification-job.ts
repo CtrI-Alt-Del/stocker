@@ -1,9 +1,5 @@
 import { SendExpirationDateNotificationsUseCase } from '@stocker/core/use-cases'
-import type {
-  IBatchesRepository,
-  IJob,
-  INotificationsRepository,
-} from '@stocker/core/interfaces'
+import type { IJob } from '@stocker/core/interfaces'
 import type { JobKey } from '@stocker/core/types'
 import { batchesRepository, notificationsRepository } from '@/database'
 
