@@ -1,7 +1,7 @@
 import { useApi, useToast } from '@/ui/hooks'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { SupplierDto } from '@stocker/core/dtos'
-import { cnpjSchema, emailSchema, nameSchema, passwordSchema } from '@stocker/validation/schemas'
+import { cnpjSchema, emailSchema, nameSchema, phoneSchema } from '@stocker/validation/schemas'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -23,7 +23,7 @@ export function useUpdateSupplierForm({
   onCancel,
   onSubmit,
 }: useUpdateSupplierFormProps) {
-  const { usersService } = useApi()
+  const { usersService,  suppliersService} = useApi()
   const { showSuccess, showError } = useToast()
   const { formState, reset, register, handleSubmit, control } =
     useForm<updateSupplierFormData>({
@@ -36,17 +36,17 @@ export function useUpdateSupplierForm({
       resolver: zodResolver(updateSupplierFormSchema),
     })
   async function handleFormSubmit(formData: updateSupplierFormData) {
-    const partialUser: Record<string, unknown> = {}
+    const partialSupplier: Record<string, unknown> = {}
     const updatedFields = Object.keys(formState.dirtyFields)
     for (const updatedField of updatedFields) {
       const updatedValue = formData[updatedField as keyof updateSupplierFormData]
-      partialUser[updatedField] = updatedValue
+      partialSupplier[updatedField] = updatedValue
     }
     if (!supplier.id) {
       return
     }
-    const response = await usersService.updateUser(
-      partialUser as Partial<SupplierDto>,
+    const response = await suppliersService.updateSupplier(
+      partialSupplier as Partial<SupplierDto>,
       supplier.id,
     )
     if (response.isFailure) {
