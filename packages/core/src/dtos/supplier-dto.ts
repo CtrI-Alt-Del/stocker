@@ -1,5 +1,5 @@
 export type SupplierDto = {
-  id: string
+  id?: string
   name: string
   email: string
   cnpj?: string

@@ -17,7 +17,7 @@ export const RegisterSupplierForm = ({
     useRegisterSupplierForm(onSubmit)
 
   return (
-    <form onSubmit={handleSubmit} encType='multiform/form-data' className='space-y-6'>
+    <form onSubmit={handleSubmit} className='space-y-6'>
       <div className='w-full'>
         <div className='grid grid-cols-1 w-full  grid-rows-3 gap-6'>
           <Input
@@ -38,7 +38,7 @@ export const RegisterSupplierForm = ({
             label='CNPJ'
             isRequired
             isInvalid={Boolean(errors.cnpj)}
-            errorMessage={errors.email?.message}
+            errorMessage={errors.cnpj?.message}
             {...register('cnpj')}
           />
           <Input
@@ -61,9 +61,8 @@ export const RegisterSupplierForm = ({
           type='submit'
           color='primary'
           isLoading={isSubmiting}
-          className='text-orange'
         >
-          <span className='text-white'>Confirmar</span>
+          Confirm
         </Button>
       </div>
     </form>

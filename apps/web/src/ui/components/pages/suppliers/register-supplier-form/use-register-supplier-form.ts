@@ -5,7 +5,6 @@ import { Supplier } from '@stocker/core/entities'
 import {
   cnpjSchema,
   emailSchema,
-  idSchema,
   nameSchema,
   phoneSchema
 } from '@stocker/validation/schemas'
@@ -13,7 +12,6 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 const registerSupplierFormSchema = z.object({
-    id: idSchema,
   name: nameSchema,
   email: emailSchema,
   cnpj: cnpjSchema,
@@ -25,20 +23,23 @@ export function useRegisterSupplierForm(onSubmit: VoidFunction) {
   const { suppliersService } = useApi()
   const { showError, showSuccess } = useToast()
   const { user } = useAuthContext()
+
   const { control, formState, reset, register, handleSubmit } =
     useForm<registerSupplierFormData>({
       resolver: zodResolver(registerSupplierFormSchema),
     })
   async function handleFormSubmit(formData: registerSupplierFormData) {
-    if (!Supplier) return
 
+if(!user?.companyId) {
+  console.error("Company ID não definido");
+  return;
+}
     const newSupplier = Supplier.create({
       name: formData.name,
       email: formData.email,
       cnpj: formData.cnpj,
       phone: formData.phone,
-      companyId: '',
-      id: ''
+      companyId: user?.companyId,
     })
     const response = await suppliersService.registerSupplier(newSupplier)
 
