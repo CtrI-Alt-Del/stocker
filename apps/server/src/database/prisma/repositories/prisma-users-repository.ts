@@ -28,6 +28,25 @@ export class PrismaUsersRepository implements IUsersRepository {
     }
   }
 
+  async addMany(users: User[]): Promise<void> {
+    try {
+      const prismaUsers = users.map(this.mapper.toPrisma)
+      await prisma.user.createMany({
+        data: prismaUsers.map((prismaUser) => ({
+          id: prismaUser.id,
+          name: prismaUser.name,
+          email: prismaUser.email,
+          password: prismaUser.password,
+          role: prismaUser.role,
+          has_first_password_reset: prismaUser.has_first_password_reset,
+          company_id: prismaUser.company_id,
+        })),
+      })
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
   async deleteMany(usersIds: string[]): Promise<void> {
     try {
       await prisma.user.deleteMany({
@@ -35,6 +54,22 @@ export class PrismaUsersRepository implements IUsersRepository {
           id: { in: usersIds },
         },
       })
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
+  async findAllByCompany(companyId: string) {
+    try {
+      const prismaUsers = await prisma.user.findMany({
+        where: {
+          company_id: companyId,
+          role: { not: 'ADMIN' },
+        },
+        orderBy: { registered_at: 'desc' },
+      })
+
+      return prismaUsers.map(this.mapper.toDomain)
     } catch (error) {
       throw new PrismaError(error)
     }

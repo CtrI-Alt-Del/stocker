@@ -26,6 +26,23 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
     }
   }
 
+  async addMany(categories: Category[]): Promise<void> {
+    try {
+      const prismaCategories = categories.map(this.mapper.toPrisma)
+
+      await prisma.category.createMany({
+        data: prismaCategories.map((prismaCategory) => ({
+          id: prismaCategory.id,
+          name: prismaCategory.name,
+          parent_category_id: prismaCategory.parent_category_id,
+          company_id: prismaCategory.company_id,
+        })),
+      })
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
   async findById(categoryId: string): Promise<Category | null> {
     try {
       const prismaCategory = await prisma.category.findUnique({

@@ -11,12 +11,12 @@ import {
   categoriesRepository,
   inventoryMovementsRepository,
   productsRepository,
-  usersRepository
+  usersRepository,
 } from '..'
 import { prisma } from './prisma-client'
 import { fakerPT_BR as faker } from '@faker-js/faker'
 
-const COMPANY_ID = 'eceda392-06df-4ed2-8c90-db6bf1e38830'
+const COMPANY_ID = 'a72bfaef-a870-43d1-b1e4-5db5b17c896b'
 const MANAGER_ID = '29fcf7a0-5ee3-4cb0-b36e-ecc825f1cdaa'
 const CATEGORY_ID = '602f6307-a60a-4825-b57d-873b97fe2bca'
 const PRODUCT_ID = 'ca479caf-31f7-48ed-bc0c-7e3115d04e32'
@@ -28,13 +28,13 @@ async function seedDatabase() {
 
   await seedMainProduct()
   const categories = await createManyFakeCategory(20)
-  console.log("1")
+  console.log('1')
   await seedMultipleProducts(50, categories)
-    console.log("2")
+  console.log('2')
   await seedMultipleProductsWithoutRelatedData(25)
-      console.log("3")
+  console.log('3')
   await seedMultipleProductsWithMinimumBatches(25)
-      console.log("4")
+  console.log('4')
   await seedMultipleUsers(22)
 }
 
@@ -56,7 +56,7 @@ async function createBaseEntities() {
       email: 'hector@gmail.com',
       role: 'MANAGER',
       company_id: COMPANY_ID,
-      password: "1233"
+      password: '1233',
     },
   })
 
@@ -203,11 +203,9 @@ async function seedMultipleUsers(count: number) {
   }
   if (usersPromises.length >= CONNECTION_POOL_SIZE) {
     await Promise.allSettled(usersPromises)
-    
   }
   if (usersPromises.length > 0) {
     await Promise.allSettled(usersPromises)
-    
   }
 }
 seedDatabase()

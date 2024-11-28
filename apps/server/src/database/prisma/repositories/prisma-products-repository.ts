@@ -49,6 +49,38 @@ export class PrismaProductsRepository implements IProductsRepository {
       throw new PrismaError(error)
     }
   }
+
+  async addMany(products: Product[]): Promise<void> {
+    try {
+      const prismaProducts = products.map(this.mapper.toPrisma)
+
+      await prisma.product.createMany({
+        data: prismaProducts.map((prismaProduct) => ({
+          id: prismaProduct.id,
+          name: prismaProduct.name,
+          image: prismaProduct.image,
+          cost_price: prismaProduct.cost_price,
+          description: prismaProduct.description,
+          width: prismaProduct.width,
+          length: prismaProduct.length,
+          height: prismaProduct.height,
+          weight: prismaProduct.weight,
+          company_id: prismaProduct.company_id,
+          category_id: prismaProduct.category_id,
+          selling_price: prismaProduct.selling_price,
+          uom: prismaProduct.uom,
+          code: prismaProduct.code,
+          minimum_stock: prismaProduct.minimum_stock,
+          brand: prismaProduct.brand,
+          is_active: prismaProduct.is_active,
+          model: prismaProduct.model,
+        })),
+      })
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
   async findById(productId: string): Promise<Product | null> {
     try {
       const prismaProduct = await prisma.product.findUnique({
@@ -72,6 +104,33 @@ export class PrismaProductsRepository implements IProductsRepository {
       if (!prismaProduct) return null
 
       return this.mapper.toDomain(prismaProduct)
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
+  async findAllByCompany(companyId: string) {
+    try {
+      const prismaProducts = await prisma.product.findMany({
+        where: {
+          company_id: companyId,
+        },
+        orderBy: { registered_at: 'desc' },
+        include: {
+          batches: {
+            orderBy: [
+              {
+                expiration_date: 'asc',
+              },
+              {
+                registered_at: 'asc',
+              },
+            ],
+          },
+        },
+      })
+
+      return prismaProducts.map(this.mapper.toDomain)
     } catch (error) {
       throw new PrismaError(error)
     }
@@ -378,10 +437,10 @@ export class PrismaProductsRepository implements IProductsRepository {
           cost_price: true,
         },
         where: {
-            company_id: companyId,
-            is_active: true,
-          },
-        })
+          company_id: companyId,
+          is_active: true,
+        },
+      })
 
       const totalInventoryValue = result._sum.cost_price ?? 0
 
@@ -390,5 +449,4 @@ export class PrismaProductsRepository implements IProductsRepository {
       throw new PrismaError(error)
     }
   }
-
 }

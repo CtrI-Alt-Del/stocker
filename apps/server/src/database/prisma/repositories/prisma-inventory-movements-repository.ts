@@ -56,6 +56,29 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
     }
   }
 
+  async findAllByCompany(companyId: string): Promise<InventoryMovement[]> {
+    const prismaInventoryMovements = await prisma.inventoryMovement.findMany({
+      where: {
+        Product: {
+          company_id: companyId,
+        },
+      },
+      orderBy: {
+        registered_at: 'desc',
+      },
+      include: {
+        User: true,
+        Product: {
+          include: {
+            batches: true,
+          },
+        },
+      },
+    })
+
+    return prismaInventoryMovements.map(this.mapper.toDomain)
+  }
+
   async findMany({
     page,
     startDate,
@@ -106,22 +129,18 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
           ...productIdFilter,
           ...movementTypeFilter,
           ...dateRangeParams,
-          Product:{
-            company_id:companyId
-          }
+          Product: {
+            company_id: companyId,
+          },
         },
         orderBy: {
           registered_at: 'desc',
         },
         include: {
-          User: {
-            select: {
-              name: true,
-            },
-          },
+          User: true,
           Product: {
-            select: {
-              name: true,
+            include: {
+              batches: true,
             },
           },
         },
@@ -151,14 +170,10 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
         },
       },
       include: {
-        User: {
-          select: {
-            name: true,
-          },
-        },
+        User: true,
         Product: {
-          select: {
-            name: true,
+          include: {
+            batches: true,
           },
         },
       },
@@ -167,9 +182,11 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
     return prismaInventoryMovements.map(this.mapper.toDomain)
   }
 
-  async count(): Promise<number> {
+  async count(companyId: string): Promise<number> {
     try {
-      return await prisma.inventoryMovement.count()
+      return await prisma.inventoryMovement.count({
+        where: { Product: { company_id: companyId } },
+      })
     } catch (error) {
       throw new PrismaError(error)
     }

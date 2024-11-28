@@ -37,6 +37,7 @@ model Product {
   model         String?
   is_active     Boolean  @default(true)
   category_id   String?
+  supplier_id   String?
   company_id    String
   registered_at DateTime @default(now())
 
@@ -159,7 +160,7 @@ model StockLevelNotification {
 
   Product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
-  @@map("stock-level-notifications")
+  @@map("stock_level_notifications")
 }
 
 model ExpirationDateNotification {
@@ -170,5 +171,5 @@ model ExpirationDateNotification {
 
   Batch Batch @relation(fields: [batch_id], references: [id], onDelete: Cascade)
 
-  @@map("expiration-date-notification")
+  @@map("expiration_date_notification")
 }
