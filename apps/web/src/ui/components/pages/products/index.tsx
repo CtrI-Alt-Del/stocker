@@ -10,9 +10,13 @@ import { useProductsPage } from './use-products-page'
 import { Search } from '../../commons/search'
 import { AlertDialog } from '../../commons/alert-dialog'
 import { useAuthContext } from '../../contexts/auth-context'
+import { CategorySelect } from '../../commons/category-select'
+import { Icon } from '../../commons/icon'
 
 export const ProductsPage = () => {
   const {
+    categoryId,
+    handleCategoryIdSearchChange,
     isFetching,
     isDeleting,
     page,
@@ -32,13 +36,30 @@ export const ProductsPage = () => {
   const hasValidRole = user?.hasValidRole('manager')
   return (
     <>
-      <div className='flex flex-col gap-3 md:flex-row md:gap-0 justify-between'>
-        <div className='flex-1 w-full max-w-96 space-y-2'>
+      <div className='flex flex-col gap-3 md:flex-row md:gap-0 items-center  justify-between'>
+        <div className='flex-1 w-full  max-w-96 space-y-2 '>
           <h1 className='text-3xl font-black'>Produtos</h1>
-          <Search value={filterByNameValue} onSearchChange={handleSearchChange} />
+          <div className='flex flex-row gap-4 w-screen items-center '>
+            <Search value={filterByNameValue} onSearchChange={handleSearchChange} />
+            <div className=' flex flex-row items-center justify-center gap-4'>
+              <CategorySelect
+                value={categoryId}
+                onSelectChange={handleCategoryIdSearchChange}
+              />
+              {categoryId && (
+                <button
+                  type='button'
+                  onClick={() => handleCategoryIdSearchChange('')}
+                  className='flex justify-center items-center gap-2 text-sm text-gray-400'
+                >
+                  Remover Filtro
+                  <Icon name='close' className='size-4' />{' '}
+                </button>
+              )}
+            </div>
+          </div>
         </div>
-
-        <div className='flex items-center gap-1'>
+        <div className='flex items-center  gap-1'>
           {selectedProductsIds.length > 0 && (
             <AlertDialog
               trigger={
