@@ -20,6 +20,7 @@
     "@fastify/jwt": "9.0.1",
     "@fastify/multipart": "9.0.1",
     "@fastify/websocket": "11.0.1",
+    "@google/generative-ai": "0.21.0",
     "@prisma/client": "^5.19.1",
     "@stocker/core": "*",
     "@stocker/email": "*",

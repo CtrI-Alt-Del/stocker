@@ -4,4 +4,8 @@ export const REALTIME_EVENTS = {
     stockLevelNotificationSent: 'stock-level-notification-sent',
     notificationDeleted: 'notification-deleted',
   },
+  aiReportRoom: {
+    connected: 'ai-report-connected',
+    generated: 'ai-report-generated',
+  },
 }
