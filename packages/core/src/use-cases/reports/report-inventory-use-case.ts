@@ -1,9 +1,15 @@
 import type { IProductsRepository } from '../../interfaces'
 import { PaginationResponse } from '../../responses'
+import type { StockLevel } from '../../types'
 
 type Request = {
-  page: number
+  name?: string
   companyId: string
+  locationId?: string
+  categoryId?: string
+  stockLevel?: StockLevel
+  supplierId?: string
+  page: number
 }
 
 export class ReportInventorysUseCase {
@@ -12,11 +18,16 @@ export class ReportInventorysUseCase {
     this.productsRepository = productsRepository
   }
 
-  async execute({ page, companyId }: Request) {
+  async execute({ page, companyId, name, locationId, categoryId, stockLevel, supplierId }: Request) {
     const { products, count } =
       await this.productsRepository.findManyWithInventoryMovementsCount({
-        page,
+        name,
         companyId,
+        locationId,
+        categoryId,
+        stockLevel,
+        supplierId,
+        page,
       })
 
     return new PaginationResponse({

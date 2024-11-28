@@ -2,9 +2,14 @@ import type { IProductsRepository } from '../../interfaces'
 import { PaginationResponse } from '../../responses'
 
 type Request = {
-  page: number
+  name?: string
   companyId: string
+  locationId?: string
+  categoryId?: string
+  supplierId?: string
+  page: number
 }
+
 
 export class ListProductsUseCase {
   private readonly productsRepository: IProductsRepository
@@ -12,8 +17,16 @@ export class ListProductsUseCase {
     this.productsRepository = productsRepository
   }
 
-  async execute({ page,companyId }: Request) {
-    const { products, count } = await this.productsRepository.findMany({ page,companyId })
+  async execute({ page, companyId, categoryId, name, locationId, supplierId }: Request) {
+    const { products, count } =
+      await this.productsRepository.findMany({
+        name,
+        companyId,
+        locationId,
+        categoryId,
+        supplierId,
+        page,
+      })
 
     return new PaginationResponse({
       items: products.map((product) => product.dto),

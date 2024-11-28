@@ -29,26 +29,6 @@ export class PrismaSuppliersRepository implements ISuppliersRepository {
     }
   }
 
-  async addMany(suppliers: Supplier[]): Promise<void> {
-    try {
-      const prismaSuppliers = suppliers.map(this.mapper.toPrisma)
-
-      await prisma.suppliers.createMany({
-        data: prismaSuppliers.map((prismaSupplier) => ({
-          id: prismaSupplier.id,
-          email: prismaSupplier.email,
-          name: prismaSupplier.name,
-          cnpj: prismaSupplier.cnpj,
-          phone: prismaSupplier.phone,
-          company_id: prismaSupplier.company_id,
-          registered_at: prismaSupplier.registered_at,
-        })),
-      })
-    } catch (error) {
-      throw new PrismaError(error)
-    }
-  }
-
   async deleteMany(suppliersIds: string[]): Promise<void> {
     try {
       await prisma.suppliers.deleteMany({
@@ -62,7 +42,15 @@ export class PrismaSuppliersRepository implements ISuppliersRepository {
   }
 
   async findById(supplierId: string): Promise<Supplier | null> {
-    throw new Error('Method not implemented.')
+    try {
+      const prismaSupplier = await prisma.suppliers.findUnique({
+        where: { id: supplierId },
+      })
+      if (!prismaSupplier) return null
+      return this.mapper.toDomain(prismaSupplier)
+    } catch (error) {
+      throw new PrismaError(error)
+    }
   }
 
   async findByCnpj(cnpj: string): Promise<Supplier | null> {
@@ -113,22 +101,30 @@ export class PrismaSuppliersRepository implements ISuppliersRepository {
     }
   }
 
-  async findMany(params: SuppliersListParams) {
+  async findMany({ page, name, companyId }: SuppliersListParams) {
     try {
       const prismaSuppliers = await prisma.suppliers.findMany({
         take: PAGINATION.itemsPerPage,
-        skip: params.page > 0 ? (params.page - 1) * PAGINATION.itemsPerPage : 1,
+        skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,
         where: {
-          company_id: params.companyId,
+          company_id: companyId,
+          ...(name && { name: { contains: name, mode: 'insensitive' } }),
         },
         orderBy: { registered_at: 'desc' },
       })
 
-      const count = await prisma.suppliers.count()
+      const count = await prisma.suppliers.count({
+        where: {
+          company_id: companyId,
+          ...(name && { name: { contains: name, mode: 'insensitive' } }),
+        },
+      })
+
       const suppliers = prismaSuppliers.map(this.mapper.toDomain)
+
       return {
-        suppliers: suppliers,
-        count: count,
+        suppliers,
+        count,
       }
     } catch (error) {
       throw new PrismaError(error)

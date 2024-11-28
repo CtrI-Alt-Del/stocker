@@ -30,15 +30,41 @@ export class PrismaLocationsRepository implements ILocationsRepository {
 
     async deleteMany(locationsIds: string[]): Promise<void> {
         try {
-            await prisma.location.deleteMany({
-                where: {
-                    id: { in: locationsIds },
-                }
+            for (const locationId of locationsIds) {
+            const location = await prisma.location.findUnique({
+              where: {
+                id: locationId,
+              },
+              include: {
+                subLocation: true,
+              },
             })
-        } catch (error) {
+      
+            if (!location) {
+              throw new PrismaError('Repository Error: Location not found')
+            }
+      
+            if (location.subLocation.length > 0) {
+              const subLocationIds = location.subLocation.map((subLocation) => subLocation.id)
+              await prisma.location.deleteMany({
+                where: {
+                  id: {
+                    in: subLocationIds,
+                  },
+                },
+              })
+            }
+      
+            await prisma.location.delete({
+              where: {
+                id: locationId,
+              },
+            })
+        }
+          } catch (error) {
             throw new PrismaError(error)
           }
-    }
+        }
 
     async findById(locationId: string): Promise<Location | null> {
         try {

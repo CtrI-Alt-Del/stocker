@@ -36,6 +36,7 @@ const updateProductFormSchema = z.object({
   code: stringSchema,
   minimumStock: nonZeroIntegerSchema,
   categoryId: idSchema.optional(),
+  supplierId: idSchema.optional(),
   model: z.string().optional(),
   isActive: booleanSchema.default(true),
 })

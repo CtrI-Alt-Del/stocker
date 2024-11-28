@@ -44,4 +44,10 @@ export const CACHE = {
   company: {
     key: '/company',
   },
+  supplier: {
+    key: '/supplier',
+  },
+  suppliers: {
+    key: '/suppliers',
+  },
 }

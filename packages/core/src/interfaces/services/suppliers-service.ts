@@ -4,14 +4,9 @@ import type { ApiResponse, PaginationResponse } from '../../responses'
 import type { SuppliersListParams } from '../../types'
 
 export interface ISuppliersService {
-  listSuppliers(
-    params: SuppliersListParams,
-  ): Promise<ApiResponse<PaginationResponse<SupplierDto>>>
-  getSupplier(SupplierId: string): Promise<ApiResponse<SupplierDto>>
-  registerSupplier(Supplier: Supplier): Promise<ApiResponse<void>>
-  updateSupplier(
-    partialSupplierDto: Partial<SupplierDto>,
-    SupplierId: string,
-  ): Promise<ApiResponse<void>>
-  deleteSuppliers(SuppliersIds: string[]): Promise<ApiResponse<void>>
+  listSuppliers(params: SuppliersListParams): Promise<ApiResponse<PaginationResponse<SupplierDto>>>
+  getSupplier(supplierId: string): Promise<ApiResponse<SupplierDto>>
+  registerSupplier(supplier: Supplier): Promise<ApiResponse<void>>
+  updateSupplier(partialSupplierDto: Partial<SupplierDto>, supplierId: string): Promise<ApiResponse<void>>
+  deleteSupplier(suppliersIds: string[]): Promise<ApiResponse<void>>
 }
