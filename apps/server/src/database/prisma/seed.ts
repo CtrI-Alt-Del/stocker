@@ -19,6 +19,7 @@ import {
   SuppliersFaker,
   UsersFaker,
 } from '@stocker/core/fakers'
+import { CryptoProvider } from '@/providers/crypto-provider'
 
 const FAKE_COMPANY_ID = '29fcf7a0-5ee3-4cb0-b36e-ecc825f1cdaa'
 
@@ -60,7 +61,8 @@ export async function registerInboundMovement(
 }
 
 export async function seed() {
-  await resetDatabase()
+  const existingFakeCompany = await companiesRepository.findById(FAKE_COMPANY_ID)
+  if (existingFakeCompany) await companiesRepository.delete(FAKE_COMPANY_ID)
 
   const fakeCompany = CompanyFaker.fake({ id: FAKE_COMPANY_ID })
   const fakeSuppliers = SuppliersFaker.fakeMany(3, { companyId: fakeCompany.id })
@@ -94,7 +96,14 @@ export async function seed() {
     role: 'employee',
     companyId: fakeCompany.id,
   })
-  fakeUsers.push(UsersFaker.fake({ role: 'admin', companyId: fakeCompany.id }))
+  fakeUsers.push(
+    UsersFaker.fake({
+      role: 'admin',
+      companyId: fakeCompany.id,
+      email: 'stockerteampr@gmail.com',
+      password: await new CryptoProvider().hash('stocker123'),
+    }),
+  )
 
   await companiesRepository.add(fakeCompany)
 
