@@ -13,7 +13,7 @@ export class PrismaSuppliersRepository implements ISuppliersRepository {
   async add(supplier: Supplier): Promise<void> {
     try {
       const prismaSupplier = this.mapper.toPrisma(supplier)
-      await prisma.suppliers.create({
+      await prisma.supplier.create({
         data: {
           id: prismaSupplier.id,
           email: prismaSupplier.email,
@@ -32,7 +32,7 @@ export class PrismaSuppliersRepository implements ISuppliersRepository {
   async addMany(suppliers: Supplier[]): Promise<void> {
     try {
       const prismaSuppliers = suppliers.map(this.mapper.toPrisma)
-      await prisma.suppliers.createMany({
+      await prisma.supplier.createMany({
         data: prismaSuppliers.map((prismaSupplier) => ({
           id: prismaSupplier.id,
           email: prismaSupplier.email,
@@ -50,7 +50,7 @@ export class PrismaSuppliersRepository implements ISuppliersRepository {
 
   async deleteMany(suppliersIds: string[]): Promise<void> {
     try {
-      await prisma.suppliers.deleteMany({
+      await prisma.supplier.deleteMany({
         where: {
           id: { in: suppliersIds },
         },
@@ -62,7 +62,7 @@ export class PrismaSuppliersRepository implements ISuppliersRepository {
 
   async findById(supplierId: string): Promise<Supplier | null> {
     try {
-      const prismaSupplier = await prisma.suppliers.findUnique({
+      const prismaSupplier = await prisma.supplier.findUnique({
         where: { id: supplierId },
       })
       if (!prismaSupplier) return null
@@ -74,7 +74,7 @@ export class PrismaSuppliersRepository implements ISuppliersRepository {
 
   async findByCnpj(cnpj: string): Promise<Supplier | null> {
     try {
-      const prismaSupplier = await prisma.suppliers.findFirst({
+      const prismaSupplier = await prisma.supplier.findFirst({
         where: {
           cnpj,
         },
@@ -90,7 +90,7 @@ export class PrismaSuppliersRepository implements ISuppliersRepository {
 
   async findByEmail(email: string): Promise<Supplier | null> {
     try {
-      const prismaSupplier = await prisma.suppliers.findFirst({
+      const prismaSupplier = await prisma.supplier.findFirst({
         where: {
           email,
         },
@@ -106,7 +106,7 @@ export class PrismaSuppliersRepository implements ISuppliersRepository {
 
   async findByPhone(phone: string): Promise<Supplier | null> {
     try {
-      const prismaSupplier = await prisma.suppliers.findFirst({
+      const prismaSupplier = await prisma.supplier.findFirst({
         where: {
           phone,
         },
@@ -122,7 +122,7 @@ export class PrismaSuppliersRepository implements ISuppliersRepository {
 
   async findMany({ page, name, companyId }: SuppliersListParams) {
     try {
-      const prismaSuppliers = await prisma.suppliers.findMany({
+      const prismaSuppliers = await prisma.supplier.findMany({
         take: PAGINATION.itemsPerPage,
         skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,
         where: {
@@ -132,7 +132,7 @@ export class PrismaSuppliersRepository implements ISuppliersRepository {
         orderBy: { registered_at: 'desc' },
       })
 
-      const count = await prisma.suppliers.count({
+      const count = await prisma.supplier.count({
         where: {
           company_id: companyId,
           ...(name && { name: { contains: name, mode: 'insensitive' } }),
@@ -153,7 +153,7 @@ export class PrismaSuppliersRepository implements ISuppliersRepository {
   async update(supplier: Supplier, supplierId: string): Promise<void> {
     try {
       const prismaSupplier = this.mapper.toPrisma(supplier)
-      await prisma.suppliers.update({
+      await prisma.supplier.update({
         data: {
           email: prismaSupplier.email,
           name: prismaSupplier.name,

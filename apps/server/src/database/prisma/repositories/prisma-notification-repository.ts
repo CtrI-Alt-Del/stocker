@@ -24,7 +24,11 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
           id: notificationId,
         },
         include: {
-          Product: true,
+          product: {
+            include: {
+              batches: true,
+            },
+          },
         },
       })
 
@@ -37,7 +41,7 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
           id: notificationId,
         },
         include: {
-          Batch: true,
+          batch: true,
         },
       })
 
@@ -60,7 +64,11 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
           product_id: productId,
         },
         include: {
-          Product: true,
+          product: {
+            include: {
+              batches: true,
+            },
+          },
         },
       })
 
@@ -82,7 +90,11 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
         },
         orderBy: { registered_at: 'desc' },
         include: {
-          Product: true,
+          product: {
+            include: {
+              batches: true,
+            },
+          },
         },
       })
       const notifications = prismaNotifications.map(
@@ -105,7 +117,7 @@ export class PrismaNotificationsRepository implements INotificationsRepository {
         },
         orderBy: { registered_at: 'desc' },
         include: {
-          Batch: true,
+          batch: true,
         },
       })
       const mappedNotifications = notifications.map((notification) =>

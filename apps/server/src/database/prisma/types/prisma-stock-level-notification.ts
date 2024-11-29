@@ -1,10 +1,6 @@
 import type { StockLevelNotification } from '@prisma/client'
+import type { PrismaProduct } from './prisma-product'
 
 export type PrismaStockLevelNotification = StockLevelNotification & {
-  Product: {
-    id: string
-    name: string
-    code: string
-    company_id: string
-  }
+  product: PrismaProduct
 }
