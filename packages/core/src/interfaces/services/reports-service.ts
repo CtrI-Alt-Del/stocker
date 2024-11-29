@@ -12,7 +12,15 @@ import type {
 import type { MostTrendingProductsListParams } from '../../types/most-trending-products-list-params'
 
 export interface IReportsService {
-  reportSummary(): Promise<ApiResponse<any>>
+  reportSummary(): Promise<
+    ApiResponse<{
+      batchesCount: number
+      itemsCount: number
+      inboundInventoryMovementsCount: number
+      outboundInventoryMovementsCount: number
+      inventoryValue: number
+    }>
+  >
   reportStockLevel(): Promise<ApiResponse<StockLevelReportDto>>
   reportMostTrendingProducts(
     params: MostTrendingProductsListParams,
