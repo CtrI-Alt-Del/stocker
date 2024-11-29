@@ -121,6 +121,16 @@ export function useUpdateProductForm({
     for (const updatedField of updatedFields) {
       if (updatedField === 'image') continue
 
+      if (updatedField === 'categoryId') {
+        partialProduct.category = { id: formData.categoryId }
+        continue
+      }
+
+      if (updatedField === 'supplierId') {
+        partialProduct.supplier = { id: formData.supplierId }
+        continue
+      }
+
       const updatedValue = formData[updatedField as keyof UpdateProductFormData]
       partialProduct[updatedField] = updatedValue
     }

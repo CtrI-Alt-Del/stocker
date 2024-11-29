@@ -16,7 +16,7 @@ export class ListProductsController {
   async handle(http: IHttp) {
     const { companyId } = await http.getUser()
     const { page, name, locationId, categoryId, supplierId } = http.getQueryParams<RouteParams>()
-    const pageNumber = parseInt(page || '1', 10)
+    const pageNumber = parseInt(page || '1')
 
     const useCase = new ListProductsUseCase(productsRepository)
     const response = await useCase.execute({ page: pageNumber, name: name, locationId: locationId, categoryId: categoryId, supplierId: supplierId, companyId: companyId })

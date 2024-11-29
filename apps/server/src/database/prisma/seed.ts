@@ -76,20 +76,20 @@ export async function seed() {
 
   const fakeProductsWithSafeStock = ProductsFaker.fakeMany(60, {
     minimumStock: 10,
-    categoryId: fakeCategories[0].id,
-    supplierId: fakeSuppliers[0]?.id,
+    category: { id: fakeCategories[0].id },
+    supplier: { id: fakeSuppliers[0]?.id ?? '' },
     companyId: fakeCompany.id,
   })
   const fakeProductsWithAverageStock = ProductsFaker.fakeMany(30, {
     minimumStock: 100,
-    categoryId: fakeCategories[1]?.id,
-    supplierId: fakeSuppliers[1]?.id,
+    category: { id: fakeCategories[1]?.id ?? '' },
+    supplier: { id: fakeSuppliers[1]?.id ?? '' },
     companyId: fakeCompany.id,
   })
   const fakeProductsWithDangerStock = ProductsFaker.fakeMany(10, {
     minimumStock: 100,
-    categoryId: fakeCategories[2]?.id,
-    supplierId: fakeSuppliers[2]?.id,
+    category: { id: fakeCategories[2]?.id ?? '' },
+    supplier: { id: fakeSuppliers[2]?.id ?? '' },
     companyId: fakeCompany.id,
   })
   const fakeUsers = UsersFaker.fakeMany(10, {
