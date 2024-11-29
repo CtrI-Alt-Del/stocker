@@ -23,12 +23,13 @@ export class ReportInventoryWithAiUseCase {
     )
 
     let prompt = `
-    Elabore um relatório de estoque detalhado com base nas movimentações de estoques abaixo.
+    Elabore um relatório de estoque básico, mas detalhado com base nas movimentações de estoques abaixo.
     Considere que o estoque inicial era zero para todos os produtos.
     Não considere dados de vendas, tendências de mercado, sazonalidade e outros fatores.
     Destaque os produtos mais movimentados e menos movimentado.
     Destaque os funcionários mais ativos e menos.
-    Tente prever as demandas para os próximo Mês.
+    Não use tabelas.
+    Tente prever os produtos que terão maior demanda para os próximo mês.
     `
 
     for (const movement of movements) {
@@ -36,17 +37,13 @@ export class ReportInventoryWithAiUseCase {
       - Data: ${movement.registeredAt}
       -> Tipo: ${movement.movementType === 'inbound' ? 'ENTRADA' : 'SAÍDA'}
       -> Contagem de items movimentados: ${movement.itemsCount}
-      -> Nome do produto: ${movement.product.name}
-      -> Estoque atual do produto: ${movement.product.currentStock}
-      -> Estoque mínimo do produto: ${movement.product.minimumStock}
-      -> Funcionário responsável: ${movement.responsible.name}
+      -> Nome do produto: ${movement.product?.name}
+      -> Estoque atual do produto: ${movement.product?.currentStock}
+      -> Estoque mínimo do produto: ${movement.product?.minimumStock}
+      -> Funcionário responsável: ${movement.responsible?.name}
       `
     }
 
     await this.aiProvider.generateContent(prompt)
-  }
-
-  async getMovements(companyId: string) {
-    const movementsPagination = await this.inventoryMovementsRepository.count(companyId)
   }
 }
