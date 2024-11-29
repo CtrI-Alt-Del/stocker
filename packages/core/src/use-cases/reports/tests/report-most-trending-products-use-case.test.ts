@@ -25,7 +25,13 @@ describe('Report most trending products to csv file use case', () => {
     const startDate = new Datetime(endDate).addDays(1)
 
     expect(async () => {
-      await useCase.execute({ startDate, endDate, page: 1 })
+      await useCase.execute({
+        startDate,
+        endDate,
+        page: 1,
+        companyId: '',
+        categoryId: '',
+      })
     }).rejects.toThrowError(ValidationError)
   })
 
@@ -61,6 +67,8 @@ describe('Report most trending products to csv file use case', () => {
 
     const { items, itemsCount } = await useCase.execute({
       page: 1,
+      companyId: '',
+      categoryId: '',
     })
 
     expect(itemsCount).toBe(2)
@@ -101,6 +109,8 @@ describe('Report most trending products to csv file use case', () => {
       page: 1,
       startDate: currentDate.subtractYears(1),
       endDate: currentDate.getDate(),
+      companyId: '',
+      categoryId: '',
     })
 
     expect(itemsCount).toBe(2)
@@ -126,6 +136,8 @@ describe('Report most trending products to csv file use case', () => {
       page: 1,
       startDate: currentDate.subtractYears(10),
       endDate: currentDate.getDate(),
+      companyId: '',
+      categoryId: '',
     })
     expect(pagination.itemsCount).toBe(PAGINATION.itemsPerPage)
     expect(pagination.items).toEqual(
@@ -136,6 +148,8 @@ describe('Report most trending products to csv file use case', () => {
       page: 2,
       startDate: currentDate.subtractYears(10),
       endDate: currentDate.getDate(),
+      companyId: '',
+      categoryId: '',
     })
     expect(pagination.itemsCount).toBe(PAGINATION.itemsPerPage)
     expect(pagination.items).toEqual(
@@ -192,6 +206,8 @@ describe('Report most trending products to csv file use case', () => {
       page: 1,
       startDate: currentDate.subtractYears(10),
       endDate: currentDate.getDate(),
+      companyId: '',
+      categoryId: '',
     })
 
     expect(items).toEqual([fakeProductB.dto, fakeProductA.dto, fakeProductC.dto])
@@ -202,7 +218,7 @@ describe('Report most trending products to csv file use case', () => {
 
     const fakeProductA = ProductsFaker.fake({
       name: 'Product A',
-      categoryId: fakeCategory.id,
+      category: { id: fakeCategory.id },
     })
     const fakeProductB = ProductsFaker.fake({ name: 'Product B' })
     const fakeProductC = ProductsFaker.fake({ name: 'Product C' })
@@ -252,6 +268,7 @@ describe('Report most trending products to csv file use case', () => {
       page: 1,
       startDate: currentDate.subtractYears(10),
       endDate: currentDate.getDate(),
+      companyId: '',
     })
 
     expect(items).toEqual([fakeProductA.dto])

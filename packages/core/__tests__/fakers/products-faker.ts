@@ -1,6 +1,7 @@
 import { fakerPT_BR as faker } from '@faker-js/faker'
 import type { ProductDto } from '../../src/dtos'
 import { Product } from '../../src/domain/entities'
+import { CategoriesFaker } from './category-faker'
 
 export class ProductsFaker {
   static fake(baseDto?: Partial<ProductDto>) {
@@ -24,7 +25,6 @@ export class ProductsFaker {
       costPrice: faker.number.float({ min: 0, max: 100 }),
       sellingPrice: faker.number.float({ min: 0, max: 100 }),
       uom: faker.string.sample({ min: 1, max: 3 }),
-      categoryId: faker.string.uuid(),
       companyId: faker.string.uuid(),
       inboundInventoryMovementsCount: faker.number.int({ min: 0, max: 500 }),
       outboundInventoryMovementsCount: faker.number.int({ min: 0, max: 500 }),

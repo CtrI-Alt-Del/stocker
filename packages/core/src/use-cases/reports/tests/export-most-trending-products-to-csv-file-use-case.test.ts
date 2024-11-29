@@ -186,7 +186,7 @@ describe('Export most trending products to csv file use case', () => {
 
     const fakeProductA = ProductsFaker.fake({
       name: 'Product A',
-      categoryId: fakeCategory.id,
+      category: { id: fakeCategory.id },
     })
     const fakeProductB = ProductsFaker.fake({ name: 'Product B' })
     const fakeProductC = ProductsFaker.fake({ name: 'Product C' })

@@ -25,11 +25,9 @@ export class InventoryMovementsFaker {
       }),
       responsible: {
         id: faker.string.uuid(),
-        name: faker.person.fullName(),
       },
       product: {
         id: productIds ? faker.helpers.arrayElement(productIds) : faker.string.uuid(),
-        name: faker.commerce.productName(),
       },
       ...baseDto,
     }
