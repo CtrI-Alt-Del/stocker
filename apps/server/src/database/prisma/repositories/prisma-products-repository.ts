@@ -36,6 +36,7 @@ export class PrismaProductsRepository implements IProductsRepository {
           weight: prismaProduct.weight,
           company_id: prismaProduct.company_id,
           category_id: prismaProduct.category_id,
+          supplier_id: prismaProduct.supplier_id,
           selling_price: prismaProduct.selling_price,
           uom: prismaProduct.uom,
           code: prismaProduct.code,
@@ -67,6 +68,7 @@ export class PrismaProductsRepository implements IProductsRepository {
           weight: prismaProduct.weight,
           company_id: prismaProduct.company_id,
           category_id: prismaProduct.category_id,
+          supplier_id: prismaProduct.supplier_id,
           selling_price: prismaProduct.selling_price,
           uom: prismaProduct.uom,
           code: prismaProduct.code,
@@ -88,6 +90,8 @@ export class PrismaProductsRepository implements IProductsRepository {
           id: productId,
         },
         include: {
+          category: true,
+          supplier: true,
           batches: {
             orderBy: [
               {
@@ -119,6 +123,8 @@ export class PrismaProductsRepository implements IProductsRepository {
   }: ProductsListParams) {
     try {
       const prismaProducts = await prisma.product.findMany({
+        take: PAGINATION.itemsPerPage,
+        skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,
         where: {
           company_id: companyId,
           ...(name && { name: { contains: name, mode: 'insensitive' } }),
@@ -128,6 +134,8 @@ export class PrismaProductsRepository implements IProductsRepository {
         },
         orderBy: { registered_at: 'desc' },
         include: {
+          category: true,
+          supplier: true,
           batches: {
             orderBy: [
               {
@@ -169,6 +177,8 @@ export class PrismaProductsRepository implements IProductsRepository {
           company_id: companyId,
         },
         include: {
+          category: true,
+          supplier: true,
           batches: {
             orderBy: [
               {
@@ -211,6 +221,8 @@ export class PrismaProductsRepository implements IProductsRepository {
         },
         orderBy: { registered_at: 'desc' },
         include: {
+          category: true,
+          supplier: true,
           batches: {
             orderBy: [
               {

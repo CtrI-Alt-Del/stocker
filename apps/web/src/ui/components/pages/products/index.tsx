@@ -22,7 +22,7 @@ export const ProductsPage = () => {
     page,
     products,
     totalPages,
-    filterByNameValue,
+    productName,
     selectedProductsIds,
     handlePageChange,
     handleSearchChange,
@@ -36,12 +36,12 @@ export const ProductsPage = () => {
   const hasValidRole = user?.hasValidRole('manager')
   return (
     <>
-      <div className='flex flex-col gap-3 md:flex-row md:gap-0 items-center  justify-between'>
-        <div className='flex-1 w-full  max-w-96 space-y-2 '>
+      <div className='flex flex-col gap-3 md:flex-row md:gap-0 md:items-center md:justify-between'>
+        <div className='flex-1 w-full space-y-2 '>
           <h1 className='text-3xl font-black'>Produtos</h1>
-          <div className='flex flex-row gap-4 w-screen items-center '>
-            <Search value={filterByNameValue} onSearchChange={handleSearchChange} />
-            <div className=' flex flex-row items-center justify-center gap-4'>
+          <div className='flex flex-col md:flex-row gap-4 md:items-center w-full'>
+            <Search value={productName} onSearchChange={handleSearchChange} />
+            <div className='flex md:items-center md:justify-center gap-4'>
               <CategorySelect
                 value={categoryId}
                 onSelectChange={handleCategoryIdSearchChange}
@@ -59,7 +59,7 @@ export const ProductsPage = () => {
             </div>
           </div>
         </div>
-        <div className='flex items-center  gap-1'>
+        <div className='flex items-center gap-1'>
           {selectedProductsIds.length > 0 && (
             <AlertDialog
               trigger={
