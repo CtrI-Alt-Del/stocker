@@ -1,8 +1,8 @@
 import type { InventoryMovementDto } from '../../dtos'
-import { ValidationError } from '../../errors'
 import type { InventoryMovementType } from '../../types'
-import type { Product } from './product'
-import type { User } from './user'
+import { ValidationError } from '../../errors'
+import { Product } from './product'
+import { User } from './user'
 import { Entity } from '../abstracts'
 
 type MovementProps = {
@@ -28,17 +28,28 @@ export class InventoryMovement extends Entity<MovementProps> {
       throw new ValidationError(`${movementType} não é um tipo de movimento válido`)
     }
 
-    return new InventoryMovement(
+    const inventoryMovement = new InventoryMovement(
       {
         movementType,
         itemsCount: dto.itemsCount,
         registeredAt: dto.registeredAt,
         remark: dto.remark ?? null,
-        product: dto.product,
-        responsible: dto.responsible,
+        product: {
+          id: dto.product.id,
+        },
+        responsible: {
+          id: dto.responsible.id,
+        },
       },
       dto.id,
     )
+
+    if (dto.product.dto) inventoryMovement.product = Product.create(dto.product.dto)
+
+    if (dto.responsible.dto)
+      inventoryMovement.responsible = User.create(dto.responsible.dto)
+
+    return inventoryMovement
   }
 
   static isMovementType(movementType: string): movementType is InventoryMovementType {
