@@ -162,6 +162,32 @@ export class PrismaProductsRepository implements IProductsRepository {
     }
   }
 
+  async findAllByCompany(companyId: string): Promise<Product[]> {
+    try {
+      const prismaProducts = await prisma.product.findMany({
+        where: {
+          company_id: companyId,
+        },
+        include: {
+          batches: {
+            orderBy: [
+              {
+                expiration_date: 'asc',
+              },
+              {
+                registered_at: 'asc',
+              },
+            ],
+          },
+        },
+      })
+
+      return prismaProducts.map(this.mapper.toDomain)
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
   async findManyInventoryMovementsCount({
     page,
     companyId,

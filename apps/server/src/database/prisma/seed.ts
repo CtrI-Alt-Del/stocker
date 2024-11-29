@@ -1,214 +1,147 @@
-import {
-  BatchesFaker,
-  InventoryMovementsFaker,
-  ProductsFaker,
-  CategoriesFaker,
-  UsersFaker,
-} from '@stocker/core/fakers'
-
+import { fakerPT_BR as faker } from '@faker-js/faker'
+import { RegisterInboundInventoryMovementUseCase } from '@stocker/core/use-cases'
 import {
   batchesRepository,
   categoriesRepository,
+  companiesRepository,
   inventoryMovementsRepository,
   productsRepository,
+  suppliersRepository,
   usersRepository,
 } from '..'
 import { prisma } from './prisma-client'
-import { fakerPT_BR as faker } from '@faker-js/faker'
+import {
+  BatchesFaker,
+  CategoriesFaker,
+  CompanyFaker,
+  InventoryMovementsFaker,
+  ProductsFaker,
+  SuppliersFaker,
+  UsersFaker,
+} from '@stocker/core/fakers'
 
-const COMPANY_ID = 'a72bfaef-a870-43d1-b1e4-5db5b17c896b'
-const MANAGER_ID = '29fcf7a0-5ee3-4cb0-b36e-ecc825f1cdaa'
-const CATEGORY_ID = '602f6307-a60a-4825-b57d-873b97fe2bca'
-const PRODUCT_ID = 'ca479caf-31f7-48ed-bc0c-7e3115d04e32'
-const CONNECTION_POOL_SIZE = 3
+const FAKE_COMPANY_ID = '29fcf7a0-5ee3-4cb0-b36e-ecc825f1cdaa'
 
-async function seedDatabase() {
-  await resetDatabase()
-  await createBaseEntities()
-
-  await seedMainProduct()
-  const categories = await createManyFakeCategory(20)
-  console.log('1')
-  await seedMultipleProducts(50, categories)
-  console.log('2')
-  await seedMultipleProductsWithoutRelatedData(25)
-  console.log('3')
-  await seedMultipleProductsWithMinimumBatches(25)
-  console.log('4')
-  await seedMultipleUsers(22)
-}
+const registerInboundInventoryMovementUseCase =
+  new RegisterInboundInventoryMovementUseCase(
+    productsRepository,
+    batchesRepository,
+    inventoryMovementsRepository,
+  )
 
 async function resetDatabase() {
   await prisma.$executeRawUnsafe(`
-    TRUNCATE TABLE users, products, categories, companies CASCADE;
+    TRUNCATE TABLE companies CASCADE;
   `)
 }
 
-async function createBaseEntities() {
-  await prisma.company.create({
-    data: { id: COMPANY_ID, name: 'Bulk Bonilha', cnpj: '12305123406' },
+function getRandomRecord<Record>(records: Record[]) {
+  const randomIndex = Math.floor(Math.random() * records.length)
+  return records[randomIndex]
+}
+
+export async function registerInboundMovement(
+  itemsCount: number,
+  productId: string,
+  responsibleId: string,
+) {
+  const fakeBatch = BatchesFaker.fakeDto({ productId, itemsCount })
+  const fakeInventoryMovement = InventoryMovementsFaker.fakeDto({
+    itemsCount: itemsCount,
+    product: { id: productId },
+    responsible: { id: responsibleId },
+    movementType: 'inbound',
   })
 
-  await prisma.user.create({
-    data: {
-      id: MANAGER_ID,
-      name: 'Hector Bonilha',
-      email: 'hector@gmail.com',
-      role: 'MANAGER',
-      company_id: COMPANY_ID,
-      password: '1233',
-    },
-  })
-
-  await prisma.category.create({
-    data: { id: CATEGORY_ID, name: 'economicos', company_id: COMPANY_ID },
-  })
-}
-
-async function seedMainProduct() {
-  const mainProduct = ProductsFaker.fake({
-    id: PRODUCT_ID,
-    categoryId: CATEGORY_ID,
-    companyId: COMPANY_ID,
-  })
-
-  await productsRepository.add(mainProduct)
-}
-
-async function seedMultipleProducts(count: number, categories: string[]) {
-  const productPromises = []
-
-  for (let i = 0; i < count; i++) {
-    const index = faker.number.int({ min: 0, max: categories.length - 1 })
-    const newProduct = createFakeProduct(categories[index])
-    productPromises.push(seedProductAndRelatedData(newProduct))
-
-    if (productPromises.length >= CONNECTION_POOL_SIZE) {
-      await Promise.allSettled(productPromises)
-      productPromises.length = 0
-    }
-  }
-
-  if (productPromises.length > 0) {
-    await Promise.allSettled(productPromises)
-  }
-}
-
-async function createManyFakeCategory(number: number) {
-  const categoryPromises = []
-  const categoryIds = []
-
-  for (let index = 0; index < number; index++) {
-    const newCategory = createFakeCategory()
-    categoryIds.push(newCategory.id)
-    categoryPromises.push(categoriesRepository.add(newCategory))
-    if (categoryPromises.length >= CONNECTION_POOL_SIZE) {
-      await Promise.allSettled(categoryPromises)
-      categoryPromises.length = 0
-    }
-  }
-
-  if (categoryPromises.length > 0) {
-    await Promise.allSettled(categoryPromises)
-  }
-  return categoryIds
-}
-
-async function seedMultipleProductsWithoutRelatedData(count: number) {
-  const productPromises = []
-  for (let i = 0; i < count; i++) {
-    const newProduct = createFakeProduct()
-    productPromises.push(productsRepository.add(newProduct))
-    if (productPromises.length >= CONNECTION_POOL_SIZE) {
-      await Promise.allSettled(productPromises)
-    }
-  }
-  if (productPromises.length > 0) {
-    await Promise.allSettled(productPromises)
-  }
-}
-async function seedMultipleProductsWithMinimumBatches(count: number) {
-  const productPromises = []
-  for (let i = 0; i < count; i++) {
-    const newProduct = createFakeProduct()
-    productPromises.push(seedProductWithMinimumData(newProduct))
-    if (productPromises.length >= CONNECTION_POOL_SIZE) {
-      await Promise.allSettled(productPromises)
-    }
-  }
-  if (productPromises.length > 0) {
-    await Promise.allSettled(productPromises)
-  }
-}
-function createFakeProduct(categoryId?: string) {
-  return ProductsFaker.fake({
-    id: faker.string.uuid(),
-    categoryId: categoryId ? categoryId : CATEGORY_ID,
-    companyId: COMPANY_ID,
-  })
-}
-function createFakeCategory() {
-  return CategoriesFaker.fake({
-    id: faker.string.uuid(),
-    companyId: COMPANY_ID,
-  })
-}
-function createFakeUser() {
-  return UsersFaker.fake({
-    id: faker.string.uuid(),
-    companyId: COMPANY_ID,
+  await registerInboundInventoryMovementUseCase.execute({
+    batchDto: fakeBatch,
+    inventoryMovementDto: fakeInventoryMovement,
   })
 }
 
-async function seedProductAndRelatedData(product: any) {
-  await productsRepository.add(product)
+export async function seed() {
+  await resetDatabase()
+
+  const fakeCompany = CompanyFaker.fake({ id: FAKE_COMPANY_ID })
+  const fakeSuppliers = SuppliersFaker.fakeMany(3, { companyId: fakeCompany.id })
+  const fakeCategories = CategoriesFaker.fakeMany(3, { companyId: fakeCompany.id })
+  if (!fakeCategories[0]) return
+  const subCategory = CategoriesFaker.fake({
+    parentCategoryId: fakeCategories[0].id,
+    companyId: fakeCompany.id,
+  })
+  fakeCategories[0]?.appendSubcategory(subCategory)
+
+  const fakeProductsWithSafeStock = ProductsFaker.fakeMany(60, {
+    minimumStock: 10,
+    categoryId: fakeCategories[0].id,
+    supplierId: fakeSuppliers[0]?.id,
+    companyId: fakeCompany.id,
+  })
+  const fakeProductsWithAverageStock = ProductsFaker.fakeMany(30, {
+    minimumStock: 100,
+    categoryId: fakeCategories[1]?.id,
+    supplierId: fakeSuppliers[1]?.id,
+    companyId: fakeCompany.id,
+  })
+  const fakeProductsWithDangerStock = ProductsFaker.fakeMany(10, {
+    minimumStock: 100,
+    categoryId: fakeCategories[2]?.id,
+    supplierId: fakeSuppliers[2]?.id,
+    companyId: fakeCompany.id,
+  })
+  const fakeUsers = UsersFaker.fakeMany(10, {
+    role: 'employee',
+    companyId: fakeCompany.id,
+  })
+  fakeUsers.push(UsersFaker.fake({ role: 'admin', companyId: fakeCompany.id }))
+
+  await companiesRepository.add(fakeCompany)
 
   await Promise.all([
-    seedBatchesForProduct(product.id),
-    seedInventoryMovementsForProduct(product.id),
+    suppliersRepository.addMany(fakeSuppliers),
+    usersRepository.addMany(fakeUsers),
+    categoriesRepository.addMany(fakeCategories),
   ])
-}
-async function seedProductWithMinimumData(product: any) {
-  await productsRepository.add(product)
-  await Promise.all([seedMinimumBatchesForProduct(product.id, 9)])
-}
-async function seedBatchesForProduct(productId: string) {
-  const fakeBatches = BatchesFaker.fakeMany(20, { productId })
-  const batchPromises = fakeBatches.map((batch) => batchesRepository.add(batch))
-  await Promise.all(batchPromises)
+
+  await Promise.all([
+    productsRepository.addMany(fakeProductsWithSafeStock),
+    productsRepository.addMany(fakeProductsWithAverageStock),
+    productsRepository.addMany(fakeProductsWithDangerStock),
+  ])
+
+  const inboundMovementPromises = []
+
+  for (const fakeProduct of fakeProductsWithSafeStock) {
+    inboundMovementPromises.push(
+      registerInboundMovement(
+        faker.number.int({ min: 11, max: 500 }),
+        fakeProduct.id,
+        getRandomRecord(fakeUsers)?.id ?? '',
+      ),
+    )
+  }
+
+  for (const fakeProduct of fakeProductsWithAverageStock) {
+    inboundMovementPromises.push(
+      registerInboundMovement(
+        faker.number.int({ min: 2, max: 99 }),
+        fakeProduct.id,
+        getRandomRecord(fakeUsers)?.id ?? '',
+      ),
+    )
+  }
+
+  for (const fakeProduct of fakeProductsWithDangerStock) {
+    inboundMovementPromises.push(
+      registerInboundMovement(0, fakeProduct.id, getRandomRecord(fakeUsers)?.id ?? ''),
+    )
+  }
+
+  await Promise.all(inboundMovementPromises)
 }
 
-async function seedInventoryMovementsForProduct(productId: string) {
-  const count = faker.number.int({ min: 1, max: 10 })
-
-  const fakeMovements = InventoryMovementsFaker.fakeMany(count, {
-    product: { id: productId },
-    responsible: { id: MANAGER_ID },
-  })
-  const promises = fakeMovements.map((movement) =>
-    inventoryMovementsRepository.add(movement),
-  )
-  await Promise.all(promises)
-}
-async function seedMinimumBatchesForProduct(productId: string, count: number) {
-  const fakeBatch = BatchesFaker.fakeMany(count, { productId })
-  const batchPromises = fakeBatch.map((batch) => batchesRepository.add(batch))
-  await Promise.all(batchPromises)
-}
-async function seedMultipleUsers(count: number) {
-  const usersPromises = []
-  for (let i = 0; i < count; i++) {
-    const newUser = createFakeUser()
-    usersPromises.push(usersRepository.add(newUser))
-  }
-  if (usersPromises.length >= CONNECTION_POOL_SIZE) {
-    await Promise.allSettled(usersPromises)
-  }
-  if (usersPromises.length > 0) {
-    await Promise.allSettled(usersPromises)
-  }
-}
-seedDatabase()
+seed()
   .then(() => console.log('Database seeded successfully'))
   .catch((error) => console.error(`Error during seeding: ${error}`))
   .finally(() => prisma.$disconnect())

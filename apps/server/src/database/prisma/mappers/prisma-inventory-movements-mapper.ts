@@ -40,8 +40,8 @@ export class PrismaInventoryMovementsMapper {
       items_count: inventoryMovement.itemsCount,
       registered_at: inventoryMovement.registeredAt,
       remark: inventoryMovement.remark,
-      product_id: inventoryMovement.product.id,
-      user_id: inventoryMovement.responsible.id,
+      product_id: inventoryMovement.productId,
+      user_id: inventoryMovement.responsibleId,
     }
   }
 }

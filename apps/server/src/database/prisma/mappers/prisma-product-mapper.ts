@@ -21,6 +21,7 @@ export class PrismaProductMapper {
       isActive: prismaProduct.is_active,
       model: prismaProduct.model,
       length: prismaProduct.length,
+      supplierId: prismaProduct.supplier_id ?? undefined,
       minimumStock: prismaProduct.minimum_stock,
       batches: prismaProduct.batches
         .filter((batch) => Boolean(batch.id))
@@ -57,6 +58,7 @@ export class PrismaProductMapper {
       weight: productDto.weight,
       width: productDto.width,
       is_active: productDto.isActive,
+      supplier_id: productDto.supplierId ?? null,
       model: productDto.model ?? null,
       batches: productDto.batches?.length
         ? productDto.batches.map((batchDto) => ({

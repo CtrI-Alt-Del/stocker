@@ -29,6 +29,25 @@ export class PrismaSuppliersRepository implements ISuppliersRepository {
     }
   }
 
+  async addMany(suppliers: Supplier[]): Promise<void> {
+    try {
+      const prismaSuppliers = suppliers.map(this.mapper.toPrisma)
+      await prisma.suppliers.createMany({
+        data: prismaSuppliers.map((prismaSupplier) => ({
+          id: prismaSupplier.id,
+          email: prismaSupplier.email,
+          name: prismaSupplier.name,
+          cnpj: prismaSupplier.cnpj,
+          phone: prismaSupplier.phone,
+          company_id: prismaSupplier.company_id,
+          registered_at: prismaSupplier.registered_at,
+        })),
+      })
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
   async deleteMany(suppliersIds: string[]): Promise<void> {
     try {
       await prisma.suppliers.deleteMany({

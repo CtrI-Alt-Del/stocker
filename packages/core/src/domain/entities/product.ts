@@ -19,6 +19,7 @@ type ProductProps = {
   uom: string
   code: string
   model: string | null
+  supplierId: string | null
   categoryId: string | null
   companyId: string
   minimumStock: number
@@ -48,6 +49,7 @@ export class Product extends Entity<ProductProps> {
         minimumStock: dto.minimumStock,
         isActive: dto.isActive,
         categoryId: dto.categoryId ?? null,
+        supplierId: dto.supplierId ?? null,
         model: dto.model ?? null,
         batches: dto.batches ? dto.batches.map(Batch.create) : [],
         batchesWithoutStockIds: [],
@@ -249,6 +251,7 @@ export class Product extends Entity<ProductProps> {
       minimumStock: this.props.minimumStock,
       categoryId: this.props.categoryId,
       companyId: this.props.companyId,
+      supplierId: this.props.supplierId ?? undefined,
       inboundInventoryMovementsCount: this.props.inboundInventoryMovementsCount,
       outboundInventoryMovementsCount: this.props.outboundInventoryMovementsCount,
       batches: this.props.batches.map((batch) => batch.dto),

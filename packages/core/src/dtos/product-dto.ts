@@ -17,6 +17,7 @@ export type ProductDto = {
   minimumStock: number
   companyId: string
   isActive: boolean
+  supplierId?: string
   model?: string | null
   categoryId?: string | null
   batches?: BatchDto[]

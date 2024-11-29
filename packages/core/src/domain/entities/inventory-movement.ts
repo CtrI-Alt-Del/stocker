@@ -1,9 +1,9 @@
 import type { InventoryMovementDto } from '../../dtos'
 import { ValidationError } from '../../errors'
 import type { InventoryMovementType } from '../../types'
-import { Entity } from '../abstracts'
 import type { Product } from './product'
 import type { User } from './user'
+import { Entity } from '../abstracts'
 
 type MovementProps = {
   movementType: InventoryMovementType
@@ -73,16 +73,24 @@ export class InventoryMovement extends Entity<MovementProps> {
     this.props.responsible.entity = responsible
   }
 
-  get responsible() {
-    return this.props.responsible.entity as User
+  get responsible(): User | undefined {
+    return this.props.responsible.entity
+  }
+
+  get responsibleId() {
+    return this.props.responsible.id
   }
 
   set product(product: Product) {
     this.props.product.entity = product
   }
 
-  get product() {
-    return this.props.product.entity as Product
+  get product(): Product | undefined {
+    return this.props.product.entity
+  }
+
+  get productId() {
+    return this.props.product.id
   }
 
   get registeredAt(): Date {
