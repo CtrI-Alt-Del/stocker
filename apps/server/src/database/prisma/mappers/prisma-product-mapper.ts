@@ -3,7 +3,7 @@ import type { PrismaProduct } from '../types'
 
 export class PrismaProductMapper {
   toDomain(prismaProduct: PrismaProduct): Product {
-    return Product.create({
+    const product = Product.create({
       id: prismaProduct.id,
       name: prismaProduct.name,
       image: prismaProduct.image,
@@ -13,7 +13,17 @@ export class PrismaProductMapper {
       sellingPrice: prismaProduct.selling_price,
       description: prismaProduct.description,
       height: prismaProduct.height,
-      categoryId: prismaProduct.category_id,
+      category: prismaProduct.category
+        ? {
+            id: prismaProduct.category.id,
+            dto: {
+              id: prismaProduct.category.id,
+              name: prismaProduct.category.name,
+              companyId: prismaProduct.category.company_id,
+              subCategories: [],
+            },
+          }
+        : undefined,
       companyId: prismaProduct.company_id,
       uom: prismaProduct.uom,
       weight: prismaProduct.weight,
@@ -21,7 +31,17 @@ export class PrismaProductMapper {
       isActive: prismaProduct.is_active,
       model: prismaProduct.model,
       length: prismaProduct.length,
-      supplierId: prismaProduct.supplier_id ?? undefined,
+      supplier: prismaProduct.supplier
+        ? {
+            id: prismaProduct.supplier.id,
+            dto: {
+              id: prismaProduct.supplier.id,
+              name: prismaProduct.supplier.name,
+              email: prismaProduct.supplier.email,
+              companyId: prismaProduct.supplier.company_id,
+            },
+          }
+        : undefined,
       minimumStock: prismaProduct.minimum_stock,
       batches: prismaProduct.batches
         .filter((batch) => Boolean(batch.id))
@@ -35,6 +55,8 @@ export class PrismaProductMapper {
           resgisteredAt: prismaBatch.registered_at,
         })),
     })
+
+    return product
   }
 
   toPrisma(product: Product): PrismaProduct {
@@ -45,7 +67,7 @@ export class PrismaProductMapper {
       name: productDto.name,
       brand: productDto.brand,
       height: productDto.height,
-      category_id: productDto.categoryId ?? null,
+      category_id: productDto.category?.id ?? null,
       company_id: productDto.companyId,
       code: productDto.code,
       description: productDto.description,
@@ -58,7 +80,8 @@ export class PrismaProductMapper {
       weight: productDto.weight,
       width: productDto.width,
       is_active: productDto.isActive,
-      supplier_id: productDto.supplierId ?? null,
+      supplier_id: productDto.supplier?.id ?? null,
+      location_id: productDto.location?.id ?? null,
       model: productDto.model ?? null,
       batches: productDto.batches?.length
         ? productDto.batches.map((batchDto) => ({
