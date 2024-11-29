@@ -19,6 +19,6 @@ export class UpdateLocationController {
     const useCase = new UpdateLocationUseCase(locationsRepository)
     await useCase.execute({ locationId, locationDto, companyId })
 
-    return http.send(companyId, HTTP_STATUS_CODE.ok)
+    return http.send(null, HTTP_STATUS_CODE.ok)
   }
 }
