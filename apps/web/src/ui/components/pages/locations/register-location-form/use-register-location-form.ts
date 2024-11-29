@@ -33,6 +33,7 @@ export function useRegisterLocationForm({
       companyId: companyId,
       subLocations: [],
     })
+    console.log(location)
     const response = await locationsService.registerLocation(location)
     if (response.isFailure) {
       showError(response.errorMessage)

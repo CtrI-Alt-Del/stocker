@@ -15,12 +15,16 @@ export function useProductsPage() {
   const { showSuccess, showError } = useToast()
   const [selectedProductsIds, setSelectedProductsIds] = useState<string[]>([])
   const [page, setPage] = useUrlParamNumber('page', 1)
-  const [filterByNameValueState, setFilterByNameValue] = useUrlParamString('name')
+  const [filterByName, setFilterByNameValue] = useUrlParamString('name')
+  const [categoryId, setCategoryIdValue] = useUrlParamString('categoryId')
   const [isDeleting, setIsDeleting] = useState(false)
-  const filterByNameValue = filterByNameValueState ?? ''
 
   async function fetchProducts() {
-    const response = await productsService.listProducts({ page })
+    const response = await productsService.listProducts({
+      page,
+      name: filterByName,
+      categoryId,
+    })
 
     if (response.isFailure) {
       showError(response.errorMessage)
@@ -37,13 +41,14 @@ export function useProductsPage() {
   function handleSearchChange(value: string) {
     setFilterByNameValue(value ?? '')
   }
-
+  function handleCategoryIdSearchChange(categoryId: string) {
+    setCategoryIdValue(categoryId ?? '')
+  }
   const { data, isFetching, refetch } = useCache({
     fetcher: fetchProducts,
     key: CACHE.productsList.key,
-    dependencies: [page],
+    dependencies: [page, filterByName,categoryId],
   })
-
 
   const products = data ? data.items.map(Product.create) : []
   const itemsCount = data ? data.itemsCount : 0
@@ -78,8 +83,10 @@ export function useProductsPage() {
   }
 
   return {
+    categoryId,
+    handleCategoryIdSearchChange,
     page,
-    filterByNameValue,
+    filterByNameValue: filterByName,
     isFetching,
     isDeleting,
     products,
