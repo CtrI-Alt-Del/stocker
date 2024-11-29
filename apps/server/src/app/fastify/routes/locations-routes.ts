@@ -15,7 +15,7 @@ export const LocationsRoutes = async (app: FastifyInstance) => {
     return registerLocationController.handle(http)
   })
 
-  app.delete('/', async (request, response) => {
+  app.delete('/:locationId', async (request, response) => {
     const http = new FastifyHttp(request, response)
     return deleteLocationsController.handle(http)
   })
