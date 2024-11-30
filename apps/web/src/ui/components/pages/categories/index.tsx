@@ -18,6 +18,8 @@ export const CategoriesPage = () => {
     handleDeleteCategory,
     handleUpdateCategory,
     handleRegisterCategory,
+    nameSearchValue,
+    handleNameSearchChange,
   } = useCategoryPage()
 
   return (
@@ -25,7 +27,7 @@ export const CategoriesPage = () => {
       <div className='flex flex-col gap-3 md:flex-row md:gap-0 justify-between'>
         <div className='flex-1 w-full max-w-96 space-y-2'>
           <h1 className='text-3xl font-black'>Categorias</h1>
-          <Search />
+          <Search onSearchChange={handleNameSearchChange} value={nameSearchValue}/>
         </div>
 
         <div className='flex items-center gap-1'>

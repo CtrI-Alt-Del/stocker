@@ -1,4 +1,4 @@
-import { useApi, useCache, useToast, useUrlParamNumber } from '@/ui/hooks'
+import { useApi, useCache, useToast, useUrlParamNumber, useUrlParamString } from '@/ui/hooks'
 import { useAuthContext } from '../../contexts/auth-context'
 import { CACHE } from '@/constants'
 import { Location } from '@stocker/core/entities'
@@ -7,13 +7,18 @@ import { PAGINATION } from '@stocker/core/constants'
 export function useLocationsPage() {
   const [page, setPage] = useUrlParamNumber('page', 1)
   const { locationsService } = useApi()
+  const [nameSearchvalue,setNameSearchValue] = useUrlParamString('name')
   const { showError, showSuccess } = useToast()
   const { user } = useAuthContext()
+  function handleNameSearchChange(name:string){
+    setNameSearchValue(name)
+  }
   async function fetchLocations() {
     if (!user) return
     const response = await locationsService.listLocations({
       page,
-      companyId: user.companyId
+      companyId: user.companyId,
+      name: nameSearchvalue
     })
     if (response.isFailure) {
       showError(response.errorMessage)
@@ -23,7 +28,7 @@ export function useLocationsPage() {
   }
   const { data, isFetching, refetch } = useCache({
     fetcher: fetchLocations,
-    dependencies: [page],
+    dependencies: [page,nameSearchvalue],
     key: CACHE.locations.key,
   })
   function handlePageChange(page: number) {
@@ -54,6 +59,8 @@ export function useLocationsPage() {
     locations,
     isFetching,
     handlePageChange,
+    nameSearchvalue,
+    handleNameSearchChange,
     handleRegisterLocation,
     handleUpdateLocations,
     handleDeleteLocation,

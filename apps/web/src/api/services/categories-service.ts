@@ -13,8 +13,9 @@ export const CategoriesService = (apiClient: IApiClient): ICategoriesService => 
       return await apiClient.get<CategoryDto>(`/categories/${categoryId}`)
     },
 
-    async listCategories({ page }) {
+    async listCategories({ page,name }) {
       apiClient.setParam('page', String(page))
+      apiClient.setParam('name',String(name))
       return await apiClient.get<PaginationResponse<CategoryDto>>('/categories')
     },
 
