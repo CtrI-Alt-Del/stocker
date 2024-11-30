@@ -20,7 +20,6 @@ export class ListProductsController {
 
     const useCase = new ListProductsUseCase(productsRepository)
     const response = await useCase.execute({ page: pageNumber, name: name, locationId: locationId, categoryId: categoryId, supplierId: supplierId, companyId: companyId })
-
     return http.send(response, HTTP_STATUS_CODE.ok)
   }
 }
