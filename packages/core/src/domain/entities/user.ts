@@ -37,7 +37,6 @@ export class User extends Entity<UserProps> {
       user.password = dto.password ?? DEAFAULT_PASSWORD
     }
 
-
     return user
   }
 
