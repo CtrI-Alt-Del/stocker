@@ -20,10 +20,11 @@ export class ListLocationsUseCase {
     page,
     name,
   }: Request): Promise<PaginationResponse<LocationDto>> {
-    const locations = await this.locationsRepository.findMany({ name, companyId, page })
+    const { locations, count } = await this.locationsRepository.findMany({ name, companyId, page })
+    const locationsValue = locations.map((location) => location.dto)
     return new PaginationResponse({
-      items: locations.items.map((location) => location.dto),
-      itemsCount: locations.itemsCount,
+      items: locationsValue,
+      itemsCount: count,
     })
   }
 }
