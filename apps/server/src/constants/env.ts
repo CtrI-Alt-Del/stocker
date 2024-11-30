@@ -22,6 +22,7 @@ export const envSchema = z.object({
   resendApiKey: stringSchema,
   senderName: stringSchema,
   senderEmail: emailSchema,
+  googleAiApiKey: stringSchema,
 })
 
 const validation = envSchema.safeParse({
@@ -37,6 +38,7 @@ const validation = envSchema.safeParse({
   senderName: process.env.SENDER_NAME,
   senderEmail: process.env.SENDER_EMAIL,
   webAppUrl: process.env.WEB_APP_URL,
+  googleAiApiKey: process.env.GOOGLE_AI_API_KEY,
 })
 
 if (!validation.success) {

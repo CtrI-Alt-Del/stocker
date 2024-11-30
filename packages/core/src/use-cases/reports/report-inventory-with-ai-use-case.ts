@@ -2,19 +2,22 @@ import { NotFoundError } from '../../errors'
 import type {
   IAiProvider,
   IInventoryMovementsRepository,
-  IProductsRepository,
   IUsersRepository,
 } from '../../interfaces'
+
+type Request = {
+  userId: string
+  onGenerateChunck: (chunck: string) => void
+}
 
 export class ReportInventoryWithAiUseCase {
   constructor(
     private readonly inventoryMovementsRepository: IInventoryMovementsRepository,
-    private readonly productsRepository: IProductsRepository,
     private readonly usersRepository: IUsersRepository,
     private readonly aiProvider: IAiProvider,
   ) {}
 
-  async execute(userId: string) {
+  async execute({ userId, onGenerateChunck }: Request) {
     const user = await this.usersRepository.findById(userId)
     if (!user) throw new NotFoundError('Usuário não encontrado')
 
@@ -29,6 +32,7 @@ export class ReportInventoryWithAiUseCase {
     Destaque os produtos mais movimentados e menos movimentado.
     Destaque os funcionários mais ativos e menos.
     Não use tabelas.
+    Use bastante markdown.
     Tente prever os produtos que terão maior demanda para os próximo mês.
     `
 
@@ -44,6 +48,6 @@ export class ReportInventoryWithAiUseCase {
       `
     }
 
-    await this.aiProvider.generateContent(prompt)
+    await this.aiProvider.generateContent(prompt, onGenerateChunck)
   }
 }

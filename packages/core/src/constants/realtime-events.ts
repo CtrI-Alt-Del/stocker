@@ -5,7 +5,7 @@ export const REALTIME_EVENTS = {
     notificationDeleted: 'notification-deleted',
   },
   aiReportRoom: {
-    connected: 'ai-report-connected',
+    requested: 'ai-report-requested',
     generated: 'ai-report-generated',
   },
 }
