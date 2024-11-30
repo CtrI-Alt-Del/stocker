@@ -68,30 +68,42 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
     try {
       const prismaCategories = await prisma.category.findMany({
         take: PAGINATION.itemsPerPage,
-        skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,
+        skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 0,
         include: {
           subCategories: true,
         },
         where: {
           parent_category_id: null,
           company_id: companyId,
-          name: name ?? undefined,
+          name: name
+            ? {
+                contains: name,
+                mode: 'insensitive',
+              }
+            : undefined,
         },
         orderBy: { registered_at: 'desc' },
-      })
+      });
+  
       const count = await prisma.category.count({
         where: {
           parent_category_id: null,
           company_id: companyId,
-          name: name ?? undefined,
+          name: name
+            ? {
+                contains: name,
+                mode: 'insensitive',
+              }
+            : undefined,
         },
-      })
-
-      return { categories: prismaCategories.map(this.mapper.toDomain), count }
+      });
+  
+      return { categories: prismaCategories.map(this.mapper.toDomain), count };
     } catch (error) {
-      throw new PrismaError(error)
+      throw new PrismaError(error);
     }
   }
+  
 
   async count(): Promise<number> {
     try {
