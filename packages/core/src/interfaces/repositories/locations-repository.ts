@@ -5,7 +5,7 @@ import type { LocationsListParams } from '../../types'
 export interface ILocationsRepository {
   findById(locationId: string): Promise<Location | null>
   findByName(locationName: string): Promise<Location | null>
-  findMany(params: LocationsListParams): Promise<PaginationResponse<Location>>
+  findMany(params: LocationsListParams): Promise<{locations: Location[], count: number}>
   count(): Promise<number>
   add(location: Location): Promise<void>
   update(location: Location, locationId: string): Promise<void>
