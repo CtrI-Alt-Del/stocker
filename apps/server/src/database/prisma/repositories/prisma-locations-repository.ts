@@ -102,13 +102,14 @@ export class PrismaLocationsRepository implements ILocationsRepository {
     }
   }
 
-  async findMany(params: CategoriesListParams): Promise<PaginationResponse<Location>> {
+  async findMany(params: CategoriesListParams): Promise<Location[]> {
     try {
       const prismaLocations = await prisma.location.findMany({
         take: PAGINATION.itemsPerPage,
         skip: params.page > 0 ? (params.page - 1) * PAGINATION.itemsPerPage : 1,
         where: {
           company_id: params.companyId,
+          parent_location_id: null,
         },
         include: {
           subLocation: true,
@@ -116,17 +117,20 @@ export class PrismaLocationsRepository implements ILocationsRepository {
         orderBy: { registered_at: 'desc' },
       })
 
-      const count = await prisma.location.count()
       const locations = prismaLocations.map(this.mapper.toDomain)
-      return {
-        items: locations,
-        itemsCount: count,
-      }
+      return locations
     } catch (error) {
       throw new PrismaError(error)
     }
   }
-
+  async count(): Promise<number> {
+    try {
+      const count = await prisma.location.count()
+      return count
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
   async update(location: Location, locationId: string): Promise<void> {
     try {
       const prismaLocation = this.mapper.toPrisma(location)
@@ -140,6 +144,38 @@ export class PrismaLocationsRepository implements ILocationsRepository {
         },
       })
     } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+  async deleteById(locationId: string): Promise<void> {
+    try {
+      const location = await prisma.location.findUnique({
+        where: {
+          id: locationId
+        },
+        include:{
+          subLocation: true
+        }
+      })
+      if(!location){
+        throw new PrismaError("No location")
+      }
+      if(location.subLocation.length > 0){
+        const subLocations = location.subLocation.map((sublocation) => sublocation.id)
+        await prisma.location.deleteMany({
+          where:{
+            id:{
+              in: subLocations
+            }
+          }
+        })
+      }
+      await prisma.location.delete({
+        where: {
+          id: locationId
+        }
+      })
+    }catch(error){
       throw new PrismaError(error)
     }
   }

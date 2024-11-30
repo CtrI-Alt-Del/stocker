@@ -33,6 +33,7 @@ export class PrismaProductsRepository implements IProductsRepository {
           length: prismaProduct.length,
           height: prismaProduct.height,
           weight: prismaProduct.weight,
+          location_id: prismaProduct.location_id,
           company_id: prismaProduct.company_id,
           category_id: prismaProduct.category_id,
           supplier_id: prismaProduct.supplier_id,
@@ -135,6 +136,7 @@ export class PrismaProductsRepository implements IProductsRepository {
         include: {
           category: true,
           supplier: true,
+          location: true,
           batches: {
             orderBy: [
               {
@@ -157,7 +159,6 @@ export class PrismaProductsRepository implements IProductsRepository {
           ...(supplierId && { supplier_id: supplierId }),
         },
       })
-
       const products = prismaProducts.map(this.mapper.toDomain)
 
       return {
@@ -486,6 +487,8 @@ export class PrismaProductsRepository implements IProductsRepository {
           supplier_id: prismaProduct.supplier_id,
           location_id: prismaProduct.location_id,
           category_id: prismaProduct.category_id,
+          supplier_id: prismaProduct.supplier_id,
+          location_id: prismaProduct.location_id,
           selling_price: prismaProduct.selling_price,
           uom: prismaProduct.uom,
           code: prismaProduct.code,

@@ -23,7 +23,7 @@ export const LocationsPage = () => {
     <div>
       <div className='flex flex-col gap-3 md:flex-row md:gap-0 justify-between'>
         <div className='flex-1 w-full max-w-96 space-y-2'>
-          <h1 className='text-3xl font-black'>Setores</h1>
+          <h1 className='text-3xl font-black'>Locais</h1>
           <Search />
         </div>
 

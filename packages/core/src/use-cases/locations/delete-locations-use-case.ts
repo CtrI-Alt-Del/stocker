@@ -2,7 +2,7 @@ import { NotFoundError } from "../../errors";
 import type { ILocationsRepository } from "../../interfaces";
 
 type Request = {
-    locationsId: string[];
+    locationsId: string
 };
 
 export class DeleteLocationsUseCase {
@@ -16,7 +16,7 @@ export class DeleteLocationsUseCase {
         for (const locationId of locationsId) {
             const existingLocation = await this.locationsRepository.findById(locationId);
             if (!existingLocation) {
-                throw new NotFoundError(`Local com ID ${locationId} não encontrado`);
+                throw new NotFoundError("Local não  encontrado");
             }
         }
         await this.locationsRepository.deleteMany(locationsId);

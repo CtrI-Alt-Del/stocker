@@ -15,6 +15,10 @@ export class ListLocationsUseCase {
 
   async execute({ page, companyId }: Request) {
     const locations = await this.locationsRepository.findMany({ page, companyId })
-    return new PaginationResponse(locations)
+    const locationsCount = await this.locationsRepository.count()
+    return new PaginationResponse({
+      items: locations.map((location) => location.dto),
+      itemsCount: locationsCount
+    })
   }
 }

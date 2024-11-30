@@ -16,7 +16,6 @@ export class ListLocationsController {
 
     const useCase = new ListLocationsUseCase(locationsRepository)
     const response = await useCase.execute({ page: pageNumber, companyId: companyId })
-
     return http.send(response, HTTP_STATUS_CODE.ok)
   }
 }

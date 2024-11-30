@@ -4,93 +4,93 @@ import { motion } from 'framer-motion'
 import { Icon } from '@/ui/components/commons/icon'
 import { Select } from '@/ui/components/commons/select'
 import { Dialog } from '../dialog'
-import { useCategorySelect } from './use-category-select'
+import { useLocationSelect } from './use-location-select'
 
-type CategorySelectProps = {
-  defeaultCategoryId?: string
+type LocationSelectProps = {
+  defaultLocationId?: string
   className?: string
-  onSelectChange: (categoryId: string) => void
-  mode?: "filter" | "select"
+  onSelectChange: (locationId: string) => void
+  mode?: 'filter' | 'select'
 }
 
-export const CategorySelect = ({
+export const LocationSelect = ({
   className,
-  defeaultCategoryId,
+  mode = 'select',
+  defaultLocationId,
   onSelectChange,
-  mode = "select",
-}: CategorySelectProps) => {
+}: LocationSelectProps) => {
   const {
-    categories,
+    locations,
     isFetching,
     page,
     totalPages,
-    selectedCategoryName,
+    selectedLocationName,
     expandedItems,
-    handleCategoryIdChange,
+    handleLocationIdChange,
     handleAccordionClick,
-    handleCategoryPageChange,
-  } = useCategorySelect(onSelectChange, defeaultCategoryId)
+    handleLocationPageChange,
+  } = useLocationSelect(onSelectChange, defaultLocationId || '')
 
   return isFetching ? (
     <Spinner size='sm' className='w-full h-full mx-auto' />
   ) : (
-    <div className='space-y-2 flex flex-row gap-4 items-center w-full'>
+    <div className='space-y-2 gap-4 flex flex-row w-full flex-1'>
       <Dialog
-        title='Selecione uma categoria ou subcategoria'
+        title='Selecione um local ou setor'
         size='2xl'
         trigger={
           <Select className={className}>
-            {selectedCategoryName ? selectedCategoryName : 'Selecione categoria'}
+            {selectedLocationName ? selectedLocationName : 'Selecione local'}
           </Select>
         }
       >
         {(closeDrawer) =>
-          categories.length === 0 ? (
+          locations.length === 0 ? (
             <p className='text-center text-bg-zinc-600 font-semibold my-12'>
-              Nenhuma categoria registrada.
+              Nenhum local registrado.
             </p>
           ) : (
             <>
               <Accordion selectionMode='multiple'>
-                {categories.map((category) => (
+                {locations.map((location) => (
                   <AccordionItem
                     indicator={
                       <Button
                         className='bg-transparent hover:bg-primary hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
                         onClick={() => {
-                          handleCategoryIdChange(category.id)
+                          handleLocationIdChange(location.id)
                           closeDrawer()
                         }}
                       >
                         <Icon name='plus' size={18} />
                       </Button>
                     }
-                    key={category.id}
-                    title={category.name}
+                    key={location.id}
+                    title={location.name}
                     disableIndicatorAnimation
                     startContent={
                       <motion.div
                         initial={{ rotate: 0 }}
-                        animate={{ rotate: expandedItems[category.id] ? 90 : 0 }}
+                        animate={{ rotate: expandedItems[location.id] ? 90 : 0 }}
                         transition={{ duration: 0.2 }}
                       >
                         <Icon name='arrow-up' size={18} className='rotate-90' />
                       </motion.div>
                     }
-                    onClick={() => handleAccordionClick(category.id)}
+                    onClick={() => handleAccordionClick(location.id)}
                   >
                     <div className='flex gap-1 flex-col sm:ml-4 ml-0 -translate-y-3'>
-                      {category.subCategories.length > 0 ? (
-                        category.subCategories.map((subCategory) => (
+                      {location.subLocations.length > 0 ? (
+                        location.subLocations.map((sector) => (
                           <div
-                            key={subCategory.id}
+                            key={sector.id}
                             className='flex flex-1 justify-between items-center ml-6'
                           >
-                            <p>{subCategory.name}</p>
+                            <p>{sector.name}</p>
                             <Button
                               className='bg-transparent hover:bg-primary hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
                               onClick={() => {
-                                handleCategoryIdChange(subCategory.id)
+                                handleLocationIdChange(sector.id)
                                 closeDrawer()
                               }}
                             >
@@ -99,7 +99,7 @@ export const CategorySelect = ({
                           </div>
                         ))
                       ) : (
-                        <p>Nenhuma subcategoria cadastrada</p>
+                        <p>Nenhum setor cadastrado</p>
                       )}
                     </div>
                   </AccordionItem>
@@ -109,7 +109,7 @@ export const CategorySelect = ({
                 <Pagination
                   page={page}
                   total={totalPages}
-                  onChange={handleCategoryPageChange}
+                  onChange={handleLocationPageChange}
                   aria-label='K.F esteve aqui!!!'
                   showControls
                 />
@@ -118,10 +118,10 @@ export const CategorySelect = ({
           )
         }
       </Dialog>
-      {selectedCategoryName && mode === "filter" && (
+      {selectedLocationName && mode === 'filter' && (
         <button
           type='button'
-          onClick={() => handleCategoryIdChange('')}
+          onClick={() => handleLocationIdChange('')}
           className='flex justify-center items-center gap-2 text-sm text-gray-400'
         >
           Remover Filtro

@@ -8,6 +8,7 @@ import { productsRepository } from '@/database'
 export class RegisterProductController {
   async handle(http: IHttp) {
     const productDto = http.getBody<ProductDto>()
+    console.log(productDto)
     const useCase = new RegisterProductUseCase(productsRepository)
     const productId = await useCase.execute({ productDto })
 

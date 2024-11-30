@@ -21,8 +21,9 @@ export function useCategorySelect(
   }
 
   async function fetchCategory() {
-    if (!categoryId) return
-
+    if (!categoryId){
+      return 
+    }
     const response = await categoriesService.getCategory(categoryId)
     if (response.isFailure) {
       showError(response.errorMessage)
@@ -70,7 +71,7 @@ export function useCategorySelect(
 
   const categories = categoriesData ? categoriesData.items.map(Category.create) : []
   const itemsCount = categoriesData ? categoriesData.itemsCount : 0
-
+  const selectedCategoryName = categoryId ? categoryData?.name : null
   return {
     isFetching,
     totalPages: Math.ceil(itemsCount / 10),

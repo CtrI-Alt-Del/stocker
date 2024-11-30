@@ -75,24 +75,31 @@ export class PrismaUsersRepository implements IUsersRepository {
     }
   }
 
-  async findMany(params: UsersListParams) {
+  async findMany({ page, companyId, name, role }: UsersListParams) {
     try {
       const prismaUsers = await prisma.user.findMany({
         take: PAGINATION.itemsPerPage,
-        skip: params.page > 0 ? (params.page - 1) * PAGINATION.itemsPerPage : 1,
+        skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,
         where: {
-          company_id: params.companyId,
-          role: { not: 'ADMIN' },
+          company_id: companyId,
+          ...(name && { name: { contains: name, mode: 'insensitive' } }),
+          ...(role && { role: role }),
         },
         orderBy: { registered_at: 'desc' },
       })
 
       const count = await prisma.user.count({
-        where: { company_id: params.companyId },
+        where: {
+          company_id: companyId,
+          ...(name && { name: { contains: name, mode: 'insensitive' } }),
+          ...(role && { role: role }),
+        },
       })
 
+      const users = prismaUsers.map(this.mapper.toDomain)
+
       return {
-        users: prismaUsers.map((prismaUser) => this.mapper.toDomain(prismaUser)),
+        users,
         count,
       }
     } catch (error) {

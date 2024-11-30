@@ -12,13 +12,14 @@ import { Product } from '@stocker/core/entities'
 import { useAuthContext } from '../../contexts/auth-context'
 
 export function useProductsPage() {
-  const {user} = useAuthContext()
+  const { user } = useAuthContext()
   const { productsService } = useApi()
   const { showSuccess, showError } = useToast()
   const [selectedProductsIds, setSelectedProductsIds] = useState<string[]>([])
   const [page, setPage] = useUrlParamNumber('page', 1)
   const [productName, productNameValue] = useUrlParamString('name')
   const [categoryId, setCategoryIdValue] = useUrlParamString('categoryId')
+  const [locationId, setLocationIdValue] = useUrlParamString('locationId')
   const [isDeleting, setIsDeleting] = useState(false)
 
   async function fetchProducts() {
@@ -27,8 +28,9 @@ export function useProductsPage() {
     const response = await productsService.listProducts({
       page,
       categoryId,
+      locationId,
       name: productName,
-      companyId: user.companyId
+      companyId: user.companyId,
     })
 
     if (response.isFailure) {
@@ -46,13 +48,16 @@ export function useProductsPage() {
   function handleSearchChange(value: string) {
     productNameValue(value ?? '')
   }
+  function handleLocationIdchange(locationId: string) {
+    setLocationIdValue(locationId)
+  }
   function handleCategoryIdSearchChange(categoryId: string) {
-    setCategoryIdValue(categoryId ?? '')
+    setCategoryIdValue(categoryId ?? null)
   }
   const { data, isFetching, refetch } = useCache({
     fetcher: fetchProducts,
     key: CACHE.productsList.key,
-    dependencies: [page, productName, categoryId],
+    dependencies: [page, productName, categoryId,locationId],
   })
 
   const products = data ? data.items.map(Product.create) : []
@@ -102,6 +107,7 @@ export function useProductsPage() {
     handleRegisterProductFormSubmit,
     handleProductsSelectionChange,
     handlePageChange,
+    handleLocationIdchange,
     handleSearchChange,
   }
 }
