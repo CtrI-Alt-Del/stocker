@@ -71,7 +71,7 @@ export class PrismaUsersRepository implements IUsersRepository {
         orderBy: { registered_at: 'desc' },
       })
 
-      return prismaUsers.map((prismaUser) => this.mapper.toDomain(prismaUser))
+      return prismaUsers.map((prismaUser) => this.mapper.toDomain(prismaUser, false))
     } catch (error) {
       throw new PrismaError(error)
     }
@@ -106,7 +106,9 @@ export class PrismaUsersRepository implements IUsersRepository {
         },
       })
 
-      const users = prismaUsers.map((prismaUser) => this.mapper.toDomain(prismaUser))
+      const users = prismaUsers.map((prismaUser) =>
+        this.mapper.toDomain(prismaUser, false),
+      )
 
       return {
         users,
@@ -123,7 +125,7 @@ export class PrismaUsersRepository implements IUsersRepository {
         where: { id: userId },
       })
       if (!prismaUser) return null
-      return this.mapper.toDomain(prismaUser)
+      return this.mapper.toDomain(prismaUser, false)
     } catch (error) {
       throw new PrismaError(error)
     }
