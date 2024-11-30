@@ -15,14 +15,25 @@ export class PrismaProductMapper {
       height: prismaProduct.height,
       category: prismaProduct.category
         ? {
+          id: prismaProduct.category.id,
+          dto: {
             id: prismaProduct.category.id,
-            dto: {
-              id: prismaProduct.category.id,
-              name: prismaProduct.category.name,
-              companyId: prismaProduct.category.company_id,
-              subCategories: [],
-            },
-          }
+            name: prismaProduct.category.name,
+            companyId: prismaProduct.category.company_id,
+            subCategories: [],
+          },
+        }
+        : undefined,
+      location: prismaProduct.location
+        ? {
+          id: prismaProduct.location.id,
+          dto: {
+            id: prismaProduct.location.id,
+            name: prismaProduct.location.name,
+            companyId: prismaProduct.location.company_id,
+            subLocations: [],
+          },
+        }
         : undefined,
       companyId: prismaProduct.company_id,
       uom: prismaProduct.uom,
@@ -33,14 +44,14 @@ export class PrismaProductMapper {
       length: prismaProduct.length,
       supplier: prismaProduct.supplier
         ? {
+          id: prismaProduct.supplier.id,
+          dto: {
             id: prismaProduct.supplier.id,
-            dto: {
-              id: prismaProduct.supplier.id,
-              name: prismaProduct.supplier.name,
-              email: prismaProduct.supplier.email,
-              companyId: prismaProduct.supplier.company_id,
-            },
-          }
+            name: prismaProduct.supplier.name,
+            email: prismaProduct.supplier.email,
+            companyId: prismaProduct.supplier.company_id,
+          },
+        }
         : undefined,
       minimumStock: prismaProduct.minimum_stock,
       batches: prismaProduct.batches
@@ -85,14 +96,14 @@ export class PrismaProductMapper {
       model: productDto.model ?? null,
       batches: productDto.batches?.length
         ? productDto.batches.map((batchDto) => ({
-            id: String(batchDto.id),
-            product_id: batchDto.productId,
-            code: batchDto.code,
-            items_count: batchDto.itemsCount,
-            expiration_date: batchDto.expirationDate ?? null,
-            maximum_days_to_expiration: batchDto.maximumDaysToExpiration ?? null,
-            registered_at: batchDto.registeredAt ?? new Date(),
-          }))
+          id: String(batchDto.id),
+          product_id: batchDto.productId,
+          code: batchDto.code,
+          items_count: batchDto.itemsCount,
+          expiration_date: batchDto.expirationDate ?? null,
+          maximum_days_to_expiration: batchDto.maximumDaysToExpiration ?? null,
+          registered_at: batchDto.registeredAt ?? new Date(),
+        }))
         : [],
       registered_at: new Date(),
     }
