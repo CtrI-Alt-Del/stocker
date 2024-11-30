@@ -1,5 +1,8 @@
 import { fakerPT_BR as faker } from '@faker-js/faker'
-import { RegisterInboundInventoryMovementUseCase } from '@stocker/core/use-cases'
+import {
+  RegisterInboundInventoryMovementUseCase,
+  RegisterOutboundInventoryMovementUseCase,
+} from '@stocker/core/use-cases'
 import {
   batchesRepository,
   categoriesRepository,
@@ -20,6 +23,7 @@ import {
   UsersFaker,
 } from '@stocker/core/fakers'
 import { CryptoProvider } from '@/providers/crypto-provider'
+import { queueProvider } from '@/providers'
 
 const FAKE_COMPANY_ID = '29fcf7a0-5ee3-4cb0-b36e-ecc825f1cdaa'
 
@@ -29,12 +33,13 @@ const registerInboundInventoryMovementUseCase =
     batchesRepository,
     inventoryMovementsRepository,
   )
-
-async function resetDatabase() {
-  await prisma.$executeRawUnsafe(`
-    TRUNCATE TABLE companies CASCADE;
-  `)
-}
+const registerOutboundInventoryMovementUseCase =
+  new RegisterOutboundInventoryMovementUseCase(
+    batchesRepository,
+    productsRepository,
+    inventoryMovementsRepository,
+    queueProvider,
+  )
 
 function getRandomRecord<Record>(records: Record[]) {
   const randomIndex = Math.floor(Math.random() * records.length)
@@ -56,6 +61,23 @@ export async function registerInboundMovement(
 
   await registerInboundInventoryMovementUseCase.execute({
     batchDto: fakeBatch,
+    inventoryMovementDto: fakeInventoryMovement,
+  })
+}
+
+export async function registerOutboundMovement(
+  itemsCount: number,
+  productId: string,
+  responsibleId: string,
+) {
+  const fakeInventoryMovement = InventoryMovementsFaker.fakeDto({
+    itemsCount: itemsCount,
+    product: { id: productId },
+    responsible: { id: responsibleId },
+    movementType: 'outbound',
+  })
+
+  await registerOutboundInventoryMovementUseCase.execute({
     inventoryMovementDto: fakeInventoryMovement,
   })
 }
@@ -120,15 +142,28 @@ export async function seed() {
   ])
 
   const inboundMovementPromises = []
+  const outboundMovementPromises = []
 
   for (const fakeProduct of fakeProductsWithSafeStock) {
-    inboundMovementPromises.push(
-      registerInboundMovement(
-        faker.number.int({ min: 11, max: 500 }),
-        fakeProduct.id,
-        getRandomRecord(fakeUsers)?.id ?? '',
-      ),
-    )
+    for (let index = 0; index < faker.number.int({ min: 1, max: 10 }); index++) {
+      inboundMovementPromises.push(
+        registerInboundMovement(
+          faker.number.int({ min: 1, max: 100 }),
+          fakeProduct.id,
+          getRandomRecord(fakeUsers)?.id ?? '',
+        ),
+      )
+    }
+
+    for (let index = 0; index < faker.number.int({ min: 1, max: 10 }); index++) {
+      outboundMovementPromises.push(
+        registerInboundMovement(
+          faker.number.int({ min: 1, max: 10 }),
+          fakeProduct.id,
+          getRandomRecord(fakeUsers)?.id ?? '',
+        ),
+      )
+    }
   }
 
   for (const fakeProduct of fakeProductsWithAverageStock) {
@@ -148,6 +183,7 @@ export async function seed() {
   }
 
   await Promise.all(inboundMovementPromises)
+  await Promise.all(outboundMovementPromises)
 }
 
 seed()
