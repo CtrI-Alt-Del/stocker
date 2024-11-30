@@ -3,6 +3,6 @@ import type { PrismaProduct } from './prisma-product'
 import type { PrismaUser } from './prisma-user'
 
 export type PrismaInventoryMovement = InventoryMovement & {
-  user?: PrismaUser
-  product?: PrismaProduct
+  User?: PrismaUser
+  Product?: PrismaProduct
 }

@@ -10,7 +10,8 @@ export const LocationsService = (apiClient: IApiClient): ILocationsService => {
     async getLocation(locationId: string) {
         return await apiClient.get<LocationDto>(`/locations/${locationId}`)
     },
-    async listLocations({page}){
+    async listLocations({page,name}){
+      apiClient.setParam('name',String(name))
       apiClient.setParam('page',String(page))
       return await apiClient.get<PaginationResponse<LocationDto>>('/locations')
     },

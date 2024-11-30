@@ -42,7 +42,10 @@ export const ReportsService = (apiClient: IApiClient): IReportsService => {
       return await apiClient.fetchBuffer('/reports/most-trending-products/csv')
     },
 
-    async reportInventory() {
+    async reportInventory({page,stockLevel,name}) {
+      apiClient.setParam('page', String(page))
+      apiClient.setParam('stockLevel',String(stockLevel))
+      apiClient.setParam('name',String(name))
       return await apiClient.get<PaginationResponse<ProductDto>>('/reports/inventory')
     },
 

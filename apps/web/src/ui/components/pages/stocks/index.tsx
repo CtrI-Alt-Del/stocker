@@ -3,6 +3,8 @@
 import {
   Link,
   Pagination,
+  Select,
+  SelectItem,
   Spinner,
   Table,
   TableBody,
@@ -12,12 +14,13 @@ import {
   TableRow,
 } from '@nextui-org/react'
 
-import { useStocksPage } from './use-stocks-page'
+import { ROUTES } from '@/constants/routes'
+import { CategorySelect } from '../../commons/category-select'
+import { Icon } from '../../commons/icon'
+import { Search } from '../../commons/search'
 import { Tag } from '../../commons/tag'
 import { ExportCsvLink } from './export-csv-link'
-import { Icon } from '../../commons/icon'
-import { ROUTES } from '@/constants/routes'
-import { Search } from '../../commons/search'
+import { useStocksPage } from './use-stocks-page'
 
 export const StocksPage = () => {
   const {
@@ -28,6 +31,9 @@ export const StocksPage = () => {
     totalPages,
     handleSearchChange,
     handlePageChange,
+    stockLevelSearch,
+    handleStockLevelSearchChange,
+    handleCategorySearchChange,
   } = useStocksPage()
 
   return (
@@ -36,7 +42,32 @@ export const StocksPage = () => {
         <h1 className='text-3xl font-black'>Inventário</h1>
       </div>
       <div className='flex flex-col sm:flex-row gap-1 justify-between'>
-        <Search value={filterByNameValue} onSearchChange={handleSearchChange} />
+        <div className='flex md:items-center flex-col md:flex-row gap-4 w-full'>
+          <Search value={filterByNameValue} onSearchChange={handleSearchChange} />
+          <div className='flex flex-col md:flex-row md:items-center gap-4 w-96'>
+            <CategorySelect mode='filter' onSelectChange={handleCategorySearchChange} />
+            <Select
+              className='max-w-96'
+              size='lg'
+              defaultSelectedKeys={['']}
+              value={stockLevelSearch}
+              onChange={(e) => handleStockLevelSearchChange(e.target.value)}
+            >
+              <SelectItem key='' value=''>
+                Todos
+              </SelectItem>
+              <SelectItem key='safe' value='safe'>
+                Ideal
+              </SelectItem>
+              <SelectItem key='average' value='average'>
+                Baixo
+              </SelectItem>
+              <SelectItem key='danger' value='danger'>
+                Esgotado
+              </SelectItem>
+            </Select>
+          </div>
+        </div>
         <div>
           <Link
             as={ExportCsvLink}
