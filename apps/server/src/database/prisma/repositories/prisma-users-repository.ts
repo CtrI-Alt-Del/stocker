@@ -1,10 +1,12 @@
 import type { IUsersRepository } from '@stocker/core/interfaces'
 import type { User } from '@stocker/core/entities'
-import type { UsersListParams } from '@stocker/core/types'
+import type { UserRole, UsersListParams } from '@stocker/core/types'
+import { PAGINATION } from '@stocker/core/constants'
+
 import { PrismaUsersMapper } from '../mappers'
 import { prisma } from '../prisma-client'
 import { PrismaError } from '../prisma-error'
-import { PAGINATION } from '@stocker/core/constants'
+import type { PrismaUserRole } from '../types'
 
 export class PrismaUsersRepository implements IUsersRepository {
   private readonly mapper: PrismaUsersMapper = new PrismaUsersMapper()
@@ -77,13 +79,22 @@ export class PrismaUsersRepository implements IUsersRepository {
 
   async findMany({ page, companyId, name, role }: UsersListParams) {
     try {
+      const prismaUserRole: Record<UserRole, PrismaUserRole> = {
+        admin: 'ADMIN',
+        employee: 'EMPLOYEE',
+        manager: 'MANAGER',
+      }
+
+      console.log(role)
+
       const prismaUsers = await prisma.user.findMany({
         take: PAGINATION.itemsPerPage,
         skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,
         where: {
           company_id: companyId,
           ...(name && { name: { contains: name, mode: 'insensitive' } }),
-          ...(role && { role: role }),
+          ...(role && { role: prismaUserRole[role] }),
+          AND: { role: { not: 'ADMIN' } },
         },
         orderBy: { registered_at: 'desc' },
       })
@@ -92,7 +103,8 @@ export class PrismaUsersRepository implements IUsersRepository {
         where: {
           company_id: companyId,
           ...(name && { name: { contains: name, mode: 'insensitive' } }),
-          ...(role && { role: role }),
+          ...(role && { role: prismaUserRole[role], AND: { role: { not: 'ADMIN' } } }),
+          AND: { role: { not: 'ADMIN' } },
         },
       })
 

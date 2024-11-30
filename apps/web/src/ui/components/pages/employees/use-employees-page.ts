@@ -9,7 +9,7 @@ import {
 import type { UserDto } from '@stocker/core/dtos'
 import { useState } from 'react'
 import { useAuthContext } from '../../contexts/auth-context'
-import { UserRole } from '@stocker/core/types'
+import type { UserRole } from '@stocker/core/types'
 
 export function useEmployeesPage() {
   const { showSuccess, showError } = useToast()
@@ -22,7 +22,7 @@ export function useEmployeesPage() {
   function handlePageChange(page: number) {
     setPage(page)
   }
-  function handleRoleSearchChange(role:"MANAGER" | "EMPLOYEE" | ""){
+  function handleRoleSearchChange(role: string) {
     setRoleSearchValue(role)
   }
   function handleNameSearchChange(name: string) {
@@ -32,7 +32,12 @@ export function useEmployeesPage() {
   const { user } = useAuthContext()
   const companyId = user ? user.companyId : ''
   async function fetchUsers() {
-    const response = await usersService.listUsers({ page, companyId: companyId,name: nameSearchValue,role: roleSearchValue.toUpperCase() as UserRole })
+    const response = await usersService.listUsers({
+      page,
+      companyId: companyId,
+      name: nameSearchValue,
+      role: roleSearchValue as UserRole,
+    })
     if (response.isFailure) {
       showError(response.errorMessage)
     }
@@ -41,7 +46,7 @@ export function useEmployeesPage() {
   const { data, isFetching, refetch } = useCache({
     fetcher: fetchUsers,
     key: CACHE.users.key,
-    dependencies: [page,nameSearchValue,roleSearchValue],
+    dependencies: [page, nameSearchValue, roleSearchValue],
   })
   async function handleUpdateEmployee() {
     refetch()
@@ -72,21 +77,20 @@ export function useEmployeesPage() {
   const users = data?.items ? data.items : []
   const totalPages = data?.itemsCount ? data.itemsCount : 0
   return {
-    handleRegisterEmployeeFormSubmit,
-    handleDeleteEmployeesAlertDialogConfirm,
-    totalPages: Math.ceil(totalPages / 10),
     page,
+    totalPages: Math.ceil(totalPages / 10),
     isDeleting,
-    handlePageChange,
     users,
     isLoading: isFetching,
-    handleEmployeesSelectionChange,
     selectedEmployeesIds,
-    handleUpdateEmployee,
     nameSearchValue,
+    roleSearchValue,
+    handleRegisterEmployeeFormSubmit,
+    handleDeleteEmployeesAlertDialogConfirm,
+    handleEmployeesSelectionChange,
+    handlePageChange,
+    handleUpdateEmployee,
     handleNameSearchChange,
     handleRoleSearchChange,
-    roleSearchValue,
-
   }
 }

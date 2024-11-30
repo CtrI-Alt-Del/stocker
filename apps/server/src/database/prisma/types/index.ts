@@ -8,3 +8,4 @@ export type { PrismaStockLevelNotification } from './prisma-stock-level-notifica
 export type { PrismaExpirationDateNotification } from './prisma-expiration-date-notification'
 export type { PrismaSupplier } from './prisma-suppliers'
 export type { PrismaLocation } from './prisma-location'
+export type { PrismaUserRole } from './prisma-user-role'

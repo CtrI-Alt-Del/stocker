@@ -22,7 +22,12 @@ export class ListUsersController {
     const pageNumber = parseInt(page || '1', 10)
 
     const useCase = new ListUsersUseCase(usersRepository)
-    const response = await useCase.execute({ page: pageNumber, name: name, role: role, companyId: companyId })
+    const response = await useCase.execute({
+      page: pageNumber,
+      name: name,
+      role: role,
+      companyId: companyId,
+    })
 
     return http.send(response, HTTP_STATUS_CODE.ok)
   }

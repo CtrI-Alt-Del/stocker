@@ -41,18 +41,16 @@ export const EmployeesPage = () => {
                 size='lg'
                 defaultSelectedKeys={['']}
                 value={roleSearchValue}
-                onChange={(e) =>
-                  handleRoleSearchChange(e.target.value as '' | 'MANAGER' | 'EMPLOYEE')
-                }
+                onChange={(e) => handleRoleSearchChange(e.target.value)}
               >
                 <SelectItem key='' value=''>
                   Todos
                 </SelectItem>
-                <SelectItem key='employee' value='EMPLOYEE'>
+                <SelectItem key='employee' value='employee'>
                   Funcionário
                 </SelectItem>
 
-                <SelectItem key='manager' value='MANAGER'>
+                <SelectItem key='manager' value='manager'>
                   Gerente
                 </SelectItem>
               </Select>
