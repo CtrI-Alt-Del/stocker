@@ -13,6 +13,8 @@ import {
 } from '@/api/controllers/auth'
 import { VerifyJwtMiddleware, VerifyUserRoleMiddleware } from '@/api/middlewares'
 import { RequestPasswordResetController } from '@/api/controllers/auth/request-password-reset-controller'
+import { FastifyWs } from '../fastify-ws'
+import { AuthRoom } from '@/realtime/rooms'
 
 export const AuthRoutes = async (app: FastifyInstance) => {
   const subscribeController = new SubscribeController()
@@ -27,6 +29,15 @@ export const AuthRoutes = async (app: FastifyInstance) => {
   )
   const resetPasswordController = new ResetPasswordController()
   const confirmAuthController = new ConfirmAuthController()
+  const ws = new FastifyWs(app)
+
+  app.get('/:userId', { websocket: true }, async (socket, request) => {
+    const { userId } = request.params as { userId: string }
+    const authRoom = new AuthRoom(userId)
+    authRoom.handle(ws)
+
+    ws.join(userId, socket)
+  })
 
   app.post('/confirm', async (request, response) => {
     const http = new FastifyHttp(request, response)
