@@ -1,5 +1,6 @@
 export const ROUTES = {
   dashboard: '/dashboard',
+  categories: '/categories',
   inventory: {
     stocks: '/inventory/stocks',
     productStock: '/inventory/stocks/:routeParam',

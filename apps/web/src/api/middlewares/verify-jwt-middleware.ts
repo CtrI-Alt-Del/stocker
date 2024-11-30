@@ -3,6 +3,7 @@ import type { IController, IHttp } from '@stocker/core/interfaces'
 
 const PRIVATE_ROUTES = [
   '/',
+  ROUTES.categories,
   ROUTES.dashboard,
   ROUTES.profile,
   ...Object.values(ROUTES.inventory),
