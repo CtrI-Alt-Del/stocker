@@ -16,10 +16,12 @@ export function useInventoryMovementPage() {
   const { showError } = useToast()
   const [page, setPage] = useUrlParamNumber('page', 1)
   const [movementTypeSearch, setMovementTypeSearch] = useUrlParamString('type')
+  const [employeeIdSearch,setEmployeIdSearch] = useUrlParamString('employeeId')
 
   async function fetchInventoryMovements() {
     const response = await inventoryMovementService.listInventoryMovements({
       movementType: movementTypeSearch as InventoryMovementType,
+      responsibleId: employeeIdSearch,
       page,
     })
     if (response.isFailure) {
@@ -35,15 +37,16 @@ export function useInventoryMovementPage() {
   function handlePageChange(page: number) {
     setPage(page)
   }
-
+  function handleEmployeeIdSerachChange(employeeId:string){
+    setEmployeIdSearch(employeeId)
+  }
   const { data, isFetching } = useCache({
     fetcher: fetchInventoryMovements,
     key: CACHE.productInventoryMovements.key,
-    dependencies: [page, movementTypeSearch],
+    dependencies: [page, movementTypeSearch,employeeIdSearch],
   })
   const movements = data ? data.items.map(InventoryMovement.create) : []
   const itemsCount = data ? data.itemsCount : 0
-  console.log(movements)
 
   return {
     page,
@@ -54,5 +57,7 @@ export function useInventoryMovementPage() {
     movementTypeSearch,
     handleMovementTypeSearchChange,
     handlePageChange,
+    handleEmployeeIdSerachChange,
+    employeeIdSearch
   }
 }
