@@ -21,12 +21,14 @@ type Notifications = {
 type UseNotificationWebSocketProps = {
   companyId: string
   onConnect: (notifications: Notifications) => void
+  onDeleteCompany: () => void
   onSendStockLevelNotification: (stockLevelNotification: StockLevelNotification) => void
 }
 
 export function useNotificationWebSocket({
   companyId,
   onConnect,
+  onDeleteCompany,
   onSendStockLevelNotification,
 }: UseNotificationWebSocketProps) {
   const { showError } = useToast()
@@ -48,6 +50,9 @@ export function useNotificationWebSocket({
           break
         case REALTIME_EVENTS.notificationsRoom.stockLevelNotificationSent:
           onSendStockLevelNotification(StockLevelNotification.create(response.payload))
+          break
+        case REALTIME_EVENTS.notificationsRoom.companyDeleted:
+          onDeleteCompany()
           break
       }
     },

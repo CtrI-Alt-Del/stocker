@@ -5,11 +5,19 @@ import { RealtimeResponse } from '@stocker/core/responses'
 
 type UseWebSocketProps = {
   url: string
+  isEnable?: boolean
+  onOpen?: () => void
   onError?: () => void
   onResponse?: (response: RealtimeResponse<any>) => void
 }
 
-export function useWebSocket({ url, onError, onResponse }: UseWebSocketProps) {
+export function useWebSocket({
+  url,
+  isEnable = true,
+  onOpen,
+  onError,
+  onResponse,
+}: UseWebSocketProps) {
   const handleMessage = useCallback(
     (message: MessageEvent) => {
       if (!onResponse) return
@@ -20,9 +28,24 @@ export function useWebSocket({ url, onError, onResponse }: UseWebSocketProps) {
     [onResponse],
   )
 
-  const { sendMessage, readyState } = useReactWebSocket(url, {
+  const handleError = useCallback(
+    (error: WebSocketEventMap['error']) => {
+      if (!onError) return
+      console.error('Websocket error: ', error)
+      onError()
+    },
+    [onError],
+  )
+
+  const handleOpen = useCallback(() => {
+    if (!onOpen) return
+    onOpen()
+  }, [onOpen])
+
+  const { readyState, sendMessage } = useReactWebSocket(isEnable ? url : null, {
     onMessage: handleMessage,
-    onError,
+    onError: handleError,
+    onOpen: handleOpen,
     share: false,
   })
 

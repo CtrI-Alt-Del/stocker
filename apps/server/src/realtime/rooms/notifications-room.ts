@@ -17,7 +17,9 @@ export class NotificationsRoom implements IRoom {
     )
 
     ws.on(REALTIME_EVENTS.notificationsRoom.connected, this.companyId, async () => {
-      const notifications = await listNotificationsUseCase.execute(this.companyId)
+      const notifications = await listNotificationsUseCase.execute({
+        companyId: this.companyId,
+      })
 
       ws.emit(REALTIME_EVENTS.notificationsRoom.connected, this.companyId, notifications)
     })
@@ -39,7 +41,9 @@ export class NotificationsRoom implements IRoom {
       this.companyId,
       async (notificationId: string) => {
         await deleteNotificationUseCase.execute({ notificationId })
-        const notifications = await listNotificationsUseCase.execute(this.companyId)
+        const notifications = await listNotificationsUseCase.execute({
+          companyId: this.companyId,
+        })
 
         ws.emit(
           REALTIME_EVENTS.notificationsRoom.connected,

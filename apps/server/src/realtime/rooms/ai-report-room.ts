@@ -1,8 +1,4 @@
-import {
-  inventoryMovementsRepository,
-  productsRepository,
-  usersRepository,
-} from '@/database'
+import { inventoryMovementsRepository, usersRepository } from '@/database'
 import { aiProvider } from '@/providers'
 import { REALTIME_EVENTS } from '@stocker/core/constants'
 import type { IRoom, IWs } from '@stocker/core/interfaces'

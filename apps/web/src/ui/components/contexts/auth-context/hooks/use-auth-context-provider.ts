@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { type RefObject, useState } from 'react'
 import { jwtDecode } from 'jwt-decode'
 
 import { Company, User } from '@stocker/core/entities'
@@ -8,14 +8,16 @@ import type { CompanyDto, UserDto } from '@stocker/core/dtos'
 import type { UserRole } from '@stocker/core/types'
 
 import { CACHE, COOKIES, ROUTES } from '@/constants'
-import { useCache, useNavigation, useToast } from '@/ui/hooks'
+import { useAuthWebSocket, useCache, useNavigation, useToast } from '@/ui/hooks'
 import type { deleteCookieAction, setCookieAction } from '@/actions'
 import type { IAuthService, ICompaniesService } from '@stocker/core/interfaces'
+import type { DialogRef } from '@/ui/components/commons/dialog/types'
 
 type UseAuthContextProvider = {
   jwt: string | null
   authService: IAuthService
   companiesService: ICompaniesService
+  alertDialogRef: RefObject<DialogRef>
   setCookieAction: typeof setCookieAction
   deleteCookieAction: typeof deleteCookieAction
 }
@@ -24,13 +26,14 @@ export function useAuthContextProvider({
   jwt,
   authService,
   companiesService,
+  alertDialogRef,
   setCookieAction,
   deleteCookieAction,
 }: UseAuthContextProvider) {
   const userDto = jwt ? jwtDecode<UserDto>(jwt) : null
   const [user, setUser] = useState<User | null>(userDto ? User.create(userDto) : null)
   const { showError, showSuccess } = useToast()
-  const { navigateTo, refreshPage } = useNavigation()
+  const { navigateTo } = useNavigation()
 
   async function fetchCompany() {
     if (!user) return
@@ -131,17 +134,21 @@ export function useAuthContextProvider({
   }
 
   async function confirmAuth(password: string) {
-    if (!user) return
+    if (!user) return false
 
     const response = await authService.confirmAuth(password)
 
     if (response.isSuccess) {
       const isAuthenticated = response.body
-      if (!isAuthenticated) showError('Senha inválida')
+      if (!isAuthenticated) {
+        showError('Senha inválida')
+        return false
+      }
       return isAuthenticated
     }
 
     showError('Não foi possível confirmar sua senha, tente novamente mais tarde')
+    return false
   }
 
   async function deleteAccount() {
@@ -165,15 +172,36 @@ export function useAuthContextProvider({
     }
     showError('Não foi capaz redefinir sua senha por favor tente mais tarde')
   }
+
+  async function handleAccountLogged(loggedUserId: string) {
+    if (user && loggedUserId === user.id) alertDialogRef.current?.open()
+  }
+
+  async function handleLogoutUnkownAccount(unknownAccountJwt: string) {
+    console.log({ unknownAccountJwt })
+    if (jwt !== unknownAccountJwt) await logout()
+  }
+
+  const { logoutUnkownAccount } = useAuthWebSocket({
+    userId: user?.id,
+    onLogin: handleAccountLogged,
+    onLogoutUnkownAccount: handleLogoutUnkownAccount,
+  })
+
+  function handleUnkownAccountDetect() {
+    if (jwt) logoutUnkownAccount(jwt)
+  }
+
   return {
     user,
     company,
     login,
-    subscribe,
     logout,
+    subscribe,
     resetPassword,
     updateAccount,
     deleteAccount,
     confirmAuth,
+    handleUnkownAccountDetect,
   }
 }

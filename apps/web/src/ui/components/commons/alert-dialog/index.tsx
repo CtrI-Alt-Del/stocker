@@ -17,7 +17,7 @@ const AlertDialogComponent = (
   ref: ForwardedRef<DialogRef>,
 ) => {
   return (
-    <Dialog ref={ref} title='Mensagem de alerta' trigger={trigger}>
+    <Dialog ref={ref} title='Mensagem de alerta' trigger={trigger} isDismissable={false}>
       {(closeDialog) => (
         <>
           <p className='text-lg text-zinc-600'>{children}</p>

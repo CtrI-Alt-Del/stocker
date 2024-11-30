@@ -1,5 +1,5 @@
 import { NotAllowedError, NotFoundError } from '../../errors'
-import type { ICryptoProvider, IUsersRepository } from '../../interfaces'
+import type { IAuthSocket, ICryptoProvider, IUsersRepository } from '../../interfaces'
 
 type Request = {
   email: string
@@ -29,6 +29,7 @@ export class LoginUseCase {
     if (!isPasswordValid) {
       throw new NotAllowedError('Credenciais inválidas')
     }
+
 
     return user.dto
   }

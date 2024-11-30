@@ -1,13 +1,17 @@
 'use client'
 
 import { useState } from 'react'
-import { useNotificationWebSocket } from '@/ui/hooks/use-notifications-websocket'
+
 import type {
   ExpirationDateNotification,
   StockLevelNotification,
 } from '@stocker/core/entities'
 
+import { useNotificationWebSocket } from '@/ui/hooks/use-notifications-websocket'
+import { useAuthContext } from '@/ui/components/contexts/auth-context'
+
 export function useNotificationDialog(companyId: string) {
+  const { logout } = useAuthContext()
   const [stockLevelNotifications, setStockLevelNotifications] = useState<
     StockLevelNotification[]
   >([])
@@ -27,13 +31,14 @@ export function useNotificationDialog(companyId: string) {
       setStockLevelNotifications(stockLevelNotifications)
       setNotificationsCount(notificationsCount)
     },
-    onSendStockLevelNotification(stockLevelNotification) {
+    onSendStockLevelNotification: (stockLevelNotification) => {
       setStockLevelNotifications((notifications) => [
         ...notifications,
         stockLevelNotification,
       ])
       setNotificationsCount((count) => count + 1)
     },
+    onDeleteCompany: async () => await logout(),
   })
 
   function handleDeleteNotification(notificationId: string) {
