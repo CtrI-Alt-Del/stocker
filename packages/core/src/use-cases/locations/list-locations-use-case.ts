@@ -22,8 +22,8 @@ export class ListLocationsUseCase {
   }: Request): Promise<PaginationResponse<LocationDto>> {
     const locations = await this.locationsRepository.findMany({ name, companyId, page })
     return new PaginationResponse({
-      items: locations.items.map((location) => location.dto),
-      itemsCount: locations.itemsCount,
+      items: locations.locations.map((location) => location.dto),
+      itemsCount: locations.count,
     })
   }
 }
