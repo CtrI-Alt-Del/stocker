@@ -126,7 +126,7 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
 
       let employeeIdFilter = {}
       if (employeeId) {
-        employeeIdFilter = { employee_id: employeeId }
+        employeeIdFilter = { user_id: employeeId }
       }
 
       const prismaInventoryMovements = await prisma.inventoryMovement.findMany({
