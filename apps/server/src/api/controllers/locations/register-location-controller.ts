@@ -8,7 +8,9 @@ export class RegisterLocationController {
     async handle(http: IHttp) {
         const locationDto = http.getBody<LocationDto>()
         const useCase = new RegisterLocationUseCase(locationsRepository)
-        await useCase.execute({ locationDto })
+        const {companyId} = await http.getUser()
+
+        await useCase.execute({ locationDto, companyId })
     
         return http.send(null, HTTP_STATUS_CODE.created)
     }
