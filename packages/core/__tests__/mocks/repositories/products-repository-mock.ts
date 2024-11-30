@@ -32,7 +32,7 @@ export class ProductsRepositoryMock implements IProductsRepository {
     let products = this.products.map((product) => {
       const inboundInventoryMovementsCount = this.inventoryMovements.reduce(
         (total, inventoryMovement) => {
-          if (inventoryMovement.product.id === product.id) {
+          if (inventoryMovement.productId === product.id) {
             return total + 1
           }
           return total
@@ -41,7 +41,7 @@ export class ProductsRepositoryMock implements IProductsRepository {
       )
       const outboundInventoryMovementsCount = this.inventoryMovements.reduce(
         (total, inventoryMovement) => {
-          if (inventoryMovement.product.id === product.id) {
+          if (inventoryMovement.productId === product.id) {
             return total + 1
           }
           return total
@@ -93,7 +93,7 @@ export class ProductsRepositoryMock implements IProductsRepository {
     }
 
     const inventoryMovementsProductsIds = inventoryMovements.map(
-      (movement) => movement.product.id,
+      (movement) => movement.productId,
     )
 
     products = products.filter((product) =>
@@ -102,13 +102,13 @@ export class ProductsRepositoryMock implements IProductsRepository {
 
     products.sort((productA, productB) => {
       const productACount = inventoryMovements.reduce((total, inventoryMovement) => {
-        if (inventoryMovement.product.id === productA.id) {
+        if (inventoryMovement.productId === productA.id) {
           return total + 1
         }
         return total
       }, 0)
       const productBCount = inventoryMovements.reduce((total, inventoryMovement) => {
-        if (inventoryMovement.product.id === productB.id) {
+        if (inventoryMovement.productId === productB.id) {
           return total + 1
         }
         return total
@@ -121,6 +121,14 @@ export class ProductsRepositoryMock implements IProductsRepository {
       products,
       count: products.length,
     }
+  }
+
+  async findAllByCompany(companyId: string): Promise<Product[]> {
+    throw new Error('Method not implemented.')
+  }
+
+  async addMany(products: Product[]): Promise<void> {
+    throw new Error('Method not implemented.')
   }
 
   count(): Promise<number> {

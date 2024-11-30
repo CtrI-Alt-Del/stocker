@@ -16,6 +16,7 @@ export type IconName =
   | 'view'
   | 'trash'
   | 'pencil'
+  | 'money'
   | 'arrow-up'
   | 'arrow-down'
   | 'arrow-up-down'

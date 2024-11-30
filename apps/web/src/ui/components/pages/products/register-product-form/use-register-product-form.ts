@@ -97,6 +97,11 @@ export function useRegisterProductForm(
       companyId: user?.companyId || ' ',
     })
 
+    console.log({
+      category: formData.categoryId ? { id: formData.categoryId } : undefined,
+      supplier: formData.supplierId ? { id: formData.supplierId } : undefined,
+    })
+
     const response = await productsService.registerProduct(product)
 
     if (response.isFailure) {

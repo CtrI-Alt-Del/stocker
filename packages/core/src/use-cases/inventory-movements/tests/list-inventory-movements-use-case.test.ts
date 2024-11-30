@@ -21,25 +21,25 @@ describe('List inventory movements use case', () => {
   })
 
   it('should list all the inventory movements', async () => {
-    const { items } = await useCase.execute({})
+    const { items } = await useCase.execute({ companyId: '', productId: '' })
     expect(items).toEqual(fakeInventoryMovements.map((movement) => movement.dto))
   })
 
   it(`should list ${PAGINATION.itemsPerPage} inventory movements per page`, async () => {
-    let pagination = await useCase.execute({ page: 1 })
+    let pagination = await useCase.execute({ page: 1, companyId: '', productId: '' })
     expect(pagination.items).toHaveLength(PAGINATION.itemsPerPage)
 
-    pagination = await useCase.execute({ page: 2 })
+    pagination = await useCase.execute({ page: 2, companyId: '', productId: '' })
     expect(pagination.items).toHaveLength(PAGINATION.itemsPerPage)
   })
 
   it('should return the count of all inventory movements', async () => {
-    const { itemsCount } = await useCase.execute({})
+    const { itemsCount } = await useCase.execute({ companyId: '', productId: '' })
     expect(itemsCount).toEqual(fakeInventoryMovements.length)
   })
 
   it('should list inventory movements according to the current page', async () => {
-    let pagination = await useCase.execute({ page: 1 })
+    let pagination = await useCase.execute({ page: 1, companyId: '', productId: '' })
 
     expect(pagination.items).toEqual(
       fakeInventoryMovements
@@ -47,7 +47,7 @@ describe('List inventory movements use case', () => {
         .map((inventoryMovement) => inventoryMovement.dto),
     )
 
-    pagination = await useCase.execute({ page: 2 })
+    pagination = await useCase.execute({ page: 2, companyId: '', productId: '' })
 
     expect(pagination.items).toEqual(
       fakeInventoryMovements
@@ -72,7 +72,10 @@ describe('List inventory movements use case', () => {
     }
     useCase = new ListInventoryMovementsUseCase(inventoryMovementsRepository)
 
-    const { items } = await useCase.execute({ productId: fakeProduct.id })
+    const { items } = await useCase.execute({
+      productId: fakeProduct.id,
+      companyId: '',
+    })
 
     expect(items).toHaveLength(5)
   })

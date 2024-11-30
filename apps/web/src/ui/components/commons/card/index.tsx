@@ -4,7 +4,7 @@ import type { IconName } from '@/ui/components/commons/icon/types'
 
 type CardProps = {
   title: string
-  value: number
+  value: string | number
   href: string
   icon: IconName
 }
@@ -26,7 +26,7 @@ export const Card = ({ title, value, icon, href }: CardProps) => {
           </div>
           <div>
             <Link href={href}>
-              <Icon name='link' className='text-default-400 size-5 ml-2' />
+              <Icon name='link' className='text-default-400 size-4 ml-2' />
             </Link>
           </div>
         </div>

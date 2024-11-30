@@ -26,6 +26,8 @@ export class InventoryMovementsRepositoryMock implements IInventoryMovementsRepo
     startDate,
     endDate,
     movementType,
+    companyId,
+    employeeId,
   }: InventoryMovementsListParams): Promise<{
     inventoryMovements: InventoryMovement[]
     count: number
@@ -42,7 +44,7 @@ export class InventoryMovementsRepositoryMock implements IInventoryMovementsRepo
 
     if (productId) {
       inventoryMovements = inventoryMovements.filter(
-        (movement) => movement.product.id === productId,
+        (movement) => movement.productId === productId,
       )
     }
 
@@ -65,32 +67,8 @@ export class InventoryMovementsRepositoryMock implements IInventoryMovementsRepo
     }
   }
 
-  async countItems(): Promise<number> {
-    let totalItems = 0;
-    for (const movement of this.inventoryMovements) {
-    totalItems += movement.itemsCount;
-    }
-    return totalItems;
-  }
-
-  async countInbound(): Promise<number> {
-    let totalInbound = 0;
-    for (const movement of this.inventoryMovements) {
-      if (movement.movementType === 'inbound') {
-        totalInbound += movement.itemsCount;
-      }
-    }
-    return totalInbound;
-  }
-
-  async countOutbound(): Promise<number> {
-    let totalOutbound = 0;
-    for (const movement of this.inventoryMovements) {
-      if (movement.movementType === 'outbound') {
-        totalOutbound += movement.itemsCount;
-      }
-    }
-    return totalOutbound;
+  async findAllByCompany(companyId: string): Promise<InventoryMovement[]> {
+    throw new Error('Method not implemented.')
   }
 
   async findByDateRange(params: FindByDateRangeParams): Promise<InventoryMovement[]> {
@@ -98,5 +76,37 @@ export class InventoryMovementsRepositoryMock implements IInventoryMovementsRepo
       const registeredAt = new Datetime(movement.registeredAt)
       return registeredAt.isBetween(params.startDate, params.endDate)
     })
+  }
+
+  async count(companyId: string): Promise<number> {
+    throw new Error('Method not implemented.')
+  }
+
+  async countItems(): Promise<number> {
+    let totalItems = 0
+    for (const movement of this.inventoryMovements) {
+      totalItems += movement.itemsCount
+    }
+    return totalItems
+  }
+
+  async countInbound(): Promise<number> {
+    let totalInbound = 0
+    for (const movement of this.inventoryMovements) {
+      if (movement.movementType === 'inbound') {
+        totalInbound += movement.itemsCount
+      }
+    }
+    return totalInbound
+  }
+
+  async countOutbound(): Promise<number> {
+    let totalOutbound = 0
+    for (const movement of this.inventoryMovements) {
+      if (movement.movementType === 'outbound') {
+        totalOutbound += movement.itemsCount
+      }
+    }
+    return totalOutbound
   }
 }
