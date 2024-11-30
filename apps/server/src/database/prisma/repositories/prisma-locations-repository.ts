@@ -1,7 +1,7 @@
 import type { Location } from '@stocker/core/entities'
 import type { ILocationsRepository } from '@stocker/core/interfaces'
-import type { PaginationResponse } from '@stocker/core/responses'
-import type { CategoriesListParams } from '@stocker/core/types'
+import { PaginationResponse } from '@stocker/core/responses'
+import type { CategoriesListParams, LocationsListParams } from '@stocker/core/types'
 import { prisma } from '../prisma-client'
 import { PrismaError } from '../prisma-error'
 import { PAGINATION } from '@stocker/core/constants'
@@ -102,7 +102,7 @@ export class PrismaLocationsRepository implements ILocationsRepository {
     }
   }
 
-  async findMany(params: CategoriesListParams): Promise<Location[]> {
+  async findMany(params: LocationsListParams): Promise<{locations: Location[], count: number}> {
     try {
       const prismaLocations = await prisma.location.findMany({
         take: PAGINATION.itemsPerPage,
@@ -110,19 +110,27 @@ export class PrismaLocationsRepository implements ILocationsRepository {
         where: {
           company_id: params.companyId,
           parent_location_id: null,
+          name: params.name
         },
         include: {
           subLocation: true,
         },
         orderBy: { registered_at: 'desc' },
       })
+      const count = await prisma.location.count({
+        where: {
+          company_id: params.companyId,
+          parent_location_id: null,
+        },
+      })
 
       const locations = prismaLocations.map(this.mapper.toDomain)
-      return locations
+      return {locations, count}
     } catch (error) {
       throw new PrismaError(error)
     }
   }
+
   async count(): Promise<number> {
     try {
       const count = await prisma.location.count()

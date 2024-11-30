@@ -1,8 +1,8 @@
 import { Location } from '@stocker/core/entities'
-import type { PrismaLocations } from '../types'
+import type { PrismaLocation } from '../types'
 
 export class PrismaLocationsMapper {
-  toDomain(prismaLocation: PrismaLocations): Location {
+  toDomain(prismaLocation: PrismaLocation): Location {
     return Location.create({
       id: prismaLocation.id,
       name: prismaLocation.name,
@@ -18,7 +18,7 @@ export class PrismaLocationsMapper {
     });
   }
   
-  toPrisma(location: Location): PrismaLocations {
+  toPrisma(location: Location): PrismaLocation {
     const locationDto = location.dto;
   
     return {

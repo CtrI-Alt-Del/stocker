@@ -13,7 +13,9 @@ export const UsersService = (apiClient: IApiClient): IUsersService => {
       return await apiClient.get<UserDto>(`/users/${userId}`)
     },
 
-    async listUsers({ page }) {
+    async listUsers({ page,name,role }) {
+      apiClient.setParam('name',String(name))
+      apiClient.setParam('role',String(role))
       apiClient.setParam('page', String(page))
       return await apiClient.get<PaginationResponse<UserDto>>('/users')
     },

@@ -86,6 +86,7 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
     movementType,
     productId,
     companyId,
+    employeeId,
   }: InventoryMovementsListParams) {
     try {
       const whereCondition = productId ? { product_id: productId } : undefined
@@ -123,12 +124,18 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
         productIdFilter = { product_id: productId }
       }
 
+      let employeeIdFilter = {}
+      if (employeeId) {
+        employeeIdFilter = { employee_id: employeeId }
+      }
+
       const prismaInventoryMovements = await prisma.inventoryMovement.findMany({
         ...paginationParams,
         where: {
           ...productIdFilter,
           ...movementTypeFilter,
           ...dateRangeParams,
+          ...employeeIdFilter,
           Product: {
             company_id: companyId,
           },

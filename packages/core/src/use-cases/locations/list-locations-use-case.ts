@@ -1,9 +1,11 @@
+import type { LocationDto } from '../../dtos'
 import type { ILocationsRepository } from '../../interfaces'
 import { PaginationResponse } from '../../responses'
 
 type Request = {
-  page: number
   companyId: string
+  page: number
+  name?: string
 }
 
 export class ListLocationsUseCase {
@@ -13,12 +15,16 @@ export class ListLocationsUseCase {
     this.locationsRepository = locationsRepository
   }
 
-  async execute({ page, companyId }: Request) {
-    const locations = await this.locationsRepository.findMany({ page, companyId })
-    const locationsCount = await this.locationsRepository.count()
+  async execute({
+    companyId,
+    page,
+    name,
+  }: Request): Promise<PaginationResponse<LocationDto>> {
+    const { locations, count } = await this.locationsRepository.findMany({ name, companyId, page })
+    const locationsValue = locations.map((location) => location.dto)
     return new PaginationResponse({
-      items: locations.map((location) => location.dto),
-      itemsCount: locationsCount
+      items: locationsValue,
+      itemsCount: count,
     })
   }
 }

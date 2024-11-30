@@ -6,19 +6,28 @@ import { inventoryMovementsRepository } from '@/database'
 type QueryParams = {
   page?: string
   productId?: string
+  employeeId?: string
+  startDate?: string
+  endDate?: string
+  movementType?: 'inbound' | 'outbound'
 }
 
 export class ListInventoryMovementsController {
   async handle(http: IHttp) {
-    const { page, productId } = http.getQueryParams<QueryParams>()
+    const { page, productId, employeeId, startDate, endDate, movementType } =
+      http.getQueryParams<QueryParams>()
     const { companyId } = await http.getUser()
     const useCase = new ListInventoryMovementsUseCase(inventoryMovementsRepository)
-    const pageNumber = parseInt(page || '1', 10)
-    const result = await useCase.execute({
-      page: pageNumber,
-      productId: productId,
-      companyId: companyId
-    })
+    const params = {
+      page: page ? parseInt(page, 10) : undefined,
+      companyId,
+      productId,
+      employeeId,
+      movementType,
+      startDate: startDate ? new Date(startDate) : undefined,
+      endDate: endDate ? new Date(endDate) : undefined,
+    }
+    const result = await useCase.execute(params)
     return http.send(result, HTTP_STATUS_CODE.ok)
   }
 }

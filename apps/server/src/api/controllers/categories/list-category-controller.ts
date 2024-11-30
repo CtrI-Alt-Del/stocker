@@ -6,16 +6,21 @@ import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 
 type RouteParams = {
   page: string
+  name?: string
 }
 
 export class ListCategoryController {
   async handle(http: IHttp) {
     const { companyId } = await http.getUser()
-    const { page } = http.getQueryParams<RouteParams>()
+    const { page, name } = http.getQueryParams<RouteParams>()
     const pageNumber = parseInt(page || '1', 10)
 
     const useCase = new ListCategoryUseCase(categoriesRepository)
-    const response = await useCase.execute({ page: pageNumber, companyId: companyId })
+    const response = await useCase.execute({
+      page: pageNumber,
+      companyId: companyId,
+      name: name,
+    })
 
     return http.send(response, HTTP_STATUS_CODE.ok)
   }
