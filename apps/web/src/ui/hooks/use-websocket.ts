@@ -14,7 +14,6 @@ export function useWebSocket({ url, onError, onResponse }: UseWebSocketProps) {
     (message: MessageEvent) => {
       if (!onResponse) return
       const response = RealtimeResponse.parseMessage(message.data)
-      console.log('useChatSocket', response)
 
       onResponse(response)
     },

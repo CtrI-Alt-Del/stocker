@@ -13,7 +13,9 @@ export const ProductsService = (apiClient: IApiClient): IProductsService => {
       return await apiClient.get<ProductDto>(`/products/${productId}`)
     },
 
-    async listProducts({ page }) {
+    async listProducts({ page,name,categoryId }) {
+      apiClient.setParam('categoryId',String(categoryId))
+      apiClient.setParam('name',String(name))
       apiClient.setParam('page', String(page))
       return await apiClient.get<PaginationResponse<ProductDto>>('/products')
     },

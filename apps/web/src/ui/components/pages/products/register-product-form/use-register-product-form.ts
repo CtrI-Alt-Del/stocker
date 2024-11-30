@@ -1,6 +1,6 @@
 'use client'
 
-import { type RefObject, use, useState } from 'react'
+import { type RefObject, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -35,6 +35,7 @@ const registerProductFormSchema = z.object({
   code: stringSchema,
   minimumStock: nonZeroIntegerSchema,
   categoryId: idSchema.optional(),
+  supplierId: idSchema.optional(),
   model: z
     .string()
     .transform((value) => (value === '' ? undefined : value))
@@ -84,7 +85,9 @@ export function useRegisterProductForm(
       width: formData.width,
       code: formData.code,
       minimumStock: formData.minimumStock,
-      categoryId: formData.categoryId,
+      category: formData.categoryId ? { id: formData.categoryId } : undefined,
+      supplier: formData.supplierId ? { id: formData.supplierId } : undefined,
+      // location: formData.locationId ? { id: formData.locationId } : undefined,
       model: formData.model,
       isActive: formData.isActive,
       brand: formData.brand,

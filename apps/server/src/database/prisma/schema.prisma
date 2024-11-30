@@ -34,17 +34,21 @@ model Product {
   uom           String
   code          String
   minimum_stock Int
-  model         String?
   is_active     Boolean  @default(true)
+  model         String?
+  location_id   String?
   category_id   String?
+  supplier_id   String?
   company_id    String
   registered_at DateTime @default(now())
 
-  Category               Category?                @relation(fields: [category_id], references: [id])
-  Company                Company                  @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  location               Location?                @relation(fields: [location_id], references: [id])
+  category               Category?                @relation(fields: [category_id], references: [id])
+  supplier               Supplier?                @relation(fields: [supplier_id], references: [id])
+  company                Company                  @relation(fields: [company_id], references: [id], onDelete: Cascade)
   batches                Batch[]
-  InventoryMovements     InventoryMovement[]
-  StockLevelNotification StockLevelNotification[]
+  inventoryMovements     InventoryMovement[]
+  stockLevelNotification StockLevelNotification[]
 
   @@map("products")
 }
@@ -57,8 +61,8 @@ model Batch {
   items_count                Int
   product_id                 String
   registered_at              DateTime                     @default(now())
-  Product                    Product                      @relation(fields: [product_id], references: [id], onDelete: Cascade)
-  ExpirationDateNotification ExpirationDateNotification[]
+  product                    Product                      @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  expirationDateNotification ExpirationDateNotification[]
 
   @@map("batches")
 }
@@ -88,7 +92,7 @@ model User {
   company_id               String
   registered_at            DateTime @default(now())
 
-  Company            Company?            @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  company            Company?            @relation(fields: [company_id], references: [id], onDelete: Cascade)
   inventoryMovements InventoryMovement[]
 
   @@map("users")
@@ -102,7 +106,7 @@ model Company {
   users      User[]
   product    Product[]
   location   Location[]
-  suppliers  Suppliers[]
+  suppliers  Supplier[]
   categories Category[]
 
   @@map("companies")
@@ -123,7 +127,7 @@ model Category {
   @@map("categories")
 }
 
-model Suppliers {
+model Supplier {
   id            String   @id @default(uuid())
   name          String
   email         String
@@ -132,7 +136,8 @@ model Suppliers {
   company_id    String
   registered_at DateTime @default(now())
 
-  Company Company @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  company  Company   @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  products Product[]
 
   @@map("suppliers")
 }
@@ -144,9 +149,10 @@ model Location {
   company_id         String
   registered_at      DateTime @default(now())
 
-  ParentLocation Location?  @relation("LocationParent", fields: [parent_location_id], references: [id], onDelete: Cascade)
+  parentLocation Location?  @relation("LocationParent", fields: [parent_location_id], references: [id], onDelete: Cascade)
   subLocation    Location[] @relation("LocationParent")
-  Company        Company    @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  company        Company    @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  Product        Product[]
 
   @@map("locations")
 }
@@ -157,9 +163,9 @@ model StockLevelNotification {
   company_id    String
   registered_at DateTime @default(now())
 
-  Product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
-  @@map("stock-level-notifications")
+  @@map("stock_level_notifications")
 }
 
 model ExpirationDateNotification {
@@ -168,7 +174,7 @@ model ExpirationDateNotification {
   batch_id      String
   registered_at DateTime @default(now())
 
-  Batch Batch @relation(fields: [batch_id], references: [id], onDelete: Cascade)
+  batch Batch @relation(fields: [batch_id], references: [id], onDelete: Cascade)
 
-  @@map("expiration-date-notification")
+  @@map("expiration_date_notification")
 }

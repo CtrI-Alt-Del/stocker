@@ -9,18 +9,27 @@ import { CACHE } from '@/constants'
 import { PAGINATION } from '@stocker/core/constants'
 import { useState } from 'react'
 import { Product } from '@stocker/core/entities'
+import { useAuthContext } from '../../contexts/auth-context'
 
 export function useProductsPage() {
+  const {user} = useAuthContext()
   const { productsService } = useApi()
   const { showSuccess, showError } = useToast()
   const [selectedProductsIds, setSelectedProductsIds] = useState<string[]>([])
   const [page, setPage] = useUrlParamNumber('page', 1)
-  const [filterByNameValueState, setFilterByNameValue] = useUrlParamString('name')
+  const [productName, productNameValue] = useUrlParamString('name')
+  const [categoryId, setCategoryIdValue] = useUrlParamString('categoryId')
   const [isDeleting, setIsDeleting] = useState(false)
-  const filterByNameValue = filterByNameValueState ?? ''
 
   async function fetchProducts() {
-    const response = await productsService.listProducts({ page })
+    if (!user) return
+
+    const response = await productsService.listProducts({
+      page,
+      categoryId,
+      name: productName,
+      companyId: user.companyId
+    })
 
     if (response.isFailure) {
       showError(response.errorMessage)
@@ -35,15 +44,16 @@ export function useProductsPage() {
   }
 
   function handleSearchChange(value: string) {
-    setFilterByNameValue(value ?? '')
+    productNameValue(value ?? '')
   }
-
+  function handleCategoryIdSearchChange(categoryId: string) {
+    setCategoryIdValue(categoryId ?? '')
+  }
   const { data, isFetching, refetch } = useCache({
     fetcher: fetchProducts,
     key: CACHE.productsList.key,
-    dependencies: [page],
+    dependencies: [page, productName, categoryId],
   })
-
 
   const products = data ? data.items.map(Product.create) : []
   const itemsCount = data ? data.itemsCount : 0
@@ -79,12 +89,14 @@ export function useProductsPage() {
 
   return {
     page,
-    filterByNameValue,
+    productName,
+    categoryId,
     isFetching,
     isDeleting,
     products,
-    totalPages: Math.ceil(itemsCount / PAGINATION.itemsPerPage),
     selectedProductsIds,
+    totalPages: Math.ceil(itemsCount / PAGINATION.itemsPerPage),
+    handleCategoryIdSearchChange,
     handleUpdateProduct,
     handleDeleteProductsAlertDialogConfirm,
     handleRegisterProductFormSubmit,

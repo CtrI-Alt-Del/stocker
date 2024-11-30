@@ -36,6 +36,7 @@ const updateProductFormSchema = z.object({
   code: stringSchema,
   minimumStock: nonZeroIntegerSchema,
   categoryId: idSchema.optional(),
+  supplierId: idSchema.optional(),
   model: z.string().optional(),
   isActive: booleanSchema.default(true),
 })
@@ -119,6 +120,16 @@ export function useUpdateProductForm({
     const updatedFields = Object.keys(formState.dirtyFields)
     for (const updatedField of updatedFields) {
       if (updatedField === 'image') continue
+
+      if (updatedField === 'categoryId') {
+        partialProduct.category = { id: formData.categoryId }
+        continue
+      }
+
+      if (updatedField === 'supplierId') {
+        partialProduct.supplier = { id: formData.supplierId }
+        continue
+      }
 
       const updatedValue = formData[updatedField as keyof UpdateProductFormData]
       partialProduct[updatedField] = updatedValue

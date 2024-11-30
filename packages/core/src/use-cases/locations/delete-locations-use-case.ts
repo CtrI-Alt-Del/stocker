@@ -2,7 +2,7 @@ import { NotFoundError } from "../../errors";
 import type { ILocationsRepository } from "../../interfaces";
 
 type Request = {
-    locationsId: string[];
+    locationsId: string
 };
 
 export class DeleteLocationsUseCase {

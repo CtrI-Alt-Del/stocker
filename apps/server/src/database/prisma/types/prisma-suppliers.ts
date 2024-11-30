@@ -1,3 +1,3 @@
-import type { Suppliers } from '@prisma/client'
+import type { Supplier } from '@prisma/client'
 
-export type PrismaSupplier = Suppliers
+export type PrismaSupplier = Supplier

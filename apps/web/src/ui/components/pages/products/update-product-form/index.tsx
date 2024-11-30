@@ -10,6 +10,7 @@ import { ImageInput } from '@/ui/components/commons/image-input'
 import type { ImageInputRef } from '@/ui/components/commons/image-input/types'
 import { useUpdateProductForm } from './use-update-product-form'
 import { CategorySelect } from '@/ui/components/commons/category-select'
+import { SupplierSelect } from '@/ui/components/commons/supplier-select'
 
 type RegisterProductFormProps = {
   product: Product
@@ -87,7 +88,18 @@ export const UpdateProductForm = ({
       />
 
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-        <Input label='Fornecedor' />
+      <Controller
+          name='supplierId'
+          control={control}
+          render={({ field: { onChange } }) => (
+            <div className='w-full '>
+              <SupplierSelect onSelectChange={onChange} className='w-full' />
+              {errors.supplierId && (
+                <p className='text-red-600 text-sm'>{errors.supplierId?.message}</p>
+              )}
+            </div>
+          )}
+        />
         <Input
           label='Unidade'
           isRequired

@@ -13,6 +13,8 @@ import {
 } from '@/api/controllers/reports'
 import { FastifyHandler } from '../fastify-handler'
 import { VerifyJwtMiddleware, VerifyUserRoleMiddleware } from '@/api/middlewares'
+import { FastifyWs } from '../fastify-ws'
+import { AiReportRoom } from '@/realtime/rooms'
 
 export const ReportsRoutes = async (app: FastifyInstance) => {
   const reportStockLevelController = new ReportStockLevelController()
@@ -36,6 +38,7 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
   const preHandlers = [verifyJwtMiddleware, verifyManagerRoleMiddleware].map((handler) =>
     handler.handle.bind(handler),
   )
+  const ws = new FastifyWs(app)
 
   app.get('/stock-level', { preHandler: preHandlers }, async (request, response) => {
     const http = new FastifyHttp(request, response)
@@ -79,6 +82,20 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
     async (request, response) => {
       const http = new FastifyHttp(request, response)
       return exportInventoryToCsvFileController.handle(http)
+    },
+  )
+
+  app.get(
+    '/inventory/ai/:userId',
+    {
+      websocket: true,
+    },
+    async (socket, request) => {
+      const { userId } = request.params as { userId: string }
+      const room = new AiReportRoom(userId)
+      room.handle(ws)
+
+      ws.join(userId, socket)
     },
   )
 

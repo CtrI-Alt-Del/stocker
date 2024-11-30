@@ -4,6 +4,9 @@ import type { StockLevel } from '../../types/stock-level'
 import { Entity } from '../abstracts'
 import { Price } from '../structs'
 import { Batch } from './batch'
+import { Category } from './category'
+import { Location } from './location'
+import { Supplier } from './supplier'
 
 type ProductProps = {
   name: string
@@ -19,7 +22,18 @@ type ProductProps = {
   uom: string
   code: string
   model: string | null
-  categoryId: string | null
+  supplier: {
+    id: string
+    entity?: Supplier
+  } | null
+  location: {
+    id: string
+    entity?: Location
+  } | null
+  category: {
+    id: string
+    entity?: Category
+  } | null
   companyId: string
   minimumStock: number
   isActive: boolean
@@ -31,7 +45,7 @@ type ProductProps = {
 
 export class Product extends Entity<ProductProps> {
   static create(dto: ProductDto) {
-    return new Product(
+    const product = new Product(
       {
         name: dto.name,
         description: dto.description,
@@ -47,7 +61,9 @@ export class Product extends Entity<ProductProps> {
         code: dto.code,
         minimumStock: dto.minimumStock,
         isActive: dto.isActive,
-        categoryId: dto.categoryId ?? null,
+        category: dto.category ? { id: dto.category.id } : null,
+        location: dto.location ? { id: dto.location.id } : null,
+        supplier: dto.supplier ? { id: dto.supplier.id } : null,
         model: dto.model ?? null,
         batches: dto.batches ? dto.batches.map(Batch.create) : [],
         batchesWithoutStockIds: [],
@@ -57,6 +73,12 @@ export class Product extends Entity<ProductProps> {
       },
       dto.id,
     )
+
+    if (dto.category?.dto) product.category = Category.create(dto.category?.dto)
+    if (dto.supplier?.dto) product.supplier = Supplier.create(dto.supplier?.dto)
+    if (dto.location?.dto) product.location = Location.create(dto.location?.dto)
+
+    return product
   }
 
   update(partialDto: Partial<ProductDto>): Product {
@@ -121,12 +143,44 @@ export class Product extends Entity<ProductProps> {
     return Boolean(this.image)
   }
 
-  get companyId(): string {
-    return this.props.companyId
+  get company(): Category | null {
+    return this.props.category?.entity ?? null
   }
 
   get categoryId(): string | null {
-    return this.props.categoryId
+    return this.props.category?.id ?? null
+  }
+
+  get category(): Category | null {
+    return this.props.category?.entity ?? null
+  }
+
+  set category(category: Category) {
+    if (this.props.category) this.props.category.entity = category
+  }
+
+  get supplier(): Supplier | null {
+    return this.props.supplier?.entity ?? null
+  }
+
+  get supplierId(): string | null {
+    return this.props.supplier?.id ?? null
+  }
+
+  set supplier(supplier: Supplier) {
+    if (this.props.supplier) this.props.supplier.entity = supplier
+  }
+
+  get location(): Location | null {
+    return this.props.location?.entity ?? null
+  }
+
+  get locationId(): string | null {
+    return this.props.location?.id ?? null
+  }
+
+  set location(location: Location) {
+    if (this.props.location) this.props.location.entity = location
   }
 
   get costPrice(): Price {
@@ -230,7 +284,7 @@ export class Product extends Entity<ProductProps> {
   }
 
   get dto(): ProductDto {
-    return {
+    const dto: ProductDto = {
       id: this.id,
       name: this.props.name,
       description: this.props.description,
@@ -247,11 +301,30 @@ export class Product extends Entity<ProductProps> {
       code: this.props.code,
       isActive: this.props.isActive,
       minimumStock: this.props.minimumStock,
-      categoryId: this.props.categoryId,
       companyId: this.props.companyId,
       inboundInventoryMovementsCount: this.props.inboundInventoryMovementsCount,
       outboundInventoryMovementsCount: this.props.outboundInventoryMovementsCount,
       batches: this.props.batches.map((batch) => batch.dto),
     }
+
+    if (this.locationId)
+      dto.location = {
+        id: this.locationId,
+        dto: this.location?.dto,
+      }
+
+    if (this.categoryId)
+      dto.category = {
+        id: this.categoryId,
+        dto: this.category?.dto,
+      }
+
+      if (this.supplierId)
+        dto.supplier = {
+          id: this.supplierId,
+          dto: this.supplier?.dto,
+        }
+
+    return dto
   }
 }

@@ -5,6 +5,7 @@ export interface ICategoriesRepository {
   findById(categoryId: string): Promise<Category | null>
   findMany(params: CategoriesListParams): Promise<Category[]>
   add(category: Category): Promise<void>
+  addMany(suppliers: Category[]): Promise<void>
   count(): Promise<number>
   update(category: Category): Promise<void>
   deleteById(categoryId: string): Promise<void>
