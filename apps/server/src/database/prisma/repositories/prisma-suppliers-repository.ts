@@ -139,6 +139,8 @@ export class PrismaSuppliersRepository implements ISuppliersRepository {
         },
       })
 
+      console.log({ page, name, companyId })
+
       const suppliers = prismaSuppliers.map(this.mapper.toDomain)
 
       return {

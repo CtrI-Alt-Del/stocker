@@ -23,13 +23,12 @@ export class LoginUseCase {
 
     const isPasswordValid = await this.cryptoProvider.validateHash(
       password,
-      user.password,
+      String(user.password),
     )
 
     if (!isPasswordValid) {
       throw new NotAllowedError('Credenciais inválidas')
     }
-
 
     return user.dto
   }

@@ -71,7 +71,7 @@ export class PrismaUsersRepository implements IUsersRepository {
         orderBy: { registered_at: 'desc' },
       })
 
-      return prismaUsers.map(this.mapper.toDomain)
+      return prismaUsers.map((prismaUser) => this.mapper.toDomain(prismaUser))
     } catch (error) {
       throw new PrismaError(error)
     }
@@ -106,7 +106,7 @@ export class PrismaUsersRepository implements IUsersRepository {
         },
       })
 
-      const users = prismaUsers.map(this.mapper.toDomain)
+      const users = prismaUsers.map((prismaUser) => this.mapper.toDomain(prismaUser))
 
       return {
         users,

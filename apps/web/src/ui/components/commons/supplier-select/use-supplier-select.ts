@@ -1,7 +1,7 @@
 import { CACHE } from '@/constants'
 import { useApi, useCache, useToast, useUrlParamNumber } from '@/ui/hooks'
 import { Supplier } from '@stocker/core/entities'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useAuthContext } from '../../contexts/auth-context'
 
 export function useSupplierSelect(
@@ -36,7 +36,6 @@ export function useSupplierSelect(
 
     const response = await suppliersService.listSuppliers({
       page,
-      companyId: company.id,
     })
     if (response.isFailure) {
       showError(response.errorMessage)
@@ -68,6 +67,8 @@ export function useSupplierSelect(
     }))
   }
 
+  console.log(suppliersData)
+  console.log(company?.id)
   const suppliers = suppliersData ? suppliersData.items.map(Supplier.create) : []
   const itemsCount = suppliersData ? suppliersData.itemsCount : 0
 

@@ -16,10 +16,18 @@ export class ListUsersUseCase {
   }
 
   async execute({ page, name, role, companyId }: Request) {
-    const { users, count } = await this.usersRepository.findMany({ page, name, role, companyId })
+    const { users, count } = await this.usersRepository.findMany({
+      page,
+      name,
+      role,
+      companyId,
+    })
 
     return new PaginationResponse({
-      items: users.map((user) => user.dto),
+      items: users.map((user) => {
+        user.dto.password = undefined
+        return user.dto
+      }),
       itemsCount: count,
     })
   }

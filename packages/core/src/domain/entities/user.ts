@@ -7,7 +7,7 @@ type UserProps = {
   role: UserRole
   email: string
   name: string
-  password: string
+  password?: string
   companyId: string
   hasFirstPasswordReset: boolean
 }
@@ -15,24 +15,31 @@ type UserProps = {
 const DEAFAULT_PASSWORD = 'stocker@123'
 
 export class User extends Entity<UserProps> {
-  static create(dto: UserDto): User {
+  static create(dto: UserDto, hasPassword = true): User {
     const role = dto.role
 
     if (!User.isUserRole(role)) {
       throw new ValidationError(`${role} não é um tipo de usuário válido`)
     }
 
-    return new User(
+    const user = new User(
       {
         name: dto.name,
         email: dto.email,
-        password: dto.password ?? DEAFAULT_PASSWORD,
         companyId: dto.companyId,
         role: role,
         hasFirstPasswordReset: dto.hasFirstPasswordReset ?? true,
       },
       dto.id,
     )
+
+    if (hasPassword) {
+      user.password = dto.password ?? DEAFAULT_PASSWORD
+    }
+
+    console.log('password', hasPassword)
+
+    return user
   }
 
   static isUserRole(userRole: string): userRole is UserRole {
@@ -68,7 +75,7 @@ export class User extends Entity<UserProps> {
     return this.props.email
   }
 
-  get password(): string {
+  get password(): string | undefined {
     return this.props.password
   }
 

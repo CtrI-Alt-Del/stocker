@@ -23,7 +23,7 @@ export class ConfirmAuthUseCase {
 
     const isPasswordValid = await this.cryptoProvider.validateHash(
       password,
-      user.password,
+      String(user.password),
     )
 
     return isPasswordValid

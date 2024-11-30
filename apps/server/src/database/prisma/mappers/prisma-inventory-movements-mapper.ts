@@ -27,6 +27,7 @@ export class PrismaInventoryMovementsMapper {
     if (prismaInventoryMovement.User)
       inventoryMovement.responsible = new PrismaUsersMapper().toDomain(
         prismaInventoryMovement.User,
+        false,
       )
 
     return inventoryMovement

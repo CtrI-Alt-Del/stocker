@@ -47,7 +47,7 @@ export class InventoryMovement extends Entity<MovementProps> {
     if (dto.product.dto) inventoryMovement.product = Product.create(dto.product.dto)
 
     if (dto.responsible.dto)
-      inventoryMovement.responsible = User.create(dto.responsible.dto)
+      inventoryMovement.responsible = User.create(dto.responsible.dto, false)
 
     return inventoryMovement
   }
@@ -61,8 +61,14 @@ export class InventoryMovement extends Entity<MovementProps> {
       id: this.id,
       movementType: this.props.movementType,
       itemsCount: this.props.itemsCount,
-      responsible: this.props.responsible,
-      product: this.props.product,
+      responsible: {
+        id: this.props.responsible.id,
+        dto: this.props.responsible.entity?.dto,
+      },
+      product: {
+        id: this.props.product.id,
+        dto: this.props.product.entity?.dto,
+      },
       registeredAt: this.props.registeredAt,
       remark: this.props.remark ?? undefined,
     }

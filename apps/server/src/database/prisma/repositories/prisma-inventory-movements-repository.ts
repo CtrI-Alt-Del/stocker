@@ -86,12 +86,9 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
     movementType,
     productId,
     companyId,
-    employeeId,
+    responsibleId,
   }: InventoryMovementsListParams) {
     try {
-      const whereCondition = productId ? { product_id: productId } : undefined
-      const count = await prisma.inventoryMovement.count({ where: whereCondition })
-
       let paginationParams = {}
 
       if (page) {
@@ -124,9 +121,9 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
         productIdFilter = { product_id: productId }
       }
 
-      let employeeIdFilter = {}
-      if (employeeId) {
-        employeeIdFilter = { user_id: employeeId }
+      let responsibleIdFilter = {}
+      if (responsibleId) {
+        responsibleIdFilter = { user_id: responsibleId }
       }
 
       const prismaInventoryMovements = await prisma.inventoryMovement.findMany({
@@ -135,7 +132,7 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
           ...productIdFilter,
           ...movementTypeFilter,
           ...dateRangeParams,
-          ...employeeIdFilter,
+          ...responsibleIdFilter,
           Product: {
             company_id: companyId,
           },
@@ -154,10 +151,21 @@ export class PrismaInventoryMovementsRepository implements IInventoryMovementsRe
       })
 
       const inventoryMovements = prismaInventoryMovements.map(this.mapper.toDomain)
+      const count = await prisma.inventoryMovement.count({
+        where: {
+          ...productIdFilter,
+          ...movementTypeFilter,
+          ...dateRangeParams,
+          ...responsibleIdFilter,
+          Product: {
+            company_id: companyId,
+          },
+        },
+      })
 
       return {
         inventoryMovements,
-        count: page ? count : inventoryMovements.length,
+        count,
       }
     } catch (error) {
       throw new PrismaError(error)

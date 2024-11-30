@@ -2,8 +2,8 @@ import type { ISuppliersRepository } from '../../interfaces/repositories/supplie
 import { PaginationResponse } from '../../responses'
 
 type Request = {
-  page: number,
-  name?: string,
+  page: number
+  name?: string
   companyId: string
 }
 
@@ -14,7 +14,13 @@ export class ListSuplliersUseCase {
   }
 
   async execute({ page, name, companyId }: Request) {
-    const { suppliers, count } = await this.suppliersRepository.findMany({ page, name, companyId })
+    const { suppliers, count } = await this.suppliersRepository.findMany({
+      page,
+      name,
+      companyId,
+    })
+
+    console.log(suppliers)
 
     return new PaginationResponse({
       items: suppliers.map((supplier) => supplier.dto),

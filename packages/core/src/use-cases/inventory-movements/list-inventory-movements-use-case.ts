@@ -1,6 +1,6 @@
 import type { InventoryMovementsListParams } from '../../types'
 import type { IInventoryMovementsRepository } from '../../interfaces'
-import type { InventoryMovement } from '../../domain/entities'
+import { PaginationResponse } from '../../responses'
 
 export class ListInventoryMovementsUseCase {
   private readonly inventoryMovementsRepository: IInventoryMovementsRepository
@@ -9,11 +9,13 @@ export class ListInventoryMovementsUseCase {
     this.inventoryMovementsRepository = inventoryMovementsRepository
   }
 
-  async execute(
-    params: InventoryMovementsListParams,
-  ): Promise<{ inventoryMovements: InventoryMovement[]; count: number }> {
+  async execute(params: InventoryMovementsListParams) {
     const { inventoryMovements, count } =
       await this.inventoryMovementsRepository.findMany(params)
-    return { inventoryMovements, count }
+
+    return new PaginationResponse({
+      items: inventoryMovements.map((movement) => movement.dto),
+      itemsCount: count,
+    })
   }
 }
