@@ -5,7 +5,7 @@ import {
   UpdateSupplierController,
   DeleteSuppliersController,
   ListSuppliersController,
-  GetSupplierController
+  GetSupplierController,
 } from '@/api/controllers/suppliers'
 import { FastifyHttp } from '../fastify-http'
 import { FastifyHandler } from '../fastify-handler'
@@ -24,20 +24,17 @@ export const SuppliersRoutes = async (app: FastifyInstance) => {
   const verifyEmployeeRoleMiddleware = new FastifyHandler(
     new VerifyUserRoleMiddleware('employee'),
   )
-  const preHandlers = [verifyJwtMiddleware, verifyManagerRoleMiddleware].map((handler) =>
-    handler.handle.bind(handler),
+  const preHandlersManager = [verifyJwtMiddleware, verifyManagerRoleMiddleware].map(
+    (handler) => handler.handle.bind(handler),
   )
-  const preHandlersEmployee = [verifyJwtMiddleware, verifyEmployeeRoleMiddleware].map((handler) =>
-    handler.handle.bind(handler),
+  const preHandlersEmployee = [verifyJwtMiddleware, verifyEmployeeRoleMiddleware].map(
+    (handler) => handler.handle.bind(handler),
   )
 
   app.get(
     '/:supplierId',
     {
-      preHandler: [
-        verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
-        verifyEmployeeRoleMiddleware.handle.bind(verifyEmployeeRoleMiddleware),
-      ],
+      preHandler: preHandlersEmployee,
     },
     async (request, response) => {
       const http = new FastifyHttp(request, response)
@@ -48,10 +45,7 @@ export const SuppliersRoutes = async (app: FastifyInstance) => {
   app.get(
     '/',
     {
-      preHandler: [
-        verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
-        verifyEmployeeRoleMiddleware.handle.bind(verifyEmployeeRoleMiddleware),
-      ],
+      preHandler: preHandlersEmployee,
     },
     async (request, response) => {
       const http = new FastifyHttp(request, response)
@@ -59,24 +53,22 @@ export const SuppliersRoutes = async (app: FastifyInstance) => {
     },
   )
 
-  app.post('/', { preHandler: preHandlers }, async (request, response) => {
+  app.post('/', { preHandler: preHandlersManager }, async (request, response) => {
     const http = new FastifyHttp(request, response)
     return registerSupplierController.handle(http)
   })
 
-  app.put('/:supplierId', { preHandler: preHandlers }, async (request, response) => {
-    const http = new FastifyHttp(request, response)
-    return updateSupplierController.handle(http)
-  })
+  app.put(
+    '/:supplierId',
+    { preHandler: preHandlersManager },
+    async (request, response) => {
+      const http = new FastifyHttp(request, response)
+      return updateSupplierController.handle(http)
+    },
+  )
 
-  app.delete('/', { preHandler: preHandlers }, async (request, response) => {
+  app.delete('/', { preHandler: preHandlersManager }, async (request, response) => {
     const http = new FastifyHttp(request, response)
     return deleteSupplierController.handle(http)
   })
-
-  app.get('/:supplierId', { preHandler: preHandlersEmployee }, async (request, response) => {
-      const http = new FastifyHttp(request, response)
-      return getSupplierController.handle(http)
-    },
-  )
 }
