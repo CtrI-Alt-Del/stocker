@@ -2,14 +2,14 @@ import type { FastifyInstance } from 'fastify'
 
 import { FastifyHttp } from '../fastify-http'
 import { FastifyHandler } from '../fastify-handler'
-import { VerifyJwtMiddleware, VerifyUserRoleMiddleware } from '@/api/middlewares'
+import { VerifyJwtMiddleware, VerifyRolePermissionMiddleware } from '@/api/middlewares'
 import { GetCompanyController } from '@/api/controllers/companies'
 
 export const CompaniesRoutes = async (app: FastifyInstance) => {
   const getCompanyController = new GetCompanyController()
   const verifyJwtMiddleware = new FastifyHandler(new VerifyJwtMiddleware())
   const verifyAdminRoleMiddleware = new FastifyHandler(
-    new VerifyUserRoleMiddleware('admin'),
+    new VerifyRolePermissionMiddleware('all'),
   )
   const preHandlers = [verifyJwtMiddleware, verifyAdminRoleMiddleware].map((handler) =>
     handler.handle.bind(handler),

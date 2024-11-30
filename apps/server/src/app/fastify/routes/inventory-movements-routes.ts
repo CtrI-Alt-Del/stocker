@@ -6,7 +6,7 @@ import {
   RegisterOutboundInventoryMovementController,
 } from '@/api/controllers/inventory-movements'
 import { FastifyHandler } from '../fastify-handler'
-import { VerifyJwtMiddleware, VerifyUserRoleMiddleware } from '@/api/middlewares'
+import { VerifyJwtMiddleware, VerifyRolePermissionMiddleware } from '@/api/middlewares'
 
 export const InventoryMovementsRoutes = async (app: FastifyInstance) => {
   const listInventoryMovementsController = new ListInventoryMovementsController()
@@ -15,10 +15,10 @@ export const InventoryMovementsRoutes = async (app: FastifyInstance) => {
   const registerOutboundInventoryMovementController =
     new RegisterOutboundInventoryMovementController()
   const verifyJwtMiddleware = new FastifyHandler(new VerifyJwtMiddleware())
-  const verifyEmployeeRoleMiddleware = new FastifyHandler(
-    new VerifyUserRoleMiddleware('employee'),
+  const verifyRoleMiddleware = new FastifyHandler(
+    new VerifyRolePermissionMiddleware('inventory-movements'),
   )
-  const preHandlers = [verifyJwtMiddleware, verifyEmployeeRoleMiddleware].map((handler) =>
+  const preHandlers = [verifyJwtMiddleware, verifyRoleMiddleware].map((handler) =>
     handler.handle.bind(handler),
   )
 

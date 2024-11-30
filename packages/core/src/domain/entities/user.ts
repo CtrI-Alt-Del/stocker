@@ -1,10 +1,9 @@
 import type { UserDto } from '../../dtos'
-import { ValidationError } from '../../errors'
-import type { UserRole } from '../../types'
 import { Entity } from '../abstracts'
+import { Role } from '../structs'
 
 type UserProps = {
-  role: UserRole
+  role: Role
   email: string
   name: string
   password?: string
@@ -16,18 +15,12 @@ const DEAFAULT_PASSWORD = 'stocker@123'
 
 export class User extends Entity<UserProps> {
   static create(dto: UserDto, hasPassword = true): User {
-    const role = dto.role
-
-    if (!User.isUserRole(role)) {
-      throw new ValidationError(`${role} não é um tipo de usuário válido`)
-    }
-
     const user = new User(
       {
         name: dto.name,
         email: dto.email,
         companyId: dto.companyId,
-        role: role,
+        role: Role.create(dto.role.name, dto.role.permissions),
         hasFirstPasswordReset: dto.hasFirstPasswordReset ?? true,
       },
       dto.id,
@@ -42,22 +35,19 @@ export class User extends Entity<UserProps> {
     return user
   }
 
-  static isUserRole(userRole: string): userRole is UserRole {
-    return ['admin', 'manager', 'employee'].includes(userRole)
-  }
-
-  hasValidRole(role: UserRole) {
-    switch (role) {
-      case 'admin':
-        return this.role === 'admin'
-      case 'manager':
-        return this.role === 'admin' || this.role === 'manager'
-      case 'employee':
-        return (
-          this.role === 'admin' || this.role === 'manager' || this.role === 'employee'
-        )
-    }
-  }
+  // hasValidRole(role: string) {
+  //   throw new Error('hasValidRole')
+  //   switch (role) {
+  //     case 'admin':
+  //       return this.role === 'admin'
+  //     case 'manager':
+  //       return this.role === 'admin' || this.role === 'manager'
+  //     case 'employee':
+  //       return (
+  //         this.role === 'admin' || this.role === 'manager' || this.role === 'employee'
+  //       )
+  //   }
+  // }
 
   update(partialDto: Partial<UserDto>): User {
     return User.create({ ...this.dto, ...partialDto })
@@ -67,7 +57,7 @@ export class User extends Entity<UserProps> {
     return this.props.name
   }
 
-  get role(): UserRole {
+  get role(): Role {
     return this.props.role
   }
 

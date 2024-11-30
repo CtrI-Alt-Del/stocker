@@ -12,7 +12,7 @@ import {
   ReportAnnualInventorymovementsController,
 } from '@/api/controllers/reports'
 import { FastifyHandler } from '../fastify-handler'
-import { VerifyJwtMiddleware, VerifyUserRoleMiddleware } from '@/api/middlewares'
+import { VerifyJwtMiddleware, VerifyRolePermissionMiddleware } from '@/api/middlewares'
 import { FastifyWs } from '../fastify-ws'
 import { AiReportRoom } from '@/realtime/rooms'
 
@@ -29,14 +29,14 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
   const reportAnnualInventorymovementsController =
     new ReportAnnualInventorymovementsController()
   const verifyJwtMiddleware = new FastifyHandler(new VerifyJwtMiddleware())
-  const verifyManagerRoleMiddleware = new FastifyHandler(
-    new VerifyUserRoleMiddleware('manager'),
+  const verifyReportsPermissionMiddleware = new FastifyHandler(
+    new VerifyRolePermissionMiddleware('reports'),
   )
-  const verifyEmployeeRoleMiddleware = new FastifyHandler(
-    new VerifyUserRoleMiddleware('employee'),
+  const verifyCsvExportPermissionMiddleware = new FastifyHandler(
+    new VerifyRolePermissionMiddleware('csv-export'),
   )
-  const preHandlers = [verifyJwtMiddleware, verifyManagerRoleMiddleware].map((handler) =>
-    handler.handle.bind(handler),
+  const preHandlers = [verifyJwtMiddleware, verifyReportsPermissionMiddleware].map(
+    (handler) => handler.handle.bind(handler),
   )
   const ws = new FastifyWs(app)
 
@@ -48,7 +48,7 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
   app.get(
     '/inventory',
     {
-      preHandler: verifyEmployeeRoleMiddleware.handle.bind(verifyEmployeeRoleMiddleware),
+      preHandler: verifyJwtMiddleware.handle,
     },
     async (request, response) => {
       const http = new FastifyHttp(request, response)
@@ -77,7 +77,9 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
   app.get(
     '/inventory/csv',
     {
-      preHandler: verifyEmployeeRoleMiddleware.handle.bind(verifyEmployeeRoleMiddleware),
+      preHandler: verifyCsvExportPermissionMiddleware.handle.bind(
+        verifyCsvExportPermissionMiddleware,
+      ),
     },
     async (request, response) => {
       const http = new FastifyHttp(request, response)

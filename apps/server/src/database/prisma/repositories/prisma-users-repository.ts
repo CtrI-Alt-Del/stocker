@@ -1,6 +1,6 @@
 import type { IUsersRepository } from '@stocker/core/interfaces'
 import type { User } from '@stocker/core/entities'
-import type { UserRole, UsersListParams } from '@stocker/core/types'
+import type { RoleName, UsersListParams } from '@stocker/core/types'
 import { PAGINATION } from '@stocker/core/constants'
 
 import { PrismaUsersMapper } from '../mappers'
@@ -13,6 +13,9 @@ export class PrismaUsersRepository implements IUsersRepository {
 
   async add(user: User): Promise<void> {
     try {
+      const role = await prisma.role.findUnique({ where: { name: user.name } })
+      if (!role) return
+
       const prismaUser = this.mapper.toPrisma(user)
       await prisma.user.create({
         data: {
@@ -20,7 +23,7 @@ export class PrismaUsersRepository implements IUsersRepository {
           name: prismaUser.name,
           email: prismaUser.email,
           password: prismaUser.password,
-          role: prismaUser.role,
+          role_id: role.id,
           has_first_password_reset: prismaUser.has_first_password_reset,
           company_id: prismaUser.company_id,
         },
@@ -32,17 +35,23 @@ export class PrismaUsersRepository implements IUsersRepository {
 
   async addMany(users: User[]): Promise<void> {
     try {
+      const prismaRoles = await prisma.role.findMany()
+
       const prismaUsers = users.map(this.mapper.toPrisma)
       await prisma.user.createMany({
-        data: prismaUsers.map((prismaUser) => ({
-          id: prismaUser.id,
-          name: prismaUser.name,
-          email: prismaUser.email,
-          password: prismaUser.password,
-          role: prismaUser.role,
-          has_first_password_reset: prismaUser.has_first_password_reset,
-          company_id: prismaUser.company_id,
-        })),
+        data: prismaUsers.map((prismaUser) => {
+          return {
+            id: prismaUser.id,
+            name: prismaUser.name,
+            email: prismaUser.email,
+            password: prismaUser.password,
+            role_id:
+              prismaRoles.find((prismaRole) => prismaRole.name === prismaUser.name)
+                ?.name ?? '',
+            has_first_password_reset: prismaUser.has_first_password_reset,
+            company_id: prismaUser.company_id,
+          }
+        }),
       })
     } catch (error) {
       throw new PrismaError(error)
@@ -66,7 +75,9 @@ export class PrismaUsersRepository implements IUsersRepository {
       const prismaUsers = await prisma.user.findMany({
         where: {
           company_id: companyId,
-          role: { not: 'ADMIN' },
+          role: {
+            name: { not: 'admin' },
+          },
         },
         orderBy: { registered_at: 'desc' },
       })
@@ -79,7 +90,7 @@ export class PrismaUsersRepository implements IUsersRepository {
 
   async findMany({ page, companyId, name, role }: UsersListParams) {
     try {
-      const prismaUserRole: Record<UserRole, PrismaUserRole> = {
+      const prismaUserRole: Record<RoleName, PrismaUserRole> = {
         admin: 'ADMIN',
         employee: 'EMPLOYEE',
         manager: 'MANAGER',
@@ -92,7 +103,7 @@ export class PrismaUsersRepository implements IUsersRepository {
           company_id: companyId,
           ...(name && { name: { contains: name, mode: 'insensitive' } }),
           ...(role && { role: prismaUserRole[role] }),
-          AND: { role: { not: 'ADMIN' } },
+          AND: { role: { name: { not: 'ADMIN' } } },
         },
         orderBy: { registered_at: 'desc' },
       })
@@ -101,8 +112,11 @@ export class PrismaUsersRepository implements IUsersRepository {
         where: {
           company_id: companyId,
           ...(name && { name: { contains: name, mode: 'insensitive' } }),
-          ...(role && { role: prismaUserRole[role], AND: { role: { not: 'ADMIN' } } }),
-          AND: { role: { not: 'ADMIN' } },
+          ...(role && {
+            role: prismaUserRole[role],
+            AND: { role: { name: { not: 'ADMIN' } } },
+          }),
+          AND: { role: { name: { not: 'ADMIN' } } },
         },
       })
 
@@ -123,6 +137,9 @@ export class PrismaUsersRepository implements IUsersRepository {
     try {
       const prismaUser = await prisma.user.findUnique({
         where: { id: userId },
+        include: {
+          role: true,
+        },
       })
       if (!prismaUser) return null
       return this.mapper.toDomain(prismaUser, false)
@@ -152,7 +169,7 @@ export class PrismaUsersRepository implements IUsersRepository {
           email: prismaUser.email,
           password: prismaUser.password,
           company_id: prismaUser.company_id,
-          role: prismaUser.role,
+          role_id: prismaUser.role_id,
           has_first_password_reset: prismaUser.has_first_password_reset,
         },
         where: { id: userId },
@@ -165,7 +182,7 @@ export class PrismaUsersRepository implements IUsersRepository {
   async countEmployeeUsersByCompany(companyId: string): Promise<number> {
     try {
       return await prisma.user.count({
-        where: { role: 'EMPLOYEE', company_id: companyId },
+        where: { role: { name: 'employee' }, company_id: companyId },
       })
     } catch (error) {
       throw new PrismaError(error)
@@ -175,7 +192,7 @@ export class PrismaUsersRepository implements IUsersRepository {
   async countManagerUsersByCompany(companyId: string): Promise<number> {
     try {
       return await prisma.user.count({
-        where: { role: 'MANAGER', company_id: companyId },
+        where: { role: { name: 'manager' }, company_id: companyId },
       })
     } catch (error) {
       throw new PrismaError(error)

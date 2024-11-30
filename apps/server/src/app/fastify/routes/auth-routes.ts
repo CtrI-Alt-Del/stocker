@@ -11,7 +11,7 @@ import {
   SubscribeController,
   UpdateAccountController,
 } from '@/api/controllers/auth'
-import { VerifyJwtMiddleware, VerifyUserRoleMiddleware } from '@/api/middlewares'
+import { VerifyJwtMiddleware, VerifyRolePermissionMiddleware } from '@/api/middlewares'
 import { RequestPasswordResetController } from '@/api/controllers/auth/request-password-reset-controller'
 import { FastifyWs } from '../fastify-ws'
 import { AuthRoom } from '@/realtime/rooms'
@@ -25,7 +25,7 @@ export const AuthRoutes = async (app: FastifyInstance) => {
   const requestPasswordResetController = new RequestPasswordResetController()
   const verifyJwtMiddleware = new FastifyHandler(new VerifyJwtMiddleware())
   const verifyAdminRoleMiddleware = new FastifyHandler(
-    new VerifyUserRoleMiddleware('admin'),
+    new VerifyRolePermissionMiddleware('all'),
   )
   const resetPasswordController = new ResetPasswordController()
   const confirmAuthController = new ConfirmAuthController()
@@ -61,7 +61,7 @@ export const AuthRoutes = async (app: FastifyInstance) => {
 
   app.delete(
     '/logout',
-    { preHandler: [verifyJwtMiddleware.handle.bind(verifyJwtMiddleware)] },
+    { preHandler: [verifyJwtMiddleware.handle] },
     async (request, response) => {
       const http = new FastifyHttp(request, response)
       return logoutController.handle(http)
@@ -77,7 +77,7 @@ export const AuthRoutes = async (app: FastifyInstance) => {
     '/account',
     {
       preHandler: [
-        verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
+        verifyJwtMiddleware.handle,
         verifyAdminRoleMiddleware.handle.bind(verifyAdminRoleMiddleware),
       ],
     },
@@ -91,7 +91,7 @@ export const AuthRoutes = async (app: FastifyInstance) => {
     '/account',
     {
       preHandler: [
-        verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
+        verifyJwtMiddleware.handle,
         verifyAdminRoleMiddleware.handle.bind(verifyAdminRoleMiddleware),
       ],
     },

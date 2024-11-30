@@ -1,2 +1,2 @@
 export { VerifyJwtMiddleware } from './verify-jwt-middleware'
-export { VerifyUserRoleMiddleware } from './verify-user-role-middleware'
+export { VerifyRolePermissionMiddleware } from './verify-role-permission-middleware'

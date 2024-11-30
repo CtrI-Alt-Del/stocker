@@ -8,15 +8,20 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-enum UserRole {
-  ADMIN
-  MANAGER
-  EMPLOYEE
-}
-
 enum InventoryMovementType {
   INBOUND
   OUTBOUND
+}
+
+enum RolePermissionName {
+  INVENTORY_MOVEMENTS
+  PRODUCTS_CONTROL
+  CATEGORIES_CONTROL
+  CSV_EXPORT
+  LOCATIONS_CONTROL
+  NOTIFICATIONS_CONTROL
+  SUPPLIERS_CONTROL
+  REPORTS
 }
 
 model Product {
@@ -85,7 +90,7 @@ model InventoryMovement {
 model User {
   id                       String   @id @default(uuid())
   email                    String
-  role                     UserRole @default(EMPLOYEE)
+  role_id                  String
   name                     String
   password                 String
   has_first_password_reset Boolean  @default(true)
@@ -93,6 +98,7 @@ model User {
   registered_at            DateTime @default(now())
 
   company            Company?            @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  role               Role?               @relation(fields: [role_id], references: [id], onDelete: Cascade)
   inventoryMovements InventoryMovement[]
 
   @@map("users")
@@ -110,6 +116,25 @@ model Company {
   categories Category[]
 
   @@map("companies")
+}
+
+model Role {
+  id          String           @id @default(uuid())
+  name        String           @unique()
+  permissions RolePermission[]
+  User        User[]
+
+  @@map("roles")
+}
+
+model RolePermission {
+  id      String             @id @default(uuid())
+  name    RolePermissionName @unique()
+  role_id String
+
+  role Role @relation(fields: [role_id], references: [id], onDelete: Cascade)
+
+  @@map("role_permission")
 }
 
 model Category {

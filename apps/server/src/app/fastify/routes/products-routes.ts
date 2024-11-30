@@ -9,7 +9,7 @@ import {
 } from '@/api/controllers/products'
 import { FastifyHttp } from '../fastify-http'
 import { FastifyHandler } from '../fastify-handler'
-import { VerifyJwtMiddleware, VerifyUserRoleMiddleware } from '@/api/middlewares'
+import { VerifyJwtMiddleware, VerifyRolePermissionMiddleware } from '@/api/middlewares'
 
 export const ProductsRoutes = async (app: FastifyInstance) => {
   const getProductController = new GetProductController()
@@ -18,20 +18,14 @@ export const ProductsRoutes = async (app: FastifyInstance) => {
   const updateProductController = new UpdateProductController()
   const deleteProductsController = new DeleteProductsController()
   const verifyJwtMiddleware = new FastifyHandler(new VerifyJwtMiddleware())
-  const verifyManagerRoleMiddleware = new FastifyHandler(
-    new VerifyUserRoleMiddleware('manager'),
-  )
-  const verifyEmployeeRoleMiddleware = new FastifyHandler(
-    new VerifyUserRoleMiddleware('employee'),
+  const verifyRolePermissionMiddleware = new FastifyHandler(
+    new VerifyRolePermissionMiddleware('products-control'),
   )
 
   app.get(
     '/',
     {
-      preHandler: [
-        verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
-        verifyEmployeeRoleMiddleware.handle.bind(verifyEmployeeRoleMiddleware),
-      ],
+      preHandler: verifyJwtMiddleware.handle,
     },
     async (request, response) => {
       const http = new FastifyHttp(request, response)
@@ -42,10 +36,7 @@ export const ProductsRoutes = async (app: FastifyInstance) => {
   app.get(
     '/:productId',
     {
-      preHandler: [
-        verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
-        verifyEmployeeRoleMiddleware.handle.bind(verifyEmployeeRoleMiddleware),
-      ],
+      preHandler: verifyJwtMiddleware.handle,
     },
     async (request, response) => {
       const http = new FastifyHttp(request, response)
@@ -57,8 +48,8 @@ export const ProductsRoutes = async (app: FastifyInstance) => {
     '/',
     {
       preHandler: [
-        verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
-        verifyManagerRoleMiddleware.handle.bind(verifyManagerRoleMiddleware),
+        verifyJwtMiddleware.handle,
+        verifyRolePermissionMiddleware.handle.bind(verifyRolePermissionMiddleware),
       ],
     },
     async (request, response) => {
@@ -71,8 +62,8 @@ export const ProductsRoutes = async (app: FastifyInstance) => {
     '/:productId',
     {
       preHandler: [
-        verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
-        verifyManagerRoleMiddleware.handle.bind(verifyManagerRoleMiddleware),
+        verifyJwtMiddleware.handle,
+        verifyRolePermissionMiddleware.handle.bind(verifyRolePermissionMiddleware),
       ],
     },
     async (request, response) => {
@@ -85,8 +76,8 @@ export const ProductsRoutes = async (app: FastifyInstance) => {
     '/',
     {
       preHandler: [
-        verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
-        verifyManagerRoleMiddleware.handle.bind(verifyManagerRoleMiddleware),
+        verifyJwtMiddleware.handle,
+        verifyRolePermissionMiddleware.handle.bind(verifyRolePermissionMiddleware),
       ],
     },
     async (request, response) => {

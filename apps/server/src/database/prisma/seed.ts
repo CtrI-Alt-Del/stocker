@@ -19,6 +19,7 @@ import {
   CompanyFaker,
   InventoryMovementsFaker,
   ProductsFaker,
+  RolesFaker,
   SuppliersFaker,
   UsersFaker,
 } from '@stocker/core/fakers'
@@ -115,12 +116,12 @@ export async function seed() {
     companyId: fakeCompany.id,
   })
   const fakeUsers = UsersFaker.fakeMany(10, {
-    role: 'employee',
+    role: RolesFaker.fake({ name: 'employee' }),
     companyId: fakeCompany.id,
   })
   fakeUsers.push(
     UsersFaker.fake({
-      role: 'admin',
+      role: RolesFaker.fake({ name: 'admin' }),
       companyId: fakeCompany.id,
       email: 'stockerteampr@gmail.com',
       password: await new CryptoProvider().hash('stocker123'),
