@@ -13,6 +13,12 @@ export class DeleteLocationsUseCase {
     }
 
     async execute({ locationsId }: Request): Promise<void> {
-        await this.locationsRepository.deleteById(locationsId)
+        for (const locationId of locationsId) {
+            const existingLocation = await this.locationsRepository.findById(locationId);
+            if (!existingLocation) {
+                throw new NotFoundError("Local não  encontrado");
+            }
+        }
+        await this.locationsRepository.deleteMany(locationsId);
     }
 }
