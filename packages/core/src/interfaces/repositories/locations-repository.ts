@@ -1,11 +1,11 @@
 import type { Location } from '../../domain/entities/location'
 import type { PaginationResponse } from '../../responses'
-import type { CategoriesListParams } from '../../types'
+import type { LocationsListParams } from '../../types'
 
 export interface ILocationsRepository {
   findById(locationId: string): Promise<Location | null>
   findByName(locationName: string): Promise<Location | null>
-  findMany(params: CategoriesListParams): Promise<Location[]>
+  findMany(params: LocationsListParams): Promise<PaginationResponse<Location>>
   count(): Promise<number>
   add(location: Location): Promise<void>
   update(location: Location, locationId: string): Promise<void>
