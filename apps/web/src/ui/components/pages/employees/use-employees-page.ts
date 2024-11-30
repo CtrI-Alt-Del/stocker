@@ -1,11 +1,20 @@
 import { CACHE } from '@/constants'
-import { useApi, useCache, useToast, useUrlParamNumber } from '@/ui/hooks'
+import {
+  useApi,
+  useCache,
+  useToast,
+  useUrlParamNumber,
+  useUrlParamString,
+} from '@/ui/hooks'
 import type { UserDto } from '@stocker/core/dtos'
 import { useState } from 'react'
 import { useAuthContext } from '../../contexts/auth-context'
+import { UserRole } from '@stocker/core/types'
 
 export function useEmployeesPage() {
   const { showSuccess, showError } = useToast()
+  const [nameSearchValue, setNameSerchValue] = useUrlParamString('name')
+  const [roleSearchValue, setRoleSearchValue] = useUrlParamString('role')
   const { usersService } = useApi()
   const [page, setPage] = useUrlParamNumber('page', 1)
   const [isDeleting, setIsDeleting] = useState<boolean>(false)
@@ -13,10 +22,17 @@ export function useEmployeesPage() {
   function handlePageChange(page: number) {
     setPage(page)
   }
+  function handleRoleSearchChange(role:"MANAGER" | "EMPLOYEE" | ""){
+    setRoleSearchValue(role)
+  }
+  function handleNameSearchChange(name: string) {
+    setNameSerchValue(name)
+  }
+
   const { user } = useAuthContext()
   const companyId = user ? user.companyId : ''
   async function fetchUsers() {
-    const response = await usersService.listUsers({ page, companyId: companyId })
+    const response = await usersService.listUsers({ page, companyId: companyId,name: nameSearchValue,role: roleSearchValue.toUpperCase() as UserRole })
     if (response.isFailure) {
       showError(response.errorMessage)
     }
@@ -25,7 +41,7 @@ export function useEmployeesPage() {
   const { data, isFetching, refetch } = useCache({
     fetcher: fetchUsers,
     key: CACHE.users.key,
-    dependencies: [page],
+    dependencies: [page,nameSearchValue,roleSearchValue],
   })
   async function handleUpdateEmployee() {
     refetch()
@@ -67,5 +83,10 @@ export function useEmployeesPage() {
     handleEmployeesSelectionChange,
     selectedEmployeesIds,
     handleUpdateEmployee,
+    nameSearchValue,
+    handleNameSearchChange,
+    handleRoleSearchChange,
+    roleSearchValue,
+
   }
 }

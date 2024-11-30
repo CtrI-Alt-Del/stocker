@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '@nextui-org/react'
+import { Button, Select, SelectItem } from '@nextui-org/react'
 
 import { Drawer } from '../../commons/drawer'
 import { Search } from '../../commons/search'
@@ -22,14 +22,41 @@ export const EmployeesPage = () => {
     handleEmployeesSelectionChange,
     handlePageChange,
     handleDeleteEmployeesAlertDialogConfirm,
+    handleNameSearchChange,
+    nameSearchValue,
+    roleSearchValue,
+    handleRoleSearchChange,
   } = useEmployeesPage()
   return (
     <>
       <div className='space-y-5'>
         <div className='flex flex-col gap-3 md:flex-row md:gap-0 justify-between'>
-          <div className='flex-1 w-full max-w-96 space-y-2'>
+          <div className='flex-1 w-full   space-y-2'>
             <h1 className='text-3xl font-black'>Funcionários</h1>
-            <Search value={''} onSearchChange={() => {}} />
+            <div className=' flex md:items-center flex-col md:flex-row gap-4 w-full'>
+              <Search value={nameSearchValue} onSearchChange={handleNameSearchChange} />
+              <Select
+                className='max-w-96 '
+                color='default'
+                size='lg'
+                defaultSelectedKeys={['']}
+                value={roleSearchValue}
+                onChange={(e) =>
+                  handleRoleSearchChange(e.target.value as '' | 'MANAGER' | 'EMPLOYEE')
+                }
+              >
+                <SelectItem key='' value=''>
+                  Todos
+                </SelectItem>
+                <SelectItem key='employee' value='EMPLOYEE'>
+                  Funcionário
+                </SelectItem>
+
+                <SelectItem key='manager' value='MANAGER'>
+                  Gerente
+                </SelectItem>
+              </Select>
+            </div>
           </div>
           <div className='flex items-center justify-center gap-1'>
             {selectedEmployeesIds.length > 0 && (

@@ -60,7 +60,7 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
     }
   }
 
-  async findMany({ page, companyId }: CategoriesListParams): Promise<Category[]> {
+  async findMany({ page, companyId, name }: CategoriesListParams): Promise<Category[]> {
     try {
       const prismaCategories = await prisma.category.findMany({
         take: PAGINATION.itemsPerPage,
@@ -71,8 +71,16 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
         where: {
           parent_category_id: null,
           company_id: companyId,
+          name: name ?? undefined,
         },
         orderBy: { registered_at: 'desc' },
+      })
+      const count = await prisma.category.count({
+        where: {
+          parent_category_id: null,
+          company_id: companyId,
+          name: name ?? undefined,
+        },
       })
 
       return prismaCategories.map(this.mapper.toDomain)

@@ -110,6 +110,7 @@ export class PrismaLocationsRepository implements ILocationsRepository {
         where: {
           company_id: params.companyId,
           parent_location_id: null,
+          name: params.name
         },
         include: {
           subLocation: true,
