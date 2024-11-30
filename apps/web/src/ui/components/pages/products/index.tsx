@@ -12,11 +12,13 @@ import { AlertDialog } from '../../commons/alert-dialog'
 import { useAuthContext } from '../../contexts/auth-context'
 import { CategorySelect } from '../../commons/category-select'
 import { Icon } from '../../commons/icon'
+import { LocationSelect } from '../../commons/location-select'
 
 export const ProductsPage = () => {
   const {
     categoryId,
     handleCategoryIdSearchChange,
+    handleLocationIdchange,
     isFetching,
     isDeleting,
     page,
@@ -41,21 +43,12 @@ export const ProductsPage = () => {
           <h1 className='text-3xl font-black'>Produtos</h1>
           <div className='flex flex-col md:flex-row gap-4 md:items-center w-full'>
             <Search value={productName} onSearchChange={handleSearchChange} />
-            <div className='flex md:items-center md:justify-center gap-4'>
+            <div className='flex md:items-center md:justify-center gap-6'>
               <CategorySelect
-                value={categoryId}
-                onSelectChange={handleCategoryIdSearchChange}
+                onSelectChange={handleCategoryIdSearchChange} mode='filter'
+               
               />
-              {categoryId && (
-                <button
-                  type='button'
-                  onClick={() => handleCategoryIdSearchChange('')}
-                  className='flex justify-center items-center gap-2 text-sm text-gray-400'
-                >
-                  Remover Filtro
-                  <Icon name='close' className='size-4' />{' '}
-                </button>
-              )}
+              <LocationSelect onSelectChange={handleLocationIdchange} mode='filter'/>
             </div>
           </div>
         </div>

@@ -145,7 +145,7 @@ export const Navbar = () => {
                       icon='location'
                       isActive={currentRoute === ROUTES.records.locations}
                     >
-                      Setores
+                      Locais
                     </NavbarLink>
                   )}
                 </NavbarItem>

@@ -11,6 +11,7 @@ import type { ImageInputRef } from '@/ui/components/commons/image-input/types'
 import { useUpdateProductForm } from './use-update-product-form'
 import { CategorySelect } from '@/ui/components/commons/category-select'
 import { SupplierSelect } from '@/ui/components/commons/supplier-select'
+import { LocationSelect } from '@/ui/components/commons/location-select'
 
 type RegisterProductFormProps = {
   product: Product
@@ -88,7 +89,7 @@ export const UpdateProductForm = ({
       />
 
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-      <Controller
+        <Controller
           name='supplierId'
           control={control}
           render={({ field: { onChange } }) => (
@@ -195,7 +196,22 @@ export const UpdateProductForm = ({
       <Divider className='my-2' />
 
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-        <Input label='Setor' />
+        <Controller
+          name='locationId'
+          control={control}
+          render={({ field: { onChange } }) => (
+            <div className='w-full '>
+              <LocationSelect
+                onSelectChange={onChange}
+                defaultLocationId={product.locationId ?? undefined}
+                className='w-full'
+              />
+              {errors.supplierId && (
+                <p className='text-red-600 text-sm'>{errors.locationId?.message}</p>
+              )}
+            </div>
+          )}
+        />
         <Input
           label='Marca'
           isRequired

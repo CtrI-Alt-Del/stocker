@@ -35,6 +35,7 @@ const registerProductFormSchema = z.object({
   code: stringSchema,
   minimumStock: nonZeroIntegerSchema,
   categoryId: idSchema.optional(),
+  locationId: idSchema.optional(),
   supplierId: idSchema.optional(),
   model: z
     .string()
@@ -60,6 +61,7 @@ export function useRegisterProductForm(
 
   async function handleFormSubmit(formData: RegisterProductFormData) {
     setIsSubmiting(true)
+    console.log(formData)
     let imageUrl = ''
 
     if (formData.image) {
@@ -87,7 +89,7 @@ export function useRegisterProductForm(
       minimumStock: formData.minimumStock,
       category: formData.categoryId ? { id: formData.categoryId } : undefined,
       supplier: formData.supplierId ? { id: formData.supplierId } : undefined,
-      // location: formData.locationId ? { id: formData.locationId } : undefined,
+      location: formData.locationId ? { id: formData.locationId } : undefined,
       model: formData.model,
       isActive: formData.isActive,
       brand: formData.brand,

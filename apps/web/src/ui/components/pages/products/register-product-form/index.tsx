@@ -9,7 +9,7 @@ import { ImageInput } from '@/ui/components/commons/image-input'
 import type { ImageInputRef } from '@/ui/components/commons/image-input/types'
 import { CategorySelect } from '@/ui/components/commons/category-select'
 import { SupplierSelect } from '@/ui/components/commons/supplier-select'
-
+import { LocationSelect } from '@/ui/components/commons/location-select'
 
 type RegisterProductFormProps = {
   onCancel: VoidFunction
@@ -68,7 +68,7 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
       />
 
       <div className='grid grid-cols-2 gap-6'>
-      <Controller
+        <Controller
           name='supplierId'
           control={control}
           render={({ field: { onChange } }) => (
@@ -171,7 +171,18 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
       <Divider className='my-2' />
 
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-        <Input label='Setor' />
+        <Controller
+          name='locationId'
+          control={control}
+          render={({ field: { onChange } }) => (
+            <div className='w-full '>
+              <LocationSelect onSelectChange={onChange} className='w-full' />
+              {errors.categoryId && (
+                <p className='text-red-600 text-sm'>{errors.categoryId?.message}</p>
+              )}
+            </div>
+          )}
+        />
         <Input
           label='Marca'
           isRequired

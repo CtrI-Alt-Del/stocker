@@ -58,7 +58,7 @@ export const LocationList = ({
           <Spinner label='Carregando...' className='w-full h-full mx-auto' />
         </div>
       ) : locations.length === 0 ? (
-        <p className='text-center font-semibold mt-12'>Nenhuma Localização Encontrada</p>
+        <p className='text-center font-semibold mt-12'>Nenhum Local Encontrado</p>
       ) : (
         <div className='space-y-2'>
           <Accordion selectionMode='multiple'>
@@ -78,7 +78,7 @@ export const LocationList = ({
                 hideIndicator
                 title={
                   <div className='flex justify-between w-full items-center gap-2'>
-                    <p className='text-sm md:text-base'>{location.name}</p>
+                    <p className='text-sm '>{location.name}</p>
                     <div className='flex space-x-2'>
                       <div className='flex space-x-2 m-0'>
                         <Button

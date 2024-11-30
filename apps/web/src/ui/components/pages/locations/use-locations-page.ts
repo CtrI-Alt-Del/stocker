@@ -8,12 +8,12 @@ export function useLocationsPage() {
   const [page, setPage] = useUrlParamNumber('page', 1)
   const { locationsService } = useApi()
   const { showError, showSuccess } = useToast()
-  const { company } = useAuthContext()
+  const { user } = useAuthContext()
   async function fetchLocations() {
-    if (!company) return
+    if (!user) return
     const response = await locationsService.listLocations({
       page,
-      companyId: company.id,
+      companyId: user.companyId
     })
     if (response.isFailure) {
       showError(response.errorMessage)
@@ -39,13 +39,12 @@ export function useLocationsPage() {
     const response = await locationsService.deleteLocation(locationId)
     if (response.isFailure) {
       showError(response.errorMessage)
-      return
     }
     if (response.isSuccess) {
       refetch()
-      showSuccess('Setor deletado com sucesso')
-      return
+      showSuccess('Local deletado com sucesso')
     }
+    refetch()
   }
   const locations = data ? data.items.map(Location.create) : []
   const totalItems = data ? data.itemsCount : 0

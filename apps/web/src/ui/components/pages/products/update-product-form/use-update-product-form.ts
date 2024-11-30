@@ -26,6 +26,7 @@ const updateProductFormSchema = z.object({
   name: nameSchema,
   uom: stringSchema,
   description: descriptionSchema,
+  locationId: idSchema,
   costPrice: integerSchema,
   sellingPrice: integerSchema,
   height: integerSchema,
@@ -129,6 +130,9 @@ export function useUpdateProductForm({
       if (updatedField === 'supplierId') {
         partialProduct.supplier = { id: formData.supplierId }
         continue
+      }
+      if(updatedField === "locationId"){
+        partialProduct.location = {id: formData.locationId}
       }
 
       const updatedValue = formData[updatedField as keyof UpdateProductFormData]
