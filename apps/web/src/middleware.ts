@@ -21,6 +21,7 @@ export const config: MiddlewareConfig = {
     '/inventory/:path*',
     '/inventory/stocks/:productId*',
     '/records/:path*',
+    '/categories/:path*',
   ],
 }
 
