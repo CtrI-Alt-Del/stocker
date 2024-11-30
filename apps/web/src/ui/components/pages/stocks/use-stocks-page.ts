@@ -55,7 +55,7 @@ export function useStocksPage() {
   }
 
   function handleSearchChange(value: string) {
-    setFilterByNameValue(value ?? '')
+    setFilterByNameValue(value)
   }
 
   return {
