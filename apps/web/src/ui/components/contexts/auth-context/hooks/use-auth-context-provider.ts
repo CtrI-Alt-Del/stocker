@@ -163,11 +163,14 @@ export function useAuthContextProvider({
   }
 
   async function resetPassword(email: string, password: string) {
+    if (!user) return
     const response = await authService.resetPassword(email, password)
 
     if (response.isSuccess) {
       await setCookieAction(COOKIES.jwt.key, response.body.jwt, COOKIES.jwt.duration)
       showSuccess('Senha redefinida com sucesso!')
+      user.hasFirstPasswordReset = false
+      setUser(user)
       return
     }
     showError('Não foi capaz redefinir sua senha por favor tente mais tarde')
@@ -178,7 +181,6 @@ export function useAuthContextProvider({
   }
 
   async function handleLogoutUnkownAccount(unknownAccountJwt: string) {
-    console.log({ unknownAccountJwt })
     if (jwt !== unknownAccountJwt) await logout()
   }
 

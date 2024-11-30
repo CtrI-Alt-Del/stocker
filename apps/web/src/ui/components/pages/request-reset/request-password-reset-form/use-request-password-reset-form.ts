@@ -30,12 +30,16 @@ export function useRequestPasswordForm() {
       return
     }
 
-    await setCookieAction(
-      COOKIES.passwordResetToken.key,
-      `${response.body.confirmationToken}|${email}`,
-      COOKIES.passwordResetToken.duration,
+    if (response.body.confirmationToken)
+      await setCookieAction(
+        COOKIES.passwordResetToken.key,
+        `${response.body.confirmationToken}|${email}`,
+        COOKIES.passwordResetToken.duration,
+      )
+
+    showSuccess(
+      `Se esse e-mail exisitr um pedido de redefinição de senha enviado para ${email}`,
     )
-    showSuccess(`Pedido de redefinição de senha enviado para ${email}`)
   }
 
   return {

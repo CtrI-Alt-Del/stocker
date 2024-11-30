@@ -52,5 +52,9 @@ export class NotificationsRoom implements IRoom {
         )
       },
     )
+
+    ws.on(REALTIME_EVENTS.notificationsRoom.companyDeleted, this.companyId, async () => {
+      ws.emit(REALTIME_EVENTS.notificationsRoom.companyDeleted, this.companyId, null)
+    })
   }
 }

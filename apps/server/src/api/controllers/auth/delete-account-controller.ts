@@ -10,16 +10,11 @@ export class DeleteAccountController {
   async handle(http: IHttp) {
     const user = User.create(await http.getUser())
 
-    const deleteUsersUseCase = new DeleteUsersUseCase(usersRepository)
     const notificationsSocket = new NotificationsSocket(user.companyId)
     const deleteCompanyUseCase = new DeleteCompanyUseCase(
       companiesRepository,
       notificationsSocket,
     )
-
-    await deleteUsersUseCase.execute({
-      usersIds: [user.id],
-    })
 
     await deleteCompanyUseCase.execute({
       companyId: user.companyId,

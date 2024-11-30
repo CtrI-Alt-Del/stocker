@@ -7,12 +7,9 @@ import { PasswordInput } from '../password-input'
 import { Controller } from 'react-hook-form'
 
 export const FirstEntryPasswordModal = () => {
-  const { isSubmiting, errors, control, handleSubmit } = useFirstPasswordEntryModal()
   const dialogRef = useRef<DialogRef>(null)
-
-  useEffect(() => {
-    dialogRef.current?.open()
-  }, [])
+  const { isSubmiting, errors, control, handleSubmit } =
+    useFirstPasswordEntryModal(dialogRef)
 
   return (
     <Dialog
@@ -24,10 +21,9 @@ export const FirstEntryPasswordModal = () => {
     >
       {(closeDialog) => (
         <form
-          onSubmit={async (e) => {
-            e.preventDefault()
-            await handleSubmit()
+          onSubmit={async (event) => {
             closeDialog()
+            await handleSubmit(event)
           }}
           className='grid grid-rows-2 gap-2 pb-3'
         >
@@ -52,10 +48,10 @@ export const FirstEntryPasswordModal = () => {
             <Button
               color='primary'
               type='submit'
-              className='text-center w-full font-semibold'
+              className='text-center w-full font-semibold text-orange'
               isLoading={isSubmiting}
             >
-              Confirmar
+              <p className='text-zinc-50'>Confirmar</p>
             </Button>
           </div>
         </form>
