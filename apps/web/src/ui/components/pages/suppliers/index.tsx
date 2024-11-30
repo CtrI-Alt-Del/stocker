@@ -22,6 +22,8 @@ export const SuppliersPage = () => {
     handleSuppliersSelectionChange,
     handlePageChange,
     handleDeleteSuppliersAlertDialogConfirm,
+    nameSearchValue,
+    handleNameSearchChange
   } = useSuppliersPage()
   return (
     <>
@@ -29,7 +31,7 @@ export const SuppliersPage = () => {
         <div className='flex flex-col gap-3 md:flex-row md:gap-0 justify-between'>
           <div className='flex-1 w-full max-w-96 space-y-2'>
             <h1 className='text-3xl font-black'>Fornecedores</h1>
-            <Search value={''} onSearchChange={() => {}} />
+            <Search value={nameSearchValue} onSearchChange={handleNameSearchChange} />
           </div>
           <div className='flex items-center justify-center gap-1'>
             {selectedSuppliersIds.length > 0 && (

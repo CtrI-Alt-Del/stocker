@@ -1,5 +1,11 @@
 import { CACHE } from '@/constants'
-import { useApi, useCache, useToast, useUrlParamNumber } from '@/ui/hooks'
+import {
+  useApi,
+  useCache,
+  useToast,
+  useUrlParamNumber,
+  useUrlParamString,
+} from '@/ui/hooks'
 import { useState } from 'react'
 import { useAuthContext } from '../../contexts/auth-context'
 import { SuppliersService } from '@/api/services'
@@ -10,6 +16,7 @@ export function useSuppliersPage() {
   const { suppliersService } = useApi()
   const [page, setPage] = useUrlParamNumber('page', 1)
   const [isDeleting, setIsDeleting] = useState<boolean>(false)
+  const [nameSearchValue, setNameSerchValue] = useUrlParamString('name')
   const [selectedSuppliersIds, setSelectdSuppliersIds] = useState<string[]>([])
   function handlePageChange(page: number) {
     setPage(page)
@@ -17,16 +24,23 @@ export function useSuppliersPage() {
   const { user } = useAuthContext()
   async function fetchUsers() {
     if (!user) return
-    const response = await suppliersService.listSuppliers({ page, companyId: user.companyId })
+    const response = await suppliersService.listSuppliers({
+      page,
+      companyId: user.companyId,
+      name: nameSearchValue
+    })
     if (response.isFailure) {
       showError(response.errorMessage)
     }
     return response.body
   }
+  function handleNameSearchChange(name: string) {
+    setNameSerchValue(name)
+  }
   const { data, isFetching, refetch } = useCache({
     fetcher: fetchUsers,
     key: CACHE.users.key,
-    dependencies: [page],
+    dependencies: [page,nameSearchValue],
   })
   async function handleUpdateSupplier() {
     refetch()
@@ -68,5 +82,7 @@ export function useSuppliersPage() {
     handleSuppliersSelectionChange,
     selectedSuppliersIds,
     handleUpdateSupplier,
+    nameSearchValue,
+    handleNameSearchChange,
   }
 }
