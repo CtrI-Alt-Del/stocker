@@ -85,8 +85,6 @@ export class PrismaUsersRepository implements IUsersRepository {
         manager: 'MANAGER',
       }
 
-      console.log(role)
-
       const prismaUsers = await prisma.user.findMany({
         take: PAGINATION.itemsPerPage,
         skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,

@@ -4,13 +4,18 @@ import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 
 import { companiesRepository, usersRepository } from '@/database'
 import { User } from '@stocker/core/entities'
+import { NotificationsSocket } from '@/realtime/sockets'
 
 export class DeleteAccountController {
   async handle(http: IHttp) {
     const user = User.create(await http.getUser())
 
     const deleteUsersUseCase = new DeleteUsersUseCase(usersRepository)
-    const deleteCompanyUseCase = new DeleteCompanyUseCase(companiesRepository)
+    const notificationsSocket = new NotificationsSocket(user.companyId)
+    const deleteCompanyUseCase = new DeleteCompanyUseCase(
+      companiesRepository,
+      notificationsSocket,
+    )
 
     await deleteUsersUseCase.execute({
       usersIds: [user.id],
