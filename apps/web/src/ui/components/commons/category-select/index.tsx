@@ -10,14 +10,14 @@ type CategorySelectProps = {
   defeaultCategoryId?: string
   className?: string
   onSelectChange: (categoryId: string) => void
-  value?:string
+  mode?: "filter" | "select"
 }
 
 export const CategorySelect = ({
   className,
-  value,
   defeaultCategoryId,
   onSelectChange,
+  mode = "select",
 }: CategorySelectProps) => {
   const {
     categories,
@@ -32,15 +32,15 @@ export const CategorySelect = ({
   } = useCategorySelect(onSelectChange, defeaultCategoryId)
 
   return isFetching ? (
-    <Spinner label='Carregando...' className='w-full h-full mx-auto' />
+    <Spinner size='sm' className='w-full h-full mx-auto' />
   ) : (
-    <div className='space-y-2'>
+    <div className='space-y-2 flex flex-row gap-4 items-center w-full'>
       <Dialog
         title='Selecione uma categoria ou subcategoria'
         size='2xl'
         trigger={
           <Select className={className}>
-            {value ? selectedCategoryName ? selectedCategoryName : 'Selecione categoria' : "Selecione categoria"}
+            {selectedCategoryName ? selectedCategoryName : 'Selecione categoria'}
           </Select>
         }
       >
@@ -118,6 +118,16 @@ export const CategorySelect = ({
           )
         }
       </Dialog>
+      {selectedCategoryName && mode === "filter" && (
+        <button
+          type='button'
+          onClick={() => handleCategoryIdChange('')}
+          className='flex justify-center items-center gap-2 text-sm text-gray-400'
+        >
+          Remover Filtro
+          <Icon name='close' className='size-4' />{' '}
+        </button>
+      )}
     </div>
   )
 }
