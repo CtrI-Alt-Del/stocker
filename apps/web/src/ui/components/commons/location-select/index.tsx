@@ -34,7 +34,7 @@ export const LocationSelect = ({
   return isFetching ? (
     <Spinner size='sm' className='w-full h-full mx-auto' />
   ) : (
-    <div className='space-y-2 gap-4 flex flex-row w-full flex-1'>
+    <div className='space-y-2 gap-4 flex flex-row w-full'>
       <Dialog
         title='Selecione um local ou setor'
         size='2xl'
@@ -122,10 +122,10 @@ export const LocationSelect = ({
         <button
           type='button'
           onClick={() => handleLocationIdChange('')}
-          className='flex justify-center items-center gap-2 text-sm text-gray-400'
+          className='flex justify-center items-center gap-2 text-xs text-gray-400'
         >
           Remover Filtro
-          <Icon name='close' className='size-4' />{' '}
+          <Icon name='close' className='size-4' />
         </button>
       )}
     </div>

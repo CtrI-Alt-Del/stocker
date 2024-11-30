@@ -1,5 +1,6 @@
 'use client'
 
+import Markdown from 'markdown-to-jsx'
 import { Dialog } from '@/ui/components/commons/dialog'
 import { Button, Spinner } from '@nextui-org/react'
 import { useAiReport } from './use-ai-report'
@@ -8,11 +9,12 @@ import { Icon } from '@/ui/components/commons/icon'
 
 export function AiReport() {
   const { user } = useAuthContext()
-  const { isAnalysing, handleDialogOpen } = useAiReport(user?.id)
+  const { report, isAnalysing, handleDialogOpen } = useAiReport(user?.id)
 
   return (
     <Dialog
-      title={isAnalysing ? 'Analisando...' : 'Análise concluída'}
+      title={isAnalysing ? 'Analisando com IA...' : 'Análise com IA concluída'}
+      size='2xl'
       onOpen={handleDialogOpen}
       trigger={
         <Button
@@ -26,10 +28,14 @@ export function AiReport() {
       }
     >
       {() => (
-        <div>
-          {isAnalysing && (
-            <div className='grid place-content-center w-full h-full'>
+        <div className='h-[32rem]'>
+          {isAnalysing ? (
+            <div className='grid place-content-center w-full h-full pb-6'>
               <Spinner size='lg' />
+            </div>
+          ) : (
+            <div className='prose -translate-y-2 p-6'>
+              <Markdown>{report}</Markdown>
             </div>
           )}
         </div>

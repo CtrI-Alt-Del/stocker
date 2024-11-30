@@ -1,6 +1,6 @@
 export type MostTrendingProductsListParams = {
   startDate: Date | undefined
-  companyId:string
+  companyId?: string
   endDate: Date | undefined
   page?: number
   categoryId?: string

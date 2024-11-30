@@ -36,6 +36,7 @@ import {
   EyeClosed,
   CircleUserRoundIcon,
   Power,
+  Sparkles,
 } from 'lucide-react'
 
 import type { IconName } from '../types'
@@ -53,6 +54,7 @@ export const ICONS: Record<
   'arrow-up': ChevronUp,
   'arrow-up-down': ArrowUpDown,
   'menu-hamburguer': Menu,
+  ai: Sparkles,
   archive: Archive,
   logout: Power,
   plus: Plus,

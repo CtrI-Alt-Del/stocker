@@ -41,14 +41,14 @@ export const ProductsPage = () => {
       <div className='flex flex-col gap-3 md:flex-row md:gap-0 md:items-center md:justify-between'>
         <div className='flex-1 w-full space-y-2 '>
           <h1 className='text-3xl font-black'>Produtos</h1>
-          <div className='flex flex-col md:flex-row gap-4 md:items-center w-full'>
+          <div className='flex flex-col md:flex-row gap-4 md:items-center w-full '>
             <Search value={productName} onSearchChange={handleSearchChange} />
-            <div className='flex md:items-center md:justify-center gap-6'>
+            <div className='flex md:items-center md:justify-center gap-3'>
               <CategorySelect
-                onSelectChange={handleCategoryIdSearchChange} mode='filter'
-               
+                onSelectChange={handleCategoryIdSearchChange}
+                mode='filter'
               />
-              <LocationSelect onSelectChange={handleLocationIdchange} mode='filter'/>
+              <LocationSelect onSelectChange={handleLocationIdchange} mode='filter' />
             </div>
           </div>
         </div>

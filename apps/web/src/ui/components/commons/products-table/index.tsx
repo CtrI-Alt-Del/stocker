@@ -126,10 +126,10 @@ export const ProductsTable = ({
               <TableCell key='price'>{product.costPrice.brl}</TableCell>
               <TableCell key='minimumStock'>{product.minimumStock}</TableCell>
               <TableCell key='category'>
-                <span className='truncate'>{product.category?.name}</span>
+                <span className='truncate'>{product.category?.name ?? 'N/A'}</span>
               </TableCell>
               <TableCell key='supplier'>
-                <span className='truncate'>{product.supplier?.name}</span>
+                <span className='truncate'>{product.supplier?.name ?? 'N/A'}</span>
               </TableCell>
               <TableCell key='status'>
                 {product.isActive ? (

@@ -1,4 +1,5 @@
 import { CACHE } from '@/constants'
+import { useAuthContext } from '@/ui/components/contexts/auth-context'
 import {
   useApi,
   useCache,
@@ -15,6 +16,7 @@ const DEFAULT_END_DATE = new Datetime()
 const DEFAULT_START_DATE = DEFAULT_END_DATE.subtractDays(8)
 
 export function useMostTrendingProductsTable() {
+  const { company } = useAuthContext()
   const { reportsService } = useApi()
   const [startDate, setStartDate] = useUrlParamDate(
     'most-trending-products-start-date',
@@ -30,6 +32,8 @@ export function useMostTrendingProductsTable() {
   const { showError } = useToast()
 
   async function fetchProducts() {
+    if (!company) return
+
     const response = await reportsService.reportMostTrendingProducts({
       categoryId,
       startDate,
