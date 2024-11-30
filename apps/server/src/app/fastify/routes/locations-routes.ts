@@ -1,8 +1,8 @@
 import { DeleteLocationsController, GetLocationController, RegisterLocationController } from "@/api/controllers/locations";
 import type { FastifyInstance } from "fastify";
 import { FastifyHttp } from "../fastify-http";
-import { UpdateLocationController } from "@/api/controllers/locations/update-location-controller";
-import { ListLocationsController } from "@/api/controllers/locations/list-locations-controller";
+import { UpdateLocationController } from '@/api/controllers/locations/update-location-controller'
+import { ListLocationsController } from '@/api/controllers/locations/list-locations-controller'
 
 export const LocationsRoutes = async (app: FastifyInstance) => {
   const registerLocationController = new RegisterLocationController()
