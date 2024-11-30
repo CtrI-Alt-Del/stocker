@@ -60,7 +60,11 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
     }
   }
 
-  async findMany({ page, companyId, name }: CategoriesListParams): Promise<Category[]> {
+  async findMany({
+    page,
+    companyId,
+    name,
+  }: CategoriesListParams): Promise<{ categories: Category[]; count: number }> {
     try {
       const prismaCategories = await prisma.category.findMany({
         take: PAGINATION.itemsPerPage,
@@ -83,7 +87,7 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
         },
       })
 
-      return prismaCategories.map(this.mapper.toDomain)
+      return { categories: prismaCategories.map(this.mapper.toDomain), count }
     } catch (error) {
       throw new PrismaError(error)
     }

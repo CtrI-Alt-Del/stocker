@@ -8,23 +8,18 @@ type Request = {
 }
 
 export class ListCategoryUseCase {
-  private readonly categoriesRepository: ICategoriesRepository
-
-  constructor(categoriesRepository: ICategoriesRepository) {
-    this.categoriesRepository = categoriesRepository
-  }
+  constructor(private readonly categoriesRepository: ICategoriesRepository) {}
 
   async execute({ page, companyId, name }: Request) {
-    const categories = await this.categoriesRepository.findMany({
+    const { categories, count } = await this.categoriesRepository.findMany({
       page,
       companyId,
       name,
     })
 
-    const categoriesCount = await this.categoriesRepository.count()
     return new PaginationResponse({
       items: categories.map((category) => category.dto),
-      itemsCount: categoriesCount,
+      itemsCount: count,
     })
   }
 }

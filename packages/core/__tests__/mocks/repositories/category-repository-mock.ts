@@ -11,9 +11,18 @@ export class CategoriesRepositoryMock implements ICategoriesRepository {
     return category
   }
 
-  async findMany({ page }: CategoriesListParams): Promise<Category[]> {
-    const startIndex = (page - 1) * 10 // 10 pode ser o valor do PAGINATION.itemsPerPage
-    return this.categories.slice(startIndex, startIndex + 10)
+  async findMany({
+    page,
+  }: CategoriesListParams): Promise<{ categories: Category[]; count: number }> {
+    const startIndex = (page - 1) * 10
+    return {
+      categories: this.categories.slice(startIndex, startIndex + 10),
+      count: this.categories.length,
+    }
+  }
+
+  async addMany(categories: Category[]): Promise<void> {
+    this.categories.push(...categories)
   }
 
   async add(category: Category): Promise<void> {
@@ -26,24 +35,23 @@ export class CategoriesRepositoryMock implements ICategoriesRepository {
 
   async update(category: Category): Promise<void> {
     this.categories = this.categories.map((existingCategory) =>
-      existingCategory.id === category.id ? category : existingCategory
+      existingCategory.id === category.id ? category : existingCategory,
     )
   }
 
   async deleteById(categoryId: string): Promise<void> {
-    const categoryToDelete = this.categories.find((cat) => cat.id === categoryId);
+    const categoryToDelete = this.categories.find((cat) => cat.id === categoryId)
 
     if (!categoryToDelete) {
-      throw new NotFoundError();
+      throw new NotFoundError()
     }
-    const subCategoryIds = categoryToDelete.dto.subCategories.map(subCat => subCat.id);
+    const subCategoryIds = categoryToDelete.dto.subCategories.map((subCat) => subCat.id)
     if (subCategoryIds) {
-      this.categories = this.categories.filter(cat => {
-        return !subCategoryIds.includes(cat.id);
-      });
+      this.categories = this.categories.filter((cat) => {
+        return !subCategoryIds.includes(cat.id)
+      })
     }
-    
-    this.categories = this.categories.filter(cat => cat.id !== categoryId);
-    
+
+    this.categories = this.categories.filter((cat) => cat.id !== categoryId)
   }
 }
