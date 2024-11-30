@@ -85,7 +85,7 @@ model InventoryMovement {
 model User {
   id                       String   @id @default(uuid())
   email                    String   @unique()
-  role                     UserRole @default(EMPLOYEE)
+  role                     UserRole @default(MANAGER)
   name                     String
   password                 String
   has_first_password_reset Boolean  @default(true)
@@ -100,7 +100,7 @@ model User {
 
 model Company {
   id   String @id @default(uuid())
-  name String
+  name String @unique()
   cnpj String @unique()
 
   users      User[]
