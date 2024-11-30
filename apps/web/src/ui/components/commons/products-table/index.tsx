@@ -95,6 +95,7 @@ export const ProductsTable = ({
           <TableColumn key='code'>CODIGO</TableColumn>
           <TableColumn key='price'>PREÇO</TableColumn>
           <TableColumn key='minimumStock'>ESTOQUE MINIMO</TableColumn>
+          <TableColumn key='category'>CATEGORIA</TableColumn>
           <TableColumn key='supplier'>FORNECEDOR</TableColumn>
           <TableColumn key='status'>STATUS</TableColumn>
           <TableColumn key='option'>{null}</TableColumn>
@@ -120,11 +121,16 @@ export const ProductsTable = ({
                 </div>
               </TableCell>
               <TableCell key='code' className='w-48'>
-                {product.code}
+                <span className='truncate'>{product.code}</span>
               </TableCell>
               <TableCell key='price'>{product.costPrice.brl}</TableCell>
               <TableCell key='minimumStock'>{product.minimumStock}</TableCell>
-              <TableCell key='supplier'>Gabriel Fernandez SRC</TableCell>
+              <TableCell key='category'>
+                <span className='truncate'>{product.category?.name}</span>
+              </TableCell>
+              <TableCell key='supplier'>
+                <span className='truncate'>{product.supplier?.name}</span>
+              </TableCell>
               <TableCell key='status'>
                 {product.isActive ? (
                   <Tag type='sucess'>Ativo</Tag>

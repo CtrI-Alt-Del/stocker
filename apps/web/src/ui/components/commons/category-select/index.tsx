@@ -10,10 +10,12 @@ type CategorySelectProps = {
   defeaultCategoryId?: string
   className?: string
   onSelectChange: (categoryId: string) => void
+  value?:string
 }
 
 export const CategorySelect = ({
   className,
+  value,
   defeaultCategoryId,
   onSelectChange,
 }: CategorySelectProps) => {
@@ -38,7 +40,7 @@ export const CategorySelect = ({
         size='2xl'
         trigger={
           <Select className={className}>
-            {selectedCategoryName ? selectedCategoryName : 'Selecione categoria'}
+            {value ? selectedCategoryName ? selectedCategoryName : 'Selecione categoria' : "Selecione categoria"}
           </Select>
         }
       >

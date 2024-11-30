@@ -36,6 +36,7 @@ export class PrismaProductsRepository implements IProductsRepository {
           weight: prismaProduct.weight,
           company_id: prismaProduct.company_id,
           category_id: prismaProduct.category_id,
+          supplier_id: prismaProduct.supplier_id,
           selling_price: prismaProduct.selling_price,
           uom: prismaProduct.uom,
           code: prismaProduct.code,
@@ -49,6 +50,39 @@ export class PrismaProductsRepository implements IProductsRepository {
       throw new PrismaError(error)
     }
   }
+
+  async addMany(products: Product[]): Promise<void> {
+    try {
+      const prismaProducts = products.map(this.mapper.toPrisma)
+
+      await prisma.product.createMany({
+        data: prismaProducts.map((prismaProduct) => ({
+          id: prismaProduct.id,
+          name: prismaProduct.name,
+          image: prismaProduct.image,
+          cost_price: prismaProduct.cost_price,
+          description: prismaProduct.description,
+          width: prismaProduct.width,
+          length: prismaProduct.length,
+          height: prismaProduct.height,
+          weight: prismaProduct.weight,
+          company_id: prismaProduct.company_id,
+          category_id: prismaProduct.category_id,
+          supplier_id: prismaProduct.supplier_id,
+          selling_price: prismaProduct.selling_price,
+          uom: prismaProduct.uom,
+          code: prismaProduct.code,
+          minimum_stock: prismaProduct.minimum_stock,
+          brand: prismaProduct.brand,
+          is_active: prismaProduct.is_active,
+          model: prismaProduct.model,
+        })),
+      })
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
   async findById(productId: string): Promise<Product | null> {
     try {
       const prismaProduct = await prisma.product.findUnique({
@@ -56,6 +90,8 @@ export class PrismaProductsRepository implements IProductsRepository {
           id: productId,
         },
         include: {
+          category: true,
+          supplier: true,
           batches: {
             orderBy: [
               {
@@ -77,20 +113,29 @@ export class PrismaProductsRepository implements IProductsRepository {
     }
   }
 
-  async findMany({ page, companyId, categoryId, locationId, name, supplierId }: ProductsListParams) {
+  async findMany({
+    page,
+    companyId,
+    categoryId,
+    locationId,
+    name,
+    supplierId,
+  }: ProductsListParams) {
     try {
       const prismaProducts = await prisma.product.findMany({
         take: PAGINATION.itemsPerPage,
         skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,
         where: {
           company_id: companyId,
-          ...(name && { name: { contains: name, mode: 'insensitive' } }), 
-          ...(categoryId && { category_id: categoryId }), 
-          ...(locationId && { location_id: locationId }), 
-          ...(supplierId && { supplier_id: supplierId }), 
+          ...(name && { name: { contains: name, mode: 'insensitive' } }),
+          ...(categoryId && { category_id: categoryId }),
+          ...(locationId && { location_id: locationId }),
+          ...(supplierId && { supplier_id: supplierId }),
         },
         orderBy: { registered_at: 'desc' },
         include: {
+          category: true,
+          supplier: true,
           batches: {
             orderBy: [
               {
@@ -102,8 +147,8 @@ export class PrismaProductsRepository implements IProductsRepository {
             ],
           },
         },
-      });
-  
+      })
+
       const count = await prisma.product.count({
         where: {
           company_id: companyId,
@@ -112,34 +157,28 @@ export class PrismaProductsRepository implements IProductsRepository {
           ...(locationId && { location_id: locationId }),
           ...(supplierId && { supplier_id: supplierId }),
         },
-      });
-  
-      const products = prismaProducts.map(this.mapper.toDomain);
-  
+      })
+
+      const products = prismaProducts.map(this.mapper.toDomain)
+
       return {
         products,
         count,
-      };
+      }
     } catch (error) {
-      throw new PrismaError(error);
+      throw new PrismaError(error)
     }
   }
 
-  async findManyInventoryMovementsCount({ page, companyId, categoryId, locationId, name, supplierId, stockLevel }: ProducsStocksListParams) {
+  async findAllByCompany(companyId: string): Promise<Product[]> {
     try {
       const prismaProducts = await prisma.product.findMany({
-        take: PAGINATION.itemsPerPage,
-        skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,
         where: {
           company_id: companyId,
-          ...(name && { name: { contains: name, mode: 'insensitive' } }), 
-          ...(categoryId && { category_id: categoryId }), 
-          ...(locationId && { location_id: locationId }), 
-          ...(supplierId && { supplier_id: supplierId }), 
-          ...(stockLevel && { stockLevel: stockLevel }), 
         },
-        orderBy: { registered_at: 'desc' },
         include: {
+          category: true,
+          supplier: true,
           batches: {
             orderBy: [
               {
@@ -151,8 +190,52 @@ export class PrismaProductsRepository implements IProductsRepository {
             ],
           },
         },
-      });
-  
+      })
+
+      return prismaProducts.map(this.mapper.toDomain)
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
+  async findManyInventoryMovementsCount({
+    page,
+    companyId,
+    categoryId,
+    locationId,
+    name,
+    supplierId,
+    stockLevel,
+  }: ProducsStocksListParams) {
+    try {
+      const prismaProducts = await prisma.product.findMany({
+        take: PAGINATION.itemsPerPage,
+        skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,
+        where: {
+          company_id: companyId,
+          ...(name && { name: { contains: name, mode: 'insensitive' } }),
+          ...(categoryId && { category_id: categoryId }),
+          ...(locationId && { location_id: locationId }),
+          ...(supplierId && { supplier_id: supplierId }),
+          ...(stockLevel && { stockLevel: stockLevel }),
+        },
+        orderBy: { registered_at: 'desc' },
+        include: {
+          category: true,
+          supplier: true,
+          batches: {
+            orderBy: [
+              {
+                expiration_date: 'asc',
+              },
+              {
+                registered_at: 'asc',
+              },
+            ],
+          },
+        },
+      })
+
       const count = await prisma.product.count({
         where: {
           company_id: companyId,
@@ -160,18 +243,18 @@ export class PrismaProductsRepository implements IProductsRepository {
           ...(categoryId && { category_id: categoryId }),
           ...(locationId && { location_id: locationId }),
           ...(supplierId && { supplier_id: supplierId }),
-          ...(stockLevel && { stockLevel: stockLevel }), 
+          ...(stockLevel && { stockLevel: stockLevel }),
         },
-      });
-  
-      const products = prismaProducts.map(this.mapper.toDomain);
-  
+      })
+
+      const products = prismaProducts.map(this.mapper.toDomain)
+
       return {
         products,
         count,
-      };
+      }
     } catch (error) {
-      throw new PrismaError(error);
+      throw new PrismaError(error)
     }
   }
 
@@ -441,10 +524,10 @@ export class PrismaProductsRepository implements IProductsRepository {
           cost_price: true,
         },
         where: {
-            company_id: companyId,
-            is_active: true,
-          },
-        })
+          company_id: companyId,
+          is_active: true,
+        },
+      })
 
       const totalInventoryValue = result._sum.cost_price ?? 0
 
@@ -453,5 +536,4 @@ export class PrismaProductsRepository implements IProductsRepository {
       throw new PrismaError(error)
     }
   }
-
 }

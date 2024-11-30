@@ -1,23 +1,33 @@
 import { InventoryMovement } from '@stocker/core/entities'
 import type { PrismaInventoryMovement } from '../types'
+import { PrismaProductMapper } from './prisma-product-mapper'
+import { PrismaUsersMapper } from './prisma-users-mapper'
 
 export class PrismaInventoryMovementsMapper {
-  toDomain(prismaInventoryMovements: PrismaInventoryMovement): InventoryMovement {
+  toDomain(prismaInventoryMovement: PrismaInventoryMovement): InventoryMovement {
     const inventoryMovement = InventoryMovement.create({
-      id: prismaInventoryMovements.id,
-      movementType: prismaInventoryMovements.movement_type.toLowerCase(),
-      itemsCount: prismaInventoryMovements.items_count,
+      id: prismaInventoryMovement.id,
+      movementType: prismaInventoryMovement.movement_type.toLowerCase(),
+      itemsCount: prismaInventoryMovement.items_count,
       responsible: {
-        id: prismaInventoryMovements.user_id,
-        name: prismaInventoryMovements.User?.name,
+        id: prismaInventoryMovement.user_id,
       },
       product: {
-        id: prismaInventoryMovements.product_id,
-        name: prismaInventoryMovements.Product?.name,
+        id: prismaInventoryMovement.product_id,
       },
-      remark: prismaInventoryMovements.remark ?? undefined,
-      registeredAt: prismaInventoryMovements.registered_at,
+      remark: prismaInventoryMovement.remark ?? undefined,
+      registeredAt: prismaInventoryMovement.registered_at,
     })
+
+    if (prismaInventoryMovement.Product)
+      inventoryMovement.product = new PrismaProductMapper().toDomain(
+        prismaInventoryMovement.Product,
+      )
+
+    if (prismaInventoryMovement.User)
+      inventoryMovement.responsible = new PrismaUsersMapper().toDomain(
+        prismaInventoryMovement.User,
+      )
 
     return inventoryMovement
   }
@@ -30,8 +40,8 @@ export class PrismaInventoryMovementsMapper {
       items_count: inventoryMovement.itemsCount,
       registered_at: inventoryMovement.registeredAt,
       remark: inventoryMovement.remark,
-      product_id: inventoryMovement.product.id,
-      user_id: inventoryMovement.responsible.id,
+      product_id: inventoryMovement.productId,
+      user_id: inventoryMovement.responsibleId,
     }
   }
 }

@@ -6,3 +6,4 @@ export { ReportAnnualOutboundInventoryMovementsUseCase } from './report-annual-o
 export { ExportMostTrendingProductsToCsvFileUseCase } from './export-most-trending-products-use-case'
 export { ExportInventoryToCsvFileUseCase } from './export-inventory-to-csv-file-use-case'
 export { ReportInventorySummaryUseCase } from './report-inventory-summary-use-case'
+export { ReportInventoryWithAiUseCase } from './report-inventory-with-ai-use-case'

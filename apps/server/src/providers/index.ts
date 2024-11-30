@@ -1,3 +1,4 @@
+import { AiProvider } from './ai-provider'
 import { FileStorageProvider } from './file-storage-provider'
 import { CryptoProvider } from './crypto-provider'
 import { EmailProvider } from './email-provider'
@@ -9,6 +10,7 @@ import {
   SendWelcomeEmployeeEmailJob,
 } from '@/jobs'
 
+export const aiProvider = new AiProvider()
 export const fileStorageProvider = new FileStorageProvider()
 export const cryptoProvider = new CryptoProvider()
 export const emailProvider = new EmailProvider()

@@ -21,6 +21,10 @@ export class Category extends Entity<CategoryProps> {
     )
   }
 
+  appendSubcategory(category: Category) {
+    this.subCategories.push(category)
+  }
+
   get hasParentCategory(): boolean {
     return Boolean(this.props.parentCategoryId)
   }

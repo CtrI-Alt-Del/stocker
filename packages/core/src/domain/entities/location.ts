@@ -21,6 +21,10 @@ export class Location extends Entity<LocationProps> {
     )
   }
 
+  update(partialDto: Partial<LocationDto>): Location {
+    return Location.create({ ...this.dto, ...partialDto })
+  }
+
   get hasParentLocation(): boolean {
     return Boolean(this.props.parentLocationId)
   }
@@ -41,9 +45,5 @@ export class Location extends Entity<LocationProps> {
       companyId: this.props.companyId,
       subLocations: this.props.subLocations.map((subLocation) => subLocation.dto),
     }
-  }
-
-  update(partialDto: Partial<LocationDto>): Location {
-    return Location.create({ ...this.dto, ...partialDto })
   }
 }

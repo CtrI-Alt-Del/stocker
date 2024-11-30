@@ -1,6 +1,8 @@
 import type { InventoryMovementDto } from '../../dtos'
-import { ValidationError } from '../../errors'
 import type { InventoryMovementType } from '../../types'
+import { ValidationError } from '../../errors'
+import { Product } from './product'
+import { User } from './user'
 import { Entity } from '../abstracts'
 
 type MovementProps = {
@@ -10,11 +12,11 @@ type MovementProps = {
   remark: string | null
   product: {
     id: string
-    name?: string
+    entity?: Product
   }
   responsible: {
     id: string
-    name?: string
+    entity?: User
   }
 }
 
@@ -26,17 +28,28 @@ export class InventoryMovement extends Entity<MovementProps> {
       throw new ValidationError(`${movementType} não é um tipo de movimento válido`)
     }
 
-    return new InventoryMovement(
+    const inventoryMovement = new InventoryMovement(
       {
         movementType,
         itemsCount: dto.itemsCount,
         registeredAt: dto.registeredAt,
         remark: dto.remark ?? null,
-        product: dto.product,
-        responsible: dto.responsible,
+        product: {
+          id: dto.product.id,
+        },
+        responsible: {
+          id: dto.responsible.id,
+        },
       },
       dto.id,
     )
+
+    if (dto.product.dto) inventoryMovement.product = Product.create(dto.product.dto)
+
+    if (dto.responsible.dto)
+      inventoryMovement.responsible = User.create(dto.responsible.dto)
+
+    return inventoryMovement
   }
 
   static isMovementType(movementType: string): movementType is InventoryMovementType {
@@ -67,12 +80,28 @@ export class InventoryMovement extends Entity<MovementProps> {
     return this.props.itemsCount
   }
 
-  get responsible() {
-    return this.props.responsible
+  set responsible(responsible: User) {
+    this.props.responsible.entity = responsible
   }
 
-  get product() {
-    return this.props.product
+  get responsible(): User | undefined {
+    return this.props.responsible.entity
+  }
+
+  get responsibleId() {
+    return this.props.responsible.id
+  }
+
+  set product(product: Product) {
+    this.props.product.entity = product
+  }
+
+  get product(): Product | undefined {
+    return this.props.product.entity
+  }
+
+  get productId() {
+    return this.props.product.id
   }
 
   get registeredAt(): Date {

@@ -126,7 +126,7 @@ export class PrismaBatchesRepository implements IBatchesRepository {
     try {
       return prisma.batch.count({
         where: {
-          Product: {
+          product: {
             company_id: companyId,
           },
         },
@@ -144,7 +144,7 @@ export class PrismaBatchesRepository implements IBatchesRepository {
           items_count: true,
         },
         where: {
-          Product: {
+          product: {
             company_id: companyId,
           },
         },

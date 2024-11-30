@@ -1,3 +1,6 @@
+import type { ProductDto } from './product-dto'
+import type { UserDto } from './user-dto'
+
 export type InventoryMovementDto = {
   id?: string
   movementType: string
@@ -5,11 +8,11 @@ export type InventoryMovementDto = {
   registeredAt: Date
   responsible: {
     id: string
-    name?: string
+    dto?: UserDto
   }
   product: {
     id: string
-    name?: string
+    dto?: ProductDto
   }
   remark?: string
 }
