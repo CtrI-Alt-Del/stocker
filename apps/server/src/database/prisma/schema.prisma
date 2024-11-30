@@ -84,7 +84,7 @@ model InventoryMovement {
 
 model User {
   id                       String   @id @default(uuid())
-  email                    String
+  email                    String   @unique()
   role                     UserRole @default(EMPLOYEE)
   name                     String
   password                 String
