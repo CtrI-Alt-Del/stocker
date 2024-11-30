@@ -22,7 +22,6 @@ export class PrismaProductsRepository implements IProductsRepository {
   async add(product: Product): Promise<void> {
     try {
       const prismaProduct = this.mapper.toPrisma(product)
-
       await prisma.product.create({
         data: {
           id: prismaProduct.id,
@@ -409,8 +408,6 @@ export class PrismaProductsRepository implements IProductsRepository {
         products.push(product)
       }
 
-      console.log(prismaProductsCount)
-
       return { products, count: Number(prismaProductsCount[0]?.count) ?? 0 }
     } catch (error) {
       throw new PrismaError(error)
@@ -473,6 +470,7 @@ export class PrismaProductsRepository implements IProductsRepository {
   async update(product: Product): Promise<void> {
     try {
       const prismaProduct = this.mapper.toPrisma(product)
+      console.log(prismaProduct)
 
       await prisma.product.update({
         data: {
@@ -485,6 +483,8 @@ export class PrismaProductsRepository implements IProductsRepository {
           height: prismaProduct.height,
           weight: prismaProduct.weight,
           company_id: prismaProduct.company_id,
+          supplier_id: prismaProduct.supplier_id,
+          location_id: prismaProduct.location_id,
           category_id: prismaProduct.category_id,
           selling_price: prismaProduct.selling_price,
           uom: prismaProduct.uom,

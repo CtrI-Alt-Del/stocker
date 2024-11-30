@@ -10,7 +10,6 @@ import type { ImageInputRef } from '@/ui/components/commons/image-input/types'
 import { CategorySelect } from '@/ui/components/commons/category-select'
 import { SupplierSelect } from '@/ui/components/commons/supplier-select'
 
-
 type RegisterProductFormProps = {
   onCancel: VoidFunction
   onSubmit: VoidFunction
@@ -68,7 +67,7 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
       />
 
       <div className='grid grid-cols-2 gap-6'>
-      <Controller
+        <Controller
           name='supplierId'
           control={control}
           render={({ field: { onChange } }) => (
@@ -197,8 +196,13 @@ export const RegisterProductForm = ({ onSubmit, onCancel }: RegisterProductFormP
         <Button onClick={onCancel} isDisabled={isSubmiting}>
           Cancelar
         </Button>
-        <Button type='submit' color='primary' isLoading={isSubmiting}>
-          Confirmar
+        <Button
+          type='submit'
+          color='primary'
+          className='text-orange'
+          isLoading={isSubmiting}
+        >
+          <p className='text-white'>Cadastrar</p>
         </Button>
       </div>
     </form>
