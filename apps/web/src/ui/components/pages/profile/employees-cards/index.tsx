@@ -14,13 +14,13 @@ export const EmployeesCards = async () => {
       <Card
         title='Funcionários'
         value={response.body.employeesCount}
-        href='/records/employees'
+        href='/records/employees?role=employee'
         icon='user'
       />
       <Card
         title='Gerentes'
         value={response.body.managersCount}
-        href='/records/employees'
+        href='/records/employees?role=manager'
         icon='user'
       />
     </div>

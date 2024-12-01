@@ -44,7 +44,7 @@ export const RolesControl = ({ roles, companyId }: RolesControlProps) => {
       <h2 className='text-2xl text-zinc-800 font-bold'>Controle de permissões</h2>
       <h3 className='text-xl text-zinc-800 mt-3 font-medium'>Gerente</h3>
       <Divider className='mt-3' />
-      <div className='grid grid-cols-4 gap-3 mt-3'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-3 mt-3'>
         {Object.keys(ROLE_PERMISSIONS).map((permission) => (
           <Switch
             key={permission}
@@ -61,7 +61,7 @@ export const RolesControl = ({ roles, companyId }: RolesControlProps) => {
       </div>
       <h3 className='text-xl text-zinc-800 mt-6 font-medium'>Funcionário</h3>
       <Divider className='mt-3' />
-      <div className='grid grid-cols-4 gap-3 mt-3'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-3 mt-3'>
         {Object.keys(ROLE_PERMISSIONS).map((permission) => (
           <Switch
             key={permission}
