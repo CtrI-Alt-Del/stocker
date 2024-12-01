@@ -9,6 +9,7 @@ type Request = {
 
 export class UpdateSupplierUseCase {
   private readonly supplierRepository: ISuppliersRepository
+
   constructor(supplierRepository: ISuppliersRepository) {
     this.supplierRepository = supplierRepository
   }
@@ -17,31 +18,19 @@ export class UpdateSupplierUseCase {
     const supplier = await this.supplierRepository.findById(supplierId)
 
     if (!supplier) {
-      throw new NotFoundError('Usuário não encontrado')
+      throw new NotFoundError('Fornecedor não encontrado')
     }
 
-    const supplierEmail = supplierDto.email
-      ? await this.supplierRepository.findByEmail(supplierDto.email)
-      : null
+    if (supplierDto.cnpj) {
+      const existingSupplier = await this.supplierRepository.findByCnpj(supplierDto.cnpj)
 
-    if (supplierEmail && supplierEmail.id !== supplierId) {
-      throw new ConflictError('Esse Email já está em uso')
-    }
-
-    const supplierCNPJ = supplierDto.cnpj
-      ? await this.supplierRepository.findByCnpj(supplierDto.cnpj)
-      : null
-
-    if (supplierCNPJ && supplierCNPJ.id !== supplierId) {
-      throw new ConflictError('Esse CNPJ já está em uso')
-    }
-
-    const supplierPhone = supplierDto.phone
-      ? await this.supplierRepository.findByPhone(supplierDto.phone)
-      : null
-
-    if (supplierPhone && supplierPhone.id !== supplierId) {
-      throw new ConflictError('Esse telefone já está em uso')
+      if (
+        existingSupplier &&
+        existingSupplier.companyId === supplier.companyId &&
+        existingSupplier.id !== supplierId
+      ) {
+        throw new ConflictError('Fornecedor com este CNPJ já cadastrado nesta empresa')
+      }
     }
 
     const updatedSupplier = supplier.update(supplierDto)
