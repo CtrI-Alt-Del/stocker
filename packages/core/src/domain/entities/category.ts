@@ -37,6 +37,10 @@ export class Category extends Entity<CategoryProps> {
     return this.props.subCategories
   }
 
+  set subCategories(subCategories: Category[]) {
+    this.props.subCategories = subCategories
+  }
+
   get dto(): CategoryDto {
     return {
       id: this.id,

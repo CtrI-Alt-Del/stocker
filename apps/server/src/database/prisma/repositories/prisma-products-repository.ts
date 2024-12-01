@@ -498,7 +498,6 @@ export class PrismaProductsRepository implements IProductsRepository {
   async update(product: Product): Promise<void> {
     try {
       const prismaProduct = this.mapper.toPrisma(product)
-      console.log(prismaProduct)
 
       await prisma.product.update({
         data: {
@@ -511,8 +510,6 @@ export class PrismaProductsRepository implements IProductsRepository {
           height: prismaProduct.height,
           weight: prismaProduct.weight,
           company_id: prismaProduct.company_id,
-          supplier_id: prismaProduct.supplier_id,
-          location_id: prismaProduct.location_id,
           category_id: prismaProduct.category_id,
           supplier_id: prismaProduct.supplier_id,
           location_id: prismaProduct.location_id,

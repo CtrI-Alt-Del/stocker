@@ -7,7 +7,6 @@ import { suppliersRepository } from '@/database'
 type RouteParams = {
   page: string
   name?: string
-  companyId: string
 }
 
 export class ListSuppliersController {
@@ -16,7 +15,7 @@ export class ListSuppliersController {
     const { page, name } = http.getQueryParams<RouteParams>()
     const pageNumber = parseInt(page || '1', 10)
 
-    console.log(page, name)
+    console.log({ name })
 
     const useCase = new ListSuplliersUseCase(suppliersRepository)
     const response = await useCase.execute({

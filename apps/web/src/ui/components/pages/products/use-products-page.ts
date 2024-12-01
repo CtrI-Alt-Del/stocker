@@ -62,7 +62,7 @@ export function useProductsPage() {
   const { data, isFetching, refetch } = useCache({
     fetcher: fetchProducts,
     key: CACHE.productsList.key,
-    dependencies: [page, productName, categoryId,locationId],
+    dependencies: [page, productName, categoryId, locationId],
   })
 
   const products = data ? data.items.map(Product.create) : []
@@ -101,6 +101,8 @@ export function useProductsPage() {
     page,
     productName,
     categoryId,
+    locationId,
+    supplierId,
     isFetching,
     isDeleting,
     products,
