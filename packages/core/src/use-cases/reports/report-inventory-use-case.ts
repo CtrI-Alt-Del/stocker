@@ -27,7 +27,6 @@ export class ReportInventorysUseCase {
     stockLevel,
     supplierId,
   }: Request) {
-    console.log({ productName, locationId, categoryId, stockLevel, supplierId })
     const { products, count } =
       await this.productsRepository.findManyWithInventoryMovementsCount({
         productName,

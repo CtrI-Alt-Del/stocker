@@ -23,6 +23,7 @@ import { ExportCsvLink } from './export-csv-link'
 import { useStocksPage } from './use-stocks-page'
 import { SupplierSelect } from '../../commons/supplier-select'
 import { LocationSelect } from '../../commons/location-select'
+import { BROWSER_ENV } from '@/constants'
 
 export const StocksPage = () => {
   const {
@@ -49,13 +50,9 @@ export const StocksPage = () => {
       <div className='flex flex-col-reverse sm:flex-row justify-between gap-4 w-full'>
         <Search value={productName} onSearchChange={handleSearchChange} />
         <div>
-          <Link
-            as={ExportCsvLink}
-            aria-label='Exportar para arquivo csv'
-            className='text-zinc-400'
-          >
-            <Icon name='download' size={12} />
-          </Link>
+          <ExportCsvLink
+            href={`${BROWSER_ENV.appUrl}${ROUTES.api.inventoryCsv}?productName=${productName}&supplierId=${supplierId}&categoryId=${categoryId}&locationId=${locationId}&stockLevel=${stockLevel}`}
+          />
         </div>
       </div>
       <div className='grid grid-cols-1 md:grid-cols-4 max-w-5xl gap-3 mt-3'>

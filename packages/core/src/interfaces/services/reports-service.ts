@@ -31,7 +31,9 @@ export interface IReportsService {
   reportInventory(
     params: ProducsStocksListParams,
   ): Promise<ApiResponse<PaginationResponse<ProductDto>>>
-  exportInventoryToCsvFile(): Promise<ApiResponse<Buffer>>
+  exportInventoryToCsvFile(
+    params: Omit<ProducsStocksListParams, 'page'>,
+  ): Promise<ApiResponse<Buffer>>
   reportWeeklyInventoryMovements(
     productId?: string,
   ): Promise<ApiResponse<WeeklyInventoryMovementsDto[]>>

@@ -7,5 +7,5 @@ export type ProducsStocksListParams = {
   categoryId?: string
   stockLevel?: StockLevel
   supplierId?: string
-  page: number
+  page?: number
 }

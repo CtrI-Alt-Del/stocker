@@ -209,8 +209,10 @@ export class PrismaProductsRepository implements IProductsRepository {
   }: ProducsStocksListParams) {
     try {
       const prismaProducts = await prisma.product.findMany({
-        take: PAGINATION.itemsPerPage,
-        skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,
+        ...(page && {
+          take: PAGINATION.itemsPerPage,
+          skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,
+        }),
         where: {
           company_id: companyId,
           ...(productName && { name: { contains: productName, mode: 'insensitive' } }),
@@ -298,6 +300,8 @@ export class PrismaProductsRepository implements IProductsRepository {
       } else {
         havingSql = Prisma.sql``
       }
+
+      console.log({ stockLevel })
 
       const prismaProductsSql = Prisma.sql`
       SELECT

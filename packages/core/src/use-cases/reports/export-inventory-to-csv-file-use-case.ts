@@ -1,6 +1,16 @@
 import { INVENTORY_CSV_FILE_COLUMNS } from '../../constants'
 import type { Product } from '../../domain/entities'
 import type { IProductsRepository, ICsvProvider } from '../../interfaces'
+import type { StockLevel } from '../../types'
+
+type Request = {
+  productName?: string
+  companyId: string
+  locationId?: string
+  categoryId?: string
+  stockLevel?: StockLevel
+  supplierId?: string
+}
 
 export class ExportInventoryToCsvFileUseCase {
   private readonly productsRepository: IProductsRepository
@@ -11,9 +21,25 @@ export class ExportInventoryToCsvFileUseCase {
     this.csvProvider = csvProvider
   }
 
-  async execute() {
+  async execute({
+    companyId,
+    categoryId,
+    locationId,
+    productName,
+    stockLevel,
+    supplierId,
+  }: Request) {
     const { products } =
-      await this.productsRepository.findManyWithInventoryMovementsCount({})
+      await this.productsRepository.findManyWithInventoryMovementsCount({
+        companyId,
+        categoryId,
+        locationId,
+        productName,
+        stockLevel,
+        supplierId,
+      })
+
+    console.log(products.map((product) => product.stockLevel))
 
     const csvProducts = products.filter((product) => product.isActive)
 
