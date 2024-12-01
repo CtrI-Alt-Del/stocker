@@ -22,7 +22,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <>
       <div>
-        <div className='p-3 md:hidden'>
+        <div className='p-3 lg:hidden'>
           <Drawer
             ref={drawerRef}
             trigger={<IconButton name='menu-hamburguer' />}
@@ -31,12 +31,12 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             {() => <Navbar />}
           </Drawer>
         </div>
-        <aside className='hidden md:block fixed w-52 left-0 top-0 bottom-0 h-screen px-3 py-6 border-r border-zinc-200'>
+        <aside className='hidden lg:block fixed w-52 left-0 top-0 bottom-0 h-screen px-3 py-6 border-r border-zinc-200'>
           <Navbar />
         </aside>
       </div>
 
-      <main className='pl-6 md:pl-60 py-6 pr-6'>{children}</main>
+      <main className='pl-6 lg:pl-60 py-6 pr-6'>{children}</main>
       {user?.hasFirstPasswordReset && <FirstEntryPasswordModal />}
     </>
   )

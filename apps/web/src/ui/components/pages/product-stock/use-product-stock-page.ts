@@ -27,7 +27,7 @@ export function useProductStockPage(productDto: ProductDto) {
 
   const { data, isFetching, refetch } = useCache({
     fetcher: fetchInventoryMovements,
-    key: CACHE.inventoryMovements.key,
+    key: CACHE.inventory.key,
     dependencies: [page],
   })
 

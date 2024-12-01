@@ -1,8 +1,7 @@
 import { CACHE } from '@/constants'
-import { useApi, useCache, useToast, useUrlParamNumber } from '@/ui/hooks'
+import { useApi, useCache, useToast } from '@/ui/hooks'
 import { Category } from '@stocker/core/entities'
-import { useEffect, useState } from 'react'
-import { useAuthContext } from '../../contexts/auth-context'
+import { useState } from 'react'
 
 export function useCategorySelect(
   onSelectChange: (categoryId: string) => void,
@@ -10,34 +9,18 @@ export function useCategorySelect(
 ) {
   const [categoryId, setCategoryId] = useState(defeaultSelectedCategoryId)
   const { categoriesService } = useApi()
-  const { company } = useAuthContext()
-  const { showError } = useToast()
-  const [page, setPage] = useUrlParamNumber('categoryPage', 1)
+  const [page, setPage] = useState(1)
   const [expandedItems, setExpandedItems] = useState<{ [key: string]: boolean }>({})
+  const { showError } = useToast()
 
   function handleCategoryIdChange(categoryId: string) {
     setCategoryId(categoryId)
     onSelectChange(categoryId)
   }
 
-  async function fetchCategory() {
-    if (!categoryId){
-      return 
-    }
-    const response = await categoriesService.getCategory(categoryId)
-    if (response.isFailure) {
-      showError(response.errorMessage)
-      return
-    }
-    return response.body
-  }
-
   async function fetchCategories() {
-    if (!company) return
-
     const response = await categoriesService.listCategories({
       page,
-      companyId: company.id,
     })
     if (response.isFailure) {
       showError(response.errorMessage)
@@ -45,12 +28,6 @@ export function useCategorySelect(
     }
     return response.body
   }
-
-  const { data: categoryData } = useCache({
-    fetcher: fetchCategory,
-    key: CACHE.category.key,
-    dependencies: [categoryId],
-  })
 
   const { data: categoriesData, isFetching } = useCache({
     fetcher: fetchCategories,
@@ -71,13 +48,15 @@ export function useCategorySelect(
 
   const categories = categoriesData ? categoriesData.items.map(Category.create) : []
   const itemsCount = categoriesData ? categoriesData.itemsCount : 0
-  const selectedCategoryName = categoryId ? categoryData?.name : null
+
+  console.log(categoriesData)
+
   return {
     isFetching,
-    totalPages: Math.ceil(itemsCount / 10),
     page,
     categories,
-    selectedCategoryName: categoryData?.name,
+    totalPages: Math.ceil(itemsCount / 2),
+    selectedCategoryName: categories.find((category) => category.id === categoryId)?.name,
     expandedItems,
     handleCategoryIdChange,
     handleAccordionClick,

@@ -21,66 +21,82 @@ import { Search } from '../../commons/search'
 import { Tag } from '../../commons/tag'
 import { ExportCsvLink } from './export-csv-link'
 import { useStocksPage } from './use-stocks-page'
+import { SupplierSelect } from '../../commons/supplier-select'
+import { LocationSelect } from '../../commons/location-select'
+import { BROWSER_ENV } from '@/constants'
 import { useAuthContext } from '../../contexts/auth-context'
 
 export const StocksPage = () => {
   const {
     page,
     isFetching,
-    filterByNameValue,
     products,
+    productName,
     totalPages,
-    stockLevelSearch,
+    stockLevel,
+    supplierId,
+    categoryId,
+    locationId,
+    handleCategoryIdChange,
+    handleSupplierIdChange,
+    handleLocationIdChange,
+    handleStockLevelChange,
     handleSearchChange,
     handlePageChange,
-    handleStockLevelSearchChange,
-    handleCategorySearchChange,
   } = useStocksPage()
   const { userRole } = useAuthContext()
 
   return (
     <div className='space-y-3'>
-      <div className='flex-1 w-full max-w-96 space-y-2 mb-3'>
-        <h1 className='text-3xl font-black'>Inventário</h1>
-      </div>
-      <div className='flex flex-col sm:flex-row gap-1 justify-between'>
-        <div className='flex md:items-center flex-col md:flex-row gap-4 w-full'>
-          <Search value={filterByNameValue} onSearchChange={handleSearchChange} />
-          <div className='flex flex-col md:flex-row md:items-center gap-4 w-96'>
-            <CategorySelect mode='filter' onSelectChange={handleCategorySearchChange} />
-            <Select
-              className='max-w-96'
-              size='lg'
-              defaultSelectedKeys={['']}
-              value={stockLevelSearch}
-              onChange={(e) => handleStockLevelSearchChange(e.target.value)}
-            >
-              <SelectItem key='' value=''>
-                Todos
-              </SelectItem>
-              <SelectItem key='safe' value='safe'>
-                Ideal
-              </SelectItem>
-              <SelectItem key='average' value='average'>
-                Baixo
-              </SelectItem>
-              <SelectItem key='danger' value='danger'>
-                Esgotado
-              </SelectItem>
-            </Select>
-          </div>
-        </div>
+      <h1 className='text-3xl font-black'>Inventário</h1>
+      <div className='flex flex-col-reverse sm:flex-row justify-between gap-4 w-full'>
+        <Search value={productName} onSearchChange={handleSearchChange} />
         <div>
-          {userRole?.hasPermission('csv-export') && (
-            <Link
-              as={ExportCsvLink}
-              aria-label='Exportar para arquivo csv'
-              className='text-zinc-400'
-            >
-              <Icon name='download' size={20} />
-            </Link>
-          )}
+          <ExportCsvLink
+            href={`${BROWSER_ENV.appUrl}${ROUTES.api.inventoryCsv}?productName=${productName}&supplierId=${supplierId}&categoryId=${categoryId}&locationId=${locationId}&stockLevel=${stockLevel}`}
+          />
         </div>
+      </div>
+      <div className='grid grid-cols-1 md:grid-cols-4 max-w-5xl gap-3 mt-3'>
+        <CategorySelect
+          mode='filter'
+          onSelectChange={handleCategoryIdChange}
+          defeaultCategoryId={categoryId}
+          className='w-full md:w-64'
+        />
+        <SupplierSelect
+          mode='filter'
+          onSelectChange={handleSupplierIdChange}
+          defaultSupplierId={supplierId}
+          className='w-full md:w-64'
+        />
+        <LocationSelect
+          mode='filter'
+          onSelectChange={handleLocationIdChange}
+          defeaultLocationId={locationId}
+          className='w-full md:w-64'
+        />
+        <Select
+          className='max-w-96'
+          size='md'
+          defaultSelectedKeys={['']}
+          label='Nível de estoque'
+          value={stockLevel}
+          onChange={(e) => handleStockLevelChange(e.target.value)}
+        >
+          <SelectItem key='' value=''>
+            Todos
+          </SelectItem>
+          <SelectItem key='safe' value='safe'>
+            Ideal
+          </SelectItem>
+          <SelectItem key='average' value='average'>
+            Baixo
+          </SelectItem>
+          <SelectItem key='danger' value='danger'>
+            Esgotado
+          </SelectItem>
+        </Select>
       </div>
       <Table
         aria-label='Tabela de Inventário'

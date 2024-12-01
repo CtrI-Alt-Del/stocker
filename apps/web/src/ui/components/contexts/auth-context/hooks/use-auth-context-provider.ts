@@ -112,8 +112,7 @@ export function useAuthContextProvider({
 
       await setCookieAction(COOKIES.jwt.key, response.body.jwt, COOKIES.jwt.duration)
 
-      const route = getRouteByUserRole(user.role)
-      navigateTo(route)
+      navigateTo(ROUTES.login)
       return
     }
 

@@ -20,6 +20,7 @@ export function useProductsPage() {
   const [productName, productNameValue] = useUrlParamString('name')
   const [categoryId, setCategoryIdValue] = useUrlParamString('categoryId')
   const [locationId, setLocationIdValue] = useUrlParamString('locationId')
+  const [supplierId, setsupplierIdValue] = useUrlParamString('supplierId')
   const [isDeleting, setIsDeleting] = useState(false)
 
   async function fetchProducts() {
@@ -29,6 +30,7 @@ export function useProductsPage() {
       page,
       categoryId,
       locationId,
+      supplierId,
       name: productName,
       companyId: user.companyId,
     })
@@ -54,10 +56,13 @@ export function useProductsPage() {
   function handleCategoryIdSearchChange(categoryId: string) {
     setCategoryIdValue(categoryId ?? null)
   }
+  function handleSupplierIdSearchChange(supplierId: string) {
+    setsupplierIdValue(supplierId ?? null)
+  }
   const { data, isFetching, refetch } = useCache({
     fetcher: fetchProducts,
     key: CACHE.productsList.key,
-    dependencies: [page, productName, categoryId,locationId],
+    dependencies: [page, productName, categoryId, locationId],
   })
 
   const products = data ? data.items.map(Product.create) : []
@@ -96,12 +101,15 @@ export function useProductsPage() {
     page,
     productName,
     categoryId,
+    locationId,
+    supplierId,
     isFetching,
     isDeleting,
     products,
     selectedProductsIds,
     totalPages: Math.ceil(itemsCount / PAGINATION.itemsPerPage),
     handleCategoryIdSearchChange,
+    handleSupplierIdSearchChange,
     handleUpdateProduct,
     handleDeleteProductsAlertDialogConfirm,
     handleRegisterProductFormSubmit,

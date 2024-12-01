@@ -10,14 +10,14 @@ type CategorySelectProps = {
   defeaultCategoryId?: string
   className?: string
   onSelectChange: (categoryId: string) => void
-  mode?: "filter" | "select"
+  mode?: 'filter' | 'select'
 }
 
 export const CategorySelect = ({
   className,
   defeaultCategoryId,
   onSelectChange,
-  mode = "select",
+  mode = 'select',
 }: CategorySelectProps) => {
   const {
     categories,
@@ -32,9 +32,9 @@ export const CategorySelect = ({
   } = useCategorySelect(onSelectChange, defeaultCategoryId)
 
   return isFetching ? (
-    <Spinner size='sm' className='w-full h-full mx-auto' />
+    <Spinner size='sm' className='w-full h-12 mx-auto' />
   ) : (
-    <div className='space-y-2 flex flex-row gap-4 items-center w-full'>
+    <div className='space-y-2 flex gap-4 items-center'>
       <Dialog
         title='Selecione uma categoria ou subcategoria'
         size='2xl'
@@ -44,13 +44,14 @@ export const CategorySelect = ({
           </Select>
         }
       >
-        {(closeDrawer) =>
-          categories.length === 0 ? (
-            <p className='text-center text-bg-zinc-600 font-semibold my-12'>
-              Nenhuma categoria registrada.
-            </p>
-          ) : (
-            <>
+        {(closeDrawer) => (
+          <div className='flex flex-col h-[28rem] pb-6'>
+            {categories.length === 0 && (
+              <p className='text-center text-bg-zinc-600 font-semibold my-12'>
+                Nenhuma categoria registrada.
+              </p>
+            )}
+            {categories.length > 0 && (
               <Accordion selectionMode='multiple'>
                 {categories.map((category) => (
                   <AccordionItem
@@ -105,26 +106,28 @@ export const CategorySelect = ({
                   </AccordionItem>
                 ))}
               </Accordion>
-              {totalPages !== 1 && (
+            )}
+            {totalPages > 1 && (
+              <div className='flex flex-1 items-end '>
                 <Pagination
                   page={page}
                   total={totalPages}
                   onChange={handleCategoryPageChange}
-                  aria-label='K.F esteve aqui!!!'
+                  aria-label='Paginação de categorias'
                   showControls
                 />
-              )}
-            </>
-          )
-        }
+              </div>
+            )}
+          </div>
+        )}
       </Dialog>
-      {selectedCategoryName && mode === "filter" && (
+      {selectedCategoryName && mode === 'filter' && (
         <button
           type='button'
           onClick={() => handleCategoryIdChange('')}
-          className='flex justify-center items-center gap-2 text-sm text-gray-400'
+          className='flex justify-center items-center gap-2 text-xs text-gray-400'
         >
-          Remover Filtro
+          Remover filtro
           <Icon name='close' className='size-4' />{' '}
         </button>
       )}

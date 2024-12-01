@@ -12,7 +12,6 @@ export function useAiReport(userId?: string) {
     userId,
     onGenerate: (chunk) => {
       setIsAnalysing(false)
-      console.log(chunk)
       setReport((report) => report.concat(chunk))
     },
   })

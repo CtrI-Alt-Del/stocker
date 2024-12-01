@@ -14,7 +14,6 @@ export class CsvProviderMock implements ICsvProvider {
   }
 
   async getXlsxFileBuffer() {
-    console.log([this.columns, this.rows])
     return Buffer.from([this.columns, this.rows].toString())
   }
 }
