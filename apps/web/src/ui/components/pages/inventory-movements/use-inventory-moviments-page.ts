@@ -19,10 +19,13 @@ export function useInventoryMovementPage() {
   const [movementTypeSearch, setMovementTypeSearch] = useUrlParamString('type')
   const [startDate, setStartDate] = useState<Date | undefined>(undefined)
   const [endDate, setEndDate] = useState<Date | undefined>(undefined)
+  const [employeeIdSearch,setEmployeIdSearch] = useUrlParamString('employeeId')
+
 
   async function fetchInventoryMovements() {
     const response = await inventoryMovementService.listInventoryMovements({
       movementType: movementTypeSearch as InventoryMovementType,
+      responsibleId: employeeIdSearch,
       page,
       startDate,
       endDate,
@@ -47,7 +50,9 @@ export function useInventoryMovementPage() {
   function handlePageChange(page: number) {
     setPage(page)
   }
-
+  function handleEmployeeIdSerachChange(employeeId:string){
+    setEmployeIdSearch(employeeId)
+  }
   const { data, isFetching } = useCache({
     fetcher: fetchInventoryMovements,
     key: CACHE.productInventoryMovements.key,
@@ -55,7 +60,6 @@ export function useInventoryMovementPage() {
   })
   const movements = data ? data.items.map(InventoryMovement.create) : []
   const itemsCount = data ? data.itemsCount : 0
-  console.log(movements)
 
   return {
     page,
@@ -68,5 +72,7 @@ export function useInventoryMovementPage() {
     handleStartDateChange,
     handleEndDateChange,
     handlePageChange,
+    handleEmployeeIdSerachChange,
+    employeeIdSearch
   }
 }

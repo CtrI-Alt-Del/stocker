@@ -2,8 +2,10 @@
 import { Select, SelectItem } from '@nextui-org/react'
 import { InventoryMovementsTable } from './inventory-movements-table'
 import { useInventoryMovementPage } from './use-inventory-moviments-page'
+import { EmployeeSelect } from '../../commons/employee-select'
 
 export const InventoryMovementsPage = () => {
+
   const { isFetching, page, movements, totalPages, handlePageChange, handleMovementTypeSearchChange, movementTypeSearch, handleStartDateChange, handleEndDateChange, } =
     useInventoryMovementPage()
 
@@ -11,7 +13,7 @@ export const InventoryMovementsPage = () => {
     <>
       <div className='flex space-y-2 flex-col'>
         <div className='flex justify-between'>
-          <div className='flex-1 max-w-96 space-y-2'>
+          <div className='flex-1  space-y-2'>
             <h1 className='text-3xl font-black'>Lançamentos</h1>
             <Select defaultSelectedKeys={['']} value={movementTypeSearch} onChange={(e) => handleMovementTypeSearchChange(e.target.value)}>
               <SelectItem key='' value=''>

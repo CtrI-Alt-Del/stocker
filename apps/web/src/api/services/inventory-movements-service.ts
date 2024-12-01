@@ -18,10 +18,11 @@ export const InventoryMovementsService = (
       return await apiClient.post('/inventory-movements/outbound', movement.dto)
     },
 
-    async listInventoryMovements({ page, productId,movementType }) {
+    async listInventoryMovements({ page, productId, movementType, responsibleId }) {
       apiClient.setParam('page', String(page))
       apiClient.setParam('productId', productId || '')
-      apiClient.setParam('movementType',String(movementType))
+      apiClient.setParam('responsibleId', String(responsibleId))
+      apiClient.setParam('movementType', String(movementType))
       return await apiClient.get<PaginationResponse<InventoryMovementDto>>(
         '/inventory-movements',
       )
