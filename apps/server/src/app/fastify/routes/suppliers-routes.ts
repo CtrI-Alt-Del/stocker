@@ -28,7 +28,7 @@ export const SuppliersRoutes = async (app: FastifyInstance) => {
   app.get(
     '/:supplierId',
     {
-      preHandler: verifyJwtMiddleware.handle,
+      preHandler: verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
     },
     async (request, response) => {
       const http = new FastifyHttp(request, response)
@@ -39,7 +39,7 @@ export const SuppliersRoutes = async (app: FastifyInstance) => {
   app.get(
     '/',
     {
-      preHandler: verifyJwtMiddleware.handle,
+      preHandler: verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
     },
     async (request, response) => {
       const http = new FastifyHttp(request, response)

@@ -38,6 +38,9 @@ export const CACHE = {
   categories: {
     key: '/categories',
   },
+  companyRoles: {
+    key: '/company/roles',
+  },
   category: {
     key: '/category',
   },

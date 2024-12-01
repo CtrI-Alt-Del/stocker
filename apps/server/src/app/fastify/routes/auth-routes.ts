@@ -77,7 +77,7 @@ export const AuthRoutes = async (app: FastifyInstance) => {
     '/account',
     {
       preHandler: [
-        verifyJwtMiddleware.handle,
+        verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
         verifyAdminRoleMiddleware.handle.bind(verifyAdminRoleMiddleware),
       ],
     },
@@ -91,7 +91,7 @@ export const AuthRoutes = async (app: FastifyInstance) => {
     '/account',
     {
       preHandler: [
-        verifyJwtMiddleware.handle,
+        verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
         verifyAdminRoleMiddleware.handle.bind(verifyAdminRoleMiddleware),
       ],
     },

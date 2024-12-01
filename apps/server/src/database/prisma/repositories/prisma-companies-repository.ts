@@ -1,11 +1,15 @@
 import type { Company } from '@stocker/core/entities'
 import type { ICompaniesRepository } from '@stocker/core/interfaces'
-import { PrismaCompaniesMapper } from '../mappers'
+import type { Role } from '@stocker/core/structs'
+
+import { PrismaCompaniesMapper, PrismaRoleMapper } from '../mappers'
 import { prisma } from '../prisma-client'
 import { PrismaError } from '../prisma-error'
+import type { RoleName } from '@stocker/core/types'
 
 export class PrismaCompaniesRepository implements ICompaniesRepository {
-  private readonly mapper: PrismaCompaniesMapper = new PrismaCompaniesMapper()
+  private readonly mapper = new PrismaCompaniesMapper()
+  private readonly roleMapper = new PrismaRoleMapper()
 
   async add(company: Company): Promise<void> {
     try {
@@ -23,18 +27,30 @@ export class PrismaCompaniesRepository implements ICompaniesRepository {
     }
   }
 
-  async delete(companyId: string): Promise<void> {
+  async addRolePermissions(role: Role, companyId: string) {
     try {
-      const company = await prisma.company.findUnique({
-        where: {
-          id: companyId,
-        },
+      const prismaRole = await this.roleMapper.toPrisma(role)
+      const prismaRoles = await prisma.role.findMany()
+
+      await prisma.rolePermission.deleteMany({
+        where: { role_id: prismaRole.id, company_id: companyId },
       })
 
-      if (!company) {
-        throw new PrismaError('Repository Error: Company not found')
-      }
+      await prisma.rolePermission.createMany({
+        data: prismaRole.permissions.map((permission) => ({
+          name: permission.name,
+          company_id: companyId,
+          role_id:
+            prismaRoles.find((prismaRole) => prismaRole.name === role.name)?.id ?? '',
+        })),
+      })
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
 
+  async delete(companyId: string): Promise<void> {
+    try {
       await prisma.company.delete({
         where: {
           id: companyId,
@@ -61,6 +77,44 @@ export class PrismaCompaniesRepository implements ICompaniesRepository {
     }
   }
 
+  async findRolesById(companyId: string) {
+    const prismaRoles = await prisma.role.findMany({
+      where: {
+        NOT: {
+          name: 'admin',
+        },
+      },
+      include: {
+        permissions: {
+          where: {
+            company_id: companyId,
+          },
+        },
+      },
+    })
+
+    return prismaRoles.map(this.roleMapper.toDomain)
+  }
+
+  async findRoleById(role: RoleName, companyId: string) {
+    const prismaRole = await prisma.role.findUnique({
+      where: {
+        name: role,
+      },
+      include: {
+        permissions: {
+          where: {
+            company_id: companyId,
+          },
+        },
+      },
+    })
+
+    if (!prismaRole) return null
+
+    return this.roleMapper.toDomain(prismaRole)
+  }
+
   async update(company: Company, companyId: string): Promise<Company> {
     try {
       const prismaCompany = this.mapper.toPrisma(company)
@@ -75,6 +129,26 @@ export class PrismaCompaniesRepository implements ICompaniesRepository {
         },
       })
       return company
+    } catch (error) {
+      throw new PrismaError(error)
+    }
+  }
+
+  async updateRole(role: Role, companyId: string): Promise<void> {
+    try {
+      await prisma.rolePermission.deleteMany({
+        where: { company_id: companyId, role: { name: role.name } },
+      })
+
+      const prismaRole = await this.roleMapper.toPrisma(role)
+
+      await prisma.rolePermission.createMany({
+        data: prismaRole.permissions.map((permission) => ({
+          role_id: prismaRole.id,
+          company_id: companyId,
+          name: permission.name,
+        })),
+      })
     } catch (error) {
       throw new PrismaError(error)
     }

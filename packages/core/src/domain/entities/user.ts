@@ -1,9 +1,9 @@
 import type { UserDto } from '../../dtos'
+import type { RoleName } from '../../types'
 import { Entity } from '../abstracts'
-import { Role } from '../structs'
 
 type UserProps = {
-  role: Role
+  role: RoleName
   email: string
   name: string
   password?: string
@@ -20,7 +20,7 @@ export class User extends Entity<UserProps> {
         name: dto.name,
         email: dto.email,
         companyId: dto.companyId,
-        role: Role.create(dto.role.name, dto.role.permissions),
+        role: dto.role as RoleName,
         hasFirstPasswordReset: dto.hasFirstPasswordReset ?? true,
       },
       dto.id,
@@ -29,8 +29,6 @@ export class User extends Entity<UserProps> {
     if (hasPassword) {
       user.password = dto.password ?? DEAFAULT_PASSWORD
     }
-
-    console.log('password', hasPassword)
 
     return user
   }
@@ -57,7 +55,7 @@ export class User extends Entity<UserProps> {
     return this.props.name
   }
 
-  get role(): Role {
+  get role(): RoleName {
     return this.props.role
   }
 

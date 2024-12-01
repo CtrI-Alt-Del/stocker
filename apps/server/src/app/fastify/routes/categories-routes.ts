@@ -48,7 +48,7 @@ export const CategoriesRoutes = async (app: FastifyInstance) => {
     '/',
     {
       preHandler: [
-        verifyJwtMiddleware.handle,
+        verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
         verifyPermissionMiddleware.handle.bind(verifyPermissionMiddleware),
       ],
     },
@@ -61,7 +61,7 @@ export const CategoriesRoutes = async (app: FastifyInstance) => {
     '/:categoryId',
     {
       preHandler: [
-        verifyJwtMiddleware.handle,
+        verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
         verifyPermissionMiddleware.handle.bind(verifyPermissionMiddleware),
       ],
     },
@@ -75,7 +75,7 @@ export const CategoriesRoutes = async (app: FastifyInstance) => {
     '/:categoryId',
     {
       preHandler: [
-        verifyJwtMiddleware.handle,
+        verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
         verifyPermissionMiddleware.handle.bind(verifyPermissionMiddleware),
       ],
     },

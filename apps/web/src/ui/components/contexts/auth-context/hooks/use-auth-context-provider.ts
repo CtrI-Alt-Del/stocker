@@ -5,13 +5,13 @@ import { jwtDecode } from 'jwt-decode'
 
 import { Company, User } from '@stocker/core/entities'
 import type { CompanyDto, UserDto } from '@stocker/core/dtos'
-import type { UserRole } from '@stocker/core/types'
 
 import { CACHE, COOKIES, ROUTES } from '@/constants'
 import { useAuthWebSocket, useCache, useNavigation, useToast } from '@/ui/hooks'
 import type { deleteCookieAction, setCookieAction } from '@/actions'
 import type { IAuthService, ICompaniesService } from '@stocker/core/interfaces'
 import type { DialogRef } from '@/ui/components/commons/dialog/types'
+import type { RoleName } from '@stocker/core/types'
 
 type UseAuthContextProvider = {
   jwt: string | null
@@ -55,7 +55,7 @@ export function useAuthContextProvider({
 
   const company = data ? Company.create(data) : null
 
-  function getRouteByUserRole(role: UserRole) {
+  function getRouteByUserRole(role: RoleName) {
     switch (role) {
       case 'admin':
         return ROUTES.records.employees

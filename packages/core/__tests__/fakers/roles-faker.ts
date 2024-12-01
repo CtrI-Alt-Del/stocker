@@ -14,7 +14,7 @@ export class RolesFaker {
 
   static fakeDto(baseDto?: Partial<RoleDto>): RoleDto {
     return {
-      name: faker.person.jobTitle(),
+      name: faker.helpers.arrayElement(['admin', 'manager', 'employee']),
       permissions: [],
       ...baseDto,
     }

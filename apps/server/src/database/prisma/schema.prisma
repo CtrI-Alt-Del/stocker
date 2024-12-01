@@ -22,6 +22,7 @@ enum RolePermissionName {
   NOTIFICATIONS_CONTROL
   SUPPLIERS_CONTROL
   REPORTS
+  ALL
 }
 
 model Product {
@@ -128,9 +129,10 @@ model Role {
 }
 
 model RolePermission {
-  id      String             @id @default(uuid())
-  name    RolePermissionName @unique()
-  role_id String
+  id         String             @id @default(uuid())
+  name       RolePermissionName
+  role_id    String
+  company_id String
 
   role Role @relation(fields: [role_id], references: [id], onDelete: Cascade)
 

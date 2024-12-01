@@ -24,9 +24,24 @@ import {
   UsersFaker,
 } from '@stocker/core/fakers'
 import { CryptoProvider } from '@/providers/crypto-provider'
-import { queueProvider } from '@/providers'
+import { Role } from '@stocker/core/structs'
+import { QueueProvider } from '@/providers/queue-provider'
 
 const FAKE_COMPANY_ID = '29fcf7a0-5ee3-4cb0-b36e-ecc825f1cdaa'
+
+const DEFAULT_ROLE_PERMISSIONS = [
+  Role.create('admin', ['all']),
+  Role.create('manager', [
+    'products-control',
+    'categories-control',
+    'csv-export',
+    'locations-control',
+    'notifications-control',
+    'suppliers-control',
+    'reports',
+  ]),
+  Role.create('employee', ['inventory-movements']),
+]
 
 const registerInboundInventoryMovementUseCase =
   new RegisterInboundInventoryMovementUseCase(
@@ -39,7 +54,7 @@ const registerOutboundInventoryMovementUseCase =
     batchesRepository,
     productsRepository,
     inventoryMovementsRepository,
-    queueProvider,
+    new QueueProvider([]),
   )
 
 function getRandomRecord<Record>(records: Record[]) {
@@ -87,6 +102,11 @@ export async function seed() {
   const existingFakeCompany = await companiesRepository.findById(FAKE_COMPANY_ID)
   if (existingFakeCompany) await companiesRepository.delete(FAKE_COMPANY_ID)
 
+  await prisma.role.deleteMany()
+  await prisma.role.createMany({
+    data: [{ name: 'admin' }, { name: 'manager' }, { name: 'employee' }],
+  })
+
   const fakeCompany = CompanyFaker.fake({ id: FAKE_COMPANY_ID })
   const fakeSuppliers = SuppliersFaker.fakeMany(3, { companyId: fakeCompany.id })
   const fakeCategories = CategoriesFaker.fakeMany(3, { companyId: fakeCompany.id })
@@ -115,6 +135,13 @@ export async function seed() {
     supplier: { id: fakeSuppliers[2]?.id ?? '' },
     companyId: fakeCompany.id,
   })
+
+  await Promise.all(
+    DEFAULT_ROLE_PERMISSIONS.map((role) =>
+      companiesRepository.addRolePermissions(role, fakeCompany.id),
+    ),
+  )
+
   const fakeUsers = UsersFaker.fakeMany(10, {
     role: RolesFaker.fake({ name: 'employee' }),
     companyId: fakeCompany.id,
@@ -146,25 +173,21 @@ export async function seed() {
   const outboundMovementPromises = []
 
   for (const fakeProduct of fakeProductsWithSafeStock) {
-    for (let index = 0; index < faker.number.int({ min: 1, max: 10 }); index++) {
-      inboundMovementPromises.push(
-        registerInboundMovement(
-          faker.number.int({ min: 1, max: 100 }),
-          fakeProduct.id,
-          getRandomRecord(fakeUsers)?.id ?? '',
-        ),
-      )
-    }
+    inboundMovementPromises.push(
+      registerInboundMovement(
+        faker.number.int({ min: 1, max: 100 }),
+        fakeProduct.id,
+        getRandomRecord(fakeUsers)?.id ?? '',
+      ),
+    )
 
-    for (let index = 0; index < faker.number.int({ min: 1, max: 10 }); index++) {
-      outboundMovementPromises.push(
-        registerInboundMovement(
-          faker.number.int({ min: 1, max: 10 }),
-          fakeProduct.id,
-          getRandomRecord(fakeUsers)?.id ?? '',
-        ),
-      )
-    }
+    outboundMovementPromises.push(
+      registerInboundMovement(
+        faker.number.int({ min: 1, max: 10 }),
+        fakeProduct.id,
+        getRandomRecord(fakeUsers)?.id ?? '',
+      ),
+    )
   }
 
   for (const fakeProduct of fakeProductsWithAverageStock) {

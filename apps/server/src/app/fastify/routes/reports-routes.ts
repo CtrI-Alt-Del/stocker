@@ -48,7 +48,7 @@ export const ReportsRoutes = async (app: FastifyInstance) => {
   app.get(
     '/inventory',
     {
-      preHandler: verifyJwtMiddleware.handle,
+      preHandler: verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
     },
     async (request, response) => {
       const http = new FastifyHttp(request, response)

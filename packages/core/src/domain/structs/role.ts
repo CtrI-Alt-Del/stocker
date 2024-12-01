@@ -10,6 +10,7 @@ const ROLE_PERMISSIONS: string[] = [
   'notifications-control',
   'suppliers-control',
   'reports',
+  'all',
 ]
 
 export class Role {
@@ -49,6 +50,10 @@ export class Role {
   }
 
   hasPermission(permission: RolePermission) {
-    return this.permissions.includes(permission)
+    return this.permissions.includes('all') || this.permissions.includes(permission)
+  }
+
+  updatePermissions(permissions: string[]) {
+    return Role.create(this.name, permissions)
   }
 }

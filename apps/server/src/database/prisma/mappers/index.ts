@@ -8,3 +8,4 @@ export { PrismaStockLevelNotificationMapper } from './prisma-stock-level-notific
 export { PrismaExpirationDateNotificationMapper } from './prisma-expiration-date-notification-mapper'
 export { PrismaSuppliersMapper } from './prisma-suppliers-mapper'
 export { PrismaLocationsMapper } from './prisma-locations-mapper'
+export { PrismaRoleMapper } from './prisma-role-mapper'
