@@ -143,12 +143,12 @@ export async function seed() {
   )
 
   const fakeUsers = UsersFaker.fakeMany(10, {
-    role: RolesFaker.fake({ name: 'employee' }),
+    role: 'employee',
     companyId: fakeCompany.id,
   })
   fakeUsers.push(
     UsersFaker.fake({
-      role: RolesFaker.fake({ name: 'admin' }),
+      role: 'admin',
       companyId: fakeCompany.id,
       email: 'stockerteampr@gmail.com',
       password: await new CryptoProvider().hash('stocker123'),

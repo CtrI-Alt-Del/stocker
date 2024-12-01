@@ -21,6 +21,7 @@ import { Search } from '../../commons/search'
 import { Tag } from '../../commons/tag'
 import { ExportCsvLink } from './export-csv-link'
 import { useStocksPage } from './use-stocks-page'
+import { useAuthContext } from '../../contexts/auth-context'
 
 export const StocksPage = () => {
   const {
@@ -29,12 +30,13 @@ export const StocksPage = () => {
     filterByNameValue,
     products,
     totalPages,
+    stockLevelSearch,
     handleSearchChange,
     handlePageChange,
-    stockLevelSearch,
     handleStockLevelSearchChange,
     handleCategorySearchChange,
   } = useStocksPage()
+  const { permissions } = useAuthContext()
 
   return (
     <div className='space-y-3'>
@@ -69,13 +71,15 @@ export const StocksPage = () => {
           </div>
         </div>
         <div>
-          <Link
-            as={ExportCsvLink}
-            aria-label='Exportar para arquivo csv'
-            className='text-zinc-400'
-          >
-            <Icon name='download' size={20} />
-          </Link>
+          {permissions.includes('csv-export') && (
+            <Link
+              as={ExportCsvLink}
+              aria-label='Exportar para arquivo csv'
+              className='text-zinc-400'
+            >
+              <Icon name='download' size={20} />
+            </Link>
+          )}
         </div>
       </div>
       <Table

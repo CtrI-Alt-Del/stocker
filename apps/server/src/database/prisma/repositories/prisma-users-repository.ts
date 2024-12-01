@@ -15,6 +15,7 @@ export class PrismaUsersRepository implements IUsersRepository {
       const role = await prisma.role.findUnique({ where: { name: user.role } })
       if (!role) return
 
+      const prismaRoles = await prisma.role.findMany()
       const prismaUser = this.mapper.toPrisma(user)
       await prisma.user.create({
         data: {
@@ -22,7 +23,9 @@ export class PrismaUsersRepository implements IUsersRepository {
           name: prismaUser.name,
           email: prismaUser.email,
           password: prismaUser.password,
-          role_id: role.id,
+          role_id:
+            prismaRoles.find((prismaRole) => prismaRole.name === prismaUser.role?.name)
+              ?.id ?? '',
           has_first_password_reset: prismaUser.has_first_password_reset,
           company_id: prismaUser.company_id,
         },
@@ -35,6 +38,8 @@ export class PrismaUsersRepository implements IUsersRepository {
   async addMany(users: User[]): Promise<void> {
     try {
       const prismaUsers = users.map(this.mapper.toPrisma)
+      const prismaRoles = await prisma.role.findMany()
+
       await prisma.user.createMany({
         data: prismaUsers.map((prismaUser) => {
           return {
@@ -42,7 +47,9 @@ export class PrismaUsersRepository implements IUsersRepository {
             name: prismaUser.name,
             email: prismaUser.email,
             password: prismaUser.password,
-            role_id: prismaUser.role_id,
+            role_id:
+              prismaRoles.find((prismaRole) => prismaRole.name === prismaUser.role?.name)
+                ?.id ?? '',
             has_first_password_reset: prismaUser.has_first_password_reset,
             company_id: prismaUser.company_id,
           }
@@ -174,13 +181,17 @@ export class PrismaUsersRepository implements IUsersRepository {
   async update(user: User, userId: string): Promise<void> {
     try {
       const prismaUser = this.mapper.toPrisma(user)
+      const prismaRoles = await prisma.role.findMany()
+
       await prisma.user.update({
         data: {
           name: prismaUser.name,
           email: prismaUser.email,
           password: prismaUser.password,
           company_id: prismaUser.company_id,
-          role_id: prismaUser.role_id,
+          role_id:
+            prismaRoles.find((prismaRole) => prismaRole.name === prismaUser.role?.name)
+              ?.id ?? '',
           has_first_password_reset: prismaUser.has_first_password_reset,
         },
         where: { id: userId },

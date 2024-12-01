@@ -14,6 +14,7 @@ import { BatchesTable } from './batches-table'
 import { InventoryMovementsTable } from './inventory-movements-table'
 import { Icon } from '../../commons/icon'
 import { AlertDialog } from '../../commons/alert-dialog'
+import { useAuthContext } from '../../contexts/auth-context'
 
 type ProductStockPageProps = {
   productDto: ProductDto
@@ -35,6 +36,7 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
     handleRegisterInboundInventoryMovementFormSubmit,
     handleRegisterOutboundInventoryMovementFormSubmit,
   } = useProductStockPage(productDto)
+  const { permissions } = useAuthContext()
 
   return (
     <div>
@@ -57,45 +59,47 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
           </div>
         </div>
 
-        <div className='flex flex-col sm:flex-row gap-1'>
-          <Drawer
-            trigger={
-              <Button color='primary' radius='sm' endContent={<Icon name='inbound' />}>
-                Lançamento de entrada
-              </Button>
-            }
-          >
-            {(closeDrawer) => (
-              <RegisterInboundInventoryMovementForm
-                productId={product.id}
-                onCancel={closeDrawer}
-                onSubmit={async (newBatch: Batch) => {
-                  await handleRegisterInboundInventoryMovementFormSubmit(newBatch)
-                  closeDrawer()
-                }}
-              />
-            )}
-          </Drawer>
+        {permissions.includes('inventory-movements') && (
+          <div className='flex flex-col sm:flex-row gap-1'>
+            <Drawer
+              trigger={
+                <Button color='primary' radius='sm' endContent={<Icon name='inbound' />}>
+                  Lançamento de entrada
+                </Button>
+              }
+            >
+              {(closeDrawer) => (
+                <RegisterInboundInventoryMovementForm
+                  productId={product.id}
+                  onCancel={closeDrawer}
+                  onSubmit={async (newBatch: Batch) => {
+                    await handleRegisterInboundInventoryMovementFormSubmit(newBatch)
+                    closeDrawer()
+                  }}
+                />
+              )}
+            </Drawer>
 
-          <Drawer
-            trigger={
-              <Button color='primary' radius='sm' endContent={<Icon name='outbound' />}>
-                Lançamento de saída
-              </Button>
-            }
-          >
-            {(closeDrawer) => (
-              <RegisterOutboundInventoryMovementForm
-                productId={product.id}
-                onCancel={closeDrawer}
-                onSubmit={(itemsCount) => {
-                  closeDrawer()
-                  handleRegisterOutboundInventoryMovementFormSubmit(itemsCount)
-                }}
-              />
-            )}
-          </Drawer>
-        </div>
+            <Drawer
+              trigger={
+                <Button color='primary' radius='sm' endContent={<Icon name='outbound' />}>
+                  Lançamento de saída
+                </Button>
+              }
+            >
+              {(closeDrawer) => (
+                <RegisterOutboundInventoryMovementForm
+                  productId={product.id}
+                  onCancel={closeDrawer}
+                  onSubmit={(itemsCount) => {
+                    closeDrawer()
+                    handleRegisterOutboundInventoryMovementFormSubmit(itemsCount)
+                  }}
+                />
+              )}
+            </Drawer>
+          </div>
+        )}
       </div>
 
       <Tabs

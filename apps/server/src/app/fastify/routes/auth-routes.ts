@@ -5,6 +5,7 @@ import { FastifyHandler } from '../fastify-handler'
 import {
   ConfirmAuthController,
   DeleteAccountController,
+  GetPermissionsController,
   LoginController,
   LogoutController,
   ResetPasswordController,
@@ -23,6 +24,7 @@ export const AuthRoutes = async (app: FastifyInstance) => {
   const deleteAccountController = new DeleteAccountController()
   const updateAccountController = new UpdateAccountController()
   const requestPasswordResetController = new RequestPasswordResetController()
+  const getPermissionsController = new GetPermissionsController()
   const verifyJwtMiddleware = new FastifyHandler(new VerifyJwtMiddleware())
   const verifyAdminRoleMiddleware = new FastifyHandler(
     new VerifyRolePermissionMiddleware('all'),
@@ -37,6 +39,11 @@ export const AuthRoutes = async (app: FastifyInstance) => {
     authRoom.handle(ws)
 
     ws.join(userId, socket)
+  })
+
+  app.get('/permissions', async (request, response) => {
+    const http = new FastifyHttp(request, response)
+    return getPermissionsController.handle(http)
   })
 
   app.post('/confirm', async (request, response) => {

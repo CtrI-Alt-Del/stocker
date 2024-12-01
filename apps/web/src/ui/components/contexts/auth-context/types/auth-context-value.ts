@@ -1,10 +1,12 @@
 import type { CompanyDto, UserDto } from '@stocker/core/dtos'
 import type { Company, User } from '@stocker/core/entities'
+import type { RolePermission } from '@stocker/core/types'
 
 export type AuthContextValue = {
   user: User | null
   company: Company | null
   jwt: string | null
+  permissions: RolePermission[]
   login: (email: string, password: string) => Promise<void>
   subscribe: (userDto: UserDto, companyDto: CompanyDto) => Promise<void>
   logout: () => Promise<void>

@@ -47,13 +47,29 @@ export function useAuthContextProvider({
     response.throwError()
   }
 
-  const { data, mutate } = useCache({
+  async function fetchPermissions() {
+    const response = await authService.getPermissions()
+
+    if (response.isSuccess) {
+      return response.body
+    }
+
+    response.throwError()
+  }
+
+  const { data: comapanyDto, mutate } = useCache({
     fetcher: fetchCompany,
     key: CACHE.company.key,
     isEnabled: Boolean(user),
   })
 
-  const company = data ? Company.create(data) : null
+  const company = comapanyDto ? Company.create(comapanyDto) : null
+
+  const { data: permissions } = useCache({
+    fetcher: fetchPermissions,
+    key: CACHE.company.key,
+    isEnabled: Boolean(user),
+  })
 
   function getRouteByUserRole(role: RoleName) {
     switch (role) {
@@ -197,6 +213,7 @@ export function useAuthContextProvider({
   return {
     user,
     company,
+    permissions,
     login,
     logout,
     subscribe,
