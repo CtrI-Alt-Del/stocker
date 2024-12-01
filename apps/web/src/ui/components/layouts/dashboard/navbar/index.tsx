@@ -19,7 +19,7 @@ import { useAuthContext } from '@/ui/components/contexts/auth-context'
 
 export const Navbar = () => {
   const { currentRoute } = useNavigation()
-  const { permissions } = useAuthContext()
+  const { userRole } = useAuthContext()
 
   return (
     <NavbarRoot
@@ -33,7 +33,7 @@ export const Navbar = () => {
       </NavbarBrand>
       <NavbarContent className='flex-col gap-0 mt-6 p-0 w-full'>
         <NavbarItem className='w-full'>
-          {permissions.includes('reports') && (
+          {userRole?.hasPermission('reports') && (
             <NavbarLink
               href={ROUTES.dashboard}
               icon='dashboard'
@@ -69,7 +69,7 @@ export const Navbar = () => {
                   </NavbarLink>
                 </NavbarItem>
                 <NavbarItem className='w-full'>
-                  {permissions.includes('reports') && (
+                  {userRole?.hasPermission('reports') && (
                     <NavbarLink
                       href={ROUTES.inventory.movements}
                       icon='arrow-up-down'
@@ -105,7 +105,7 @@ export const Navbar = () => {
                   </NavbarLink>
                 </NavbarItem>
                 <NavbarItem className='w-full'>
-                  {permissions.includes('all') && (
+                  {userRole?.hasPermission('all') && (
                     <NavbarLink
                       href={ROUTES.records.employees}
                       icon='employee'
@@ -116,7 +116,7 @@ export const Navbar = () => {
                   )}
                 </NavbarItem>
                 <NavbarItem className='w-full'>
-                  {permissions.includes('suppliers-control') && (
+                  {userRole?.hasPermission('suppliers-control') && (
                     <NavbarLink
                       href={ROUTES.records.suppliers}
                       icon='supplier'
@@ -127,7 +127,7 @@ export const Navbar = () => {
                   )}
                 </NavbarItem>
                 <NavbarItem className='w-full'>
-                  {permissions.includes('categories-control') && (
+                  {userRole?.hasPermission('categories-control') && (
                     <NavbarLink
                       href={ROUTES.records.categories}
                       icon='category'
@@ -138,7 +138,7 @@ export const Navbar = () => {
                   )}
                 </NavbarItem>
                 <NavbarItem className='w-full'>
-                  {permissions.includes('locations-control') && (
+                  {userRole?.hasPermission('locations-control') && (
                     <NavbarLink
                       href={ROUTES.records.locations}
                       icon='location'

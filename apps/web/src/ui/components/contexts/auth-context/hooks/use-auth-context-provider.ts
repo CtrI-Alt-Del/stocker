@@ -12,6 +12,7 @@ import type { deleteCookieAction, setCookieAction } from '@/actions'
 import type { IAuthService, ICompaniesService } from '@stocker/core/interfaces'
 import type { DialogRef } from '@/ui/components/commons/dialog/types'
 import type { RoleName } from '@stocker/core/types'
+import { Role } from '@stocker/core/structs'
 
 type UseAuthContextProvider = {
   jwt: string | null
@@ -51,7 +52,7 @@ export function useAuthContextProvider({
     const response = await authService.getPermissions()
 
     if (response.isSuccess) {
-      return response.body
+      return Role.create(response.body.name, response.body.permissions)
     }
 
     response.throwError()
@@ -65,10 +66,9 @@ export function useAuthContextProvider({
 
   const company = comapanyDto ? Company.create(comapanyDto) : null
 
-  const { data: permissions } = useCache({
+  const { data: userRole } = useCache({
     fetcher: fetchPermissions,
-    key: CACHE.company.key,
-    isEnabled: Boolean(user),
+    key: CACHE.permissions.key,
   })
 
   function getRouteByUserRole(role: RoleName) {
@@ -210,10 +210,12 @@ export function useAuthContextProvider({
     if (jwt) logoutUnkownAccount(jwt)
   }
 
+  console.log(user?.hasFirstPasswordReset)
+
   return {
     user,
     company,
-    permissions,
+    userRole,
     login,
     logout,
     subscribe,

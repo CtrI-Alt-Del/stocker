@@ -5,3 +5,4 @@ export { MOST_TRENDING_PRODUCTS_CSV_FILE_COLUMNS } from './most-trending-product
 export { USER_ROLES } from './user-roles'
 export { HTTP_CONTENT_TYPE } from './http-content-type'
 export { REALTIME_EVENTS } from './realtime-events'
+export { DEFAULT_ROLES } from './default-roles'

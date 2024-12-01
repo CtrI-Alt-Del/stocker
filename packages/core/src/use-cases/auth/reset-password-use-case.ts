@@ -22,7 +22,8 @@ export class ResetPasswordUseCase {
     await this.usersRepository.updatePassword(user.id, hashedPassword)
 
     user.password = hashedPassword
-		
+    user.hasFirstPasswordReset = false
+
     await this.usersRepository.update(user, user.id)
     return user.dto
   }

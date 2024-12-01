@@ -3,7 +3,7 @@ import type { Role } from '../../domain/structs'
 
 export interface ICompaniesRepository {
   add(company: Company): Promise<void>
-  addRolePermissions(role: Role, companyId: string): Promise<void>
+  addRole(role: Role, companyId: string): Promise<void>
   findById(companyId: string): Promise<Company | null>
   findRolesById(companyId: string): Promise<Role[]>
   findRoleById(roleName: string, companyId: string): Promise<Role | null>

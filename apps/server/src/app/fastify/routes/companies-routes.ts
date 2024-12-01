@@ -21,10 +21,14 @@ export const CompaniesRoutes = async (app: FastifyInstance) => {
     handler.handle.bind(handler),
   )
 
-  app.get('/:companyId', { preHandler: preHandlers }, async (request, response) => {
-    const http = new FastifyHttp(request, response)
-    return getCompanyController.handle(http)
-  })
+  app.get(
+    '/:companyId',
+    { preHandler: verifyJwtMiddleware.handle.bind(verifyJwtMiddleware) },
+    async (request, response) => {
+      const http = new FastifyHttp(request, response)
+      return getCompanyController.handle(http)
+    },
+  )
 
   app.get('/:companyId/roles', { preHandler: preHandlers }, async (request, response) => {
     const http = new FastifyHttp(request, response)

@@ -22,6 +22,12 @@ export const AuthService = (apiClient: IApiClient): IAuthService => {
       return await apiClient.delete('/auth/logout')
     },
 
+    async getPermissions() {
+      return await apiClient.get<{ name: string; permissions: string[] }>(
+        '/auth/permissions',
+      )
+    },
+
     async requestPasswordReset(email: string) {
       return await apiClient.post('/auth/password', { email })
     },

@@ -1,3 +1,4 @@
+import type { Role } from '../../domain/structs'
 import type { CompanyDto } from '../../dtos'
 import type { ApiResponse } from '../../responses'
 
@@ -6,9 +7,8 @@ export interface ICompaniesService {
   getCompanyRoles(
     companyId: string,
   ): Promise<ApiResponse<{ name: string; permissions: string[] }[]>>
-  updateCompanyRole(params: {
-    companyId: string
-    name: string
-    permissions: string[]
-  }): Promise<ApiResponse<{ name: string; permissions: string[] }>>
+  updateCompanyRole(
+    role: Role,
+    companyId: string,
+  ): Promise<ApiResponse<{ name: string; permissions: string[] }>>
 }

@@ -187,7 +187,6 @@ export class PrismaUsersRepository implements IUsersRepository {
         data: {
           name: prismaUser.name,
           email: prismaUser.email,
-          password: prismaUser.password,
           company_id: prismaUser.company_id,
           role_id:
             prismaRoles.find((prismaRole) => prismaRole.name === prismaUser.role?.name)

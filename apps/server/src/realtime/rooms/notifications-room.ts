@@ -21,6 +21,8 @@ export class NotificationsRoom implements IRoom {
         companyId: this.companyId,
       })
 
+      console.log(notifications)
+
       ws.emit(REALTIME_EVENTS.notificationsRoom.connected, this.companyId, notifications)
     })
 

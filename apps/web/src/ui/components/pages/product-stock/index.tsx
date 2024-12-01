@@ -1,19 +1,19 @@
 'use client'
 
-import { Button, Divider, Tab, Tabs } from '@nextui-org/react'
+import { Button, Tab, Tabs } from '@nextui-org/react'
 import { twMerge } from 'tailwind-merge'
 
 import type { ProductDto } from '@stocker/core/dtos'
 import type { Batch } from '@stocker/core/entities'
 
 import { Drawer } from '../../commons/drawer'
-import { useProductStockPage } from './use-product-stock'
 import { RegisterInboundInventoryMovementForm } from './register-inbound-movement-form'
 import { RegisterOutboundInventoryMovementForm } from './register-outbond-movement-form'
 import { BatchesTable } from './batches-table'
 import { InventoryMovementsTable } from './inventory-movements-table'
 import { Icon } from '../../commons/icon'
 import { AlertDialog } from '../../commons/alert-dialog'
+import { useProductStockPage } from './use-product-stock-page'
 import { useAuthContext } from '../../contexts/auth-context'
 
 type ProductStockPageProps = {
@@ -36,7 +36,7 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
     handleRegisterInboundInventoryMovementFormSubmit,
     handleRegisterOutboundInventoryMovementFormSubmit,
   } = useProductStockPage(productDto)
-  const { permissions } = useAuthContext()
+  const { userRole } = useAuthContext()
 
   return (
     <div>
@@ -59,7 +59,7 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
           </div>
         </div>
 
-        {permissions.includes('inventory-movements') && (
+        {userRole?.hasPermission('inventory-movements') && (
           <div className='flex flex-col sm:flex-row gap-1'>
             <Drawer
               trigger={

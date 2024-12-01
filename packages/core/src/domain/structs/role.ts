@@ -49,6 +49,20 @@ export class Role {
     return true
   }
 
+  togglePermission(permission: RolePermission) {
+    if (this.hasPermission(permission)) {
+      return Role.create(
+        this.name,
+        this.permissions.filter((rolePermission) => rolePermission !== permission),
+      )
+    }
+
+    return Role.create(
+      this.name,
+      [...this.permissions, permission],
+    )
+  }
+
   hasPermission(permission: RolePermission) {
     return this.permissions.includes('all') || this.permissions.includes(permission)
   }

@@ -7,5 +7,19 @@ export const CompaniesService = (apiClient: IApiClient): ICompaniesService => {
       apiClient.clearParams()
       return await apiClient.get<CompanyDto>(`/companies/${companyId}`)
     },
+
+    async getCompanyRoles(companyId: string) {
+      return await apiClient.get<Array<{ name: string; permissions: string[] }>>(
+        `/companies/${companyId}/roles`,
+      )
+    },
+
+    async updateCompanyRole(role, companyId) {
+      return await apiClient.put(`/companies/${companyId}/role`, {
+        name: role.name,
+        permissions: role.permissions,
+        companyId,
+      })
+    },
   }
 }

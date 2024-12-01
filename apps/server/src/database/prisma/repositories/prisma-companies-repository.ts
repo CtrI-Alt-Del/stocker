@@ -27,7 +27,7 @@ export class PrismaCompaniesRepository implements ICompaniesRepository {
     }
   }
 
-  async addRolePermissions(role: Role, companyId: string) {
+  async addRole(role: Role, companyId: string) {
     try {
       const prismaRole = await this.roleMapper.toPrisma(role)
       const prismaRoles = await prisma.role.findMany()

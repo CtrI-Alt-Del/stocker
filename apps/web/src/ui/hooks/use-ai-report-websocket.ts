@@ -6,6 +6,7 @@ import { BROWSER_ENV } from '@/constants'
 import { useWebSocket } from './use-websocket'
 
 import { useToast } from './use-toast'
+import { useAuthContext } from '../components/contexts/auth-context'
 
 type UseNotificationWebSocketProps = {
   userId?: string
@@ -28,7 +29,7 @@ export function useAiReportWebSocket({
       }
     },
     onError() {
-      showError('Não possível se conectar com a IA analisadora :(')
+      if (userId) showError('Não possível se conectar com a IA analisadora :(')
     },
   })
 

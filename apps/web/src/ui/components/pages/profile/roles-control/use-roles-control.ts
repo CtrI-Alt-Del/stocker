@@ -1,47 +1,64 @@
-import type { FormEvent } from 'react'
+'use client'
 
-import { CACHE } from '@/constants'
-import { useAuthContext } from '@/ui/components/contexts/auth-context'
-import { useApi, useCache, useToast } from '@/ui/hooks'
-import { Role } from '@stocker/core/structs'
-import type { RoleName } from '@stocker/core/types'
+import { useState } from 'react'
+import type { Role } from '@stocker/core/structs'
+import type { RolePermission } from '@stocker/core/types'
+import { useApi, useToast } from '@/ui/hooks'
 
-export function useRolesControl() {
-  const { company } = useAuthContext()
+export function useRolesControl(
+  defualtManagerRole: Role | null,
+  defualtEmployeeRole: Role | null,
+  companyId: string,
+) {
+  const [managerRole, setManagerRole] = useState<Role | null>(defualtManagerRole)
+  const [employeeRole, setEmployeeRole] = useState<Role | null>(defualtEmployeeRole)
   const { companiesService } = useApi()
-  const { showError } = useToast()
+  const { showError, showSuccess } = useToast()
 
-  function handleManagerPermissionChange(formEvent: FormEvent, role: RoleName) {
-    formEvent.preventDefault()
-  }
+  async function handleManagerPermissionChange(permission: RolePermission) {
+    if (!managerRole) return
 
-  async function fetchRoles() {
-    if (!company) return
+    const updatedManagerRole = managerRole.togglePermission(permission)
+    setManagerRole(updatedManagerRole)
 
-    const response = await companiesService.getCompanyRoles(company.id)
+    const response = await companiesService.updateCompanyRole(
+      updatedManagerRole,
+      companyId,
+    )
 
     if (response.isFailure) {
       showError(response.errorMessage)
+      setManagerRole(defualtManagerRole)
       return
     }
-    const roles = response.body.map(({ name, permissions }) =>
-      Role.create(name, permissions),
-    )
-    return {
-      manager: roles.find((role) => role.name === 'manager'),
-      employee: roles.find((role) => role.name === 'employee'),
-    }
+
+    showSuccess('Permissão atualizada')
   }
 
-  const { data, isFetching } = useCache({
-    fetcher: fetchRoles,
-    key: CACHE.companyRoles.key,
-    dependencies: [company?.id],
-  })
+  async function handleEmployeePermissionChange(permission: RolePermission) {
+    if (!employeeRole) return
+
+    const updatedEmployeeRole = employeeRole.togglePermission(permission)
+    setEmployeeRole(updatedEmployeeRole)
+
+    const response = await companiesService.updateCompanyRole(
+      updatedEmployeeRole,
+      companyId,
+    )
+
+    if (response.isFailure) {
+      showError(response.errorMessage)
+      setEmployeeRole(defualtEmployeeRole)
+      return
+    }
+
+    showSuccess('Permissão atualizada')
+  }
 
   return {
-    roles: data,
-    isFetching,
+    managerRole,
+    employeeRole,
     handleManagerPermissionChange,
+    handleEmployeePermissionChange,
   }
 }

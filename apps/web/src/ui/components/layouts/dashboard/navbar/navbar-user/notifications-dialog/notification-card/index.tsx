@@ -24,7 +24,7 @@ export const NotificationCard = ({
   href,
   onDelete,
 }: NotificationCardProps) => {
-  const { user } = useAuthContext()
+  const { userRole } = useAuthContext()
 
   return (
     <div className='pt-2'>
@@ -49,7 +49,7 @@ export const NotificationCard = ({
         >
           Acessar
         </Button>
-        {user?.hasValidRole('manager') && (
+        {userRole?.hasPermission('notifications-control') && (
           <Button size='sm' onClick={() => onDelete(id)} className='bg-zinc-100'>
             Remover
           </Button>

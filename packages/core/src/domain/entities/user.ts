@@ -33,20 +33,6 @@ export class User extends Entity<UserProps> {
     return user
   }
 
-  // hasValidRole(role: string) {
-  //   throw new Error('hasValidRole')
-  //   switch (role) {
-  //     case 'admin':
-  //       return this.role === 'admin'
-  //     case 'manager':
-  //       return this.role === 'admin' || this.role === 'manager'
-  //     case 'employee':
-  //       return (
-  //         this.role === 'admin' || this.role === 'manager' || this.role === 'employee'
-  //       )
-  //   }
-  // }
-
   update(partialDto: Partial<UserDto>): User {
     return User.create({ ...this.dto, ...partialDto })
   }
@@ -68,7 +54,6 @@ export class User extends Entity<UserProps> {
   }
 
   set password(password: string) {
-    this.props.hasFirstPasswordReset = false
     this.props.password = password
   }
 

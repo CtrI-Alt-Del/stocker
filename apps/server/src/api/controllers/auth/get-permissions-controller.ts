@@ -8,6 +8,9 @@ export class GetPermissionsController {
   async handle(http: IHttp) {
     const user = User.create(await http.getUser())
     const role = await companiesRepository.findRoleById(user.role, user.companyId)
-    return http.send(role?.permissions, HTTP_STATUS_CODE.ok)
+    return http.send(
+      { name: role?.name, permissions: role?.permissions },
+      HTTP_STATUS_CODE.ok,
+    )
   }
 }

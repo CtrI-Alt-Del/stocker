@@ -36,7 +36,7 @@ export const StocksPage = () => {
     handleStockLevelSearchChange,
     handleCategorySearchChange,
   } = useStocksPage()
-  const { permissions } = useAuthContext()
+  const { userRole } = useAuthContext()
 
   return (
     <div className='space-y-3'>
@@ -71,7 +71,7 @@ export const StocksPage = () => {
           </div>
         </div>
         <div>
-          {permissions.includes('csv-export') && (
+          {userRole?.hasPermission('csv-export') && (
             <Link
               as={ExportCsvLink}
               aria-label='Exportar para arquivo csv'

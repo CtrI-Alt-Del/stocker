@@ -59,7 +59,7 @@ export const NotifcationsDialog = ({ companyId }: NotifcationsDialogProps) => {
                         id={stockNotification.id}
                         href={`/inventory/stocks/${stockNotification.product.id}`}
                         icon='product'
-                        title={`${stockNotification.product.name} | ${stockNotification.product.code}`}
+                        title={`${stockNotification.product.name} | estoque atual: ${stockNotification.product.currentStock}`}
                         sentAt={stockNotification.sentAt ?? new Date()}
                         onDelete={handleDeleteNotification}
                       />

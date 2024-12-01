@@ -19,29 +19,15 @@ import {
   CompanyFaker,
   InventoryMovementsFaker,
   ProductsFaker,
-  RolesFaker,
   SuppliersFaker,
   UsersFaker,
 } from '@stocker/core/fakers'
+import { DEFAULT_ROLES } from '@stocker/core/constants'
+
 import { CryptoProvider } from '@/providers/crypto-provider'
-import { Role } from '@stocker/core/structs'
 import { QueueProvider } from '@/providers/queue-provider'
 
 const FAKE_COMPANY_ID = '29fcf7a0-5ee3-4cb0-b36e-ecc825f1cdaa'
-
-const DEFAULT_ROLE_PERMISSIONS = [
-  Role.create('admin', ['all']),
-  Role.create('manager', [
-    'products-control',
-    'categories-control',
-    'csv-export',
-    'locations-control',
-    'notifications-control',
-    'suppliers-control',
-    'reports',
-  ]),
-  Role.create('employee', ['inventory-movements']),
-]
 
 const registerInboundInventoryMovementUseCase =
   new RegisterInboundInventoryMovementUseCase(
@@ -137,9 +123,7 @@ export async function seed() {
   })
 
   await Promise.all(
-    DEFAULT_ROLE_PERMISSIONS.map((role) =>
-      companiesRepository.addRolePermissions(role, fakeCompany.id),
-    ),
+    DEFAULT_ROLES.map((role) => companiesRepository.addRole(role, fakeCompany.id)),
   )
 
   const fakeUsers = UsersFaker.fakeMany(10, {

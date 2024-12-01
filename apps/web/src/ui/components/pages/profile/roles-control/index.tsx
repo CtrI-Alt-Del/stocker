@@ -1,56 +1,78 @@
-import { Switch } from '@nextui-org/react'
+'use client'
+
+import { Button, Divider, Spinner, Switch } from '@nextui-org/react'
 import { useRolesControl } from './use-roles-control'
 import type { RolePermission } from '@stocker/core/types'
+import { Role } from '@stocker/core/structs'
 
 const ROLE_PERMISSIONS: Record<string, string> = {
   'inventory-movements': 'Movimentações de estoque',
-  'products-control': 'Gerenciamento de produtos',
-  'categories-control': 'Gerenciamento de categorias',
+  'products-control': 'Controle de produtos',
+  'categories-control': 'Controle de categorias',
   'csv-export': 'Exportação para CSV',
-  'locations-control': 'Gerenciamento de locais',
-  'notifications-control': 'Gerenciamento de notificações',
-  'suppliers-control': 'Gerenciamento de fornecedores',
+  'locations-control': 'Controle de locais',
+  'notifications-control': 'Controle de notificações',
+  'suppliers-control': 'Controle de fornecedores',
   reports: 'Relatórios',
 }
 
-export const RolesControl = () => {
-  const { roles, isFetching, handleManagerPermissionChange } = useRolesControl()
+type RolesControlProps = {
+  roles: Array<{ name: string; permissions: string[] }>
+  companyId: string
+}
+
+export const RolesControl = ({ roles, companyId }: RolesControlProps) => {
+  const defualtManagerRole = roles.find((role) => role.name === 'manager')
+  const defualtEmployeeRole = roles.find((role) => role.name === 'employee')
+  const {
+    managerRole,
+    employeeRole,
+    handleManagerPermissionChange,
+    handleEmployeePermissionChange,
+  } = useRolesControl(
+    defualtManagerRole
+      ? Role.create(defualtManagerRole?.name, defualtManagerRole.permissions)
+      : null,
+    defualtEmployeeRole
+      ? Role.create(defualtEmployeeRole?.name, defualtEmployeeRole.permissions)
+      : null,
+    companyId,
+  )
 
   return (
     <div>
       <h2 className='text-2xl text-zinc-800 font-bold'>Controle de permissões</h2>
-      <h3 className='text-xl text-zinc-700 mt-3'>Gerente</h3>
-      <form
-        className='grid grid-cols-4'
-        onSubmit={(event) => handleManagerPermissionChange(event, 'manager')}
-      >
+      <h3 className='text-xl text-zinc-800 mt-3 font-medium'>Gerente</h3>
+      <Divider className='mt-3' />
+      <div className='grid grid-cols-4 gap-3 mt-3'>
         {Object.keys(ROLE_PERMISSIONS).map((permission) => (
           <Switch
             key={permission}
-            type='submit'
             name={permission}
             value={permission}
-            isSelected={roles?.manager?.permissions.includes(
-              permission as RolePermission,
-            )}
+            isSelected={managerRole?.hasPermission(permission as RolePermission)}
+            onChange={(event) =>
+              handleManagerPermissionChange(event.target.value as RolePermission)
+            }
           >
-            Gerenciamento de produtos
+            <span className='text-sm'>{ROLE_PERMISSIONS[permission]}</span>
           </Switch>
         ))}
-      </form>
-      <h3 className='text-xl text-zinc-700 mt-3'>Funcionário</h3>
-      <div className='grid grid-cols-4'>
+      </div>
+      <h3 className='text-xl text-zinc-800 mt-6 font-medium'>Funcionário</h3>
+      <Divider className='mt-3' />
+      <div className='grid grid-cols-4 gap-3 mt-3'>
         {Object.keys(ROLE_PERMISSIONS).map((permission) => (
           <Switch
             key={permission}
-            type='submit'
             name={permission}
             value={permission}
-            isSelected={roles?.employee?.permissions.includes(
-              permission as RolePermission,
-            )}
+            isSelected={employeeRole?.hasPermission(permission as RolePermission)}
+            onChange={(event) =>
+              handleEmployeePermissionChange(event.target.value as RolePermission)
+            }
           >
-            Gerenciamento de produtos
+            <span className='text-sm'>{ROLE_PERMISSIONS[permission]}</span>
           </Switch>
         ))}
       </div>
