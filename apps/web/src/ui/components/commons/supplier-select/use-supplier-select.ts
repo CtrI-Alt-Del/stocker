@@ -1,28 +1,25 @@
 import { CACHE } from '@/constants'
 import { useApi, useCache, useToast, useUrlParamNumber } from '@/ui/hooks'
 import { Supplier } from '@stocker/core/entities'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuthContext } from '../../contexts/auth-context'
 
 export function useSupplierSelect(
   onSelectChange: (supplierId: string) => void,
-  defeaultSelectedSupplierId?: string,
+  defaultSelectedSupplierId?: string,
 ) {
-  const [supplierId, setSupplierId] = useState(defeaultSelectedSupplierId)
+  const [supplierId, setSupplierId] = useState(defaultSelectedSupplierId)
   const { suppliersService } = useApi()
   const { company } = useAuthContext()
   const { showError } = useToast()
   const [page, setPage] = useUrlParamNumber('supplierPage', 1)
   const [expandedItems, setExpandedItems] = useState<{ [key: string]: boolean }>({})
-
-  function handleSupplierIdChange(supplierId: string) {
-    setSupplierId(supplierId)
-    onSelectChange(supplierId)
-  }
+  const [selectedSupplierName, setSelectedSupplierName] = useState<string | undefined>(undefined)
 
   async function fetchSupplier() {
-    if (!supplierId) return
-
+    if (!supplierId) {
+      return
+    }
     const response = await suppliersService.getSupplier(supplierId)
     if (response.isFailure) {
       showError(response.errorMessage)
@@ -56,6 +53,38 @@ export function useSupplierSelect(
     dependencies: [page],
   })
 
+  useEffect(() => {
+    if (supplierData) {
+      setSelectedSupplierName(supplierData.name)
+    }
+  }, [supplierData])
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useEffect(() => {
+    if (defaultSelectedSupplierId) {
+      const fetchInitialSupplier = async () => {
+        const response = await suppliersService.getSupplier(defaultSelectedSupplierId)
+        if (response.isFailure) {
+          showError(response.errorMessage)
+        } else {
+          setSelectedSupplierName(response.body.name)
+        }
+      }
+      fetchInitialSupplier()
+    }
+  }, [defaultSelectedSupplierId])
+
+  function handleSupplierIdChange(supplierId: string) {
+    setSupplierId(supplierId)
+
+    const selectedSupplier = suppliers.find((supplier) => supplier.id === supplierId)
+    if (selectedSupplier) {
+      setSelectedSupplierName(selectedSupplier.name)
+    }
+
+    onSelectChange(supplierId)
+  }
+
   function handlePageChange(page: number) {
     setPage(page)
   }
@@ -69,6 +98,7 @@ export function useSupplierSelect(
 
   console.log(suppliersData)
   console.log(company?.id)
+
   const suppliers = suppliersData ? suppliersData.items.map(Supplier.create) : []
   const itemsCount = suppliersData ? suppliersData.itemsCount : 0
 
@@ -77,7 +107,7 @@ export function useSupplierSelect(
     totalPages: Math.ceil(itemsCount / 10),
     page,
     suppliers,
-    selectedSupplierName: supplierData?.name,
+    selectedSupplierName,
     expandedItems,
     handleSupplierIdChange,
     handleAccordionClick,

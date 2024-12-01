@@ -10,19 +10,25 @@ import { PAGINATION } from '@stocker/core/constants'
 import { InventoryMovement } from '@stocker/core/entities'
 import type { InventoryMovementType } from '@stocker/core/types'
 import { parseAsInteger, useQueryState } from 'nuqs'
+import { useState } from 'react'
 
 export function useInventoryMovementPage() {
   const { inventoryMovementService } = useApi()
   const { showError } = useToast()
   const [page, setPage] = useUrlParamNumber('page', 1)
   const [movementTypeSearch, setMovementTypeSearch] = useUrlParamString('type')
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined)
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined)
   const [employeeIdSearch,setEmployeIdSearch] = useUrlParamString('employeeId')
+
 
   async function fetchInventoryMovements() {
     const response = await inventoryMovementService.listInventoryMovements({
       movementType: movementTypeSearch as InventoryMovementType,
       responsibleId: employeeIdSearch,
       page,
+      startDate,
+      endDate,
     })
     if (response.isFailure) {
       response.throwError()
@@ -34,6 +40,13 @@ export function useInventoryMovementPage() {
   function handleMovementTypeSearchChange(movementType: string) {
     setMovementTypeSearch(movementType)
   }
+  function handleStartDateChange(date: string) {
+    setStartDate(date ? new Date(date) : undefined) 
+  }
+
+  function handleEndDateChange(date: string) {
+    setEndDate(date ? new Date(date) : undefined) 
+  }
   function handlePageChange(page: number) {
     setPage(page)
   }
@@ -43,7 +56,7 @@ export function useInventoryMovementPage() {
   const { data, isFetching } = useCache({
     fetcher: fetchInventoryMovements,
     key: CACHE.productInventoryMovements.key,
-    dependencies: [page, movementTypeSearch,employeeIdSearch],
+    dependencies: [page, movementTypeSearch, startDate, endDate],
   })
   const movements = data ? data.items.map(InventoryMovement.create) : []
   const itemsCount = data ? data.itemsCount : 0
@@ -56,6 +69,8 @@ export function useInventoryMovementPage() {
     itemsCount,
     movementTypeSearch,
     handleMovementTypeSearchChange,
+    handleStartDateChange,
+    handleEndDateChange,
     handlePageChange,
     handleEmployeeIdSerachChange,
     employeeIdSearch

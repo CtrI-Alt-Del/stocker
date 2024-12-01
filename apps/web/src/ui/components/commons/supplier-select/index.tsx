@@ -5,15 +5,17 @@ import { Dialog } from '../dialog'
 import { useSupplierSelect } from './use-supplier-select'
 
 type SupplierSelectProps = {
-  defeaultSupplierId?: string
+  defaultSupplierId?: string
   className?: string
   onSelectChange: (supplierId: string) => void
+  mode?: "filter" | "select"
 }
-
+ 
 export const SupplierSelect = ({
   className,
-  defeaultSupplierId,
+  defaultSupplierId,
   onSelectChange,
+  mode = "select",
 }: SupplierSelectProps) => {
   const {
     suppliers,
@@ -23,7 +25,7 @@ export const SupplierSelect = ({
     selectedSupplierName,
     handleSupplierIdChange,
     handleSupplierPageChange,
-  } = useSupplierSelect(onSelectChange, defeaultSupplierId)
+  } = useSupplierSelect(onSelectChange, defaultSupplierId)
 
   return isFetching ? (
     <Spinner label='Carregando...' className='w-full h-full mx-auto' />
@@ -34,7 +36,7 @@ export const SupplierSelect = ({
         size='2xl'
         trigger={
           <Select className={className}>
-            {selectedSupplierName ? selectedSupplierName : 'Selecione fornecedor'}
+            {selectedSupplierName || 'Selecione fornecedor'}
           </Select>
         }
       >
