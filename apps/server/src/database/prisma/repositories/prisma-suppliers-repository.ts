@@ -1,6 +1,5 @@
 import type { Supplier } from '@stocker/core/entities'
 import type { ISuppliersRepository } from '@stocker/core/interfaces'
-import type { PaginationResponse } from '@stocker/core/responses'
 import type { SuppliersListParams } from '@stocker/core/types'
 import { PrismaSuppliersMapper } from '../mappers'
 import { prisma } from '../prisma-client'
@@ -138,8 +137,6 @@ export class PrismaSuppliersRepository implements ISuppliersRepository {
           ...(name && { name: { contains: name, mode: 'insensitive' } }),
         },
       })
-
-      console.log({ page, name, companyId })
 
       const suppliers = prismaSuppliers.map(this.mapper.toDomain)
 

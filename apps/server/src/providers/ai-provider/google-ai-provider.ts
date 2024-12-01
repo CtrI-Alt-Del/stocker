@@ -16,7 +16,6 @@ export class GoogleAiProvider implements IAiProvider {
 
     for await (const chunk of result.stream) {
       const chunkText = chunk.text()
-      console.log(chunkText)
       onGenerateChunk(chunkText)
     }
   }

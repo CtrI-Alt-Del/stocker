@@ -61,7 +61,6 @@ export function useRegisterProductForm(
 
   async function handleFormSubmit(formData: RegisterProductFormData) {
     setIsSubmiting(true)
-    console.log(formData)
     let imageUrl = ''
 
     if (formData.image) {
@@ -116,7 +115,7 @@ export function useRegisterProductForm(
   return {
     control,
     errors: formState.errors,
-    isSubmiting: false,
+    isSubmiting,
     register,
     handleSubmit: handleSubmit(handleFormSubmit),
   }

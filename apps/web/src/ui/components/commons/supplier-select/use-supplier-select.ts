@@ -1,8 +1,7 @@
 import { CACHE } from '@/constants'
 import { useApi, useCache, useToast } from '@/ui/hooks'
 import { Supplier } from '@stocker/core/entities'
-import { useEffect, useState } from 'react'
-import { useAuthContext } from '../../contexts/auth-context'
+import { useState } from 'react'
 import { PAGINATION } from '@stocker/core/constants'
 
 export function useSupplierSelect(
@@ -10,14 +9,11 @@ export function useSupplierSelect(
   defaultSelectedSupplierId?: string,
 ) {
   const { suppliersService } = useApi()
-  const { company } = useAuthContext()
   const { showError } = useToast()
   const [page, setPage] = useState(1)
   const [supplierId, setSupplierId] = useState(defaultSelectedSupplierId)
 
   async function fetchSuppliers() {
-    if (!company) return
-
     const response = await suppliersService.listSuppliers({
       page,
     })

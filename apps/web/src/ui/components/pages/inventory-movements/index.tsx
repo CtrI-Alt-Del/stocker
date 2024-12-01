@@ -2,12 +2,19 @@
 import { Select, SelectItem } from '@nextui-org/react'
 import { InventoryMovementsTable } from './inventory-movements-table'
 import { useInventoryMovementPage } from './use-inventory-moviments-page'
-import { EmployeeSelect } from '../../commons/employee-select'
 
 export const InventoryMovementsPage = () => {
-
-  const { isFetching, page, movements, totalPages, handlePageChange, handleMovementTypeSearchChange, movementTypeSearch, handleStartDateChange, handleEndDateChange, } =
-    useInventoryMovementPage()
+  const {
+    isFetching,
+    page,
+    movements,
+    totalPages,
+    movementTypeSearch,
+    handlePageChange,
+    handleMovementTypeSearchChange,
+    handleStartDateChange,
+    handleEndDateChange,
+  } = useInventoryMovementPage()
 
   return (
     <>
@@ -15,7 +22,11 @@ export const InventoryMovementsPage = () => {
         <div className='flex justify-between'>
           <div className='flex-1  space-y-2'>
             <h1 className='text-3xl font-black'>Lançamentos</h1>
-            <Select defaultSelectedKeys={['']} value={movementTypeSearch} onChange={(e) => handleMovementTypeSearchChange(e.target.value)}>
+            <Select
+              defaultSelectedKeys={['']}
+              value={movementTypeSearch}
+              onChange={(e) => handleMovementTypeSearchChange(e.target.value)}
+            >
               <SelectItem key='' value=''>
                 Todos
               </SelectItem>
@@ -28,7 +39,9 @@ export const InventoryMovementsPage = () => {
             </Select>
             <div className='flex gap-4'>
               <div>
-                <label className='block text-sm font-medium text-gray-700'>Data Inicial</label>
+                <label className='block text-sm font-medium text-gray-700'>
+                  Data Inicial
+                </label>
                 <input
                   type='date'
                   className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
@@ -36,7 +49,9 @@ export const InventoryMovementsPage = () => {
                 />
               </div>
               <div>
-                <label className='block text-sm font-medium text-gray-700'>Data Final</label>
+                <label className='block text-sm font-medium text-gray-700'>
+                  Data Final
+                </label>
                 <input
                   type='date'
                   className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'

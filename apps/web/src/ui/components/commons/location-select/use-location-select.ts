@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { Location } from '@stocker/core/entities'
 
 import { useApi, useCache, useToast } from '@/ui/hooks'
-import { useAuthContext } from '../../contexts/auth-context'
 import { CACHE } from '@/constants'
 
 export function useLocationSelect(
@@ -11,7 +10,6 @@ export function useLocationSelect(
   defaultSelectedLocationId: string | undefined,
 ) {
   const { locationsService } = useApi()
-  const { company } = useAuthContext()
   const { showError } = useToast()
   const [page, setPage] = useState(1)
   const [locationId, setLocationId] = useState(defaultSelectedLocationId)
@@ -23,7 +21,6 @@ export function useLocationSelect(
   }
 
   async function fetchLocations() {
-    if (!company) return
     const response = await locationsService.listLocations({
       page,
     })

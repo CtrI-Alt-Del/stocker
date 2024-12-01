@@ -3,7 +3,7 @@ import { PaginationResponse } from '../../responses'
 import type { StockLevel } from '../../types'
 
 type Request = {
-  name?: string
+  productName?: string
   companyId: string
   locationId?: string
   categoryId?: string
@@ -18,10 +18,19 @@ export class ReportInventorysUseCase {
     this.productsRepository = productsRepository
   }
 
-  async execute({ page, companyId, name, locationId, categoryId, stockLevel, supplierId }: Request) {
+  async execute({
+    page,
+    companyId,
+    productName,
+    locationId,
+    categoryId,
+    stockLevel,
+    supplierId,
+  }: Request) {
+    console.log({ productName, locationId, categoryId, stockLevel, supplierId })
     const { products, count } =
       await this.productsRepository.findManyWithInventoryMovementsCount({
-        name,
+        productName,
         companyId,
         locationId,
         categoryId,

@@ -203,18 +203,17 @@ export class PrismaProductsRepository implements IProductsRepository {
     companyId,
     categoryId,
     locationId,
-    name,
+    productName,
     supplierId,
     stockLevel,
   }: ProducsStocksListParams) {
     try {
-      console.log(name)
       const prismaProducts = await prisma.product.findMany({
         take: PAGINATION.itemsPerPage,
         skip: page > 0 ? (page - 1) * PAGINATION.itemsPerPage : 1,
         where: {
           company_id: companyId,
-          ...(name && { name: { contains: name, mode: 'insensitive' } }),
+          ...(productName && { name: { contains: productName, mode: 'insensitive' } }),
           ...(categoryId && { category_id: categoryId }),
           ...(locationId && { location_id: locationId }),
           ...(supplierId && { supplier_id: supplierId }),
@@ -240,7 +239,7 @@ export class PrismaProductsRepository implements IProductsRepository {
       const count = await prisma.product.count({
         where: {
           company_id: companyId,
-          ...(name && { name: { contains: name, mode: 'insensitive' } }),
+          ...(productName && { name: { contains: productName, mode: 'insensitive' } }),
           ...(categoryId && { category_id: categoryId }),
           ...(locationId && { location_id: locationId }),
           ...(supplierId && { supplier_id: supplierId }),
@@ -262,7 +261,7 @@ export class PrismaProductsRepository implements IProductsRepository {
   async findManyWithInventoryMovementsCount({
     page,
     companyId,
-    name,
+    productName,
     categoryId,
     stockLevel,
   }: ProducsStocksListParams): Promise<{
@@ -280,8 +279,8 @@ export class PrismaProductsRepository implements IProductsRepository {
 
       let whereSql = Prisma.sql`P.is_active = true AND P.company_id = ${companyId}`
 
-      if (name) {
-        whereSql = Prisma.sql`${whereSql} AND P.name ILIKE ${`%${name}%`}`
+      if (productName) {
+        whereSql = Prisma.sql`${whereSql} AND P.name ILIKE ${`%${productName}%`}`
       }
 
       if (categoryId) {

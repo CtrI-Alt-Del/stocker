@@ -26,12 +26,6 @@ export class ExportMostTrendingProductsToCsvFileUseCase {
       endDate = now
     }
 
-    console.log({
-      startDate,
-      endDate,
-      categoryId,
-    })
-
     const { products } = await this.productsRepository.findOrderByInventoryMovementsCount(
       {
         startDate,

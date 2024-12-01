@@ -11,7 +11,7 @@ export const ExportCsvLink = () => {
       color='primary'
       radius='md'
       href={`${BROWSER_ENV.appUrl}${ROUTES.api.inventoryCsv}`}
-      endContent={<Icon name='download' />}
+      endContent={<Icon name='download' size={20} />}
     >
       Exportar CSV
     </Button>

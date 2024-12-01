@@ -15,8 +15,6 @@ export class ListSuppliersController {
     const { page, name } = http.getQueryParams<RouteParams>()
     const pageNumber = parseInt(page || '1', 10)
 
-    console.log({ name })
-
     const useCase = new ListSuplliersUseCase(suppliersRepository)
     const response = await useCase.execute({
       page: pageNumber,

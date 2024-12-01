@@ -35,7 +35,6 @@ export class SupabaseFileStorageProvider implements IFileStorageProvider {
   }
 
   async delete(fileId: string): Promise<void> {
-    console.log({ fileId })
     const filePath = fileId.split('stocker/')[1]
     if (!filePath) {
       throw new ValidationError('Storaged file not found')

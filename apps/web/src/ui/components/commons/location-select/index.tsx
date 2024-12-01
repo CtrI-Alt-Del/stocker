@@ -36,7 +36,7 @@ export const LocationSelect = ({
   ) : (
     <div className='space-y-2 flex gap-4 items-center'>
       <Dialog
-        title='Selecione uma categoria ou subcategoria'
+        title='Selecione um local ou setor'
         size='2xl'
         trigger={
           <Select className={className}>
@@ -48,7 +48,7 @@ export const LocationSelect = ({
           <div className='flex flex-col h-[28rem] pb-6'>
             {locations.length === 0 && (
               <p className='text-center text-bg-zinc-600 font-semibold my-12'>
-                Nenhum setor cadastrado.
+                Nenhum local cadastrado.
               </p>
             )}
             {locations.length > 0 && (

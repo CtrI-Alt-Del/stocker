@@ -23,8 +23,6 @@ export class UpdateCompanyUseCase {
     }
 
     const updatedCompany = company.update(companyDto)
-    console.log(companyDto)
-    console.log(updatedCompany)
     await this.companiesRepository.update(updatedCompany, companyId)
   }
 }

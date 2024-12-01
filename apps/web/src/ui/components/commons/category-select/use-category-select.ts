@@ -1,8 +1,7 @@
 import { CACHE } from '@/constants'
-import { useApi, useCache, useToast, useUrlParamNumber } from '@/ui/hooks'
+import { useApi, useCache, useToast } from '@/ui/hooks'
 import { Category } from '@stocker/core/entities'
 import { useState } from 'react'
-import { useAuthContext } from '../../contexts/auth-context'
 
 export function useCategorySelect(
   onSelectChange: (categoryId: string) => void,
@@ -10,10 +9,9 @@ export function useCategorySelect(
 ) {
   const [categoryId, setCategoryId] = useState(defeaultSelectedCategoryId)
   const { categoriesService } = useApi()
-  const { company } = useAuthContext()
-  const { showError } = useToast()
   const [page, setPage] = useState(1)
   const [expandedItems, setExpandedItems] = useState<{ [key: string]: boolean }>({})
+  const { showError } = useToast()
 
   function handleCategoryIdChange(categoryId: string) {
     setCategoryId(categoryId)
@@ -21,11 +19,8 @@ export function useCategorySelect(
   }
 
   async function fetchCategories() {
-    if (!company) return
-
     const response = await categoriesService.listCategories({
       page,
-      companyId: company.id,
     })
     if (response.isFailure) {
       showError(response.errorMessage)
@@ -53,6 +48,9 @@ export function useCategorySelect(
 
   const categories = categoriesData ? categoriesData.items.map(Category.create) : []
   const itemsCount = categoriesData ? categoriesData.itemsCount : 0
+
+  console.log(categoriesData)
+
   return {
     isFetching,
     page,

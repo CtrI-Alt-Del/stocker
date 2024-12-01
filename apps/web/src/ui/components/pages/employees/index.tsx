@@ -17,14 +17,14 @@ export const EmployeesPage = () => {
     users,
     selectedEmployeesIds,
     isLoading,
+    nameSearchValue,
+    roleSearchValue,
     handleRegisterEmployeeFormSubmit,
     handleUpdateEmployee,
     handleEmployeesSelectionChange,
     handlePageChange,
     handleDeleteEmployeesAlertDialogConfirm,
     handleNameSearchChange,
-    nameSearchValue,
-    roleSearchValue,
     handleRoleSearchChange,
   } = useEmployeesPage()
   return (
@@ -36,9 +36,10 @@ export const EmployeesPage = () => {
             <div className=' flex md:items-center flex-col md:flex-row gap-4 w-full'>
               <Search value={nameSearchValue} onSearchChange={handleNameSearchChange} />
               <Select
-                className='max-w-96 '
+                className='max-w-96'
                 color='default'
-                size='lg'
+                size='md'
+                label='Cargo'
                 defaultSelectedKeys={['']}
                 value={roleSearchValue}
                 onChange={(e) => handleRoleSearchChange(e.target.value)}
