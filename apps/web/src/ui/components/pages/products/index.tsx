@@ -13,12 +13,14 @@ import { useAuthContext } from '../../contexts/auth-context'
 import { CategorySelect } from '../../commons/category-select'
 import { Icon } from '../../commons/icon'
 import { LocationSelect } from '../../commons/location-select'
+import { SupplierSelect } from '../../commons/supplier-select'
 
 export const ProductsPage = () => {
   const {
     categoryId,
     handleCategoryIdSearchChange,
     handleLocationIdchange,
+    handleSupplierIdSearchChange,
     isFetching,
     isDeleting,
     page,
@@ -49,6 +51,7 @@ export const ProductsPage = () => {
                 mode='filter'
               />
               <LocationSelect onSelectChange={handleLocationIdchange} mode='filter' />
+              <SupplierSelect onSelectChange={handleSupplierIdSearchChange} mode='filter' />
             </div>
           </div>
         </div>

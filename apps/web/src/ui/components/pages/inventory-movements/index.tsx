@@ -4,7 +4,7 @@ import { InventoryMovementsTable } from './inventory-movements-table'
 import { useInventoryMovementPage } from './use-inventory-moviments-page'
 
 export const InventoryMovementsPage = () => {
-  const { isFetching, page, movements, totalPages, handlePageChange,handleMovementTypeSearchChange,movementTypeSearch } =
+  const { isFetching, page, movements, totalPages, handlePageChange, handleMovementTypeSearchChange, movementTypeSearch, handleStartDateChange, handleEndDateChange, } =
     useInventoryMovementPage()
 
   return (
@@ -24,6 +24,24 @@ export const InventoryMovementsPage = () => {
                 Saida
               </SelectItem>
             </Select>
+            <div className='flex gap-4'>
+              <div>
+                <label className='block text-sm font-medium text-gray-700'>Data Inicial</label>
+                <input
+                  type='date'
+                  className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                  onChange={(e) => handleStartDateChange(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className='block text-sm font-medium text-gray-700'>Data Final</label>
+                <input
+                  type='date'
+                  className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                  onChange={(e) => handleEndDateChange(e.target.value)}
+                />
+              </div>
+            </div>
           </div>
         </div>
         <InventoryMovementsTable

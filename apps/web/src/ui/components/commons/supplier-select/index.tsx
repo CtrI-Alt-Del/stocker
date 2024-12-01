@@ -8,12 +8,14 @@ type SupplierSelectProps = {
   defaultSupplierId?: string
   className?: string
   onSelectChange: (supplierId: string) => void
+  mode?: "filter" | "select"
 }
-
+ 
 export const SupplierSelect = ({
   className,
   defaultSupplierId,
   onSelectChange,
+  mode = "select",
 }: SupplierSelectProps) => {
   const {
     suppliers,
