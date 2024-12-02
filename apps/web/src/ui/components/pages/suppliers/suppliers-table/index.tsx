@@ -106,7 +106,7 @@ export const SuppliersTable = ({
                 <span className='truncate'>{supplier.phone}</span>
               </TableCell>
               <TableCell key='actions'>
-                <Tooltip content='Visualizar dados do Fornecedor'>
+                <Tooltip content='Editar fornecedor'>
                   <IconButton
                     name='view'
                     className='size-6 text-zinc-500'

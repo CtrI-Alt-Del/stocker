@@ -1,7 +1,12 @@
 import { useApi, useToast } from '@/ui/hooks'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { SupplierDto } from '@stocker/core/dtos'
-import { cnpjSchema, emailSchema, nameSchema, phoneSchema } from '@stocker/validation/schemas'
+import {
+  cnpjSchema,
+  emailSchema,
+  nameSchema,
+  phoneSchema,
+} from '@stocker/validation/schemas'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -14,8 +19,8 @@ type useUpdateSupplierFormProps = {
 const updateSupplierFormSchema = z.object({
   name: nameSchema,
   email: emailSchema,
-  cnpj: cnpjSchema,
-  phone: phoneSchema
+  cnpj: cnpjSchema.optional(),
+  phone: phoneSchema.optional(),
 })
 type updateSupplierFormData = z.infer<typeof updateSupplierFormSchema>
 export function useUpdateSupplierForm({
@@ -23,7 +28,7 @@ export function useUpdateSupplierForm({
   onCancel,
   onSubmit,
 }: useUpdateSupplierFormProps) {
-  const { usersService,  suppliersService} = useApi()
+  const { suppliersService } = useApi()
   const { showSuccess, showError } = useToast()
   const { formState, reset, register, handleSubmit, control } =
     useForm<updateSupplierFormData>({
@@ -31,10 +36,11 @@ export function useUpdateSupplierForm({
         name: supplier.name,
         email: supplier.email,
         cnpj: supplier.cnpj,
-        phone: supplier.phone
+        phone: supplier.phone,
       },
       resolver: zodResolver(updateSupplierFormSchema),
     })
+
   async function handleFormSubmit(formData: updateSupplierFormData) {
     const partialSupplier: Record<string, unknown> = {}
     const updatedFields = Object.keys(formState.dirtyFields)

@@ -126,13 +126,13 @@ export const CategoriesList = ({
                     category.subCategories.map((subcategory) => (
                       <div
                         key={subcategory.id}
-                        className='flex justify-between items-center -translate-y-2'
+                        className='flex justify-between items-center'
                       >
-                        <p className='text-md'>{subcategory.name}</p>
+                        <p className='text-sm'>{subcategory.name}</p>
                         <div className='flex gap-2'>
                           <Button
                             size='sm'
-                            className='bg-transparent hover:bg-primary text-gray-700 hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
+                            className='bg-transparent hover:bg-primary text-gray-700 hover:text-white duration-1000 border-zinc-400 min-w-10'
                             onClick={() => handleEditCategoryButtonClick(subcategory)}
                           >
                             <Icon name='pencil' size={18} />
@@ -156,7 +156,7 @@ export const CategoriesList = ({
                       </div>
                     ))
                   ) : (
-                    <p>Sem subcategorias</p>
+                    <p className='text-sm'>Sem subcategorias</p>
                   )}
                 </div>
               </AccordionItem>

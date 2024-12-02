@@ -1,5 +1,6 @@
 import { NextServerApiClient } from '@/api/next/clients/next-server-api-client'
 import { ReportsService } from '@/api/services'
+import { ROUTES } from '@/constants'
 import { Card } from '@/ui/components/commons/card'
 import { Price } from '@stocker/core/structs'
 
@@ -20,19 +21,19 @@ export const SummaryCards = async () => {
       <Card
         title='Entradas'
         value={inboundMovementsCount}
-        href='/?movement_type=inbound'
+        href={`${ROUTES.inventory.movements}?type=inbound`}
         icon='arrow-big-down-dash'
       />
       <Card
         title='Saídas'
         value={outboundMovementsCount}
-        href='/?movement_type=outbound'
+        href={`${ROUTES.inventory.movements}?type=bound`}
         icon='arrow-big-up-dash'
       />
       <Card
         title='Valor em estoque'
         value={inventoryValue.brl}
-        href='/records/products'
+        href={ROUTES.records.products}
         icon='money'
       />
     </div>
