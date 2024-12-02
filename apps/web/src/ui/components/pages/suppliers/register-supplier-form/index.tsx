@@ -13,7 +13,7 @@ export const RegisterSupplierForm = ({
   onSubmit,
   onCancel,
 }: RegisterProductFormProps) => {
-  const { register, errors, handleSubmit, reset, isSubmiting } =
+  const { register, errors, isSubmiting, handleSubmit } =
     useRegisterSupplierForm(onSubmit)
 
   return (

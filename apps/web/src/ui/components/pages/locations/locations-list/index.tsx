@@ -83,7 +83,7 @@ export const LocationList = ({
                       <div className='flex space-x-2 m-0'>
                         <Button
                           size='sm'
-                          className='bg-transparent hover:bg-primary text-gray-700 hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
+                          className='bg-transparent hover:bg-primary text-gray-700 hover:text-white duration-1000 border-zinc-400 min-w-10'
                           onClick={() => handleRegisterSectorButtonClick(location.id)}
                         >
                           <Icon name='plus' size={18} />
@@ -91,7 +91,7 @@ export const LocationList = ({
                         <Button
                           size='sm'
                           onClick={() => handleEditLocationsButtonClick(location)}
-                          className='bg-transparent hover:bg-primary text-gray-700 hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
+                          className='bg-transparent hover:bg-primary text-gray-700 hover:text-white duration-1000 border-zinc-400 min-w-10'
                         >
                           <Icon name='pencil' size={18} />
                         </Button>
@@ -121,13 +121,13 @@ export const LocationList = ({
                     location.subLocations.map((subLocation) => (
                       <div
                         key={subLocation.id}
-                        className='flex justify-between items-center -translate-y-2'
+                        className='flex justify-between items-center'
                       >
-                        <p className='text-md'>{subLocation.name}</p>
+                        <p className='text-sm'>{subLocation.name}</p>
                         <div className='flex gap-2'>
                           <Button
                             size='sm'
-                            className='bg-transparent hover:bg-primary text-gray-700 hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
+                            className='bg-transparent hover:bg-primary text-gray-700 hover:text-white duration-1000 border-zinc-400 min-w-10'
                             onClick={() => handleEditLocationsButtonClick(subLocation)}
                           >
                             <Icon name='pencil' size={18} />
@@ -151,7 +151,7 @@ export const LocationList = ({
                       </div>
                     ))
                   ) : (
-                    <p>Sem setores</p>
+                    <p className='text-sm'>Sem setores</p>
                   )}
                 </div>
               </AccordionItem>
