@@ -1,7 +1,6 @@
-import { base, fakerPT_BR as faker } from '@faker-js/faker'
+import { fakerPT_BR as faker } from '@faker-js/faker'
 import type { InventoryMovementDto } from '../../src/dtos'
 import { InventoryMovement } from '../../src/domain/entities'
-import { InventoryMovementType } from '@prisma/client'
 
 export class InventoryMovementsFaker {
   static fake(baseDto?: Partial<InventoryMovementDto>, productIds?: string[]) {

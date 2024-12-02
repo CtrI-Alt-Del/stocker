@@ -29,7 +29,7 @@ export const CategorySelect = ({
     handleCategoryIdChange,
     handleAccordionClick,
     handleCategoryPageChange,
-  } = useCategorySelect(onSelectChange, defeaultCategoryId)
+  } = useCategorySelect(onSelectChange, mode === 'filter', defeaultCategoryId)
 
   return isFetching ? (
     <Spinner size='sm' className='w-full h-12 mx-auto' />

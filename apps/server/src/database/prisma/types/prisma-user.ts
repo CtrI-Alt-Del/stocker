@@ -1,3 +1,3 @@
-import type { User } from '@prisma/client'
+import type { Role, User } from '@prisma/client'
 
-export type PrismaUser = User
+export type PrismaUser = User & { role: Pick<Role, 'name'> | null }

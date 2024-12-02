@@ -6,17 +6,17 @@ import {
   UpdateBatchController,
 } from '@/api/controllers/products'
 import { FastifyHandler } from '../fastify-handler'
-import { VerifyJwtMiddleware, VerifyUserRoleMiddleware } from '@/api/middlewares'
+import { VerifyJwtMiddleware, VerifyRolePermissionMiddleware } from '@/api/middlewares'
 
 export const BatchesRoutes = async (app: FastifyInstance) => {
   const updateBatchController = new UpdateBatchController()
   const deleteBatchesController = new DeleteBatchesController()
   const verifyJwtMiddleware = new FastifyHandler(new VerifyJwtMiddleware())
-  const verifyManagerRoleMiddleware = new FastifyHandler(
-    new VerifyUserRoleMiddleware('manager'),
+  const verifyRolePermissionMiddleware = new FastifyHandler(
+    new VerifyRolePermissionMiddleware('products-control'),
   )
-  const preHandlers = [verifyJwtMiddleware, verifyManagerRoleMiddleware].map((handler) =>
-    handler.handle.bind(handler),
+  const preHandlers = [verifyJwtMiddleware, verifyRolePermissionMiddleware].map(
+    (handler) => handler.handle.bind(handler),
   )
 
   app.put('/:batchId', { preHandler: preHandlers }, async (request, response) => {

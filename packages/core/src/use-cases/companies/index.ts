@@ -1,3 +1,5 @@
 export { DeleteCompanyUseCase } from './delete-company-use-case'
 export { GetCompanyUseCase } from './get-company-use-case'
 export { UpdateCompanyUseCase } from './update-company-use-case'
+export { GetCompanyRolesUseCase } from './get-company-roles-use-case'
+export { UpdateCompanyRoleUseCase } from './update-company-role-use-case'

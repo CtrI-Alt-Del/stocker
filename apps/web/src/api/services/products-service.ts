@@ -13,7 +13,8 @@ export const ProductsService = (apiClient: IApiClient): IProductsService => {
       return await apiClient.get<ProductDto>(`/products/${productId}`)
     },
 
-    async listProducts({ page, name, categoryId, locationId }) {
+    async listProducts({ page, name, categoryId, supplierId, locationId }) {
+      if (supplierId) apiClient.setParam('supplierId', supplierId)
       if (categoryId) apiClient.setParam('categoryId', categoryId)
       if (locationId) apiClient.setParam('locationId', locationId)
       if (name) apiClient.setParam('name', name)

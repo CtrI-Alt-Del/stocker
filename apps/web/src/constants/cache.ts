@@ -38,11 +38,17 @@ export const CACHE = {
   categories: {
     key: '/categories',
   },
+  companyRoles: {
+    key: '/company/roles',
+  },
   category: {
     key: '/category',
   },
   company: {
     key: '/company',
+  },
+  permissions: {
+    key: '/permissions',
   },
   supplier: {
     key: '/supplier',

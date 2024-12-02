@@ -64,7 +64,7 @@ export function useStocksPage() {
 
   const { data, isFetching } = useCache({
     fetcher: fetchProducts,
-    key: CACHE.productsList.key,
+    key: CACHE.inventory.key,
     dependencies: [page, productName, stockLevel, categoryId, locationId, supplierId],
   })
 

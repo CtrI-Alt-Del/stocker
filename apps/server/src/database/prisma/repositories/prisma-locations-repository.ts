@@ -129,7 +129,7 @@ export class PrismaLocationsRepository implements ILocationsRepository {
         },
       })
 
-      const locations = prismaLocations.map(this.mapper.toDomain)
+      const locations = prismaLocations.map((location) => this.mapper.toDomain(location))
       return { locations, count }
     } catch (error) {
       throw new PrismaError(error)

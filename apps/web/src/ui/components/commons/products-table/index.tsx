@@ -65,8 +65,8 @@ export const ProductsTable = ({
     onUpdateProduct,
     onProductsSelectionChange,
   })
-  const { user } = useAuthContext()
-  const hasValidRole = user?.hasValidRole('manager')
+  const { userRole } = useAuthContext()
+  const hasValidRole = userRole?.hasPermission('products-control')
   return (
     <>
       <Table
@@ -93,8 +93,8 @@ export const ProductsTable = ({
         <TableHeader>
           <TableColumn key='name'>NOME</TableColumn>
           <TableColumn key='code'>CODIGO</TableColumn>
-          <TableColumn key='price'>PREÇO</TableColumn>
           <TableColumn key='minimumStock'>ESTOQUE MINIMO</TableColumn>
+          <TableColumn key='price'>PREÇO</TableColumn>
           <TableColumn key='category'>CATEGORIA</TableColumn>
           <TableColumn key='location'>LOCAL</TableColumn>
           <TableColumn key='supplier'>FORNECEDOR</TableColumn>
@@ -124,8 +124,8 @@ export const ProductsTable = ({
               <TableCell key='code' className='w-48'>
                 <span className='truncate'>{product.code}</span>
               </TableCell>
-              <TableCell key='price'>{product.costPrice.brl}</TableCell>
               <TableCell key='minimumStock'>{product.minimumStock}</TableCell>
+              <TableCell key='price'>{product.costPrice.brl}</TableCell>
               <TableCell key='category'>
                 <span className='truncate'>{product.category?.name ?? 'N/A'}</span>
               </TableCell>

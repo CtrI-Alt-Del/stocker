@@ -120,8 +120,12 @@ export class Product extends Entity<ProductProps> {
 
   private sortBatches() {
     this.props.batches.sort((a, b) => {
-      const aExpSort = a.expirationDate ? a.expirationDate.getTime() : Infinity
-      const bExpSort = b.expirationDate ? b.expirationDate.getTime() : Infinity
+      console.log(a.expirationDate)
+      console.log(a.expirationDate)
+      const aExpSort =
+        a.expirationDate instanceof Date ? a.expirationDate.getTime() : Infinity
+      const bExpSort =
+        b.expirationDate instanceof Date ? b.expirationDate.getTime() : Infinity
 
       if (aExpSort !== bExpSort) return aExpSort - bExpSort
 
@@ -247,6 +251,10 @@ export class Product extends Entity<ProductProps> {
     return this.props.code
   }
 
+  get companyId(): string {
+    return this.props.companyId
+  }
+
   get currentStock(): number {
     return this.props.batches.reduce((stock, batch) => stock + batch.itemsCount, 0)
   }
@@ -319,11 +327,11 @@ export class Product extends Entity<ProductProps> {
         dto: this.category?.dto,
       }
 
-      if (this.supplierId)
-        dto.supplier = {
-          id: this.supplierId,
-          dto: this.supplier?.dto,
-        }
+    if (this.supplierId)
+      dto.supplier = {
+        id: this.supplierId,
+        dto: this.supplier?.dto,
+      }
 
     return dto
   }

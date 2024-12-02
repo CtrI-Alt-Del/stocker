@@ -7,7 +7,7 @@ import {
   UpdateCategoryController,
   GetCategoryController,
 } from '@/api/controllers/categories'
-import { VerifyJwtMiddleware, VerifyUserRoleMiddleware } from '@/api/middlewares'
+import { VerifyJwtMiddleware, VerifyRolePermissionMiddleware } from '@/api/middlewares'
 import { FastifyHttp } from '../fastify-http'
 import { FastifyHandler } from '../fastify-handler'
 
@@ -18,20 +18,14 @@ export const CategoriesRoutes = async (app: FastifyInstance) => {
   const deleteCategoryController = new DeleteCategoryController()
   const updateCategoryController = new UpdateCategoryController()
   const verifyJwtMiddleware = new FastifyHandler(new VerifyJwtMiddleware())
-  const verifyManagerRoleMiddleware = new FastifyHandler(
-    new VerifyUserRoleMiddleware('manager'),
-  )
-  const verifyEmployeeRoleMiddleware = new FastifyHandler(
-    new VerifyUserRoleMiddleware('employee'),
+  const verifyPermissionMiddleware = new FastifyHandler(
+    new VerifyRolePermissionMiddleware('categories-control'),
   )
 
   app.get(
     '/',
     {
-      preHandler: [
-        verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
-        verifyManagerRoleMiddleware.handle.bind(verifyManagerRoleMiddleware),
-      ],
+      preHandler: [verifyJwtMiddleware.handle.bind(verifyJwtMiddleware)],
     },
     async (request, response) => {
       const http = new FastifyHttp(request, response)
@@ -42,10 +36,7 @@ export const CategoriesRoutes = async (app: FastifyInstance) => {
   app.get(
     '/:categoryId',
     {
-      preHandler: [
-        verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
-        verifyEmployeeRoleMiddleware.handle.bind(verifyEmployeeRoleMiddleware),
-      ],
+      preHandler: [verifyJwtMiddleware.handle.bind(verifyJwtMiddleware)],
     },
     async (request, response) => {
       const http = new FastifyHttp(request, response)
@@ -58,7 +49,7 @@ export const CategoriesRoutes = async (app: FastifyInstance) => {
     {
       preHandler: [
         verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
-        verifyManagerRoleMiddleware.handle.bind(verifyManagerRoleMiddleware),
+        verifyPermissionMiddleware.handle.bind(verifyPermissionMiddleware),
       ],
     },
     async (request, response) => {
@@ -71,7 +62,7 @@ export const CategoriesRoutes = async (app: FastifyInstance) => {
     {
       preHandler: [
         verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
-        verifyManagerRoleMiddleware.handle.bind(verifyManagerRoleMiddleware),
+        verifyPermissionMiddleware.handle.bind(verifyPermissionMiddleware),
       ],
     },
     async (request, response) => {
@@ -85,7 +76,7 @@ export const CategoriesRoutes = async (app: FastifyInstance) => {
     {
       preHandler: [
         verifyJwtMiddleware.handle.bind(verifyJwtMiddleware),
-        verifyManagerRoleMiddleware.handle.bind(verifyManagerRoleMiddleware),
+        verifyPermissionMiddleware.handle.bind(verifyPermissionMiddleware),
       ],
     },
     async (request, response) => {

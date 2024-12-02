@@ -26,7 +26,6 @@ const updateProductFormSchema = z.object({
   name: nameSchema,
   uom: stringSchema,
   description: descriptionSchema,
-  locationId: idSchema,
   costPrice: integerSchema,
   sellingPrice: integerSchema,
   height: integerSchema,
@@ -36,6 +35,7 @@ const updateProductFormSchema = z.object({
   brand: stringSchema,
   code: stringSchema,
   minimumStock: nonZeroIntegerSchema,
+  locationId: idSchema.optional(),
   categoryId: idSchema.optional(),
   supplierId: idSchema.optional(),
   model: z.string().optional(),
@@ -115,7 +115,6 @@ export function useUpdateProductForm({
 
   async function handleFormSubmit(formData: UpdateProductFormData) {
     const imageUrl = await handleImageUpload(formData.updatedImage)
-
     const partialProduct: Record<string, unknown> = {}
 
     const updatedFields = Object.keys(formState.dirtyFields)
@@ -131,8 +130,8 @@ export function useUpdateProductForm({
         partialProduct.supplier = { id: formData.supplierId }
         continue
       }
-      if(updatedField === "locationId"){
-        partialProduct.location = {id: formData.locationId}
+      if (updatedField === 'locationId') {
+        partialProduct.location = { id: formData.locationId }
       }
 
       const updatedValue = formData[updatedField as keyof UpdateProductFormData]

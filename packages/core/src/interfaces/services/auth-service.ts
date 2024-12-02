@@ -10,6 +10,7 @@ export interface IAuthService {
     companyDto: CompanyDto,
   ): Promise<ApiResponse<{ jwt: string }>>
   logout(): Promise<ApiResponse>
+  getPermissions(): Promise<ApiResponse<{ name: string; permissions: string[] }>>
   requestPasswordReset(email: string): Promise<ApiResponse<{ confirmationToken: string }>>
   updateAccount(
     userDto: Partial<UserDto>,

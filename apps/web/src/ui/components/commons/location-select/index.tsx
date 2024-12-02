@@ -29,7 +29,7 @@ export const LocationSelect = ({
     handleLocationIdChange,
     handleAccordionClick,
     handleLocationPageChange,
-  } = useLocationSelect(onSelectChange, defeaultLocationId)
+  } = useLocationSelect(onSelectChange, mode === 'filter', defeaultLocationId)
 
   return isFetching ? (
     <Spinner size='sm' className='w-full h-12 mx-auto' />

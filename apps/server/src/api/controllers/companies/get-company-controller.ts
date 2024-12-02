@@ -1,9 +1,5 @@
 import type { IHttp } from '@stocker/core/interfaces'
-import {
-  DeleteCompanyUseCase,
-  GetCategoryUseCase,
-  GetCompanyUseCase,
-} from '@stocker/core/use-cases'
+import { GetCompanyUseCase } from '@stocker/core/use-cases'
 import { HTTP_STATUS_CODE } from '@stocker/core/constants'
 
 import { companiesRepository } from '@/database'

@@ -24,6 +24,7 @@ import { useStocksPage } from './use-stocks-page'
 import { SupplierSelect } from '../../commons/supplier-select'
 import { LocationSelect } from '../../commons/location-select'
 import { BROWSER_ENV } from '@/constants'
+import { useAuthContext } from '../../contexts/auth-context'
 
 export const StocksPage = () => {
   const {
@@ -43,6 +44,7 @@ export const StocksPage = () => {
     handleSearchChange,
     handlePageChange,
   } = useStocksPage()
+  const { userRole } = useAuthContext()
 
   return (
     <div className='space-y-3'>

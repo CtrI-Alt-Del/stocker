@@ -5,13 +5,14 @@ import { FastifyHandler } from '../fastify-handler'
 import {
   ConfirmAuthController,
   DeleteAccountController,
+  GetPermissionsController,
   LoginController,
   LogoutController,
   ResetPasswordController,
   SubscribeController,
   UpdateAccountController,
 } from '@/api/controllers/auth'
-import { VerifyJwtMiddleware, VerifyUserRoleMiddleware } from '@/api/middlewares'
+import { VerifyJwtMiddleware, VerifyRolePermissionMiddleware } from '@/api/middlewares'
 import { RequestPasswordResetController } from '@/api/controllers/auth/request-password-reset-controller'
 import { FastifyWs } from '../fastify-ws'
 import { AuthRoom } from '@/realtime/rooms'
@@ -23,9 +24,10 @@ export const AuthRoutes = async (app: FastifyInstance) => {
   const deleteAccountController = new DeleteAccountController()
   const updateAccountController = new UpdateAccountController()
   const requestPasswordResetController = new RequestPasswordResetController()
+  const getPermissionsController = new GetPermissionsController()
   const verifyJwtMiddleware = new FastifyHandler(new VerifyJwtMiddleware())
   const verifyAdminRoleMiddleware = new FastifyHandler(
-    new VerifyUserRoleMiddleware('admin'),
+    new VerifyRolePermissionMiddleware('all'),
   )
   const resetPasswordController = new ResetPasswordController()
   const confirmAuthController = new ConfirmAuthController()
@@ -37,6 +39,11 @@ export const AuthRoutes = async (app: FastifyInstance) => {
     authRoom.handle(ws)
 
     ws.join(userId, socket)
+  })
+
+  app.get('/permissions', async (request, response) => {
+    const http = new FastifyHttp(request, response)
+    return getPermissionsController.handle(http)
   })
 
   app.post('/confirm', async (request, response) => {
@@ -61,7 +68,7 @@ export const AuthRoutes = async (app: FastifyInstance) => {
 
   app.delete(
     '/logout',
-    { preHandler: [verifyJwtMiddleware.handle.bind(verifyJwtMiddleware)] },
+    { preHandler: [verifyJwtMiddleware.handle] },
     async (request, response) => {
       const http = new FastifyHttp(request, response)
       return logoutController.handle(http)

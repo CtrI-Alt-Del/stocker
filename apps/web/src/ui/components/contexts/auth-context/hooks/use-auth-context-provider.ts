@@ -5,13 +5,14 @@ import { jwtDecode } from 'jwt-decode'
 
 import { Company, User } from '@stocker/core/entities'
 import type { CompanyDto, UserDto } from '@stocker/core/dtos'
-import type { UserRole } from '@stocker/core/types'
 
 import { CACHE, COOKIES, ROUTES } from '@/constants'
 import { useAuthWebSocket, useCache, useNavigation, useToast } from '@/ui/hooks'
 import type { deleteCookieAction, setCookieAction } from '@/actions'
 import type { IAuthService, ICompaniesService } from '@stocker/core/interfaces'
 import type { DialogRef } from '@/ui/components/commons/dialog/types'
+import type { RoleName } from '@stocker/core/types'
+import { Role } from '@stocker/core/structs'
 
 type UseAuthContextProvider = {
   jwt: string | null
@@ -47,15 +48,30 @@ export function useAuthContextProvider({
     response.throwError()
   }
 
-  const { data, mutate } = useCache({
+  async function fetchPermissions() {
+    const response = await authService.getPermissions()
+
+    if (response.isSuccess) {
+      return Role.create(response.body.name, response.body.permissions)
+    }
+
+    response.throwError()
+  }
+
+  const { data: comapanyDto, mutate } = useCache({
     fetcher: fetchCompany,
     key: CACHE.company.key,
     isEnabled: Boolean(user),
   })
 
-  const company = data ? Company.create(data) : null
+  const company = comapanyDto ? Company.create(comapanyDto) : null
 
-  function getRouteByUserRole(role: UserRole) {
+  const { data: userRole } = useCache({
+    fetcher: fetchPermissions,
+    key: CACHE.permissions.key,
+  })
+
+  function getRouteByUserRole(role: RoleName) {
     switch (role) {
       case 'admin':
         return ROUTES.records.employees
@@ -193,9 +209,12 @@ export function useAuthContextProvider({
     if (jwt) logoutUnkownAccount(jwt)
   }
 
+  console.log(user?.hasFirstPasswordReset)
+
   return {
     user,
     company,
+    userRole,
     login,
     logout,
     subscribe,

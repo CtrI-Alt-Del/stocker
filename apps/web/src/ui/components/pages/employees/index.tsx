@@ -50,7 +50,6 @@ export const EmployeesPage = () => {
                 <SelectItem key='employee' value='employee'>
                   Funcionário
                 </SelectItem>
-
                 <SelectItem key='manager' value='manager'>
                   Gerente
                 </SelectItem>

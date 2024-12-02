@@ -1,8 +1,8 @@
-import type { UserRole } from './user-role'
+import type { RoleName } from './role-name'
 
 export type UsersListParams = {
   page: number
   companyId: string
   name?: string
-  role?: UserRole
+  role?: RoleName
 }

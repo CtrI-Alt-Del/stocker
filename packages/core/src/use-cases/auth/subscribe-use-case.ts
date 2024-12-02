@@ -6,6 +6,7 @@ import type {
   ICryptoProvider,
   IUsersRepository,
 } from '../../interfaces'
+import { DEFAULT_ROLES } from '../../constants'
 
 type Request = {
   userDto: UserDto
@@ -40,6 +41,10 @@ export class SubscribeUseCase {
 
     const company = Company.create(companyDto)
     await this.companiesRepository.add(company)
+
+    await Promise.all(
+      DEFAULT_ROLES.map((role) => this.companiesRepository.addRole(role, company.id)),
+    )
 
     userDto.companyId = company.id
     if (userDto.password)

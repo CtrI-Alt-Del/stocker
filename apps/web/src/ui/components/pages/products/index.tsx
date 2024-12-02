@@ -36,9 +36,9 @@ export const ProductsPage = () => {
     handleProductsSelectionChange,
     handleRegisterProductFormSubmit,
   } = useProductsPage()
-  const { user } = useAuthContext()
-  const hasValidRole = user?.hasValidRole('manager')
 
+  const { userRole } = useAuthContext()
+  const hasValidRole = userRole?.hasPermission('products-control')
   return (
     <>
       <div className='flex flex-col gap-3 md:flex-row md:gap-0 md:items-center md:justify-between'>

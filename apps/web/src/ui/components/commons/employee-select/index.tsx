@@ -14,9 +14,9 @@ export const EmployeeSelect = ({ onSelectChange }: EmployeeSelectProps) => {
     isFetching,
     page,
     totalPages,
+    selectedEmployeeName,
     handleEmployeeIdchange,
     handleEmployeePageChange,
-    selectedEmployeeName,
     handleEmployeeNamechange,
   } = useEmployeeSelect(onSelectChange)
 
@@ -67,7 +67,7 @@ export const EmployeeSelect = ({ onSelectChange }: EmployeeSelectProps) => {
                   total={totalPages}
                   onChange={handleEmployeePageChange}
                   showControls
-                  className="pb-8 pt-8"
+                  className='pb-8 pt-8'
                 />
               )}
             </>

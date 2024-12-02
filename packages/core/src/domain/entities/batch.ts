@@ -62,8 +62,10 @@ export class Batch extends Entity<BatchProps> {
     return this.props.maximumDaysToExpiration
   }
 
-  get daysToExpiration(): number {
-   return new Datetime().differenceInDays(this.props.expirationDate)
+  get daysToExpiration(): number | null {
+    return this.props.expirationDate
+      ? new Datetime(this.props.expirationDate).differenceInDays(new Date())
+      : null
   }
 
   get registeredAt(): Date {

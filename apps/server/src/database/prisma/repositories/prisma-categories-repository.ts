@@ -83,8 +83,8 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
             : undefined,
         },
         orderBy: { registered_at: 'desc' },
-      });
-  
+      })
+
       const count = await prisma.category.count({
         where: {
           parent_category_id: null,
@@ -96,14 +96,16 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
               }
             : undefined,
         },
-      });
-  
-      return { categories: prismaCategories.map(this.mapper.toDomain), count };
+      })
+
+      return {
+        categories: prismaCategories.map((category) => this.mapper.toDomain(category)),
+        count,
+      }
     } catch (error) {
-      throw new PrismaError(error);
+      throw new PrismaError(error)
     }
   }
-  
 
   async count(): Promise<number> {
     try {

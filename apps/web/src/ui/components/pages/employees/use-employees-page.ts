@@ -1,3 +1,5 @@
+import type { RoleName } from '@stocker/core/types'
+
 import { CACHE } from '@/constants'
 import {
   useApi,
@@ -6,10 +8,8 @@ import {
   useUrlParamNumber,
   useUrlParamString,
 } from '@/ui/hooks'
-import type { UserDto } from '@stocker/core/dtos'
 import { useState } from 'react'
 import { useAuthContext } from '../../contexts/auth-context'
-import type { UserRole } from '@stocker/core/types'
 
 export function useEmployeesPage() {
   const { showSuccess, showError } = useToast()
@@ -36,7 +36,7 @@ export function useEmployeesPage() {
       page,
       companyId: companyId,
       name: nameSearchValue,
-      role: roleSearchValue as UserRole,
+      role: roleSearchValue as RoleName,
     })
     if (response.isFailure) {
       showError(response.errorMessage)

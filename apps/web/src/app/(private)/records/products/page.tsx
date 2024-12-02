@@ -1,6 +1,6 @@
 import { ProductsPage } from '@/ui/components/pages/products'
 
-const Page = () => {
+const Page = async () => {
   return <ProductsPage />
 }
 

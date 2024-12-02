@@ -11,8 +11,8 @@ import { useAuthContext } from '@/ui/components/contexts/auth-context'
 
 export const UserMenu = () => {
   const { handleLogoutButtonClick } = useUserMenu()
-  const { user } = useAuthContext()
-  const hasValidRole = user?.hasValidRole('admin')
+  const { userRole } = useAuthContext()
+  const hasValidRole = userRole?.hasPermission('all')
 
   return (
     <Popup trigger={<IconButton name='ellipses' size={16} />}>
