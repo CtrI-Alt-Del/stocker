@@ -265,6 +265,8 @@ export class PrismaProductsRepository implements IProductsRepository {
     companyId,
     productName,
     categoryId,
+    locationId,
+    supplierId,
     stockLevel,
   }: ProducsStocksListParams): Promise<{
     products: Product[]
@@ -289,6 +291,14 @@ export class PrismaProductsRepository implements IProductsRepository {
         whereSql = Prisma.sql`${whereSql} AND P.category_id = ${categoryId}`
       }
 
+      if (supplierId) {
+        whereSql = Prisma.sql`${whereSql} AND P.supplier_id = ${supplierId}`
+      }
+
+      if (locationId) {
+        whereSql = Prisma.sql`${whereSql} AND P.location_id = ${locationId}`
+      }
+
       let havingSql = Prisma.sql``
 
       if (stockLevel === 'danger') {
@@ -300,8 +310,6 @@ export class PrismaProductsRepository implements IProductsRepository {
       } else {
         havingSql = Prisma.sql``
       }
-
-      console.log({ stockLevel })
 
       const prismaProductsSql = Prisma.sql`
       SELECT
