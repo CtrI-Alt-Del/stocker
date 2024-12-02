@@ -3,21 +3,24 @@ import {
   useApi,
   useCache,
   useToast,
+  useUrlParamDate,
   useUrlParamNumber,
   useUrlParamString,
 } from '@/ui/hooks'
 import { PAGINATION } from '@stocker/core/constants'
 import { InventoryMovement } from '@stocker/core/entities'
+import { Datetime } from '@stocker/core/libs'
 import type { InventoryMovementType } from '@stocker/core/types'
 import { useState } from 'react'
-
+const DEFAULT_END_DATE = new Datetime()
+const DEFAULT_START_DATE = DEFAULT_END_DATE.subtractDays(365)
 export function useInventoryMovementPage() {
   const { inventoryMovementService } = useApi()
   const { showError } = useToast()
   const [page, setPage] = useUrlParamNumber('page', 1)
   const [movementTypeSearch, setMovementTypeSearch] = useUrlParamString('type')
-  const [startDate, setStartDate] = useState<Date | undefined>(undefined)
-  const [endDate, setEndDate] = useState<Date | undefined>(undefined)
+  const [startDate, setStartDate] = useUrlParamDate('start-date',DEFAULT_START_DATE)
+  const [endDate, setEndDate] = useUrlParamDate('end-date',DEFAULT_END_DATE.getDate())
   const [employeeIdSearch, setEmployeIdSearch] = useUrlParamString('employeeId')
 
   async function fetchInventoryMovements() {
@@ -40,12 +43,12 @@ export function useInventoryMovementPage() {
     setMovementTypeSearch(movementType)
   }
 
-  function handleStartDateChange(date: string) {
-    setStartDate(date ? new Date(date) : undefined)
+  function handleStartDateChange(date: Date) {
+    setStartDate(date)
   }
 
-  function handleEndDateChange(date: string) {
-    setEndDate(date ? new Date(date) : undefined)
+  function handleEndDateChange(date: Date) {
+    setEndDate(date)
   }
 
   function handlePageChange(page: number) {
@@ -59,11 +62,13 @@ export function useInventoryMovementPage() {
   const { data, isFetching } = useCache({
     fetcher: fetchInventoryMovements,
     key: CACHE.productInventoryMovements.key,
-    dependencies: [page, movementTypeSearch, startDate, endDate],
+    dependencies: [page, movementTypeSearch, startDate, endDate,employeeIdSearch],
   })
 
   const movements = data ? data.items.map(InventoryMovement.create) : []
   const itemsCount = data ? data.itemsCount : 0
+  const startDateTime = new Datetime(new Datetime(startDate).addDays(1))
+  const endDatetime = new Datetime(new Datetime(endDate).addDays(1))
 
   return {
     page,
@@ -75,6 +80,8 @@ export function useInventoryMovementPage() {
     handleMovementTypeSearchChange,
     handleStartDateChange,
     handleEndDateChange,
+    startDate: startDateTime,
+    endDate: endDatetime,
     handlePageChange,
     handleEmployeeIdSerachChange,
     employeeIdSearch,
