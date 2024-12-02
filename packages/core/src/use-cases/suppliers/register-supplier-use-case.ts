@@ -14,25 +14,10 @@ export class RegisterSupplierUseCase {
   }
 
   async execute({ supplierDto }: Request) {
-    const existingEmailSupplier = await this.suppliersRepository.findByEmail(
-      supplierDto.email,
-    )
-    if (existingEmailSupplier) {
-      throw new ConflictError('Email já em uso')
-    }
+    const existingSupplier = await this.suppliersRepository.findByCnpj(supplierDto.cnpj)
 
-    const existingCNPJSupplier = await this.suppliersRepository.findByCnpj(
-      supplierDto.cnpj,
-    )
-    if (existingCNPJSupplier) {
-      throw new ConflictError('CNPJ já em uso')
-    }
-    
-    const existingPhoneSupplier = await this.suppliersRepository.findByPhone(
-      supplierDto.phone,
-    )
-    if (existingPhoneSupplier) {
-      throw new ConflictError('Telefone já em uso')
+    if (existingSupplier && existingSupplier.companyId === supplierDto.companyId) {
+      throw new ConflictError('Fornecedor já cadastrado nessa empresa')
     }
 
     const supplier = Supplier.create(supplierDto)

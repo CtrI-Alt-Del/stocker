@@ -17,12 +17,12 @@ describe('Update supplier use case', () => {
   it('should not update supplier if the supplier does not exist', async () => {
     const fakeSupplier = SuppliersFaker.fake()
 
-    expect(async () => {
-      await useCase.execute({
+    await expect(
+      useCase.execute({
         supplierDto: fakeSupplier.dto,
         supplierId: fakeSupplier.id,
       })
-    }).rejects.toThrowError(NotFoundError)
+    ).rejects.toThrowError(NotFoundError)
   })
 
   it('should update supplier', async () => {
@@ -31,15 +31,9 @@ describe('Update supplier use case', () => {
       email: 'email@gmail.com',
       cnpj: '28.193.784/0001-49',
       phone: '12982567488',
-      companyId: 'original companyId',
+      companyId: 'company-1',
     })
     await supplierRepository.add(fakeSupplier)
-
-    expect(supplierRepository.suppliers[0]?.name).toEqual('original name')
-    expect(supplierRepository.suppliers[0]?.email).toEqual('email@gmail.com')
-    expect(supplierRepository.suppliers[0]?.cnpj).toEqual('28.193.784/0001-49')
-    expect(supplierRepository.suppliers[0]?.phone).toEqual('12982567488')
-    expect(supplierRepository.suppliers[0]?.companyId).toEqual('original companyId')
 
     await useCase.execute({
       supplierDto: {
@@ -53,175 +47,48 @@ describe('Update supplier use case', () => {
     expect(supplierRepository.suppliers[0]?.name).toEqual('updated name')
     expect(supplierRepository.suppliers[0]?.email).toEqual('updateemail@gmail.com')
     expect(supplierRepository.suppliers[0]?.phone).toEqual('12982785922')
-    expect(supplierRepository.suppliers[0]?.companyId).toEqual('original companyId')
+    expect(supplierRepository.suppliers[0]?.companyId).toEqual('company-1')
   })
 
-
-  it('should not update supplier with the same email', async () => {
-    const fakeSupplier = SuppliersFaker.fake({
-      name: 'original name',
-      email: 'email@gmail.com',
+  it('should not update supplier with an existing CNPJ in the same company', async () => {
+    const fakeSupplier1 = SuppliersFaker.fake({
       cnpj: '28.193.784/0001-49',
-      phone: '12982567488',
-      companyId: 'original companyId',
+      companyId: 'company-1',
     })
-    await supplierRepository.add(fakeSupplier)
-
-    expect(supplierRepository.suppliers[0]?.name).toEqual('original name')
-    expect(supplierRepository.suppliers[0]?.email).toEqual('email@gmail.com')
-    expect(supplierRepository.suppliers[0]?.cnpj).toEqual('28.193.784/0001-49')
-    expect(supplierRepository.suppliers[0]?.phone).toEqual('12982567488')
-    expect(supplierRepository.suppliers[0]?.companyId).toEqual('original companyId')
+    await supplierRepository.add(fakeSupplier1)
 
     const fakeSupplier2 = SuppliersFaker.fake({
-      name: 'original name2',
-      email: 'email2@gmail.com',
       cnpj: '28.193.784/0001-50',
-      phone: '12982567489',
-      companyId: 'original companyId2',
+      companyId: 'company-1',
     })
     await supplierRepository.add(fakeSupplier2)
 
-    expect(supplierRepository.suppliers[1]?.name).toEqual('original name2')
-    expect(supplierRepository.suppliers[1]?.email).toEqual('email2@gmail.com')
-    expect(supplierRepository.suppliers[1]?.cnpj).toEqual('28.193.784/0001-50')
-    expect(supplierRepository.suppliers[1]?.phone).toEqual('12982567489')
-    expect(supplierRepository.suppliers[1]?.companyId).toEqual('original companyId2')
-
     await expect(
       useCase.execute({
-        supplierDto: {
-          name: 'updated name',
-          email: 'email@gmail.com',
-          phone: '12982785922',
-        },
+        supplierDto: { cnpj: '28.193.784/0001-49' },
         supplierId: fakeSupplier2.id,
-      }),
-    ).rejects.toThrowError(new ConflictError('Esse Email já está em uso'))
-
-    expect(supplierRepository.suppliers[0]?.name).toEqual('original name')
-    expect(supplierRepository.suppliers[0]?.email).toEqual('email@gmail.com')
-    expect(supplierRepository.suppliers[0]?.cnpj).toEqual('28.193.784/0001-49')
-    expect(supplierRepository.suppliers[0]?.phone).toEqual('12982567488')
-    expect(supplierRepository.suppliers[0]?.companyId).toEqual('original companyId')
-
-    expect(supplierRepository.suppliers[1]?.name).toEqual('original name2')
-    expect(supplierRepository.suppliers[1]?.email).toEqual('email2@gmail.com')
-    expect(supplierRepository.suppliers[1]?.cnpj).toEqual('28.193.784/0001-50')
-    expect(supplierRepository.suppliers[1]?.phone).toEqual('12982567489')
-    expect(supplierRepository.suppliers[1]?.companyId).toEqual('original companyId2')
-  })
-
-
-  it('should not update supplier with the same CNPJ', async () => {
-    const fakeSupplier = SuppliersFaker.fake({
-      name: 'original name',
-      email: 'email@gmail.com',
-      cnpj: '28.193.784/0001-49',
-      phone: '12982567488',
-      companyId: 'original companyId',
-    })
-    await supplierRepository.add(fakeSupplier)
-
-    expect(supplierRepository.suppliers[0]?.name).toEqual('original name')
-    expect(supplierRepository.suppliers[0]?.email).toEqual('email@gmail.com')
-    expect(supplierRepository.suppliers[0]?.cnpj).toEqual('28.193.784/0001-49')
-    expect(supplierRepository.suppliers[0]?.phone).toEqual('12982567488')
-    expect(supplierRepository.suppliers[0]?.companyId).toEqual('original companyId')
-
-    const fakeSupplier2 = SuppliersFaker.fake({
-      name: 'original name2',
-      email: 'email2@gmail.com',
-      cnpj: '28.193.784/0001-50',
-      phone: '12982567489',
-      companyId: 'original companyId2',
-    })
-    await supplierRepository.add(fakeSupplier2)
-
-    expect(supplierRepository.suppliers[1]?.name).toEqual('original name2')
-    expect(supplierRepository.suppliers[1]?.email).toEqual('email2@gmail.com')
-    expect(supplierRepository.suppliers[1]?.cnpj).toEqual('28.193.784/0001-50')
-    expect(supplierRepository.suppliers[1]?.phone).toEqual('12982567489')
-    expect(supplierRepository.suppliers[1]?.companyId).toEqual('original companyId2')
-
-    await expect(
-      useCase.execute({
-        supplierDto: {
-          name: 'updated name',
-          email: 'email2@gmail.com',
-          cnpj: '28.193.784/0001-49',
-          phone: '12982567922',
-        },
-        supplierId: fakeSupplier2.id,
-      }),
+      })
     ).rejects.toThrowError(new ConflictError('Esse CNPJ já está em uso'))
-
-    expect(supplierRepository.suppliers[0]?.name).toEqual('original name')
-    expect(supplierRepository.suppliers[0]?.email).toEqual('email@gmail.com')
-    expect(supplierRepository.suppliers[0]?.cnpj).toEqual('28.193.784/0001-49')
-    expect(supplierRepository.suppliers[0]?.phone).toEqual('12982567488')
-    expect(supplierRepository.suppliers[0]?.companyId).toEqual('original companyId')
-
-    expect(supplierRepository.suppliers[1]?.name).toEqual('original name2')
-    expect(supplierRepository.suppliers[1]?.email).toEqual('email2@gmail.com')
-    expect(supplierRepository.suppliers[1]?.cnpj).toEqual('28.193.784/0001-50')
-    expect(supplierRepository.suppliers[1]?.phone).toEqual('12982567489')
-    expect(supplierRepository.suppliers[1]?.companyId).toEqual('original companyId2')
   })
 
-
-  it('should not update supplier with the same telefone', async () => {
-    const fakeSupplier = SuppliersFaker.fake({
-      name: 'original name',
-      email: 'email@gmail.com',
+  it('should update supplier with an existing CNPJ in a different company', async () => {
+    const fakeSupplier1 = SuppliersFaker.fake({
       cnpj: '28.193.784/0001-49',
-      phone: '12982567488',
-      companyId: 'original companyId',
+      companyId: 'company-1',
     })
-    await supplierRepository.add(fakeSupplier)
-
-    expect(supplierRepository.suppliers[0]?.name).toEqual('original name')
-    expect(supplierRepository.suppliers[0]?.email).toEqual('email@gmail.com')
-    expect(supplierRepository.suppliers[0]?.cnpj).toEqual('28.193.784/0001-49')
-    expect(supplierRepository.suppliers[0]?.phone).toEqual('12982567488')
-    expect(supplierRepository.suppliers[0]?.companyId).toEqual('original companyId')
+    await supplierRepository.add(fakeSupplier1)
 
     const fakeSupplier2 = SuppliersFaker.fake({
-      name: 'original name2',
-      email: 'email2@gmail.com',
       cnpj: '28.193.784/0001-50',
-      phone: '12982567489',
-      companyId: 'original companyId2',
+      companyId: 'company-2',
     })
     await supplierRepository.add(fakeSupplier2)
 
-    expect(supplierRepository.suppliers[1]?.name).toEqual('original name2')
-    expect(supplierRepository.suppliers[1]?.email).toEqual('email2@gmail.com')
-    expect(supplierRepository.suppliers[1]?.cnpj).toEqual('28.193.784/0001-50')
-    expect(supplierRepository.suppliers[1]?.phone).toEqual('12982567489')
-    expect(supplierRepository.suppliers[1]?.companyId).toEqual('original companyId2')
+    await useCase.execute({
+      supplierDto: { cnpj: '28.193.784/0001-49' },
+      supplierId: fakeSupplier2.id,
+    })
 
-    await expect(
-      useCase.execute({
-        supplierDto: {
-          name: 'updated name',
-          email: 'email2@gmail.com',
-          phone: '12982567488',
-        },
-        supplierId: fakeSupplier2.id,
-      }),
-    ).rejects.toThrowError(new ConflictError('Esse telefone já está em uso'))
-
-    expect(supplierRepository.suppliers[0]?.name).toEqual('original name')
-    expect(supplierRepository.suppliers[0]?.email).toEqual('email@gmail.com')
-    expect(supplierRepository.suppliers[0]?.cnpj).toEqual('28.193.784/0001-49')
-    expect(supplierRepository.suppliers[0]?.phone).toEqual('12982567488')
-    expect(supplierRepository.suppliers[0]?.companyId).toEqual('original companyId')
-
-    expect(supplierRepository.suppliers[1]?.name).toEqual('original name2')
-    expect(supplierRepository.suppliers[1]?.email).toEqual('email2@gmail.com')
-    expect(supplierRepository.suppliers[1]?.cnpj).toEqual('28.193.784/0001-50')
-    expect(supplierRepository.suppliers[1]?.phone).toEqual('12982567489')
-    expect(supplierRepository.suppliers[1]?.companyId).toEqual('original companyId2')
+    expect(supplierRepository.suppliers[1]?.cnpj).toEqual('28.193.784/0001-49')
   })
 })

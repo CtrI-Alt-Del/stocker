@@ -35,17 +35,19 @@ describe('Register supplier use case', () => {
     expect(supplierRepository.suppliers[0]?.dto).toEqual(supplierDto)
   })
 
-  it('Should not register a supplier with an existing email', async () => {
+  it('Should not register a supplier with an existing CNPJ in the same company', async () => {
     const existingSupplierDto = SuppliersFaker.fakeDto({
-      email: 'existing-email@example.com',
+      cnpj: '12.345.678/0001-90',
+      companyId: 'company-1',
     })
 
     const existingSupplier = Supplier.create(existingSupplierDto)
-    await supplierRepository.add(existingSupplier) 
+    await supplierRepository.add(existingSupplier)
     expect(supplierRepository.suppliers).toHaveLength(1)
 
     const supplierDto = SuppliersFaker.fakeDto({
-      email: 'existing-email@example.com',
+      cnpj: '12.345.678/0001-90',
+      companyId: 'company-1',
     })
 
     const companyDto = CompanyFaker.fakeDto({ id: supplierDto.companyId })
@@ -53,58 +55,38 @@ describe('Register supplier use case', () => {
     await companiesRepository.add(company)
 
     await expect(useCase.execute({ supplierDto })).rejects.toThrowError(
-      new ConflictError('Email já em uso')
+      new ConflictError('Fornecedor já cadastrado nessa empresa')
     )
 
     expect(supplierRepository.suppliers).toHaveLength(1)
   })
 
-  it('Should not register a supplier with an existing CNPJ', async () => {
+  it('Should register a supplier with an existing CNPJ in a different company', async () => {
     const existingSupplierDto = SuppliersFaker.fakeDto({
       cnpj: '12.345.678/0001-90',
+      companyId: 'company-1',
     })
 
     const existingSupplier = Supplier.create(existingSupplierDto)
-    await supplierRepository.add(existingSupplier) 
+    await supplierRepository.add(existingSupplier)
     expect(supplierRepository.suppliers).toHaveLength(1)
 
     const supplierDto = SuppliersFaker.fakeDto({
       cnpj: '12.345.678/0001-90',
+      companyId: 'company-2',
     })
 
-    const companyDto = CompanyFaker.fakeDto({ id: supplierDto.companyId })
-    const company = Company.create(companyDto)
-    await companiesRepository.add(company)
+    const companyDto1 = CompanyFaker.fakeDto({ id: existingSupplierDto.companyId })
+    const company1 = Company.create(companyDto1)
+    await companiesRepository.add(company1)
 
-    await expect(useCase.execute({ supplierDto })).rejects.toThrowError(
-      new ConflictError('CNPJ já em uso')
-    )
+    const companyDto2 = CompanyFaker.fakeDto({ id: supplierDto.companyId })
+    const company2 = Company.create(companyDto2)
+    await companiesRepository.add(company2)
 
-    expect(supplierRepository.suppliers).toHaveLength(1)
-  })
+    await useCase.execute({ supplierDto })
 
-  it('Should not register a supplier with an existing phone', async () => {
-    const existingSupplierDto = SuppliersFaker.fakeDto({
-      cnpj: '1',
-      phone: '984567789',
-    })
-
-    const existingSupplier = Supplier.create(existingSupplierDto)
-    await supplierRepository.add(existingSupplier) 
-    expect(supplierRepository.suppliers).toHaveLength(1)
-
-    const supplierDto = SuppliersFaker.fakeDto({
-      phone: '984567789',
-    })
-
-    const companyDto = CompanyFaker.fakeDto({ id: supplierDto.companyId })
-    const company = Company.create(companyDto)
-    await companiesRepository.add(company)
-
-    await expect(useCase.execute({ supplierDto })).rejects.toThrowError(
-      new ConflictError('Telefone já em uso')
-    )
-
-    expect(supplierRepository.suppliers).toHaveLength(1)
+    expect(supplierRepository.suppliers).toHaveLength(2)
+    expect(supplierRepository.suppliers[1]?.dto).toEqual(supplierDto)
   })
 })
