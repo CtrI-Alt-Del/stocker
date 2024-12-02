@@ -209,7 +209,6 @@ export function useAuthContextProvider({
     if (jwt) logoutUnkownAccount(jwt)
   }
 
-  console.log(user?.hasFirstPasswordReset)
 
   return {
     user,

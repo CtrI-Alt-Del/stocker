@@ -24,6 +24,7 @@ export function useEmployeeSelect(onSelectChange: (employeeId: string) => void) 
       page,
       companyId: company.id,
     })
+    console.log(response)
     if (response.isFailure) {
       showError(response.errorMessage)
       return

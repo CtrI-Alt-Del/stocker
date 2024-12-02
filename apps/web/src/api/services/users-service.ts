@@ -17,7 +17,9 @@ export const UsersService = (apiClient: IApiClient): IUsersService => {
       if (name) {
         apiClient.setParam('name', String(name))
       }
-      apiClient.setParam('role', String(role))
+      if (role) {
+        apiClient.setParam('role', String(role))
+      }
       apiClient.setParam('page', String(page))
       return await apiClient.get<PaginationResponse<UserDto>>('/users')
     },

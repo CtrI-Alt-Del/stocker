@@ -65,7 +65,7 @@ export const MostTrendingProductsTable = () => {
                 type='date'
                 size='sm'
                 value={startDate.format('YYYY-MM-DD')}
-                label='data inicial'
+                label='Data inicial'
                 onChange={({ target }) =>
                   handleStartDateChange(new Datetime(new Date(target.value)).addDays(1))
                 }
@@ -74,7 +74,7 @@ export const MostTrendingProductsTable = () => {
                 type='date'
                 size='sm'
                 value={endDate.format('YYYY-MM-DD')}
-                label='data final'
+                label='Data final'
                 onChange={({ target }) =>
                   handleEndDateChange(new Datetime(new Date(target.value)).addDays(1))
                 }

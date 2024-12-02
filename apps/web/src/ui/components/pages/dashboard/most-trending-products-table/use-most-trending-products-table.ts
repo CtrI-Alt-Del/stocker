@@ -75,7 +75,7 @@ export function useMostTrendingProductsTable() {
   const products = data?.items?.map(Product.create) ?? []
   const itemsCount = data?.itemsCount ?? 0
   const startDatetime = new Datetime(new Datetime(startDate).addDays(1))
-  const endDatetime = new Datetime(endDate)
+  const endDatetime = new Datetime(new Datetime(endDate).addDays(1))
 
   useEffect(() => {
     function handleDatesDifferenceInYears() {

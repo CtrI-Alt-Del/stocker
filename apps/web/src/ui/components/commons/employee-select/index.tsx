@@ -6,9 +6,10 @@ import { Select } from '../select'
 
 type EmployeeSelectProps = {
   onSelectChange: (employeeId: string) => void
+  className?:string
 }
 
-export const EmployeeSelect = ({ onSelectChange }: EmployeeSelectProps) => {
+export const EmployeeSelect = ({ onSelectChange,className }: EmployeeSelectProps) => {
   const {
     employees,
     isFetching,
@@ -28,7 +29,7 @@ export const EmployeeSelect = ({ onSelectChange }: EmployeeSelectProps) => {
         title='Selecione o Funcionário'
         size='2xl'
         trigger={
-          <Select className='min-w-48'>
+          <Select className={className}>
             {selectedEmployeeName ? selectedEmployeeName : 'Selecione o funcionario'}
           </Select>
         }
@@ -81,7 +82,7 @@ export const EmployeeSelect = ({ onSelectChange }: EmployeeSelectProps) => {
             handleEmployeeNamechange('')
             handleEmployeeIdchange('')
           }}
-          className='flex justify-center items-center gap-2 text-sm text-gray-400'
+          className='flex justify-center items-center gap-2 text-xs text-gray-400'
         >
           Remover Filtro <Icon name='close' className='size-4' />
         </button>
