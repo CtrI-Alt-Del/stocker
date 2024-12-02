@@ -1,39 +1,19 @@
 import { CACHE } from '@/constants'
-import { useApi, useCache, useToast, useUrlParamNumber } from '@/ui/hooks'
+import { useApi, useCache, useToast } from '@/ui/hooks'
 import { Supplier } from '@stocker/core/entities'
 import { useState } from 'react'
-import { useAuthContext } from '../../contexts/auth-context'
+import { PAGINATION } from '@stocker/core/constants'
 
 export function useSupplierSelect(
   onSelectChange: (supplierId: string) => void,
-  defeaultSelectedSupplierId?: string,
+  defaultSelectedSupplierId?: string,
 ) {
-  const [supplierId, setSupplierId] = useState(defeaultSelectedSupplierId)
   const { suppliersService } = useApi()
-  const { company } = useAuthContext()
   const { showError } = useToast()
-  const [page, setPage] = useUrlParamNumber('supplierPage', 1)
-  const [expandedItems, setExpandedItems] = useState<{ [key: string]: boolean }>({})
-
-  function handleSupplierIdChange(supplierId: string) {
-    setSupplierId(supplierId)
-    onSelectChange(supplierId)
-  }
-
-  async function fetchSupplier() {
-    if (!supplierId) return
-
-    const response = await suppliersService.getSupplier(supplierId)
-    if (response.isFailure) {
-      showError(response.errorMessage)
-      return
-    }
-    return response.body
-  }
+  const [page, setPage] = useState(1)
+  const [supplierId, setSupplierId] = useState(defaultSelectedSupplierId)
 
   async function fetchSuppliers() {
-    if (!company) return
-
     const response = await suppliersService.listSuppliers({
       page,
     })
@@ -44,43 +24,31 @@ export function useSupplierSelect(
     return response.body
   }
 
-  const { data: supplierData } = useCache({
-    fetcher: fetchSupplier,
-    key: CACHE.supplier.key,
-    dependencies: [supplierId],
-  })
-
   const { data: suppliersData, isFetching } = useCache({
     fetcher: fetchSuppliers,
     key: CACHE.suppliers.key,
     dependencies: [page],
   })
 
+  function handleSupplierIdChange(supplierId: string) {
+    setSupplierId(supplierId)
+    onSelectChange(supplierId)
+  }
+
   function handlePageChange(page: number) {
     setPage(page)
   }
 
-  function handleAccordionClick(id: string) {
-    setExpandedItems((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }))
-  }
-
-  console.log(suppliersData)
-  console.log(company?.id)
   const suppliers = suppliersData ? suppliersData.items.map(Supplier.create) : []
   const itemsCount = suppliersData ? suppliersData.itemsCount : 0
 
   return {
     isFetching,
-    totalPages: Math.ceil(itemsCount / 10),
+    totalPages: Math.ceil(itemsCount / PAGINATION.itemsPerPage),
     page,
     suppliers,
-    selectedSupplierName: supplierData?.name,
-    expandedItems,
+    selectedSupplierName: suppliers.find((supplier) => supplier.id === supplierId)?.name,
     handleSupplierIdChange,
-    handleAccordionClick,
     handleSupplierPageChange: handlePageChange,
   }
 }

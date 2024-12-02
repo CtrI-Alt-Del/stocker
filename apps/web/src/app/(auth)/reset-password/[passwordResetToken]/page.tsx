@@ -12,7 +12,6 @@ type PageProps = {
 
 const Page = async ({ params }: PageProps) => {
   const cookie = await getCookieAction(COOKIES.passwordResetToken.key)
-  console.log(cookie)
   if (!cookie) return redirect(ROUTES.login)
 
   const [token, email] = cookie.split('|')
@@ -20,8 +19,6 @@ const Page = async ({ params }: PageProps) => {
   if (!email || token !== params.passwordResetToken) {
     return redirect(ROUTES.login)
   }
-
-  console.log(email)
 
   return <ResetPasswordPage email={email} />
 }

@@ -9,22 +9,25 @@ import {
 import { PAGINATION } from '@stocker/core/constants'
 import { Product } from '@stocker/core/entities'
 import type { StockLevel } from '@stocker/core/types'
-import { useQueryState, parseAsInteger } from 'nuqs'
 
 export function useStocksPage() {
   const { reportsService } = useApi()
   const { showError } = useToast()
   const [page, setPage] = useUrlParamNumber('page', 1)
-  const [categorySearchValue, setCategorySearchChange] = useUrlParamString('categoryId')
-  const [stockLevelSearch, setStockLeveLSaerchChange] = useUrlParamString('status')
-  const [filterByNameValue, setFilterByNameValue] = useUrlParamString('name')
+  const [stockLevel, setStockLeveL] = useUrlParamString('stockLevel')
+  const [categoryId, setCategoryId] = useUrlParamString('categoryId')
+  const [locationId, setLocationId] = useUrlParamString('locationId')
+  const [supplierId, setSupplierId] = useUrlParamString('supplierId')
+  const [productName, setProductName] = useUrlParamString('productName')
 
   async function fetchProducts() {
     const response = await reportsService.reportInventory({
       page,
-      name: filterByNameValue,
-      stockLevel: stockLevelSearch as StockLevel,
-      categoryId: categorySearchValue,
+      productName,
+      stockLevel: stockLevel as StockLevel,
+      categoryId,
+      locationId,
+      supplierId,
     })
 
     if (response.isFailure) {
@@ -35,41 +38,55 @@ export function useStocksPage() {
     return response.body
   }
 
-  function handleCategorySearchChange(categoryId: string) {
-    setCategorySearchChange(categoryId)
+  function handleStockLevelChange(status: string) {
+    setStockLeveL(status)
   }
-  function handleStockLevelSearchChange(status:string) {
-    setStockLeveLSaerchChange(status)
-  }
-  const { data, isFetching } = useCache({
-    fetcher: fetchProducts,
-    key: CACHE.productsList.key,
-    dependencies: [page, filterByNameValue, stockLevelSearch,categorySearchValue],
-  })
 
-  const products = data ? data.items.map(Product.create) : []
-  const itemsCount = data ? data.itemsCount : 0
+  function handleCategoryIdChange(categoryId: string) {
+    setCategoryId(categoryId)
+  }
+
+  function handleSupplierIdChange(supplierId: string) {
+    setSupplierId(supplierId)
+  }
+
+  function handleLocationIdChange(locationId: string) {
+    setLocationId(locationId)
+  }
 
   function handlePageChange(page: number) {
     setPage(page)
   }
 
   function handleSearchChange(value: string) {
-    setFilterByNameValue(value)
+    setProductName(value)
   }
 
+  const { data, isFetching } = useCache({
+    fetcher: fetchProducts,
+    key: CACHE.productsList.key,
+    dependencies: [page, productName, stockLevel, categoryId, locationId, supplierId],
+  })
+
+  const products = data ? data.items.map(Product.create) : []
+  const itemsCount = data ? data.itemsCount : 0
+
   return {
-    handlePageChange,
     page,
-    stockLevelSearch,
-    handleStockLevelSearchChange,
-    fetchProducts,
+    stockLevel,
     isFetching,
     products,
-    filterByNameValue,
-    handleSearchChange,
-    categorySearchValue,
-    handleCategorySearchChange,
+    productName,
+    supplierId,
+    categoryId,
+    locationId,
     totalPages: Math.ceil(itemsCount / PAGINATION.itemsPerPage),
+    handleCategoryIdChange,
+    handleSupplierIdChange,
+    handleLocationIdChange,
+    handleStockLevelChange,
+    fetchProducts,
+    handleSearchChange,
+    handlePageChange,
   }
 }

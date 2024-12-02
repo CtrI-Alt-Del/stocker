@@ -7,7 +7,7 @@ import { Dialog } from '../dialog'
 import { useLocationSelect } from './use-location-select'
 
 type LocationSelectProps = {
-  defaultLocationId?: string
+  defeaultLocationId?: string
   className?: string
   onSelectChange: (locationId: string) => void
   mode?: 'filter' | 'select'
@@ -15,9 +15,9 @@ type LocationSelectProps = {
 
 export const LocationSelect = ({
   className,
-  mode = 'select',
-  defaultLocationId,
+  defeaultLocationId,
   onSelectChange,
+  mode = 'select',
 }: LocationSelectProps) => {
   const {
     locations,
@@ -29,28 +29,29 @@ export const LocationSelect = ({
     handleLocationIdChange,
     handleAccordionClick,
     handleLocationPageChange,
-  } = useLocationSelect(onSelectChange, defaultLocationId || '')
+  } = useLocationSelect(onSelectChange, defeaultLocationId)
 
   return isFetching ? (
-    <Spinner size='sm' className='w-full h-full mx-auto' />
+    <Spinner size='sm' className='w-full h-12 mx-auto' />
   ) : (
-    <div className='space-y-2 gap-4 flex flex-row w-full'>
+    <div className='space-y-2 flex gap-4 items-center'>
       <Dialog
         title='Selecione um local ou setor'
         size='2xl'
         trigger={
           <Select className={className}>
-            {selectedLocationName ? selectedLocationName : 'Selecione local'}
+            {selectedLocationName ? selectedLocationName : 'Selecione setor ou local'}
           </Select>
         }
       >
-        {(closeDrawer) =>
-          locations.length === 0 ? (
-            <p className='text-center text-bg-zinc-600 font-semibold my-12'>
-              Nenhum local registrado.
-            </p>
-          ) : (
-            <>
+        {(closeDrawer) => (
+          <div className='flex flex-col h-[28rem] pb-6'>
+            {locations.length === 0 && (
+              <p className='text-center text-bg-zinc-600 font-semibold my-12'>
+                Nenhum local cadastrado.
+              </p>
+            )}
+            {locations.length > 0 && (
               <Accordion selectionMode='multiple'>
                 {locations.map((location) => (
                   <AccordionItem
@@ -81,16 +82,16 @@ export const LocationSelect = ({
                   >
                     <div className='flex gap-1 flex-col sm:ml-4 ml-0 -translate-y-3'>
                       {location.subLocations.length > 0 ? (
-                        location.subLocations.map((sector) => (
+                        location.subLocations.map((subLocation) => (
                           <div
-                            key={sector.id}
+                            key={subLocation.id}
                             className='flex flex-1 justify-between items-center ml-6'
                           >
-                            <p>{sector.name}</p>
+                            <p>{subLocation.name}</p>
                             <Button
                               className='bg-transparent hover:bg-primary hover:text-white duration-1000 border-zinc-400 h-10 min-w-10'
                               onClick={() => {
-                                handleLocationIdChange(sector.id)
+                                handleLocationIdChange(subLocation.id)
                                 closeDrawer()
                               }}
                             >
@@ -99,24 +100,26 @@ export const LocationSelect = ({
                           </div>
                         ))
                       ) : (
-                        <p>Nenhum setor cadastrado</p>
+                        <p>Nenhum setor cadastrado para esse local</p>
                       )}
                     </div>
                   </AccordionItem>
                 ))}
               </Accordion>
-              {totalPages !== 1 && (
+            )}
+            {totalPages > 1 && (
+              <div className='flex flex-1 items-end '>
                 <Pagination
                   page={page}
                   total={totalPages}
                   onChange={handleLocationPageChange}
-                  aria-label='K.F esteve aqui!!!'
+                  aria-label='Paginação de categorias'
                   showControls
                 />
-              )}
-            </>
-          )
-        }
+              </div>
+            )}
+          </div>
+        )}
       </Dialog>
       {selectedLocationName && mode === 'filter' && (
         <button
@@ -124,8 +127,8 @@ export const LocationSelect = ({
           onClick={() => handleLocationIdChange('')}
           className='flex justify-center items-center gap-2 text-xs text-gray-400'
         >
-          Remover Filtro
-          <Icon name='close' className='size-4' />
+          Remover filtro
+          <Icon name='close' className='size-4' />{' '}
         </button>
       )}
     </div>

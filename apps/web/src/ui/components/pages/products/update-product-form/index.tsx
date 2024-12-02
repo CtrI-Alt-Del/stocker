@@ -94,7 +94,8 @@ export const UpdateProductForm = ({
           control={control}
           render={({ field: { onChange } }) => (
             <div className='w-full '>
-              <SupplierSelect onSelectChange={onChange} className='w-full' />
+              <SupplierSelect
+              defaultSupplierId={product.supplierId ?? undefined} onSelectChange={onChange} className='w-full' />
               {errors.supplierId && (
                 <p className='text-red-600 text-sm'>{errors.supplierId?.message}</p>
               )}

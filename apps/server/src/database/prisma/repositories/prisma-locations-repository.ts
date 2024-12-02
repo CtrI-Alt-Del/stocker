@@ -121,7 +121,6 @@ export class PrismaLocationsRepository implements ILocationsRepository {
         },
         orderBy: { registered_at: 'desc' },
       })
-      console.log(prismaLocations)
       const count = await prisma.location.count({
         where: {
           ...(name && { name: { contains: name, mode: 'insensitive' } }),

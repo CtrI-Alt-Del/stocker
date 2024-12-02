@@ -6,7 +6,7 @@ import { User } from '@stocker/core/entities'
 
 export function useEmployeeSelect(onSelectChange: (employeeId: string) => void) {
   const [employeeId, setEmployeeId] = useState<string>()
-  const [selectedEmployeeName,setSelectedEmployeeName] = useState<string>()
+  const [selectedEmployeeName, setSelectedEmployeeName] = useState<string>()
   const { usersService } = useApi()
   const { company } = useAuthContext()
   const { showError } = useToast()
@@ -15,7 +15,7 @@ export function useEmployeeSelect(onSelectChange: (employeeId: string) => void) 
     setEmployeeId(employeeId)
     onSelectChange(employeeId)
   }
-  function handleEmployeeNamechange(name:string){
+  function handleEmployeeNamechange(name: string) {
     setSelectedEmployeeName(name)
   }
   async function fetchEmployees() {
@@ -30,15 +30,14 @@ export function useEmployeeSelect(onSelectChange: (employeeId: string) => void) 
     }
     return response.body
   }
-  const { data, refetch, isFetching } = useCache({
+  const { data, isFetching } = useCache({
     fetcher: fetchEmployees,
     key: CACHE.users.key,
     dependencies: [page],
   })
-  function handlePagechange(page:number){
+  function handlePagechange(page: number) {
     setPage(page)
   }
-  console.log(data)
   const employees = data ? data.items : []
   const itemsCount = data ? data.itemsCount : 0
   return {
@@ -49,6 +48,6 @@ export function useEmployeeSelect(onSelectChange: (employeeId: string) => void) 
     handleEmployeeIdchange,
     handleEmployeePageChange: handlePagechange,
     handleEmployeeNamechange,
-    selectedEmployeeName
+    selectedEmployeeName,
   }
 }

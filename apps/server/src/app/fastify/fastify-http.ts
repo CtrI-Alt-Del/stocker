@@ -40,8 +40,6 @@ export class FastifyHttp implements IHttp {
   ): unknown {
     this.reply.header('Content-Type', HTTP_CONTENT_TYPE[contentType])
     this.reply.header('Content-Disposition', `attachment; filename="${filename}"`)
-
-    console.log('que?')
     return this.reply.status(statusCode).send(file)
   }
 

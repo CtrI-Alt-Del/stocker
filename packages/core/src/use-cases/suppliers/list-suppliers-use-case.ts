@@ -20,8 +20,6 @@ export class ListSuplliersUseCase {
       companyId,
     })
 
-    console.log(suppliers)
-
     return new PaginationResponse({
       items: suppliers.map((supplier) => supplier.dto),
       itemsCount: count,

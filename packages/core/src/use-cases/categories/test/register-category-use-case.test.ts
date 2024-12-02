@@ -13,8 +13,6 @@ describe('Register category use case', () => {
 
     const categoryDto = CategoriesFaker.fakeDto()
     await useCase.execute({ categoryDto })
-    console.log('faker: ', categoryDto)
-    console.log('result:', categoriesRepository.categories[0]?.dto)
     expect(categoriesRepository.categories).toHaveLength(1)
     expect(categoriesRepository.categories[0]?.dto).toEqual(categoryDto)
   })

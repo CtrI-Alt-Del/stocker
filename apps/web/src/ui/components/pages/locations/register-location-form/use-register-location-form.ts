@@ -33,7 +33,6 @@ export function useRegisterLocationForm({
       companyId: companyId,
       subLocations: [],
     })
-    console.log(location)
     const response = await locationsService.registerLocation(location)
     if (response.isFailure) {
       showError(response.errorMessage)
@@ -48,6 +47,6 @@ export function useRegisterLocationForm({
     errors: formState.errors,
     isSubmiting: formState.isSubmitting,
     register,
-    handleSubmit: handleSubmit(handleFormSubmit)
+    handleSubmit: handleSubmit(handleFormSubmit),
   }
 }

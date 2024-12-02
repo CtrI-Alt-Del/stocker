@@ -13,9 +13,10 @@ export const SuppliersService = (apiClient: IApiClient): ISuppliersService => {
       return await apiClient.get<SupplierDto>(`/suppliers/${supplierId}`)
     },
 
-    async listSuppliers({ page = 1, name }) {
+    async listSuppliers({ page = 1, name = '' }) {
+      apiClient.clearParams()
       apiClient.setParam('page', String(page))
-      if (name) apiClient.setParam('name', String(name))
+      if (name) apiClient.setParam('name', name)
       return await apiClient.get<PaginationResponse<SupplierDto>>('/suppliers')
     },
 

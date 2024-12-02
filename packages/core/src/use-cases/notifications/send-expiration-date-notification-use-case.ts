@@ -24,8 +24,6 @@ export class SendExpirationDateNotificationsUseCase {
       notifications.push(...companyNotifications)
     }
 
-    console.log(notifications.length)
-
     await this.notificationsRepository.addManyExpirationDateNotifications(notifications)
   }
 }

@@ -1,3 +1,4 @@
+import { s } from 'framer-motion/client'
 import type { LocationDto } from '../../dtos/location-dto'
 import { Entity } from '../abstracts'
 
@@ -35,6 +36,10 @@ export class Location extends Entity<LocationProps> {
 
   get subLocations(): Location[] {
     return this.props.subLocations
+  }
+
+  set subLocations(subLocations: Location[]) {
+    this.props.subLocations = subLocations
   }
 
   get dto(): LocationDto {
