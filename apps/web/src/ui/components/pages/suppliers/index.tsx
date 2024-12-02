@@ -17,13 +17,13 @@ export const SuppliersPage = () => {
     isDeleting,
     selectedSuppliersIds,
     isLoading,
+    nameSearchValue,
     handleRegisterSupplierFormSubmit,
     handleUpdateSupplier,
     handleSuppliersSelectionChange,
     handlePageChange,
     handleDeleteSuppliersAlertDialogConfirm,
-    nameSearchValue,
-    handleNameSearchChange
+    handleNameSearchChange,
   } = useSuppliersPage()
   return (
     <>
@@ -33,7 +33,7 @@ export const SuppliersPage = () => {
             <h1 className='text-3xl font-black'>Fornecedores</h1>
             <Search value={nameSearchValue} onSearchChange={handleNameSearchChange} />
           </div>
-          <div className='flex items-center justify-center gap-1'>
+          <div className='flex flex-col md:justify-end md:flex-row gap-1 w-full md:w-max ml-auto mt-3 md:mt-0'>
             {selectedSuppliersIds.length > 0 && (
               <AlertDialog
                 trigger={
@@ -50,7 +50,12 @@ export const SuppliersPage = () => {
             )}
             <Drawer
               trigger={
-                <Button variant='solid' color='primary' size='md' className='text-orange'>
+                <Button
+                  variant='solid'
+                  color='primary'
+                  size='md'
+                  className='text-orange w-full'
+                >
                   <span className='text-white'>Adicionar Fornecedor</span>
                 </Button>
               }

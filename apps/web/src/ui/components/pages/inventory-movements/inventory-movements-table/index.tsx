@@ -76,7 +76,9 @@ export const InventoryMovementsTable = ({
         >
           {(item) => (
             <TableRow key={item.id}>
-              <TableCell key='product'>{item.product?.name}</TableCell>
+              <TableCell key='product'>
+                <span className='truncate'>{item.product?.name}</span>
+              </TableCell>
               <TableCell key='date' className='w-40'>
                 {new Datetime(item.registeredAt).format('DD/MM/YYYY HH:mm')}
               </TableCell>
@@ -85,10 +87,10 @@ export const InventoryMovementsTable = ({
               </TableCell>
               <TableCell key='quantity'>{item.itemsCount}</TableCell>
               <TableCell key='employee' className='w-32'>
-                {item.responsible?.dto.name}
+                <span className='truncate'>{item.responsible?.dto.name}</span>
               </TableCell>
               <TableCell key='remark' className='w-96'>
-                {item.remark}
+                <span className='truncate'>{item.remark}</span>
               </TableCell>
             </TableRow>
           )}

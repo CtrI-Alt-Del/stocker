@@ -10,6 +10,7 @@ import Link from 'next/link'
 type NotificationCardProps = {
   id: string
   title: string
+  subtitle: string
   href: string
   icon: IconName
   sentAt: Date
@@ -19,6 +20,7 @@ type NotificationCardProps = {
 export const NotificationCard = ({
   id,
   title,
+  subtitle,
   icon,
   sentAt,
   href,
@@ -39,6 +41,7 @@ export const NotificationCard = ({
           -<h3 className='truncate text-gray-500 max-w-72'>{title}</h3>
         </div>
       </div>
+      <p className='truncate text-gray-500 pl-12'>{subtitle}</p>
       <div className='flex items-center gap-3 mt-2 ml-12'>
         <Button
           as={Link}

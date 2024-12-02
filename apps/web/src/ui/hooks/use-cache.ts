@@ -23,6 +23,7 @@ type Cache<CacheData> = {
   isRefetching: boolean
   refetch: () => void
   mutate: (newCacheData: CacheData | null, consig?: MudateConfig) => void
+  clearCache: VoidFunction
 }
 
 export function useCache<CacheData>({
@@ -56,6 +57,10 @@ export function useCache<CacheData>({
       )
   }
 
+  function clearCache() {
+    mutate(undefined)
+  }
+
   return {
     data: data ?? null,
     error,
@@ -63,5 +68,6 @@ export function useCache<CacheData>({
     isRefetching: isValidating,
     refetch: () => mutate(),
     mutate: mutateCache,
+    clearCache,
   }
 }

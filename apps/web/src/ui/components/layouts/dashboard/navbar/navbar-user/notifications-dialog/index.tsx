@@ -59,7 +59,8 @@ export const NotifcationsDialog = ({ companyId }: NotifcationsDialogProps) => {
                         id={stockNotification.id}
                         href={`/inventory/stocks/${stockNotification.product.id}`}
                         icon='product'
-                        title={`${stockNotification.product.name} | estoque atual: ${stockNotification.product.currentStock}`}
+                        title={stockNotification.product.name}
+                        subtitle={`estoque atual: ${stockNotification.product.currentStock} | estoque mínimo: ${stockNotification.product.minimumStock}`}
                         sentAt={stockNotification.sentAt ?? new Date()}
                         onDelete={handleDeleteNotification}
                       />
@@ -95,7 +96,8 @@ export const NotifcationsDialog = ({ companyId }: NotifcationsDialogProps) => {
                         id={expirationDateNotification.id}
                         href={`/inventory/stocks/${expirationDateNotification.id}`}
                         icon='batch'
-                        title={`${expirationDateNotification.batch.code} | dias até expiração: ${expirationDateNotification.batch.daysToExpiration}`}
+                        title={`Código do lote: ${expirationDateNotification.batch.code}`}
+                        subtitle={`dias até expiração: ${expirationDateNotification.batch.daysToExpiration}`}
                         sentAt={expirationDateNotification.sentAt ?? new Date()}
                         onDelete={handleDeleteNotification}
                       />

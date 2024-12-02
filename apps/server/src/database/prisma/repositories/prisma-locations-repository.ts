@@ -68,8 +68,6 @@ export class PrismaLocationsRepository implements ILocationsRepository {
 
   async findById(locationId: string): Promise<Location | null> {
     try {
-      console.log(await prisma.location.findMany())
-      console.log('locationId', locationId)
       const prismaLocation = await prisma.location.findUnique({
         where: {
           id: locationId,
@@ -78,8 +76,6 @@ export class PrismaLocationsRepository implements ILocationsRepository {
           subLocation: true,
         },
       })
-
-      console.log({ prismaLocation })
 
       if (!prismaLocation) return null
       return this.mapper.toDomain(prismaLocation)

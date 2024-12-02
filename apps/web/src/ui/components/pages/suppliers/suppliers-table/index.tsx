@@ -93,10 +93,18 @@ export const SuppliersTable = ({
         >
           {(supplier) => (
             <TableRow key={supplier.id}>
-              <TableCell key='name'>{supplier.name}</TableCell>
-              <TableCell key='email'>{supplier.email}</TableCell>
-              <TableCell key='cnpj'>{supplier.cnpj}</TableCell>
-              <TableCell key='phone'>{supplier.phone}</TableCell>
+              <TableCell key='name'>
+                <span className='truncate'>{supplier.name}</span>
+              </TableCell>
+              <TableCell key='email'>
+                <span className='truncate'>{supplier.email}</span>
+              </TableCell>
+              <TableCell key='cnpj'>
+                <span className='truncate'>{supplier.cnpj}</span>
+              </TableCell>
+              <TableCell key='phone'>
+                <span className='truncate'>{supplier.phone}</span>
+              </TableCell>
               <TableCell key='actions'>
                 <Tooltip content='Visualizar dados do Fornecedor'>
                   <IconButton

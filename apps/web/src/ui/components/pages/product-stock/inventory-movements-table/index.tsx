@@ -70,7 +70,7 @@ export const InventoryMovementsTable = ({
         items={inventoryMovements}
         emptyContent='Nenhum lançamento registrado para esse produto'
         isLoading={isLoading}
-        loadingContent={<Spinner color='primary'  />}
+        loadingContent={<Spinner color='primary' />}
       >
         {(item) => (
           <TableRow>
@@ -81,8 +81,12 @@ export const InventoryMovementsTable = ({
               {item.movementType === 'inbound' ? 'Entrada' : 'Saída'}
             </TableCell>
             <TableCell>{item.itemsCount}</TableCell>
-            <TableCell>{item.responsible.name}</TableCell>
-            <TableCell>{item.remark ?? 'N/A'}</TableCell>
+            <TableCell>
+              <span className='truncate'>{item.responsible?.name}</span>
+            </TableCell>
+            <TableCell>
+              <span className='truncate'>{item.remark ?? 'N/A'}</span>
+            </TableCell>
           </TableRow>
         )}
       </TableBody>
