@@ -8,8 +8,6 @@ import {
 } from '@/ui/hooks'
 import { useState } from 'react'
 import { useAuthContext } from '../../contexts/auth-context'
-import { SuppliersService } from '@/api/services'
-import { SupplierDto } from '@stocker/core/dtos'
 
 export function useSuppliersPage() {
   const { showSuccess, showError } = useToast()
@@ -27,7 +25,7 @@ export function useSuppliersPage() {
     const response = await suppliersService.listSuppliers({
       page,
       companyId: user.companyId,
-      name: nameSearchValue
+      name: nameSearchValue,
     })
     if (response.isFailure) {
       showError(response.errorMessage)
@@ -40,7 +38,7 @@ export function useSuppliersPage() {
   const { data, isFetching, refetch } = useCache({
     fetcher: fetchUsers,
     key: CACHE.users.key,
-    dependencies: [page,nameSearchValue],
+    dependencies: [page, nameSearchValue],
   })
   async function handleUpdateSupplier() {
     refetch()

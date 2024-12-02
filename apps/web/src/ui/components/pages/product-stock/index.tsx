@@ -60,10 +60,15 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
         </div>
 
         {userRole?.hasPermission('inventory-movements') && (
-          <div className='flex flex-col sm:flex-row gap-1'>
+          <div className='flex flex-col sm:flex-row gap-3 mt-3'>
             <Drawer
               trigger={
-                <Button color='primary' radius='sm' endContent={<Icon name='inbound' />}>
+                <Button
+                  color='primary'
+                  radius='sm'
+                  endContent={<Icon name='inbound' />}
+                  className='w-full md:w-56'
+                >
                   Lançamento de entrada
                 </Button>
               }
@@ -82,7 +87,12 @@ export const ProductStockPage = ({ productDto }: ProductStockPageProps) => {
 
             <Drawer
               trigger={
-                <Button color='primary' radius='sm' endContent={<Icon name='outbound' />}>
+                <Button
+                  color='primary'
+                  radius='sm'
+                  endContent={<Icon name='outbound' />}
+                  className='w-full md:w-56'
+                >
                   Lançamento de saída
                 </Button>
               }

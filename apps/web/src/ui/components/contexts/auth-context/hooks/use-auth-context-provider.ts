@@ -66,7 +66,7 @@ export function useAuthContextProvider({
 
   const company = comapanyDto ? Company.create(comapanyDto) : null
 
-  const { data: userRole } = useCache({
+  const { data: userRole, clearCache: clearUserRoleCache } = useCache({
     fetcher: fetchPermissions,
     key: CACHE.permissions.key,
   })
@@ -122,6 +122,7 @@ export function useAuthContextProvider({
   async function logout() {
     setUser(null)
     navigateTo(ROUTES.login)
+    clearUserRoleCache()
     setTimeout(async () => {
       await deleteCookieAction(COOKIES.jwt.key)
     }, 2500)
@@ -208,7 +209,6 @@ export function useAuthContextProvider({
   function handleUnkownAccountDetect() {
     if (jwt) logoutUnkownAccount(jwt)
   }
-
 
   return {
     user,

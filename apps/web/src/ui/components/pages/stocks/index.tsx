@@ -152,7 +152,7 @@ export const StocksPage = () => {
                 <Link href={`${ROUTES.inventory.stocks}/${product.id}`}>
                   <Icon name='stock' className='size-6 text-zinc-500 mr-1' />
                 </Link>
-                {product.name}
+                <span className='truncate'>{product.name}</span>
               </TableCell>
               <TableCell key='batch'>{product.batchesCount}</TableCell>
               <TableCell key='inbound' className='font-semibold'>

@@ -36,14 +36,12 @@ export const RegisterSupplierForm = ({
           />
           <Input
             label='CNPJ'
-            isRequired
             isInvalid={Boolean(errors.cnpj)}
             errorMessage={errors.cnpj?.message}
             {...register('cnpj')}
           />
           <Input
             label='Telefone'
-            isRequired
             isInvalid={Boolean(errors.phone)}
             errorMessage={errors.phone?.message}
             {...register('phone')}
@@ -57,11 +55,7 @@ export const RegisterSupplierForm = ({
         <Button onClick={onCancel} isDisabled={isSubmiting}>
           Cancelar
         </Button>
-        <Button
-          type='submit'
-          color='primary'
-          isLoading={isSubmiting}
-        >
+        <Button type='submit' color='primary' isLoading={isSubmiting}>
           Confirm
         </Button>
       </div>

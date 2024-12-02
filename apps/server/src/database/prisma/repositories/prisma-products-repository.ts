@@ -128,8 +128,18 @@ export class PrismaProductsRepository implements IProductsRepository {
         where: {
           company_id: companyId,
           ...(name && { name: { contains: name, mode: 'insensitive' } }),
-          ...(categoryId && { category_id: categoryId }),
-          ...(locationId && { location_id: locationId }),
+          ...(categoryId && {
+            OR: [
+              { category_id: categoryId },
+              { category: { parent_category_id: categoryId } },
+            ],
+          }),
+          ...(locationId && {
+            OR: [
+              { location_id: locationId },
+              { location: { parent_location_id: locationId } },
+            ],
+          }),
           ...(supplierId && { supplier_id: supplierId }),
         },
         orderBy: { registered_at: 'desc' },
@@ -288,7 +298,7 @@ export class PrismaProductsRepository implements IProductsRepository {
       }
 
       if (categoryId) {
-        whereSql = Prisma.sql`${whereSql} AND P.category_id = ${categoryId}`
+        whereSql = Prisma.sql`${whereSql} AND (P.category_id = ${categoryId} OR C.parent_category_id = ${categoryId})`
       }
 
       if (supplierId) {
@@ -296,7 +306,7 @@ export class PrismaProductsRepository implements IProductsRepository {
       }
 
       if (locationId) {
-        whereSql = Prisma.sql`${whereSql} AND P.location_id = ${locationId}`
+        whereSql = Prisma.sql`${whereSql} AND (P.location_id = ${locationId} OR L.parent_location_id =  ${locationId})`
       }
 
       let havingSql = Prisma.sql``
@@ -329,6 +339,8 @@ export class PrismaProductsRepository implements IProductsRepository {
       FROM products P
       LEFT JOIN inventory_movements IM ON IM.product_id = P.id
       LEFT JOIN batches B ON B.product_id = P.id
+      LEFT JOIN categories C ON C.id = P.category_id
+      LEFT JOIN locations L ON L.id = P.location_id
       WHERE ${whereSql}
       GROUP BY P.id
       ${havingSql}
