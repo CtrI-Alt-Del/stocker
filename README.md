@@ -61,7 +61,7 @@ Para acessar os MVP's, acesse o link: <a href="https://drive.google.com/drive/fo
 
 - Sprint 3: [Acessar](https://github.com/CtrI-Alt-Del/stocker/blob/main/documentation/sprints-reports/sprint-3.md)
 
-- Sprint 4: Work in progress... 🚧
+- Sprint 4: [Acessar](https://github.com/CtrI-Alt-Del/stocker/blob/main/documentation/sprints-reports/sprint-4.md)
 
 ---
 

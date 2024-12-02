@@ -6,7 +6,7 @@
 
 ## User Stories realizados nessa sprint 📖
 
-<img src="../images/users-stories-sprint-4.png"  width="2223" height="1240"  />
+<img src="../images/user-stories-sprint-4.jpg"  width="2223" height="1240"  />
 
 ## Critérios de aceitação para cada User Story 📒
 
@@ -87,7 +87,7 @@ Clique [aqui](https://github.com/orgs/CtrI-Alt-Del/projects/4/views/1?filterQuer
 
 ## Gráfico Burndown 📈
 
-<img src="../images/burndown-chart-sprint-4.png" width="1000" height="500" alt="Grágico Burndown da primeira Sprint" />
+<img src="../images/burndown-chart-sprint-4.jpg" width="1000" height="500" alt="Grágico Burndown da primeira Sprint" />
 
 ## Slides para apresentação 🎞️
 
