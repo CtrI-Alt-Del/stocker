@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Location } from '@stocker/core/entities'
 
@@ -7,16 +7,19 @@ import { CACHE } from '@/constants'
 
 export function useLocationSelect(
   onSelectChange: (locationId: string) => void,
+  isFilter: boolean,
   defaultSelectedLocationId: string | undefined,
 ) {
+  const [selectedLocationId, setSelectedLocationId] = useState(defaultSelectedLocationId)
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null)
   const { locationsService } = useApi()
-  const { showError } = useToast()
   const [page, setPage] = useState(1)
-  const [locationId, setLocationId] = useState(defaultSelectedLocationId)
   const [expandedItems, setExpandedItems] = useState<{ [key: string]: boolean }>({})
+  const { showError } = useToast()
 
   function handleLocationIdChange(locationId: string) {
-    setLocationId(locationId)
+    if (!locationId && selectedLocation) setSelectedLocation(null)
+    setSelectedLocationId(locationId)
     onSelectChange(locationId)
   }
 
@@ -51,13 +54,35 @@ export function useLocationSelect(
   const locations = locationsData ? locationsData.items.map(Location.create) : []
   const itemsCount = locationsData ? locationsData.itemsCount : 0
 
+  useEffect(() => {
+    async function fetchSelectedLocation(selectedLocationId: string) {
+      const response = await locationsService.getLocation(selectedLocationId)
+      if (response.isFailure) {
+        setSelectedLocation(null)
+        showError(response.errorMessage)
+        return
+      }
+      if (selectedLocationId) setSelectedLocation(Location.create(response.body))
+    }
+
+    if (isFilter && selectedLocationId && !selectedLocation)
+      fetchSelectedLocation(selectedLocationId)
+    else if (!isFilter && selectedLocationId) fetchSelectedLocation(selectedLocationId)
+  }, [
+    isFilter,
+    selectedLocation,
+    selectedLocationId,
+    locationsService.getLocation,
+    showError,
+  ])
+
   return {
     isFetching,
     page,
     locations,
     expandedItems,
     totalPages: Math.ceil(itemsCount / 10),
-    selectedLocationName: locations.find((category) => category.id === locationId)?.name,
+    selectedLocationName: selectedLocation?.name,
     handleLocationIdChange,
     handleAccordionClick,
     handleLocationPageChange: handlePageChange,

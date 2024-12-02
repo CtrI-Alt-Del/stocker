@@ -62,7 +62,7 @@ export function useProductsPage() {
   const { data, isFetching, refetch } = useCache({
     fetcher: fetchProducts,
     key: CACHE.productsList.key,
-    dependencies: [page, productName, categoryId, locationId],
+    dependencies: [page, productName, categoryId, supplierId, locationId],
   })
 
   const products = data ? data.items.map(Product.create) : []
@@ -96,6 +96,8 @@ export function useProductsPage() {
   function handleProductsSelectionChange(productsIds: string[]) {
     setSelectedProductsIds(productsIds)
   }
+
+  console.log(data)
 
   return {
     page,

@@ -95,7 +95,10 @@ export const UpdateProductForm = ({
           render={({ field: { onChange } }) => (
             <div className='w-full '>
               <SupplierSelect
-              defaultSupplierId={product.supplierId ?? undefined} onSelectChange={onChange} className='w-full' />
+                defaultSupplierId={product.supplierId ?? undefined}
+                onSelectChange={onChange}
+                className='w-full'
+              />
               {errors.supplierId && (
                 <p className='text-red-600 text-sm'>{errors.supplierId?.message}</p>
               )}
@@ -204,7 +207,7 @@ export const UpdateProductForm = ({
             <div className='w-full '>
               <LocationSelect
                 onSelectChange={onChange}
-                defaultLocationId={product.locationId ?? undefined}
+                defeaultLocationId={product.locationId ?? undefined}
                 className='w-full'
               />
               {errors.supplierId && (

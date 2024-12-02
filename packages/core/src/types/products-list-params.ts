@@ -1,6 +1,6 @@
 export type ProductsListParams = {
   name?: string
-  companyId: string
+  companyId?: string
   locationId?: string
   categoryId?: string
   supplierId?: string
