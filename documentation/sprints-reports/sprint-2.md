@@ -73,7 +73,8 @@
   - Total de lotes;
   - Total de itens no estoque;
   - Total de lançamentos de entrada;
-  - Total de lançamentos de saída;
+  - Total de lançamentos de saída.
+- Deve ser possível fazer essa mesma análise utilizando inteligência artificial.
 
 ### US17
 
