@@ -1,6 +1,7 @@
-import { NotFoundError } from '../../errors'
+import { NotAllowedError, NotFoundError } from '../../errors'
 import type {
   IAiProvider,
+  ICompaniesRepository,
   IInventoryMovementsRepository,
   IUsersRepository,
 } from '../../interfaces'
@@ -14,12 +15,22 @@ export class ReportInventoryWithAiUseCase {
   constructor(
     private readonly inventoryMovementsRepository: IInventoryMovementsRepository,
     private readonly usersRepository: IUsersRepository,
+    private readonly companiesRepository: ICompaniesRepository,
     private readonly aiProvider: IAiProvider,
   ) {}
 
   async execute({ userId, onGenerateChunck }: Request) {
     const user = await this.usersRepository.findById(userId)
     if (!user) throw new NotFoundError('Usuário não encontrado')
+
+    const userRole = await this.companiesRepository.findRoleById(
+      user.role,
+      user.companyId,
+    )
+
+    if (!userRole || !userRole.hasPermission('reports')) {
+      throw new NotAllowedError('Permissão não concedida a esse usuário')
+    }
 
     const movements = await this.inventoryMovementsRepository.findAllByCompany(
       user.companyId,

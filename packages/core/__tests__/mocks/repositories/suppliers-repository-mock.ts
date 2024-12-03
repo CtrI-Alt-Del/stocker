@@ -3,6 +3,7 @@ import type { ISuppliersRepository } from '../../../src/interfaces'
 import type { SuppliersListParams } from '../../../src/types'
 
 export class SuppliersRepositoryMock implements ISuppliersRepository {
+ 
   suppliers: Supplier[] = []
 
   async findMany({ page }: SuppliersListParams): Promise<{ suppliers: Supplier[], count: number }> {
@@ -35,6 +36,10 @@ export class SuppliersRepositoryMock implements ISuppliersRepository {
 
   async add(supplier: Supplier): Promise<void> {
     this.suppliers.push(supplier)
+  }
+
+  async addMany(suppliers: Supplier[]): Promise<void> {
+    for (const supplier of suppliers) this.add(supplier)
   }
 
   async update(supplier: Supplier): Promise<void> {

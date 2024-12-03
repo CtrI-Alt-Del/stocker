@@ -25,6 +25,10 @@ export class Category extends Entity<CategoryProps> {
     this.subCategories.push(category)
   }
 
+  update(partialDto: Partial<CategoryDto>): Category {
+    return Category.create({ ...this.dto, ...partialDto })
+  }
+
   get hasParentCategory(): boolean {
     return Boolean(this.props.parentCategoryId)
   }
@@ -51,7 +55,5 @@ export class Category extends Entity<CategoryProps> {
     }
   }
 
-  update(partialDto: Partial<CategoryDto>): Category {
-    return Category.create({ ...this.dto, ...partialDto })
-  }
+ 
 }

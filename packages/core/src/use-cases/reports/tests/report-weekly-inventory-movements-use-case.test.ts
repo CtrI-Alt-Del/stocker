@@ -63,6 +63,7 @@ describe('Report weekly inventory movements use case', () => {
 
     const weeklyInventoryMovements = await useCase.execute({
       endDate: endDate.getDate(),
+      companyId: '',
     })
 
     expect(weeklyInventoryMovements).toEqual([
@@ -112,6 +113,7 @@ describe('Report weekly inventory movements use case', () => {
       await useCase.execute({
         endDate: currentDate.getDate(),
         productId: fakeProduct.id,
+        companyId: '',
       })
     }).rejects.toThrowError(NotFoundError)
   })
@@ -138,6 +140,7 @@ describe('Report weekly inventory movements use case', () => {
     const weeklyInventoryMovements = await useCase.execute({
       endDate: endDate.getDate(),
       productId: fakeProduct.id,
+      companyId: '',
     })
 
     expect(weeklyInventoryMovements?.at(-1)).toEqual({

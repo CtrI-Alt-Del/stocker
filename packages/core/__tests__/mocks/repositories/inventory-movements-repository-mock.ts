@@ -27,7 +27,6 @@ export class InventoryMovementsRepositoryMock implements IInventoryMovementsRepo
     endDate,
     movementType,
     companyId,
-    employeeId,
   }: InventoryMovementsListParams): Promise<{
     inventoryMovements: InventoryMovement[]
     count: number
@@ -68,7 +67,9 @@ export class InventoryMovementsRepositoryMock implements IInventoryMovementsRepo
   }
 
   async findAllByCompany(companyId: string): Promise<InventoryMovement[]> {
-    throw new Error('Method not implemented.')
+    return this.inventoryMovements.filter(
+      (movement) => movement.product?.companyId === companyId,
+    )
   }
 
   async findByDateRange(params: FindByDateRangeParams): Promise<InventoryMovement[]> {

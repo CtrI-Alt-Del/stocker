@@ -54,9 +54,9 @@ describe('Batch entity', () => {
 
   it('should return the days to expiration', () => {
     const differenceInDays = 10
-    const fakeExpirationDate = new Datetime().subtractDays(differenceInDays)
+    const fakeExpirationDate = new Datetime().addDays(differenceInDays)
     const batch = BatchesFaker.fake({ expirationDate: fakeExpirationDate })
 
-    expect(batch.daysToExpiration).toBe(10)
+    expect(batch.daysToExpiration).toBe(differenceInDays - 1)
   })
 })

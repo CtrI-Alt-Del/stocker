@@ -23,6 +23,14 @@ export class UsersRepositoryMock implements IUsersRepository {
     this.users.push(user)
   }
 
+  async findAllByCompany(companyId: string): Promise<User[]> {
+    throw new Error('Method not implemented.')
+  }
+
+  async addMany(users: User[]): Promise<void> {
+    throw new Error('Method not implemented.')
+  }
+
   async findByEmail(userEmail: string): Promise<User | null> {
     const email = this.users.find((user) => user.email === userEmail) ?? null
     return email

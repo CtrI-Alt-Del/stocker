@@ -26,7 +26,14 @@ describe('Export inventory to csv file use case', () => {
   })
 
   it('should return the buffer of the csv file containing the products', async () => {
-    const fileBuffer = await useCase.execute()
+    const fileBuffer = await useCase.execute({
+      companyId: '',
+      categoryId: '',
+      locationId: '',
+      supplierId: '',
+      productName: '',
+      stockLevel: 'average',
+    })
     expect(fileBuffer).toEqual(
       Buffer.from(
         [

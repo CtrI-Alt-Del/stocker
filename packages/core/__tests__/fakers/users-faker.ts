@@ -9,7 +9,7 @@ export class UsersFaker {
   static fakeDto(baseDto?: Partial<UserDto>): UserDto {
     return {
       id: faker.string.uuid(),
-      role: RolesFaker.fakeDto(),
+      role: faker.helpers.arrayElement(['admin', 'manager', 'employee']),
       email: faker.internet.email(),
       name: faker.person.fullName(),
       password: faker.internet.password(),
