@@ -31,7 +31,7 @@ export const EmployeesPage = () => {
     <>
       <div className='space-y-5'>
         <div className='flex flex-col gap-3 md:flex-row md:gap-0 justify-between'>
-          <div className='flex-1 w-full   space-y-2'>
+          <div className='flex-1 w-full space-y-2'>
             <h1 className='text-3xl font-black'>Funcionários</h1>
             <div className=' flex md:items-center flex-col md:flex-row gap-4 w-full'>
               <Search value={nameSearchValue} onSearchChange={handleNameSearchChange} />
@@ -56,7 +56,7 @@ export const EmployeesPage = () => {
               </Select>
             </div>
           </div>
-          <div className='flex items-center justify-center gap-1'>
+          <div className='flex flex-col md:flex-row justify-end gap-2 w-full md:w-max'>
             {selectedEmployeesIds.length > 0 && (
               <AlertDialog
                 trigger={
@@ -73,7 +73,12 @@ export const EmployeesPage = () => {
             )}
             <Drawer
               trigger={
-                <Button variant='solid' color='primary' size='md' className='text-orange'>
+                <Button
+                  variant='solid'
+                  color='primary'
+                  size='md'
+                  className='text-orange w-full md:w-max'
+                >
                   <span className='text-white'>Adicionar Funcionário</span>
                 </Button>
               }

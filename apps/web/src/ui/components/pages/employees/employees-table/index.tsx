@@ -94,13 +94,17 @@ export const EmployeesTable = ({
         >
           {(employee) => (
             <TableRow key={employee.id}>
-              <TableCell key='name'>{employee.name}</TableCell>
-              <TableCell key='email'>{employee.email}</TableCell>
+              <TableCell key='name'>
+                <span className='truncate'>{employee.name}</span>
+              </TableCell>
+              <TableCell key='email'>
+                <span className='truncate'>{employee.email}</span>
+              </TableCell>
               <TableCell key='role' className='font-semibold'>
                 {employee.role === 'manager' ? 'Gerente' : 'Funcionário'}
               </TableCell>
               <TableCell key='actions'>
-                <Tooltip content='Visualizar dados do Funcinário'>
+                <Tooltip content='Atualizar funcinário'>
                   <IconButton
                     name='view'
                     className='size-6 text-zinc-500'

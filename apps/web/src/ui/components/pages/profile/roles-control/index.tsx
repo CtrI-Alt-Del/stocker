@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Divider, Spinner, Switch } from '@nextui-org/react'
+import { Divider, Switch } from '@nextui-org/react'
 import { useRolesControl } from './use-roles-control'
 import type { RolePermission } from '@stocker/core/types'
 import { Role } from '@stocker/core/structs'

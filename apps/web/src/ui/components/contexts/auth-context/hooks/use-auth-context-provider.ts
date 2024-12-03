@@ -62,6 +62,7 @@ export function useAuthContextProvider({
     fetcher: fetchCompany,
     key: CACHE.company.key,
     isEnabled: Boolean(user),
+    dependencies: [user?.id],
   })
 
   const company = comapanyDto ? Company.create(comapanyDto) : null
@@ -69,6 +70,8 @@ export function useAuthContextProvider({
   const { data: userRole, clearCache: clearUserRoleCache } = useCache({
     fetcher: fetchPermissions,
     key: CACHE.permissions.key,
+    isEnabled: Boolean(user),
+    dependencies: [user?.id],
   })
 
   function getRouteByUserRole(role: RoleName) {

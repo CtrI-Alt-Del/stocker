@@ -16,7 +16,7 @@ export const SubscribeForm = () => {
       <h1 className='w-full text-xl font-bold text-center lg:text-3xl'>
         Cadastre sua conta
       </h1>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4 mt-3 w-96'>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-4 mt-3 w-72 md:w-96'>
         <Input
           label='Nome'
           placeholder='Digite seu nome'

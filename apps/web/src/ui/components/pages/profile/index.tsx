@@ -19,7 +19,7 @@ export const ProfilePage = async () => {
   if (response.isFailure) response.throwError()
 
   return (
-    <div className='p-6 min-h-screen max-w-5xl mx-auto pb-12'>
+    <div className='p-6 min-h-screen max-w-5xl mx-auto pb-40'>
       <h1 className='text-3xl font-semibold'>Conta do Administrador</h1>
       <div className='grid grid-cols-1  md:grid-cols-[1.5fr,1fr] gap-12'>
         <ProfileForm />

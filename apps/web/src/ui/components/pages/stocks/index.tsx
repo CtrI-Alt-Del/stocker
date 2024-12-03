@@ -52,9 +52,11 @@ export const StocksPage = () => {
       <div className='flex flex-col-reverse sm:flex-row justify-between gap-4 w-full'>
         <Search value={productName} onSearchChange={handleSearchChange} />
         <div>
-          <ExportCsvLink
-            href={`${BROWSER_ENV.appUrl}${ROUTES.api.inventoryCsv}?productName=${productName}&supplierId=${supplierId}&categoryId=${categoryId}&locationId=${locationId}&stockLevel=${stockLevel}`}
-          />
+          {userRole?.hasPermission('csv-export') && (
+            <ExportCsvLink
+              href={`${BROWSER_ENV.appUrl}${ROUTES.api.inventoryCsv}?productName=${productName}&supplierId=${supplierId}&categoryId=${categoryId}&locationId=${locationId}&stockLevel=${stockLevel}`}
+            />
+          )}
         </div>
       </div>
       <div className='grid grid-cols-1 md:grid-cols-4 max-w-5xl gap-3 mt-3'>
