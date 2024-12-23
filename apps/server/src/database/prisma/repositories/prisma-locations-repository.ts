@@ -1,7 +1,6 @@
 import type { Location } from '@stocker/core/entities'
 import type { ILocationsRepository } from '@stocker/core/interfaces'
-import { PaginationResponse } from '@stocker/core/responses'
-import type { CategoriesListParams, LocationsListParams } from '@stocker/core/types'
+import type { LocationsListParams } from '@stocker/core/types'
 import { prisma } from '../prisma-client'
 import { PrismaError } from '../prisma-error'
 import { PAGINATION } from '@stocker/core/constants'
