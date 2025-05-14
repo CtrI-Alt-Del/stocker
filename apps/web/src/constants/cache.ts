@@ -56,4 +56,7 @@ export const CACHE = {
   suppliers: {
     key: '/suppliers',
   },
+  chatbot: {
+    key: '/chatbot/messages',
+  },
 }

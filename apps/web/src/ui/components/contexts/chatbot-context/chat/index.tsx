@@ -1,13 +1,7 @@
-import { useState } from 'react'
-
-const mockMessages = [
-  { id: 1, role: 'user', content: 'oi' },
-  { id: 2, role: 'bot', content: 'Tudo bem' },
-]
+import { useChatbot } from './use-chatbot-hook'
 
 export const Chat = () => {
-  const [messages] = useState(mockMessages)
-  const [input, setInput] = useState('')
+  const { messages, isFetching, message, sendMessage, handleMessageChange, handleSubmit } = useChatbot()
 
   return (
     <div className='w-80 h-[28rem] flex flex-col border rounded-xl shadow-lg bg-white overflow-hidden'>
@@ -20,12 +14,12 @@ export const Chat = () => {
       <div className='flex-1 flex flex-col gap-2 p-4 overflow-y-auto bg-zinc-50'>
         {messages.map((msg) => (
           <div
-            key={msg.id}
-            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            key={`${msg.content}-${msg.createdAt.getTime()}`}
+            className={`flex ${msg.sender === msg.userId ? 'justify-end' : 'justify-start'}`}
           >
             <div
               className={`px-4 py-2 rounded-lg max-w-[70%] text-sm whitespace-pre-line ${
-                msg.role === 'user'
+                msg.sender === msg.userId
                   ? 'bg-zinc-900 text-white rounded-br-none'
                   : 'bg-zinc-800 text-white rounded-bl-none'
               }`}
@@ -37,18 +31,19 @@ export const Chat = () => {
       </div>
       <form
         className='flex items-center gap-2 p-3 border-t bg-white'
-        onSubmit={(e) => e.preventDefault()}
+        onSubmit={handleSubmit}
       >
         <input
           type='text'
           className='flex-1 px-3 py-2 rounded-lg border bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-400 text-sm'
           placeholder='Type your message...'
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
+          value={message}
+          onChange={(e) => handleMessageChange(e.target.value)}
         />
         <button
           type='submit'
-          className='p-2 rounded-lg bg-zinc-900 text-white hover:bg-zinc-800 transition'
+          disabled={!message.trim() || isFetching}
+          className='p-2 rounded-lg bg-zinc-900 text-white hover:bg-zinc-800 transition disabled:opacity-50 disabled:cursor-not-allowed'
         >
           <svg
             width='20'
