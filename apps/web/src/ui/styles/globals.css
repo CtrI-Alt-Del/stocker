@@ -5,3 +5,12 @@
 * {
   font-family: Inter,sans-serif ;  
 }
+
+.scrollbar-hidden {
+  scrollbar-width: none; 
+  -ms-overflow-style: none;  
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; 
+}
