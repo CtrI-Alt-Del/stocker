@@ -2,6 +2,7 @@
 
 import { useRef, type ReactNode } from 'react'
 
+import ChatBotButton from './chatbot-button'
 import { Navbar } from './navbar'
 import { Drawer } from '../../commons/drawer'
 import { IconButton } from '../../commons/icon-button'
@@ -38,6 +39,8 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
       <main className='pl-6 lg:pl-60 py-6 pr-6'>{children}</main>
       {user?.hasFirstPasswordReset && <FirstEntryPasswordModal />}
+
+      <ChatBotButton />
     </>
   )
 }
