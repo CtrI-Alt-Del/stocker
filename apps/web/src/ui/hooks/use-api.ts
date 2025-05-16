@@ -17,29 +17,32 @@ import { UsersService } from '@/api/services/users-service'
 import { BROWSER_ENV } from '@/constants'
 import { useAuthContext } from '../components/contexts/auth-context'
 
-const nextApiClient = NextApiClient()
-nextApiClient.setBaseUrl(BROWSER_ENV.serverApiUrl)
+const serverRestClient = NextApiClient()
+serverRestClient.setBaseUrl(BROWSER_ENV.serverApiUrl)
+
+const chatbotRestClient = NextApiClient()
+chatbotRestClient.setBaseUrl(BROWSER_ENV.chatbotRestUrl)
 
 export function useApi() {
   const { jwt } = useAuthContext()
 
   if (jwt) {
-    nextApiClient.setHeader('Authorization', `Bearer ${jwt}`)
+    serverRestClient.setHeader('Authorization', `Bearer ${jwt}`)
   }
 
   return {
-    authService: AuthService(nextApiClient),
-    locationsService: LocationsService(nextApiClient),
-    usersService: UsersService(nextApiClient),
-    suppliersService: SuppliersService(nextApiClient),
-    reportsService: ReportsService(nextApiClient),
-    inventoryMovementService: InventoryMovementsService(nextApiClient),
-    productsService: ProductsService(nextApiClient),
-    notificationService: NotificationsService(nextApiClient),
-    batchesService: BatchesService(nextApiClient),
-    fileStorageService: FileStorageService(nextApiClient),
-    categoriesService: CategoriesService(nextApiClient),
-    companiesService: CompaniesService(nextApiClient),
-    chatbotService: ChatbotService(nextApiClient),
+    authService: AuthService(serverRestClient),
+    locationsService: LocationsService(serverRestClient),
+    usersService: UsersService(serverRestClient),
+    suppliersService: SuppliersService(serverRestClient),
+    reportsService: ReportsService(serverRestClient),
+    inventoryMovementService: InventoryMovementsService(serverRestClient),
+    productsService: ProductsService(serverRestClient),
+    notificationService: NotificationsService(serverRestClient),
+    batchesService: BatchesService(serverRestClient),
+    fileStorageService: FileStorageService(serverRestClient),
+    categoriesService: CategoriesService(serverRestClient),
+    companiesService: CompaniesService(serverRestClient),
+    chatbotService: ChatbotService(chatbotRestClient),
   }
 }

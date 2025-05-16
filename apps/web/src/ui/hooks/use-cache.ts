@@ -53,7 +53,9 @@ export function useCache<CacheData>({
     if (newCacheData)
       mutate(
         newCacheData,
-        mutateConfig ? { revalidate: mutateConfig.shouldRevalidate } : undefined,
+        mutateConfig
+          ? { revalidate: mutateConfig.shouldRevalidate }
+          : { revalidate: false },
       )
   }
 

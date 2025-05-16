@@ -9,6 +9,7 @@ export type IconName =
   | 'arrow-big-up-dash'
   | 'package'
   | 'check'
+  | 'chatbot'
   | 'dashboard'
   | 'inventory'
   | 'download'

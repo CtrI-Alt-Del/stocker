@@ -32,9 +32,10 @@ export const NextApiClient = (cacheConfig?: CacheConfig): IApiClient => {
         statusCode: response.status,
       })
     },
-    async patch<ResponseBody>(url: string, body: unknown = {}) {
+
+    async post<ResponseBody>(url: string, body: unknown = {}) {
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
-        method: 'PATCH',
+        method: 'POST',
         headers,
         body: JSON.stringify(body) ?? {},
       })
@@ -51,9 +52,9 @@ export const NextApiClient = (cacheConfig?: CacheConfig): IApiClient => {
       })
     },
 
-    async post<ResponseBody>(url: string, body: unknown = {}) {
+    async patch<ResponseBody>(url: string, body: unknown = {}) {
       const response = await fetch(`${baseUrl}${addUrlParams(url, params)}`, {
-        method: 'POST',
+        method: 'PATCH',
         headers,
         body: JSON.stringify(body) ?? {},
       })
@@ -138,7 +139,7 @@ export const NextApiClient = (cacheConfig?: CacheConfig): IApiClient => {
       }
 
       return new ApiResponse<Buffer>({
-        body: data as Buffer,
+        body: data as unknown as Buffer,
         statusCode: response.status,
       })
     },

@@ -7,12 +7,14 @@ const envSchema = z.object({
   appUrl: urlSchema,
   serverApiUrl: urlSchema,
   serverRealtimeUrl: urlSchema,
+  chatbotRestUrl: urlSchema,
 })
 
 const validation = envSchema.safeParse({
   appUrl: process.env.NEXT_PUBLIC_APP_URL,
   serverApiUrl: process.env.NEXT_PUBLIC_SERVER_API_URL,
   serverRealtimeUrl: process.env.NEXT_PUBLIC_SERVER_REALTIME_URL,
+  chatbotRestUrl: process.env.NEXT_PUBLIC_CHATBOT_REST_URL,
 })
 
 if (!validation.success) {
