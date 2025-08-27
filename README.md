@@ -234,6 +234,22 @@ Ou abra o navegador e navegue até `http://localhost:3333` (ou a porta que você
 
 ---
 
+## Arquitetura do Servidor 🏗️
+
+Para entender a estrutura e organização do código do servidor, consulte a documentação detalhada da arquitetura:
+
+📖 **[Documentação da Arquitetura do Servidor](apps/server/ARCHITECTURE.md)**
+
+Esta documentação inclui:
+- 📁 Estrutura completa de diretórios
+- 🏗️ Explicação das camadas da arquitetura  
+- 🔄 Fluxo de dados entre componentes
+- 📋 Exemplos práticos de navegação no código
+- 🔧 Tecnologias utilizadas
+- 📝 Convenções de código
+
+---
+
 ## Time de Desenvolvimento 👷🏻
 
 |                                  Foto                                   |         Nome          |    Função     |                                                                          Github                                                                           |                                                                                              Linkedin                                                                                               |
